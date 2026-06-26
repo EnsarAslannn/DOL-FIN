@@ -1,0 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&family=Rubik&display=swap");
+
+@import "tailwindcss";
+
+@theme {
+  --screen-sm: 480px;
+  --screen-md: 768px;
+  --screen-lg: 1020px;
+  --screen-xl: 1440px;
+
+  --color-lightBlue: hsl(215.02, 98.39%, 51.18%);
+  --color-darkBlue: hsl(213.86, 58.82%, 46.67%);
+  --color-lightGreen: hsl(156.62, 73.33%, 58.82%);
+
+  --font-sans: "Poppins", "sans-serif";
+
+  --spacing-180: 32rem;
+}

@@ -1,0 +1,12 @@
+.spinner-container {
+  display: flex;
+  justify-content: center; /* Yatayda milimetrik ortala */
+  align-items: center;     /* Düşeyde milimetrik ortala */
+  width: 100%;
+  min-height: 60vh;        /* Sayfa içeriğinin ortasına denk gelmesi için makul bir yükseklik */
+}
+
+/* Spinner'ın kendisi: Sabit konumlandırmayı kaldırıp özgür bırakıyoruz */
+#Loading-spinner {
+  display: block;
+}
