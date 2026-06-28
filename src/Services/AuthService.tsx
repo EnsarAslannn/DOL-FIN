@@ -2,13 +2,19 @@ import axios from "axios"
 import { handleError } from "../Helpers/ErrorHandler"
 import type { UserProfileToken } from "../Models/User"
 
-const api = `${import.meta.env.VITE_API_URL}/api/`
+const getApiURL = () => {
+  let url = import.meta.env.VITE_API_URL || "https://localhost:7109"
+  if (url.endsWith("/")) {
+    url = url.slice(0, -1)
+  }
+  return `${url}/api/`
+}
 
 export const loginAPI = async (username: string, password: string) => {
   try {
-    const data = await axios.post<UserProfileToken>(api + "account/login", {
-      Username: username,
-      Password: password,
+    const data = await axios.post<UserProfileToken>(getApiURL() + "account/login", {
+      username: username,
+      password: password,
     })
     return data
   } catch (error) {
@@ -22,10 +28,10 @@ export const registerAPI = async (
   password: string,
 ) => {
   try {
-    const data = await axios.post<UserProfileToken>(api + "account/register", {
-      Username: username,
-      Password: password,
-      Email: email,
+    const data = await axios.post<UserProfileToken>(getApiURL() + "account/register", {
+      username: username,
+      password: password,
+      email: email,
     })
     return data
   } catch (error) {

@@ -23,10 +23,10 @@ const WalletPage = () => {
                 await getWalletPortfolio()
                 await refreshWalletBalance()
             }
-        };
+        }
 
         initializeWallet()
-    }, [user])
+    }, [user?.userName])
 
     const getWalletPortfolio = () => {
         portfolioGetAPI()
@@ -38,31 +38,34 @@ const WalletPage = () => {
 
     const refreshWalletBalance = async () => {
         try {
-            const token = localStorage.getItem("token");
-            if (!token) return;
+            const token = localStorage.getItem("token")
+            if (!token) return
 
-            const apiBaseURL = import.meta.env.VITE_API_URL || "https://localhost:7109";
+            let apiBaseURL = import.meta.env.VITE_API_URL || "https://localhost:7109"
+            if (apiBaseURL.endsWith("/")) {
+                apiBaseURL = apiBaseURL.slice(0, -1)
+            }
 
             const response = await axios.post(`${apiBaseURL}/api/account/profile`, {}, {
                 headers: {
                     Authorization: `Bearer ${token.trim()}`,
                     "Cache-Control": "no-cache, no-store, must-revalidate",
-                    "Pragma": "no-cache",
-                    "Expires": "0"
+                    Pragma: "no-cache",
+                    Expires: "0"
                 },
-            });
+            })
 
             if (response && response.data) {
-                const balance = response.data.walletBalance !== undefined ? response.data.walletBalance : response.data.WalletBalance;
+                const balance = response.data.walletBalance !== undefined ? response.data.walletBalance : response.data.WalletBalance
                 if (balance !== undefined) {
-                    setLiveBalance(balance);
-                    updateWalletBalance(balance);
+                    setLiveBalance(balance)
+                    updateWalletBalance(balance)
                 }
             }
         } catch (error) {
-            console.error("Failed to refresh wallet balance:", error);
+            console.error("Failed to refresh wallet balance:", error)
         }
-    };
+    }
 
     const handleDepositSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault()
