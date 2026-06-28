@@ -7,10 +7,8 @@ import { toast } from "react-toastify"
 import PurchasePortfolio from "../../Components/Portfolio/PurchasePortfolio/PurchasePortfolio"
 import axios from "axios"
 
-let globalFetchLock = false;
-
 const WalletPage = () => {
-    const { user, updateWalletBalance } = useAuth()
+    const { updateWalletBalance } = useAuth()
     const [depositAmount, setDepositAmount] = useState<string>("")
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
     const [portfolioValues, setPortfolioValues] = useState<PortfolioGet[] | null>([])
@@ -19,19 +17,12 @@ const WalletPage = () => {
     const [liveBalance, setLiveBalance] = useState<number>(0)
 
     useEffect(() => {
-        globalFetchLock = false;
-
         const token = localStorage.getItem("token")
-        if (token && user?.userName && !globalFetchLock) {
-            globalFetchLock = true;
+        if (token) {
             getWalletPortfolio()
             refreshWalletBalance()
         }
-
-        return () => {
-            globalFetchLock = false;
-        }
-    }, [user?.userName])
+    }, [])
 
     const getWalletPortfolio = () => {
         portfolioGetAPI()
@@ -55,9 +46,8 @@ const WalletPage = () => {
             const response = await cleanAxios.post(`${apiBaseURL}/api/account/profile`, {}, {
                 headers: {
                     Authorization: `Bearer ${token.trim()}`,
-                    "Cache-Control": "no-cache, no-store, must-revalidate",
-                    Pragma: "no-cache",
-                    Expires: "0"
+                    "Cache-Control": "no-cache",
+                    Pragma: "no-cache"
                 },
             })
 
@@ -65,7 +55,6 @@ const WalletPage = () => {
                 const balance = response.data.walletBalance !== undefined ? response.data.walletBalance : response.data.WalletBalance
                 if (balance !== undefined) {
                     setLiveBalance(balance)
-                    updateWalletBalance(balance)
                 }
             }
         } catch (error) {
@@ -90,8 +79,6 @@ const WalletPage = () => {
                     updateWalletBalance(res.data.newBalance)
                     toast.success(`$${amount.toLocaleString()} deposited successfully!`)
                     setDepositAmount("")
-
-                    globalFetchLock = false;
                     refreshWalletBalance()
                 }
             })
@@ -150,8 +137,6 @@ const WalletPage = () => {
                     setIsSellModalOpen(false)
                     setSelectedSellStock(null)
                     getWalletPortfolio()
-
-                    globalFetchLock = false;
                     refreshWalletBalance()
                 }
             })
