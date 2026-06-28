@@ -112,9 +112,11 @@ export const UserProvider = ({ children }: Props) => {
     const logout = () => {
         localStorage.removeItem("token")
         localStorage.removeItem("user")
-        delete axios.defaults.headers.common["Authorization"]
+        if (axios.defaults.headers.common["Authorization"]) {
+            delete axios.defaults.headers.common["Authorization"]
+        }
         setUser(null)
-        setToken("")
+        setToken(null)
         navigate("/")
     }
 

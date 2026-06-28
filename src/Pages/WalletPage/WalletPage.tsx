@@ -31,10 +31,18 @@ const WalletPage = () => {
     const refreshWalletBalance = async () => {
         try {
             const token = localStorage.getItem("token")
+            if (!token) return
+
             const apiBaseURL = import.meta.env.VITE_API_URL || "https://localhost:7109"
+
             const response = await axios.get(`${apiBaseURL}/api/account/profile`, {
-                headers: { Authorization: `Bearer ${token}` },
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Cache-Control": "no-cache",
+                    Pragma: "no-cache"
+                },
             })
+
             if (response && response.data) {
                 const balance = response.data.walletBalance !== undefined ? response.data.walletBalance : response.data.WalletBalance
                 if (balance !== undefined) {
