@@ -6,6 +6,7 @@ const api = `${import.meta.env.VITE_API_URL}/api/portfolio/`
 
 export const portfolioAddAPI = async (symbol: string, quantity: number) => {
     try {
+        const token = localStorage.getItem("token")
         const data = await axios.post<{ message: string; newBalance: number }>(
             api,
             null,
@@ -13,7 +14,8 @@ export const portfolioAddAPI = async (symbol: string, quantity: number) => {
                 params: {
                     symbol: symbol,
                     quantity: quantity
-                }
+                },
+                headers: { Authorization: `Bearer ${token}` }
             }
         )
         return data
@@ -24,6 +26,7 @@ export const portfolioAddAPI = async (symbol: string, quantity: number) => {
 
 export const portfolioSellAPI = async (symbol: string, quantity: number) => {
     try {
+        const token = localStorage.getItem("token")
         const data = await axios.post<{ message: string; newBalance: number }>(
             api + "sell",
             null,
@@ -31,7 +34,8 @@ export const portfolioSellAPI = async (symbol: string, quantity: number) => {
                 params: {
                     symbol: symbol,
                     quantity: quantity
-                }
+                },
+                headers: { Authorization: `Bearer ${token}` }
             }
         )
         return data
@@ -42,7 +46,10 @@ export const portfolioSellAPI = async (symbol: string, quantity: number) => {
 
 export const portfolioGetAPI = async () => {
     try {
-        const data = await axios.get<PortfolioGet[]>(api)
+        const token = localStorage.getItem("token")
+        const data = await axios.get<PortfolioGet[]>(api, {
+            headers: { Authorization: `Bearer ${token}` }
+        })
         return data
     } catch (error) {
         handleError(error)
@@ -51,13 +58,15 @@ export const portfolioGetAPI = async () => {
 
 export const portfolioDepositAPI = async (amount: number) => {
     try {
+        const token = localStorage.getItem("token")
         const data = await axios.post<{ message: string; newBalance: number }>(
             api + "deposit",
             null,
             {
                 params: {
                     amount: amount
-                }
+                },
+                headers: { Authorization: `Bearer ${token}` }
             }
         )
         return data
@@ -68,13 +77,15 @@ export const portfolioDepositAPI = async (amount: number) => {
 
 export const portfolioWithdrawAPI = async (amount: number) => {
     try {
+        const token = localStorage.getItem("token")
         const data = await axios.post<{ message: string; newBalance: number }>(
             api + "withdraw",
             null,
             {
                 params: {
                     amount: amount
-                }
+                },
+                headers: { Authorization: `Bearer ${token}` }
             }
         )
         return data
