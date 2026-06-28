@@ -42,11 +42,11 @@ const SearchPage = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token")
-    if (user && token) {
+    if (token && token.trim() !== "") {
       getPortfolio()
       getTrends()
     }
-  }, [user])
+  }, [user?.userName])
 
   const getPortfolio = () => {
     portfolioGetAPI()
