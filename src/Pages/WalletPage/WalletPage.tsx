@@ -18,7 +18,7 @@ const WalletPage = () => {
 
     useEffect(() => {
         const token = localStorage.getItem("token")
-        if (token) {
+        if (token && token.trim() !== "") {
             getWalletPortfolio()
             refreshWalletBalance()
         }

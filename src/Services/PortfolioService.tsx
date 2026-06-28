@@ -2,20 +2,26 @@ import axios from "axios"
 import type { PortfolioGet } from "../Models/Portfolio"
 import { handleError } from "../Helpers/ErrorHandler"
 
-const api = `${import.meta.env.VITE_API_URL}/api/portfolio/`
+const getApiURL = () => {
+    let url = import.meta.env.VITE_API_URL || "https://localhost:7109"
+    if (url.endsWith("/")) {
+        url = url.slice(0, -1)
+    }
+    return `${url}/api/portfolio/`
+}
 
 export const portfolioAddAPI = async (symbol: string, quantity: number) => {
     try {
         const token = localStorage.getItem("token")
+        const headers: Record<string, string> = {}
+        if (token) headers["Authorization"] = `Bearer ${token.trim()}`
+
         const data = await axios.post<{ message: string; newBalance: number }>(
-            api,
+            getApiURL(),
             null,
             {
-                params: {
-                    symbol: symbol,
-                    quantity: quantity
-                },
-                headers: { Authorization: `Bearer ${token}` }
+                params: { symbol, quantity },
+                headers: Object.keys(headers).length ? headers : undefined
             }
         )
         return data
@@ -27,15 +33,15 @@ export const portfolioAddAPI = async (symbol: string, quantity: number) => {
 export const portfolioSellAPI = async (symbol: string, quantity: number) => {
     try {
         const token = localStorage.getItem("token")
+        const headers: Record<string, string> = {}
+        if (token) headers["Authorization"] = `Bearer ${token.trim()}`
+
         const data = await axios.post<{ message: string; newBalance: number }>(
-            api + "sell",
+            getApiURL() + "sell",
             null,
             {
-                params: {
-                    symbol: symbol,
-                    quantity: quantity
-                },
-                headers: { Authorization: `Bearer ${token}` }
+                params: { symbol, quantity },
+                headers: Object.keys(headers).length ? headers : undefined
             }
         )
         return data
@@ -47,8 +53,11 @@ export const portfolioSellAPI = async (symbol: string, quantity: number) => {
 export const portfolioGetAPI = async () => {
     try {
         const token = localStorage.getItem("token")
-        const data = await axios.get<PortfolioGet[]>(api, {
-            headers: { Authorization: `Bearer ${token}` }
+        const headers: Record<string, string> = {}
+        if (token) headers["Authorization"] = `Bearer ${token.trim()}`
+
+        const data = await axios.get<PortfolioGet[]>(getApiURL(), {
+            headers: Object.keys(headers).length ? headers : undefined
         })
         return data
     } catch (error) {
@@ -59,14 +68,15 @@ export const portfolioGetAPI = async () => {
 export const portfolioDepositAPI = async (amount: number) => {
     try {
         const token = localStorage.getItem("token")
+        const headers: Record<string, string> = {}
+        if (token) headers["Authorization"] = `Bearer ${token.trim()}`
+
         const data = await axios.post<{ message: string; newBalance: number }>(
-            api + "deposit",
+            getApiURL() + "deposit",
             null,
             {
-                params: {
-                    amount: amount
-                },
-                headers: { Authorization: `Bearer ${token}` }
+                params: { amount },
+                headers: Object.keys(headers).length ? headers : undefined
             }
         )
         return data
@@ -78,14 +88,15 @@ export const portfolioDepositAPI = async (amount: number) => {
 export const portfolioWithdrawAPI = async (amount: number) => {
     try {
         const token = localStorage.getItem("token")
+        const headers: Record<string, string> = {}
+        if (token) headers["Authorization"] = `Bearer ${token.trim()}`
+
         const data = await axios.post<{ message: string; newBalance: number }>(
-            api + "withdraw",
+            getApiURL() + "withdraw",
             null,
             {
-                params: {
-                    amount: amount
-                },
-                headers: { Authorization: `Bearer ${token}` }
+                params: { amount },
+                headers: Object.keys(headers).length ? headers : undefined
             }
         )
         return data
@@ -97,8 +108,11 @@ export const portfolioWithdrawAPI = async (amount: number) => {
 export const marketTrendsAPI = async () => {
     try {
         const token = localStorage.getItem("token")
+        const headers: Record<string, string> = {}
+        if (token) headers["Authorization"] = `Bearer ${token.trim()}`
+
         const data = await axios.get<any[]>(`${import.meta.env.VITE_API_URL}/api/stock/trends`, {
-            headers: { Authorization: `Bearer ${token}` }
+            headers: Object.keys(headers).length ? headers : undefined
         })
         return data
     } catch (error) {
