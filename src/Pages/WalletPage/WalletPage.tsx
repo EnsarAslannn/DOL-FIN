@@ -17,11 +17,16 @@ const WalletPage = () => {
     const [liveBalance, setLiveBalance] = useState<number>(0)
 
     useEffect(() => {
-        if (user && user.userName) {
-            getWalletPortfolio()
-            refreshWalletBalance()
-        }
-    }, [user?.userName])
+        const initializeWallet = async () => {
+            const token = localStorage.getItem("token")
+            if (token) {
+                await getWalletPortfolio()
+                await refreshWalletBalance()
+            }
+        };
+
+        initializeWallet()
+    }, [user])
 
     const getWalletPortfolio = () => {
         portfolioGetAPI()
@@ -34,15 +39,15 @@ const WalletPage = () => {
     const refreshWalletBalance = async () => {
         try {
             const token = localStorage.getItem("token")
-            if (!token) return
+            if (!token) return;
 
             const apiBaseURL = import.meta.env.VITE_API_URL || "https://localhost:7109"
             const response = await axios.get(`${apiBaseURL}/api/account/profile`, {
                 headers: {
-                    Authorization: `Bearer ${token.trim()}`,
-                    "Cache-Control": "no-cache"
+                    Authorization: `Bearer ${token.trim()}`
                 },
             })
+
             if (response && response.data) {
                 const balance = response.data.walletBalance !== undefined ? response.data.walletBalance : response.data.WalletBalance
                 if (balance !== undefined) {
@@ -55,7 +60,7 @@ const WalletPage = () => {
         }
     }
 
-    const handleDepositSubmit = (e: React.FormEvent) => {
+    const handleDepositSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault()
         const amount = parseFloat(depositAmount)
 
