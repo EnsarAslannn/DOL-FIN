@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect } from "react"
 import { useAuth } from "../../Context/useAuth"
 import { portfolioDepositAPI, portfolioGetAPI, portfolioSellAPI } from "../../Services/PortfolioService"
 import type { PortfolioGet } from "../../Models/Portfolio"
@@ -6,6 +6,8 @@ import { companyLogos } from "../../Components/Table/TestData"
 import { toast } from "react-toastify"
 import PurchasePortfolio from "../../Components/Portfolio/PurchasePortfolio/PurchasePortfolio"
 import axios from "axios"
+
+let globalFetchLock = false;
 
 const WalletPage = () => {
     const { user, updateWalletBalance } = useAuth()
@@ -16,14 +18,18 @@ const WalletPage = () => {
     const [selectedSellStock, setSelectedSellStock] = useState<{ symbol: string; price: number; maxQuantity: number } | null>(null)
     const [liveBalance, setLiveBalance] = useState<number>(0)
 
-    const isInitialFetched = useRef<boolean>(false)
-
     useEffect(() => {
+        globalFetchLock = false;
+
         const token = localStorage.getItem("token")
-        if (token && user?.userName && !isInitialFetched.current) {
-            isInitialFetched.current = true
+        if (token && user?.userName && !globalFetchLock) {
+            globalFetchLock = true;
             getWalletPortfolio()
             refreshWalletBalance()
+        }
+
+        return () => {
+            globalFetchLock = false;
         }
     }, [user?.userName])
 
@@ -84,6 +90,8 @@ const WalletPage = () => {
                     updateWalletBalance(res.data.newBalance)
                     toast.success(`$${amount.toLocaleString()} deposited successfully!`)
                     setDepositAmount("")
+
+                    globalFetchLock = false;
                     refreshWalletBalance()
                 }
             })
@@ -142,6 +150,8 @@ const WalletPage = () => {
                     setIsSellModalOpen(false)
                     setSelectedSellStock(null)
                     getWalletPortfolio()
+
+                    globalFetchLock = false;
                     refreshWalletBalance()
                 }
             })
