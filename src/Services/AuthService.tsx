@@ -1,18 +1,10 @@
-import axios from "axios"
+import axiosInstance from "../Helpers/AxiosInstance"
 import { handleError } from "../Helpers/ErrorHandler"
 import type { UserProfileToken } from "../Models/User"
 
-const getApiURL = () => {
-  let url = import.meta.env.VITE_API_URL || "https://localhost:7109"
-  if (url.endsWith("/")) {
-    url = url.slice(0, -1)
-  }
-  return `${url}/api/`
-}
-
 export const loginAPI = async (username: string, password: string) => {
   try {
-    const data = await axios.post<UserProfileToken>(getApiURL() + "account/login", {
+    const data = await axiosInstance.post<UserProfileToken>("account/login", {
       username: username,
       password: password,
     })
@@ -28,7 +20,7 @@ export const registerAPI = async (
   password: string,
 ) => {
   try {
-    const data = await axios.post<UserProfileToken>(getApiURL() + "account/register", {
+    const data = await axiosInstance.post<UserProfileToken>("account/register", {
       username: username,
       password: password,
       email: email,

@@ -1,8 +1,6 @@
-import axios from "axios"
+import axiosInstance from "../Helpers/AxiosInstance"
 import type { CommentGet, CommentPost } from "../Models/Comment"
 import { handleError } from "../Helpers/ErrorHandler"
-
-const api = `${import.meta.env.VITE_API_URL}/api/comment/`
 
 export const commentPostAPI = async (
     title: string,
@@ -10,7 +8,7 @@ export const commentPostAPI = async (
     stockId: number,
 ) => {
     try {
-        const data = await axios.post<CommentPost>(api + `${stockId}`, {
+        const data = await axiosInstance.post<CommentPost>(`comment/${stockId}`, {
             title: title,
             content: content,
         })
@@ -22,7 +20,7 @@ export const commentPostAPI = async (
 
 export const commentGetAPI = async (symbol: string) => {
     try {
-        const data = await axios.get<CommentGet[]>(api + `?Symbol=${symbol}`)
+        const data = await axiosInstance.get<CommentGet[]>(`comment?Symbol=${symbol}`)
         return data
     } catch (error) {
         handleError(error)

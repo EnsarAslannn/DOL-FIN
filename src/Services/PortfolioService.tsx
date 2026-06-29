@@ -1,4 +1,4 @@
-import { axiosInstance } from "../Helpers/AxiosInstance"
+import axiosInstance from "../Helpers/AxiosInstance"
 import type { PortfolioGet } from "../Models/Portfolio"
 import { handleError } from "../Helpers/ErrorHandler"
 
