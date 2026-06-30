@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/api/api/:path*",
+      "destination": "https://ensaraslannn-001-site1.ctempurl.com/api/:path*"
+    },
+    {
       "source": "/api/:path*",
       "destination": "https://ensaraslannn-001-site1.ctempurl.com/api/:path*"
     },
