@@ -15,7 +15,11 @@
       "destination": "https://ensaraslannn-001-site1.ctempurl.com/api/:path*"
     },
     {
-      "source": "/((?!api-doc|assets|openapi\\.json).*)" ,
+      "source": "/api-doc",
+      "destination": "/api-doc.html"
+    },
+    {
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
