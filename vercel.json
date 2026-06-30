@@ -5,8 +5,8 @@
       "destination": "https://ensaraslannn-001-site1.ctempurl.com/openapi.json"
     },
     {
-      "source": "/scalar/v1",
-      "destination": "https://ensaraslannn-001-site1.ctempurl.com/scalar/v1"
+      "source": "/api/api/:path*",
+      "destination": "https://ensaraslannn-001-site1.ctempurl.com/api/:path*"
     },
     {
       "source": "/api/:path*",
