@@ -1,73 +1,52 @@
-# React + TypeScript + Vite
+# 🐬 DOL-FIN 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+DOL-FIN, .NET Web API ve React (TypeScript) mimarisi üzerine kurulu; ilişkisel veri akışlarını, dinamik portföy yönetimini ve kullanıcı etkileşimlerini merkezine alan kurumsal odaklı bir finansal yönetim platformudur.
 
-Currently, two official plugins are available:
+# Özellikler
+   Portföy & Varlık Yönetimi: Kullanıcı bazlı sanal cüzdan ve varlık takibi sistemi.
+   Güvenli Kimlik Doğrulama: ASP.NET Core Identity altyapısı entegre edilerek, JWT (JSON Web Token) Bearer şemasıyla korunan API uç noktaları.
+   İlişkisel Yorum ve Etkileşim Katmanı: Veritabanı seviyesinde hisse senedi sembolleri (tickers) ile doğrudan ilişkilendirilmiş dinamik yorum mimarisi.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+# Teknik Kapsam ve Veri Yapısı 
+   Yerel Simüle Veri Seti (Local Mock Data):  Bu proje herhangi bir harici üçüncü parti API anahtarı bağımlılığı olmaksızın, tamamen yerel olarak simüle edilmiş finansal verilerle çalışmaktadır. Platform Tesla (TSLA), NVIDIA (NVDA), Apple (AAPL), Google (GOOGL) ve Microsoft (MSFT) olmak üzere 5 ana finansal enstrüman odağında yapılandırılmıştır. Sistemdeki `CompanyProfile` ve tüm finansal tablolar, SQL Server üzerinde el ile üretilmiş ve birbiriyle ilişkili yerel verilerle beslenmiştir.
 
-## React Compiler
+# Backend 
+  Framework: .NET 10.0 & ASP.NET Core Web API 
+  Veritabanı: Entity Framework Core & SQL Server
+  Güvenlik: ASP.NET Core Identity Altyapısı & JWT Authentication
+  Loglama: Serilog 
+  API Dökümantasyon: Scalar API UI entegrasyonu
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+# Frontend 
+   Framework: React (TypeScript) 
+   Derleme Aracı: Vite 
+   HTTP İstemcisi: Axios 
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+# 🐬 DOL-FIN 
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+DOL-FIN is a financial management platform focusing on relational data flows, dynamic portfolio management, and user interactions, built on a .NET Web API and React (TypeScript) architecture.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+# Features
+   Portfolio & Asset Management: User-based virtual wallet and asset tracking system.
+   Secure Authentication: Secure API endpoints protected by JWT (JSON Web Token) Bearer scheme, integrated with ASP.NET Core Identity infrastructure.
+   Relational Comment and Interaction Layer: Dynamic comment architecture directly linked with stock symbols (tickers) at the database level.
+
+# Technical Scope and Data Structure 
+   Local Mock Data Set: This project operates entirely with locally simulated financial data without any external third-party API key dependency. The platform is structured around 5 major financial instruments: Tesla (TSLA), NVIDIA (NVDA), Apple (AAPL), Google (GOOGL), and Microsoft (MSFT). The `CompanyProfile` and all financial tables in the system are populated with hand-crafted, interconnected local data on SQL Server.
+
+# Backend 
+  Framework: .NET 10.0 & ASP.NET Core Web API 
+  Database: Entity Framework Core & SQL Server
+  Security: ASP.NET Core Identity Infrastructure & JWT Authentication
+  Logging: Serilog 
+  API Documentation: Scalar API UI integration
+
+# Frontend 
+   Framework: React (TypeScript) 
+   Build Tool: Vite 
+   HTTP Client: Axios
