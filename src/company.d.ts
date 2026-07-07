@@ -1,6 +1,3 @@
-/* Financial Modeling Prep API'sinden dönen finansal verilerin (Bilanço, Gelir Tablosu, Şirket Profili vb.) 
-  anatomisini ve TypeScript tip şablonlarını (DTO) barındıran, projenin her yerinden erişilebilir global tanım dosyasıdır.*/
-
 export interface CompanySearch {
   currency: string
   exchangeShortName: string

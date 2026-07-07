@@ -1,8 +1,8 @@
-import React, { type SyntheticEvent } from 'react'
+import React, { type SyntheticEvent } from "react"
 import "./Card.css"
-import AddPortfolio from '../Portfolio/AddPortfolio/AddPortfolio';
-import { Link } from 'react-router-dom';
-import { companyLogos } from '../../Components/Table/TestData';
+import AddPortfolio from "../Portfolio/AddPortfolio/AddPortfolio"
+import { Link } from "react-router-dom"
+import { companyLogos } from "../../Components/Table/TestData"
 
 interface Props {
   id: string
@@ -10,15 +10,24 @@ interface Props {
   onPortfolioCreate: (e: SyntheticEvent) => void
 }
 
-const Card: React.FC<Props> = ({ id, searchResult, onPortfolioCreate }: Props) => {
-  const symbol = searchResult.symbol || searchResult.Symbol || "";
-  const name = searchResult.companyName || searchResult.CompanyName || searchResult.name || "";
-  const price = searchResult.purchase || searchResult.Purchase || 0;
-  const industry = searchResult.industry || searchResult.Industry || "Equity Market";
-  const marketCap = searchResult.marketCap || searchResult.MarketCap || 0;
+const Card: React.FC<Props> = ({
+  id,
+  searchResult,
+  onPortfolioCreate,
+}: Props) => {
+  const symbol = searchResult.symbol || searchResult.Symbol || ""
+  const name =
+    searchResult.companyName ||
+    searchResult.CompanyName ||
+    searchResult.name ||
+    ""
+  const price = searchResult.purchase || searchResult.Purchase || 0
+  const industry =
+    searchResult.industry || searchResult.Industry || "Equity Market"
+  const marketCap = searchResult.marketCap || searchResult.MarketCap || 0
 
-  const symbolUpper = symbol.toUpperCase();
-  const isPositive = price > 150;
+  const symbolUpper = symbol.toUpperCase()
+  const isPositive = price > 150
 
   return (
     <div
@@ -27,7 +36,6 @@ const Card: React.FC<Props> = ({ id, searchResult, onPortfolioCreate }: Props) =
       id={id}
     >
       <div className="flex items-start space-x-4 w-full md:w-auto">
-
         {companyLogos[symbolUpper] ? (
           <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-gray-800 border border-gray-700/50 p-2.5 shrink-0 mt-1 shadow-2xs">
             {companyLogos[symbolUpper]()}
@@ -94,10 +102,12 @@ const Card: React.FC<Props> = ({ id, searchResult, onPortfolioCreate }: Props) =
             ${price.toFixed(2)}
           </span>
           <span
-            className={`text-[10px] font-bold px-1.5 py-0.5 rounded text-center mt-0.5 min-w-[55px] ${isPositive ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'
+            className={`text-[10px] font-bold px-1.5 py-0.5 rounded text-center mt-0.5 min-w-[55px] ${isPositive
+                ? "bg-emerald-500/10 text-emerald-400"
+                : "bg-rose-500/10 text-rose-400"
               }`}
           >
-            {isPositive ? '+1.45%' : '-0.85%'}
+            {isPositive ? "+1.45%" : "-0.85%"}
           </span>
         </div>
 
