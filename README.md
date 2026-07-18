@@ -1,51 +1,46 @@
-# 🐬 DOL-FIN 
+# 🐬 DOL-FIN
 
 DOL-FIN, .NET Web API ve React (TypeScript) mimarisi üzerine kurulu; ilişkisel veri akışlarını, dinamik portföy yönetimini ve kullanıcı etkileşimlerini merkezine alan kurumsal odaklı bir finansal yönetim platformudur.
 
+**Canlı Demo:** [ensaraslannn.github.io/DOL-FIN](https://ensaraslannn.github.io/DOL-FIN/)
+
 ## Özellikler
-* **Portföy & Varlık Yönetimi:** Kullanıcı bazlı sanal cüzdan ve varlık takibi sistemi.
-* **Güvenli Kimlik Doğrulama:** ASP.NET Core Identity altyapısı entegre edilerek, JWT (JSON Web Token) Bearer şemasıyla korunan API uç noktaları.
-* **İlişkisel Yorum ve Etkileşim Katmanı:** Veritabanı seviyesinde hisse senedi sembolleri (tickers) ile doğrudan ilişkilendirilmiş dinamik yorum mimarisi.
 
-## Teknik Kapsam ve Veri Yapısı 
-* **Yerel Simüle Veri Seti (Local Mock Data):** Bu proje herhangi bir harici üçüncü parti API anahtarı bağımlılığı olmaksızın, tamamen yerel olarak simüle edilmiş finansal verilerle çalışmaktadır. Platform Tesla (TSLA), NVIDIA (NVDA), Apple (AAPL), Google (GOOGL) ve Microsoft (MSFT) olmak üzere 5 ana finansal enstrüman odağında yapılandırılmıştır. Sistemdeki `CompanyProfile` ve tüm finansal tablolar, SQL Server üzerinde el ile üretilmiş ve birbiriyle ilişkili yerel verilerle beslenmiştir.
+- **Portföy & Varlık Yönetimi:** Kullanıcı bazlı sanal cüzdan ve varlık takibi sistemi.
+- **Güvenli Kimlik Doğrulama:** ASP.NET Core Identity altyapısı ile JWT (JSON Web Token) korumalı API uç noktaları.
+- **İlişkisel Yorum Katmanı:** Hisse senedi sembolleriyle (ticker) doğrudan ilişkilendirilmiş dinamik yorum mimarisi.
+- **Yerel Simüle Veri:** Harici API bağımlılığı olmadan, TSLA, NVDA, AAPL, GOOGL ve MSFT için elle üretilmiş yerel finansal veri seti.
 
-## Backend 
-* **Framework:** .NET 10.0 & ASP.NET Core Web API 
-* **Veritabanı:** Entity Framework Core & SQL Server
-* **Güvenlik:** ASP.NET Core Identity Altyapısı & JWT Authentication
-* **Loglama:** Serilog 
-* **API Dökümantasyon:** Scalar API UI entegrasyonu
+## Teknoloji Yığını
 
-## Frontend 
-* **Framework:** React (TypeScript) 
-* **Derleme Aracı:** Vite 
-* **HTTP İstemcisi:** Axios 
+**Backend:** .NET 10.0 & ASP.NET Core Web API, Entity Framework Core & SQL Server, ASP.NET Core Identity & JWT, Serilog, Scalar API UI
 
----
+**Frontend:** React (TypeScript), Vite, Axios, Tailwind CSS
 
-## English Version
+## Kurulum
 
-# 🐬 DOL-FIN 
+```bash
+git clone https://github.com/EnsarAslannn/DOL-FIN.git
+cd DOL-FIN
+npm install
+```
 
-DOL-FIN is a financial management platform focusing on relational data flows, dynamic portfolio management, and user interactions, built on a .NET Web API and React (TypeScript) architecture.
+`.env` dosyasında API adresini tanımlayın:
 
-## Features
-* **Portfolio & Asset Management:** User-based virtual wallet and asset tracking system.
-* **Secure Authentication:** Secure API endpoints protected by JWT (JSON Web Token) Bearer scheme, integrated with ASP.NET Core Identity infrastructure.
-* **Relational Comment and Interaction Layer:** Dynamic comment architecture directly linked with stock symbols (tickers) at the database level.
+```env
+VITE_API_BASE_URL=https://localhost:5001/api
+```
 
-## Technical Scope and Data Structure 
-* **Local Mock Data Set:** This project operates entirely with locally simulated financial data without any external third-party API key dependency. The platform is structured around 5 major financial instruments: Tesla (TSLA), NVIDIA (NVDA), Apple (AAPL), Google (GOOGL), and Microsoft (MSFT). The `CompanyProfile` and all financial tables in the system are populated with hand-crafted, interconnected local data on SQL Server.
+Ardından çalıştırın:
 
-## Backend 
-* **Framework:** .NET 10.0 & ASP.NET Core Web API 
-* **Database:** Entity Framework Core & SQL Server
-* **Security:** ASP.NET Core Identity Infrastructure & JWT Authentication
-* **Logging:** Serilog 
-* **API Documentation:** Scalar API UI integration
+```bash
+npm run dev
+```
 
-## Frontend 
-* **Framework:** React (TypeScript) 
-* **Build Tool:** Vite 
-* **HTTP Client:** Axios
+## Lisans
+
+Bu proje şu anda bir lisans dosyası içermemektedir.
+
+## İletişim
+
+**Ensar Aslan** — [GitHub](https://github.com/EnsarAslannn)
