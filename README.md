@@ -48,7 +48,7 @@ Bu proje şu anda bir lisans dosyası içermemektedir.
 
 
 
-##🐬 DOL-FIN
+🐬 DOL-FIN
 
 DOL-FIN is a financial management platform focusing on relational data flows, dynamic portfolio management, and user interactions, built on a .NET Web API and React (TypeScript) architecture.
 
