@@ -30,7 +30,7 @@ const DesignPage = () => {
   return (
     <div className="p-6 space-y-4">
       <h1 className="text-3xl font-bold">FinShark Design Page</h1>
-      <h2 className="text-gray-600">
+      <h2 className="text-mist/70">
         This is FinShark's design page. This is where we will house various
         design aspects of the app.
       </h2>

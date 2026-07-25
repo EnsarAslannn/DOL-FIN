@@ -127,23 +127,23 @@ const IncomeStatement = () => {
 
   if (!allowedStocks.includes(ticker?.toUpperCase())) {
     return (
-      <div className="w-full bg-[#141a26] border border-gray-800/60 rounded-2xl p-8 shadow-2xl flex flex-col items-center justify-center text-center min-h-[350px] space-y-4 my-4 animate-fadeIn">
+      <div className="w-full bg-depth border border-ridge/40 rounded-2xl p-8 shadow-2xl flex flex-col items-center justify-center text-center min-h-[350px] space-y-4 my-4 animate-fadeIn">
         <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 text-2xl shadow-sm">
           📊
         </div>
         <div className="flex flex-col space-y-1">
-          <h3 className="text-lg font-black text-white tracking-tight">
+          <h3 className="text-lg font-bold text-foam tracking-tight">
             Financial Data Unavailable
           </h3>
-          <p className="text-xs text-gray-500 font-mono">
+          <p className="text-xs text-mist font-mono">
             SCOPE_LIMITATION_WARNING // LIVE_DEMO_RESTRICITON
           </p>
         </div>
-        <p className="text-sm text-gray-400 max-w-md leading-relaxed">
-          Financial data for <span className="font-bold font-mono text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">{ticker?.toUpperCase()}</span> is currently unavailable for this demo version.
+        <p className="text-sm text-mist max-w-md leading-relaxed">
+          Financial data for <span className="font-bold font-mono text-pulse bg-pulse/10 px-1.5 py-0.5 rounded border border-pulse/20">{ticker?.toUpperCase()}</span> is currently unavailable for this demo version.
         </p>
         <div className="pt-2">
-          <p className="text-[11px] text-gray-500 font-medium bg-[#0b0f19]/40 border border-gray-800/40 px-3 py-1.5 rounded-xl font-mono">
+          <p className="text-[11px] text-mist font-medium bg-abyss/40 border border-ridge/20 px-3 py-1.5 rounded-xl font-mono">
             Please audit premium corporate tiers: AAPL, MSFT, NVDA, TSLA, GOOGL
           </p>
         </div>
@@ -206,68 +206,68 @@ const IncomeStatement = () => {
     return (
       <div className="w-full flex flex-col space-y-4 mt-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-          <div className="bg-[#141a26] border border-gray-800/60 rounded-2xl p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
+          <div className="bg-depth border border-ridge/40 rounded-2xl p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
             <div className="flex flex-col space-y-1">
-              <span className="text-gray-500 uppercase font-bold text-[10px] tracking-widest font-mono">
+              <span className="text-mist uppercase font-bold text-[10px] tracking-widest font-mono">
                 Net Profit Margin
               </span>
 
-              <span className="font-black text-2xl text-white font-mono">
+              <span className="font-bold text-2xl text-foam font-mono">
                 {metrics.marginFormatted}
               </span>
             </div>
 
             <div className="w-full flex flex-col space-y-1.5 mt-3">
-              <div className="w-full h-1 bg-gray-800 rounded-full overflow-hidden">
+              <div className="w-full h-1 bg-depth-2 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-sky-500 rounded-full"
+                  className="h-full bg-pulse-dim rounded-full"
                   style={{
                     width: `${Math.min(Math.max(metrics.margin, 5), 100)}%`,
                   }}
                 ></div>
               </div>
 
-              <span className="text-[10px] text-gray-400 font-medium font-mono">
+              <span className="text-[10px] text-mist font-medium font-mono">
                 Net conversion efficiency of capital deployment
               </span>
             </div>
           </div>
 
-          <div className="bg-[#141a26] border border-gray-800/60 rounded-2xl p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
+          <div className="bg-depth border border-ridge/40 rounded-2xl p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
             <div className="flex flex-col space-y-1">
-              <span className="text-gray-500 uppercase font-bold text-[10px] tracking-widest font-mono">
+              <span className="text-mist uppercase font-bold text-[10px] tracking-widest font-mono">
                 Revenue Growth (YoY)
               </span>
 
               <span
-                className={`font-black text-2xl font-mono ${metrics.growth >= 0 ? "text-emerald-400" : "text-rose-400"}`}
+                className={`font-bold text-2xl font-mono ${metrics.growth >= 0 ? "text-gain" : "text-loss"}`}
               >
                 {metrics.growthFormatted}
               </span>
             </div>
 
             <div className="w-full flex flex-col space-y-1.5 mt-3">
-              <div className="w-full h-1 bg-gray-800 rounded-full overflow-hidden">
+              <div className="w-full h-1 bg-depth-2 rounded-full overflow-hidden">
                 <div
-                  className={`h-full rounded-full ${metrics.growth >= 0 ? "bg-emerald-500" : "bg-rose-500"}`}
+                  className={`h-full rounded-full ${metrics.growth >= 0 ? "bg-gain" : "bg-loss"}`}
                   style={{
                     width: `${Math.min(Math.max(Math.abs(metrics.growth) * 3, 10), 100)}%`,
                   }}
                 ></div>
               </div>
 
-              <span className="text-[10px] text-gray-400 font-medium font-mono">
+              <span className="text-[10px] text-mist font-medium font-mono">
                 Top-line macroeconomic scalability expansion metric
               </span>
             </div>
           </div>
         </div>
 
-        <div className="w-full bg-[#141a26] border border-gray-800/60 rounded-2xl p-5 shadow-xl flex flex-col space-y-3 text-left">
-          <div className="flex items-center justify-between border-b border-gray-800/40 pb-2.5">
-            <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider font-mono flex items-center gap-2">
+        <div className="w-full bg-depth border border-ridge/40 rounded-2xl p-5 shadow-xl flex flex-col space-y-3 text-left">
+          <div className="flex items-center justify-between border-b border-ridge/20 pb-2.5">
+            <h4 className="text-xs font-bold text-mist uppercase tracking-wider font-mono flex items-center gap-2">
               <svg
-                className="w-4 h-4 text-emerald-400"
+                className="w-4 h-4 text-pulse"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2.5"
@@ -283,10 +283,10 @@ const IncomeStatement = () => {
             </h4>
 
             <span
-              className={`text-[10px] font-black uppercase px-2 py-0.5 rounded font-mono ${metrics.status === "STRONG"
-                ? "bg-emerald-500/10 text-emerald-400"
+              className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded font-mono ${metrics.status === "STRONG"
+                ? "bg-gain/10 text-gain"
                 : metrics.status === "WEAK"
-                  ? "bg-rose-500/10 text-rose-400"
+                  ? "bg-loss/10 text-loss"
                   : "bg-amber-500/10 text-amber-400"
                 }`}
             >
@@ -294,7 +294,7 @@ const IncomeStatement = () => {
             </span>
           </div>
 
-          <p className="text-sm text-gray-300 leading-relaxed font-sans font-normal">
+          <p className="text-sm text-foam/85 leading-relaxed font-sans font-normal">
             {metrics.summaryText}
           </p>
         </div>
@@ -306,30 +306,30 @@ const IncomeStatement = () => {
     <>
       {incomeStatement ? (
         <div className="w-full flex flex-col">
-          <div className="block w-full bg-[#141a26] shadow-xl rounded-2xl p-6 mb-6 border border-gray-800/60 flex flex-col space-y-3 text-left">
-            <h3 className="text-base font-bold text-emerald-400 uppercase tracking-wider font-mono">
+          <div className="block w-full bg-depth shadow-xl rounded-2xl p-6 mb-6 border border-ridge/40 flex flex-col space-y-3 text-left">
+            <h3 className="text-base font-bold text-pulse uppercase tracking-wider font-mono">
               Understanding the Income Statement
             </h3>
 
-            <p className="text-gray-200 text-base font-normal leading-relaxed antialiased">
+            <p className="text-foam text-base font-normal leading-relaxed antialiased">
               An{" "}
-              <strong className="text-white font-semibold">
+              <strong className="text-foam font-semibold">
                 Income Statement
               </strong>{" "}
               (Profit and Loss Statement) maps out a corporate institution's
               core financial velocity over a sequential reporting period. It
               tracks how total{" "}
-              <strong className="text-emerald-400">Revenue (Top-Line)</strong>{" "}
+              <strong className="text-pulse">Revenue (Top-Line)</strong>{" "}
               transitions down into operational expenses, tax components, and
               finally yields the net consolidated{" "}
-              <strong className="text-sky-400">
+              <strong className="text-pulse-dim">
                 Profit or Loss (Bottom-Line)
               </strong>
               .
             </p>
 
-            <p className="text-gray-300 text-sm font-normal leading-relaxed antialiased pt-1">
-              <strong className="text-gray-100 block mb-1 font-mono text-xs uppercase tracking-wide">
+            <p className="text-foam/85 text-sm font-normal leading-relaxed antialiased pt-1">
+              <strong className="text-foam block mb-1 font-mono text-xs uppercase tracking-wide">
                 Why is it Critical?
               </strong>
               While the Balance Sheet records asset and liability weight levels,

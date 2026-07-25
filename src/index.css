@@ -1,18 +1,33 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins&family=Rubik&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap");
 
 @import "tailwindcss";
 
+/*
+  DOL-FIN "sonar" design tokens.
+  The brand reads as an instrument for sounding the market's depths, not a
+  generic SaaS dark theme: a near-black abyss, a bioluminescent accent, and
+  ledger-style mono figures for anything numeric.
+*/
 @theme {
   --screen-sm: 480px;
   --screen-md: 768px;
   --screen-lg: 1020px;
   --screen-xl: 1440px;
 
-  --color-lightBlue: hsl(215.02, 98.39%, 51.18%);
-  --color-darkBlue: hsl(213.86, 58.82%, 46.67%);
-  --color-lightGreen: hsl(156.62, 73.33%, 58.82%);
+  --color-abyss: #071316;
+  --color-depth: #0e2126;
+  --color-depth-2: #14313a;
+  --color-ridge: #1b4a47;
+  --color-pulse: #45e8d6;
+  --color-pulse-dim: #2b9c90;
+  --color-gain: #5fe3a6;
+  --color-loss: #ff7a66;
+  --color-foam: #eaf6f4;
+  --color-mist: #82a6a3;
 
-  --font-sans: "Poppins", "sans-serif";
+  --font-sans: "IBM Plex Sans", sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
 
   --spacing-180: 32rem;
 }

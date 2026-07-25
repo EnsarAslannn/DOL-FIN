@@ -12,18 +12,18 @@ const tableConfig = [
 
 const DesignGuide = () => {
   return (
-    <>
-      <h1>
-        Design guide- This is the design guide for Fin Shark. These are reuable
-        components of the app with brief instructions on how to use them.
+    <div className="w-full min-h-screen bg-abyss text-foam font-sans p-8 space-y-6 text-left">
+      <h1 className="text-xl font-bold font-display">
+        Design guide — reusable components of DOL-FIN with brief instructions
+        on how to use them.
       </h1>
       <RatioList data={testIncomeStatementData} config={tableConfig} />
       <Table data={testIncomeStatementData} config={tableConfig} />
-      <h3>
-        Table - Table takes in a configuration object and company data as
+      <h3 className="text-sm text-mist">
+        Table — Table takes in a configuration object and company data as
         params. Use the config to style your table.
       </h3>
-    </>
+    </div>
   )
 }
 

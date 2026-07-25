@@ -1,37 +1,3 @@
-.card {
-  width: 350px;
-  height: 450px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 50px;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
-    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-}
-
-.card img {
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  margin: 5px;
-}
-
-.card .details {
-  margin: 10px;
-}
-
-.card .details h2 {
-  font-weight: 600;
-}
-
-.card .details p {
-  text-transform: uppercase;
-  font-weight: 300;
-}
-
 @keyframes marquee {
   0% { transform: translateX(0%); }
   100% { transform: translateX(-50%); }
@@ -45,4 +11,38 @@
 
 .animate-marquee:hover {
   animation-play-state: paused;
+}
+
+/*
+  Signature element: a sonar ping. DOL-FIN "sounds" the market the way a
+  depth finder sounds the sea floor - concentric rings pulsing outward from
+  a fixed point. Reused sparingly: the hero readout, the loading state, and
+  a single-shot hover ping on a found result.
+*/
+@keyframes sonar-ping {
+  0% { transform: scale(0.35); opacity: 0.55; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+.sonar-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 1px solid var(--color-pulse);
+  opacity: 0;
+  animation: sonar-ping 3s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.sonar-ring[data-delay="1"] { animation-delay: 1s; }
+.sonar-ring[data-delay="2"] { animation-delay: 2s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+
+  .sonar-ring {
+    animation: none;
+    opacity: 0.18;
+  }
 }

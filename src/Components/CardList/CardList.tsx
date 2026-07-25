@@ -24,7 +24,7 @@ const CardList: React.FC<Props> = ({ searchResults, onPortfolioCreate }: Props) 
         })
       ) : (
         <div>
-          <p className="mb-3 mt-3 text-xl font-semibold text-center md:text-xl text-gray-500">
+          <p className="mb-3 mt-3 text-xl font-semibold text-center md:text-xl text-mist">
             No results found!
           </p>
         </div>

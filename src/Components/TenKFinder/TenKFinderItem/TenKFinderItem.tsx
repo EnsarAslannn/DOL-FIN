@@ -15,7 +15,7 @@ const TenKFinderItem = ({ tenK }: Props) => {
       href={tenK.finalLink}
       target="_blank"
       rel="noopener noreferrer"
-      className="px-3.5 py-1.5 text-xs font-bold text-sky-400 bg-[#0b0f19]/80 border border-sky-500/30 rounded-lg shadow-sm transition-all duration-150 hover:bg-sky-500/10 hover:border-sky-400 hover:shadow-[0_0_10px_rgba(56,189,248,0.2)] font-mono flex items-center gap-1.5 cursor-pointer"
+      className="px-3.5 py-1.5 text-xs font-bold text-pulse-dim bg-abyss/80 border border-pulse-dim/30 rounded-lg shadow-sm transition-all duration-150 hover:bg-pulse-dim/10 hover:border-pulse-dim hover:shadow-[0_0_10px_rgba(43,156,144,0.2)] font-mono flex items-center gap-1.5 cursor-pointer"
     >
       <svg
         className="w-3.5 h-3.5"

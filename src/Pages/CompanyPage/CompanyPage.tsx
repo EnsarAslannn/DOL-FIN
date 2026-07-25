@@ -43,26 +43,26 @@ const CompanyPage = () => {
 
   if (!allowedStocks.includes(ticker?.toUpperCase() || "")) {
     return (
-      <div className="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden bg-[#0b0f19] text-gray-100 min-h-screen">
+      <div className="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden bg-abyss text-foam min-h-screen">
         <Sidebar />
         <CompanyDashboard>
-          <div className="w-full bg-[#141a26] border border-gray-800/60 rounded-2xl p-8 shadow-2xl flex flex-col items-center justify-center text-center min-h-[450px] space-y-4 my-4 animate-fadeIn">
+          <div className="w-full bg-depth border border-ridge/40 rounded-2xl p-8 shadow-2xl flex flex-col items-center justify-center text-center min-h-[450px] space-y-4 my-4 animate-fadeIn">
             <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 text-2xl shadow-sm">
               📊
             </div>
             <div className="flex flex-col space-y-1">
-              <h3 className="text-lg font-black text-white tracking-tight">
+              <h3 className="text-lg font-bold text-foam tracking-tight">
                 Financial Data Unavailable
               </h3>
-              <p className="text-xs text-gray-500 font-mono">
+              <p className="text-xs text-mist font-mono">
                 SCOPE_LIMITATION_WARNING // LIVE_DEMO_RESTRICITON
               </p>
             </div>
-            <p className="text-sm text-gray-400 max-w-md leading-relaxed">
-              Financial data for <span className="font-bold font-mono text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">{ticker?.toUpperCase()}</span> is currently unavailable for this demo version.
+            <p className="text-sm text-mist max-w-md leading-relaxed">
+              Financial data for <span className="font-bold font-mono text-pulse bg-pulse/10 px-1.5 py-0.5 rounded border border-pulse/20">{ticker?.toUpperCase()}</span> is currently unavailable for this demo version.
             </p>
             <div className="pt-2">
-              <p className="text-[11px] text-gray-500 font-medium bg-[#0b0f19]/40 border border-gray-800/40 px-3 py-1.5 rounded-xl font-mono">
+              <p className="text-[11px] text-mist font-medium bg-abyss/40 border border-ridge/20 px-3 py-1.5 rounded-xl font-mono">
                 Please audit premium corporate tiers: AAPL, MSFT, NVDA, TSLA, GOOGL
               </p>
             </div>
@@ -83,7 +83,7 @@ const CompanyPage = () => {
   return (
     <>
       {company ? (
-        <div className="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden bg-[#0b0f19] text-gray-100 min-h-screen">
+        <div className="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden bg-abyss text-foam min-h-screen">
           <Sidebar />
 
           <CompanyDashboard>
@@ -101,7 +101,7 @@ const CompanyPage = () => {
               <Outlet context={ticker} />
             </div>
 
-            <div className="w-full mt-6 border-t border-gray-800/60 pt-6">
+            <div className="w-full mt-6 border-t border-ridge/40 pt-6">
               {localDbId !== null && (
                 <StockComment
                   stockSymbol={ticker!}
@@ -112,7 +112,7 @@ const CompanyPage = () => {
           </CompanyDashboard>
         </div>
       ) : (
-        <div className="w-full min-h-screen bg-[#0b0f19] flex items-center justify-center">
+        <div className="w-full min-h-screen bg-abyss flex items-center justify-center">
           <Spinners />
         </div>
       )}
