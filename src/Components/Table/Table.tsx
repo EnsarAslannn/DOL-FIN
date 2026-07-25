@@ -10,13 +10,13 @@ const Table = ({ config, data }: Props) => {
         return (
             <tr
                 key={rowKey}
-                className="hover:bg-[#1c2331] transition-colors duration-100"
+                className="hover:bg-depth-2/50 transition-colors duration-100"
             >
                 {config.map((val: any, idx: number) => {
                     return (
                         <td
                             key={`cell-${rowIndex}-${idx}`}
-                            className="p-4 text-xs font-semibold text-gray-200 font-mono whitespace-nowrap border-b border-gray-800/30"
+                            className="p-4 text-xs font-semibold text-foam font-mono whitespace-nowrap border-b border-ridge/20"
                         >
                             {val.render(company)}
                         </td>
@@ -29,7 +29,7 @@ const Table = ({ config, data }: Props) => {
     const renderedHeaders = config.map((configItem: any, index: number) => {
         return (
             <th
-                className="p-4 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest border-b border-gray-800/60"
+                className="p-4 text-left text-[10px] font-bold text-mist uppercase tracking-widest border-b border-ridge/50 font-mono"
                 key={`header-${index}`}
             >
                 {configItem.label}
@@ -38,13 +38,13 @@ const Table = ({ config, data }: Props) => {
     })
 
     return (
-        <div className="bg-[#141a26] shadow-xl rounded-2xl p-4 sm:p-6 border border-gray-800/60 overflow-hidden">
+        <div className="bg-depth shadow-xl rounded-2xl p-4 sm:p-6 border border-ridge/40 overflow-hidden">
             <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-800/40 text-left font-sans">
-                    <thead className="bg-[#111622]">
+                <table className="min-w-full divide-y divide-ridge/20 text-left font-sans">
+                    <thead className="bg-abyss/40">
                         <tr>{renderedHeaders}</tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-800/20">{renderedRows}</tbody>
+                    <tbody className="divide-y divide-ridge/10">{renderedRows}</tbody>
                 </table>
             </div>
         </div>

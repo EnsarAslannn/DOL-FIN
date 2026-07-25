@@ -38,7 +38,7 @@ const TenKFinder = ({ ticker }: Props) => {
           )
         })
       ) : (
-        <span className="text-xs font-semibold text-gray-500 font-mono">
+        <span className="text-xs font-semibold text-mist font-mono">
           No reports found
         </span>
       )}

@@ -52,7 +52,7 @@ const StockComment = ({ stockSymbol, stockId }: Props) => {
   }
 
   return (
-    <div className="flex flex-col space-y-6 p-5 bg-[#141a26] rounded-2xl border border-gray-800/60 shadow-xl w-full">
+    <div className="flex flex-col space-y-6 p-5 bg-depth rounded-2xl border border-ridge/40 shadow-xl w-full">
       <div className="flex flex-col space-y-4 max-h-[400px] overflow-y-auto pr-2">
         {loading ? (
           <Spinners />
@@ -61,7 +61,7 @@ const StockComment = ({ stockSymbol, stockId }: Props) => {
         )}
       </div>
 
-      <div className="border-t border-gray-800/60 pt-2">
+      <div className="border-t border-ridge/40 pt-2">
         <StockCommentForm handleComment={handleComment} />
       </div>
     </div>

@@ -72,23 +72,23 @@ const CashFlowStatement = () => {
 
   if (!allowedStocks.includes(ticker?.toUpperCase())) {
     return (
-      <div className="w-full bg-[#141a26] border border-gray-800/60 rounded-2xl p-8 shadow-2xl flex flex-col items-center justify-center text-center min-h-[350px] space-y-4 my-4 animate-fadeIn">
+      <div className="w-full bg-depth border border-ridge/40 rounded-2xl p-8 shadow-2xl flex flex-col items-center justify-center text-center min-h-[350px] space-y-4 my-4 animate-fadeIn">
         <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 text-2xl shadow-sm">
           📊
         </div>
         <div className="flex flex-col space-y-1">
-          <h3 className="text-lg font-black text-white tracking-tight">
+          <h3 className="text-lg font-bold text-foam tracking-tight">
             Financial Data Unavailable
           </h3>
-          <p className="text-xs text-gray-500 font-mono">
+          <p className="text-xs text-mist font-mono">
             SCOPE_LIMITATION_WARNING // LIVE_DEMO_RESTRICITON
           </p>
         </div>
-        <p className="text-sm text-gray-400 max-w-md leading-relaxed">
-          Financial data for <span className="font-bold font-mono text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">{ticker?.toUpperCase()}</span> is currently unavailable for this demo version.
+        <p className="text-sm text-mist max-w-md leading-relaxed">
+          Financial data for <span className="font-bold font-mono text-pulse bg-pulse/10 px-1.5 py-0.5 rounded border border-pulse/20">{ticker?.toUpperCase()}</span> is currently unavailable for this demo version.
         </p>
         <div className="pt-2">
-          <p className="text-[11px] text-gray-500 font-medium bg-[#0b0f19]/40 border border-gray-800/40 px-3 py-1.5 rounded-xl font-mono">
+          <p className="text-[11px] text-mist font-medium bg-abyss/40 border border-ridge/20 px-3 py-1.5 rounded-xl font-mono">
             Please audit premium corporate tiers: AAPL, MSFT, NVDA, TSLA, GOOGL
           </p>
         </div>
@@ -130,47 +130,47 @@ const CashFlowStatement = () => {
     return (
       <div className="w-full flex flex-col space-y-4 mt-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-          <div className="bg-[#141a26] border border-gray-800/60 rounded-2xl p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
+          <div className="bg-depth border border-ridge/40 rounded-2xl p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
             <div className="flex flex-col space-y-1">
-              <span className="text-gray-500 uppercase font-bold text-[10px] tracking-widest font-mono">Cash Conversion Cycle</span>
-              <span className="font-black text-2xl text-white font-mono">{metrics.cycleFormatted}</span>
+              <span className="text-mist uppercase font-bold text-[10px] tracking-widest font-mono">Cash Conversion Cycle</span>
+              <span className="font-bold text-2xl text-foam font-mono">{metrics.cycleFormatted}</span>
             </div>
             <div className="w-full flex flex-col space-y-1.5 mt-3">
-              <div className="w-full h-1 bg-gray-800 rounded-full overflow-hidden">
+              <div className="w-full h-1 bg-depth-2 rounded-full overflow-hidden">
                 <div className="h-full bg-amber-500 rounded-full" style={{ width: `${Math.min(Math.max((metrics.cycle / 90) * 100, 15), 100)}%` }}></div>
               </div>
-              <span className="text-[10px] text-gray-400 font-medium font-mono">Days required to convert resource investments back into cash lines</span>
+              <span className="text-[10px] text-mist font-medium font-mono">Days required to convert resource investments back into cash lines</span>
             </div>
           </div>
 
-          <div className="bg-[#141a26] border border-gray-800/60 rounded-2xl p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
+          <div className="bg-depth border border-ridge/40 rounded-2xl p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
             <div className="flex flex-col space-y-1">
-              <span className="text-gray-500 uppercase font-bold text-[10px] tracking-widest font-mono">Free Cash Flow Yield</span>
-              <span className="font-black text-2xl text-white font-mono">{metrics.yieldFormatted}</span>
+              <span className="text-mist uppercase font-bold text-[10px] tracking-widest font-mono">Free Cash Flow Yield</span>
+              <span className="font-bold text-2xl text-foam font-mono">{metrics.yieldFormatted}</span>
             </div>
             <div className="w-full flex flex-col space-y-1.5 mt-3">
-              <div className="w-full h-1 bg-gray-800 rounded-full overflow-hidden">
-                <div className="h-full bg-sky-500 rounded-full" style={{ width: `${Math.min(Math.max(metrics.yieldValue, 5), 100)}%` }}></div>
+              <div className="w-full h-1 bg-depth-2 rounded-full overflow-hidden">
+                <div className="h-full bg-pulse-dim rounded-full" style={{ width: `${Math.min(Math.max(metrics.yieldValue, 5), 100)}%` }}></div>
               </div>
-              <span className="text-[10px] text-gray-400 font-medium font-mono">Operating cash flow successfully converted into free capital assets</span>
+              <span className="text-[10px] text-mist font-medium font-mono">Operating cash flow successfully converted into free capital assets</span>
             </div>
           </div>
         </div>
 
-        <div className="w-full bg-[#141a26] border border-gray-800/60 rounded-2xl p-5 shadow-xl flex flex-col space-y-3 text-left">
-          <div className="flex items-center justify-between border-b border-gray-800/40 pb-2.5">
-            <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider font-mono flex items-center gap-2">
+        <div className="w-full bg-depth border border-ridge/40 rounded-2xl p-5 shadow-xl flex flex-col space-y-3 text-left">
+          <div className="flex items-center justify-between border-b border-ridge/20 pb-2.5">
+            <h4 className="text-xs font-bold text-mist uppercase tracking-wider font-mono flex items-center gap-2">
               <svg className="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               Cashflow Liquidity Performance Intelligence
             </h4>
-            <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded font-mono ${metrics.status === "LIQUID" ? "bg-emerald-500/10 text-emerald-400" : "bg-amber-500/10 text-amber-400"
+            <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded font-mono ${metrics.status === "LIQUID" ? "bg-gain/10 text-gain" : "bg-amber-500/10 text-amber-400"
               }`}>
               {metrics.status} SYSTEM
             </span>
           </div>
-          <p className="text-sm text-gray-300 leading-relaxed font-sans font-normal">
+          <p className="text-sm text-foam/85 leading-relaxed font-sans font-normal">
             {metrics.summaryText}
           </p>
         </div>
@@ -183,16 +183,16 @@ const CashFlowStatement = () => {
       {cashflowData ? (
         <div className="w-full flex flex-col">
 
-          <div className="block w-full bg-[#141a26] shadow-xl rounded-2xl p-6 mb-6 border border-gray-800/60 flex flex-col space-y-3 text-left">
-            <h3 className="text-base font-bold text-emerald-400 uppercase tracking-wider font-mono">
+          <div className="block w-full bg-depth shadow-xl rounded-2xl p-6 mb-6 border border-ridge/40 flex flex-col space-y-3 text-left">
+            <h3 className="text-base font-bold text-pulse uppercase tracking-wider font-mono">
               Understanding the Cashflow Statement
             </h3>
-            <p className="text-gray-200 text-base font-normal leading-relaxed antialiased">
-              A <strong className="text-white font-semibold">Cashflow Statement</strong> tracks the actual physical movement of liquid capital into and out of an enterprise. It isolates accounting constructs by dividing treasury adjustments into three key structural pillars: <strong className="text-emerald-400">Operating</strong> (core business cash flow), <strong className="text-sky-400">Investing</strong> (asset purchases and CapEX), and <strong className="text-purple-400">Financing</strong> (debt and equity capital actions).
+            <p className="text-foam text-base font-normal leading-relaxed antialiased">
+              A <strong className="text-foam font-semibold">Cashflow Statement</strong> tracks the actual physical movement of liquid capital into and out of an enterprise. It isolates accounting constructs by dividing treasury adjustments into three key structural pillars: <strong className="text-pulse">Operating</strong> (core business cash flow), <strong className="text-pulse-dim">Investing</strong> (asset purchases and CapEX), and <strong className="text-purple-400">Financing</strong> (debt and equity capital actions).
             </p>
-            <p className="text-gray-300 text-sm font-normal leading-relaxed antialiased pt-1">
-              <strong className="text-gray-100 block mb-1 font-mono text-xs uppercase tracking-wide">Why is it Critical?</strong>
-              While the Income Statement can report paper net profits via accrued earnings, the Cashflow Statement proves whether the firm possesses genuine sovereign liquidity to satisfy invoice commitments. It yields the definitive <strong className="text-white">Free Cash Flow (FCF)</strong> metric, showcasing the actual capital left to award dividends or buy back shares.
+            <p className="text-foam/85 text-sm font-normal leading-relaxed antialiased pt-1">
+              <strong className="text-foam block mb-1 font-mono text-xs uppercase tracking-wide">Why is it Critical?</strong>
+              While the Income Statement can report paper net profits via accrued earnings, the Cashflow Statement proves whether the firm possesses genuine sovereign liquidity to satisfy invoice commitments. It yields the definitive <strong className="text-foam">Free Cash Flow (FCF)</strong> metric, showcasing the actual capital left to award dividends or buy back shares.
             </p>
           </div>
 

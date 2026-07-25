@@ -14,12 +14,21 @@ export default {
     },
     extend: {
       colors: {
-        lightBlue: "hsl(215.02, 98.39%, 51.18%)",
-        darkBlue: "hsl(213.86, 58.82%, 46.67%)",
-        lightGreen: "hsl(156.62, 73.33%, 58.82%)",
+        abyss: "#071316",
+        depth: "#0e2126",
+        "depth-2": "#14313a",
+        ridge: "#1b4a47",
+        pulse: "#45e8d6",
+        "pulse-dim": "#2b9c90",
+        gain: "#5fe3a6",
+        loss: "#ff7a66",
+        foam: "#eaf6f4",
+        mist: "#82a6a3",
       },
       fontFamily: {
-        sans: ["Poppins", "sans-serif"],
+        sans: ["IBM Plex Sans", "sans-serif"],
+        display: ["Space Grotesk", "sans-serif"],
+        mono: ["IBM Plex Mono", "monospace"],
       },
       spacing: {
         180: "32rem",

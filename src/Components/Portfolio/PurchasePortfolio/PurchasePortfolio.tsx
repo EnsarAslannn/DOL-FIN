@@ -62,45 +62,45 @@ const PurchasePortfolio: React.FC<PurchasePortfolioProps> = ({
     }
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm">
-            <div className="w-full max-w-md p-6 mx-4 rounded-2xl bg-slate-900 border border-slate-800 shadow-2xl text-slate-100 transform transition-all">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-abyss/70 backdrop-blur-sm">
+            <div className="w-full max-w-md p-6 mx-4 rounded-2xl bg-depth border border-ridge/50 shadow-2xl text-foam transform transition-all font-sans">
                 <div className="flex justify-between items-center mb-6">
-                    <h3 className="text-xl font-bold tracking-wide">
-                        {mode === "BUY" ? "Buy" : "Sell"} <span className={mode === "BUY" ? "text-lightGreen" : "text-rose-400"}>{stockSymbol}</span>
+                    <h3 className="text-xl font-bold tracking-wide font-display">
+                        {mode === "BUY" ? "Buy" : "Sell"} <span className={mode === "BUY" ? "text-gain" : "text-loss"}>{stockSymbol}</span>
                     </h3>
                     <button
                         onClick={onClose}
-                        className="text-slate-400 hover:text-slate-200 transition-colors text-lg font-semibold"
+                        className="text-mist hover:text-foam transition-colors text-lg font-semibold"
                     >
                         ✕
                     </button>
                 </div>
 
-                <div className="space-y-2 mb-6 p-3 rounded-lg bg-slate-950 border border-slate-800 text-sm">
+                <div className="space-y-2 mb-6 p-3 rounded-lg bg-abyss border border-ridge/40 text-sm">
                     <div className="flex justify-between">
-                        <span className="text-slate-400">Wallet Balance:</span>
-                        <span className="font-semibold text-slate-200">
+                        <span className="text-mist">Wallet Balance:</span>
+                        <span className="font-semibold text-foam font-mono">
                             ${walletBalance.toFixed(2)}
                         </span>
                     </div>
                     {mode === "SELL" && (
                         <div className="flex justify-between">
-                            <span className="text-slate-400">Available Shares:</span>
-                            <span className="font-semibold text-rose-400 font-mono">
+                            <span className="text-mist">Available Shares:</span>
+                            <span className="font-semibold text-loss font-mono">
                                 {maxOwnedQuantity} Units
                             </span>
                         </div>
                     )}
                     <div className="flex justify-between">
-                        <span className="text-slate-400">Market Price:</span>
-                        <span className="font-semibold text-slate-200">
+                        <span className="text-mist">Market Price:</span>
+                        <span className="font-semibold text-foam font-mono">
                             ${stockPrice.toFixed(2)}
                         </span>
                     </div>
                 </div>
 
                 <div className="mb-6">
-                    <label className="block text-sm font-medium text-slate-400 mb-2">
+                    <label className="block text-sm font-medium text-mist mb-2">
                         Quantity (Shares)
                     </label>
                     <input
@@ -111,30 +111,30 @@ const PurchasePortfolio: React.FC<PurchasePortfolioProps> = ({
                         onChange={(e) =>
                             setQuantity(Math.max(1, parseInt(e.target.value) || 0))
                         }
-                        className="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl focus:outline-none focus:border-lightGreen text-slate-100 font-semibold text-lg transition-colors"
+                        className="w-full px-4 py-3 bg-abyss border border-ridge/50 rounded-xl focus:outline-none focus:border-pulse text-foam font-semibold text-lg font-mono transition-colors"
                     />
                 </div>
 
-                <div className="flex justify-between items-center mb-6 pt-4 border-t border-slate-800">
-                    <span className="text-sm font-medium text-slate-400">
+                <div className="flex justify-between items-center mb-6 pt-4 border-t border-ridge/40">
+                    <span className="text-sm font-medium text-mist">
                         {mode === "BUY" ? "Total Cost:" : "Total Revenue:"}
                     </span>
                     <span
-                        className={`text-xl font-extrabold ${mode === "BUY" ? (isInsufficientFunds ? "text-red-500" : "text-lightGreen") : (isInsufficientShares ? "text-red-500" : "text-rose-400")}`}
+                        className={`text-xl font-bold font-mono ${mode === "BUY" ? (isInsufficientFunds ? "text-loss" : "text-gain") : (isInsufficientShares ? "text-loss" : "text-loss")}`}
                     >
                         ${totalValue.toFixed(2)}
                     </span>
                 </div>
 
                 {isInsufficientFunds && (
-                    <div className="flex flex-col items-center justify-center bg-red-950/20 border border-red-900/30 rounded-xl p-3 mb-4 space-y-2">
-                        <p className="text-red-500 text-xs font-medium text-center">
+                    <div className="flex flex-col items-center justify-center bg-loss/10 border border-loss/20 rounded-xl p-3 mb-4 space-y-2">
+                        <p className="text-loss text-xs font-medium text-center">
                             ⚠️ Insufficient funds to complete this transaction.
                         </p>
                         <button
                             onClick={handleQuickDeposit}
                             disabled={isDepositing}
-                            className="text-xs text-emerald-400 hover:text-emerald-300 font-bold underline transition-colors"
+                            className="text-xs text-pulse hover:text-pulse-dim font-bold underline transition-colors"
                         >
                             {isDepositing ? "Depositing..." : "Instant Deposit $5,000"}
                         </button>
@@ -142,8 +142,8 @@ const PurchasePortfolio: React.FC<PurchasePortfolioProps> = ({
                 )}
 
                 {isInsufficientShares && (
-                    <div className="bg-red-950/20 border border-red-900/30 rounded-xl p-3 mb-4">
-                        <p className="text-red-500 text-xs font-medium text-center">
+                    <div className="bg-loss/10 border border-loss/20 rounded-xl p-3 mb-4">
+                        <p className="text-loss text-xs font-medium text-center">
                             ⚠️ You cannot sell more shares than you currently own.
                         </p>
                     </div>
@@ -152,7 +152,7 @@ const PurchasePortfolio: React.FC<PurchasePortfolioProps> = ({
                 <div className="flex space-x-3">
                     <button
                         onClick={onClose}
-                        className="flex-1 py-3 px-4 bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-slate-300 rounded-xl font-medium transition-colors"
+                        className="flex-1 py-3 px-4 bg-depth-2 hover:bg-ridge/40 active:bg-ridge/60 text-mist rounded-xl font-medium transition-colors"
                     >
                         Cancel
                     </button>
@@ -160,10 +160,10 @@ const PurchasePortfolio: React.FC<PurchasePortfolioProps> = ({
                         onClick={handleConfirm}
                         disabled={quantity <= 0 || isInsufficientFunds || isInsufficientShares}
                         className={`flex-1 py-3 px-4 rounded-xl font-semibold transition-all ${quantity <= 0 || isInsufficientFunds || isInsufficientShares
-                                ? "bg-slate-700 text-slate-500 cursor-not-allowed"
+                                ? "bg-depth-2 text-mist/50 cursor-not-allowed"
                                 : mode === "BUY"
-                                    ? "bg-lightGreen hover:bg-green-600 text-slate-950 shadow-lg shadow-green-900/20"
-                                    : "bg-rose-500 hover:bg-rose-600 text-white shadow-lg shadow-rose-900/20"
+                                    ? "bg-gain hover:bg-gain/85 text-abyss shadow-lg shadow-gain/20"
+                                    : "bg-loss hover:bg-loss/85 text-abyss shadow-lg shadow-loss/20"
                             }`}
                     >
                         {mode === "BUY" ? "Confirm Buy" : "Confirm Sell"}
