@@ -34,4 +34,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="api.Tests/**/*.cs" />
+    <Content Remove="api.Tests/**/*" />
+    <None Remove="api.Tests/**/*" />
+  </ItemGroup>
 </Project>
