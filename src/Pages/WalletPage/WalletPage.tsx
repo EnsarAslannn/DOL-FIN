@@ -32,10 +32,13 @@ const WalletPage = () => {
     }
 
     useEffect(() => {
-        if (user) {
+        if (!user) return
+
+        const loadWalletData = async () => {
             getWalletPortfolio()
-            refreshWalletBalance()
+            await refreshWalletBalance()
         }
+        loadWalletData()
     }, [user])
 
     const handleDepositSubmit = (e: React.SyntheticEvent) => {
@@ -71,7 +74,7 @@ const WalletPage = () => {
         setSelectedSellStock({
             symbol: item.symbol,
             price: item.purchase || 0,
-            maxQuantity: (item as any).quantity || 0
+            maxQuantity: item.quantity || 0
         })
         setIsSellModalOpen(true)
     }
@@ -126,7 +129,7 @@ const WalletPage = () => {
         if (!portfolioValues) return 0
         return portfolioValues.reduce((total, item) => {
             const livePrice = item.purchase || 0
-            const quantity = (item as any).quantity || 0
+            const quantity = item.quantity || 0
             return total + livePrice * quantity
         }, 0)
     }
@@ -246,7 +249,7 @@ const WalletPage = () => {
                                 {portfolioValues && portfolioValues.map((item) => {
                                     const livePrice = item.purchase || 0
                                     const symbolUpper = item.symbol.toUpperCase()
-                                    const quantity = (item as any).quantity || 0
+                                    const quantity = item.quantity || 0
                                     const currentStockValue = livePrice * quantity
 
                                     return (

@@ -10,12 +10,12 @@ import StockComment from "../../Components/StockComment/StockComment"
 import { formatLargeNonMonetaryNumber } from "../../Helpers/NumberFormatting"
 import axiosInstance from "../../Helpers/AxiosInstance"
 
+const allowedStocks = ["AAPL", "MSFT", "NVDA", "TSLA", "GOOGL"]
+
 const CompanyPage = () => {
-  let { ticker } = useParams()
+  const { ticker } = useParams()
   const [company, setCompany] = useState<CompanyProfile>()
   const [localDbId, setLocalDbId] = useState<number | null>(null)
-
-  const allowedStocks = ["AAPL", "MSFT", "NVDA", "TSLA", "GOOGL"]
 
   useEffect(() => {
     if (!allowedStocks.includes(ticker?.toUpperCase() || "")) return
@@ -69,7 +69,7 @@ const CompanyPage = () => {
   }
 
   const renderMarketCap = (mktCap: number) => {
-    const formatted = formatLargeNonMonetaryNumber(mktCap)
+    const formatted = String(formatLargeNonMonetaryNumber(mktCap) ?? mktCap)
     if (formatted.endsWith("M") || formatted.endsWith("B") || formatted.endsWith("T")) {
       return "$" + formatted
     }

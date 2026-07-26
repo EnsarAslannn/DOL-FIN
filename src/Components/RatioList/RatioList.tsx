@@ -1,10 +1,18 @@
-type Props = {
-  config: any
-  data: any
+import type { ReactNode } from "react"
+
+export type RatioListColumn<T> = {
+  label: string
+  subTitle?: string
+  render: (data: T) => ReactNode
 }
 
-const RatioList = ({ config, data }: Props) => {
-  const renderedRows = config.map((row: any, id: number) => {
+type Props<T> = {
+  config: RatioListColumn<T>[]
+  data: T
+}
+
+const RatioList = <T,>({ config, data }: Props<T>) => {
+  const renderedRows = config.map((row, id) => {
     return (
       <li key={id} className="py-3 sm:py-4">
         <div className="flex items-center space-x-4">

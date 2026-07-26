@@ -30,8 +30,8 @@ export const getKeyMetrics = async (query: string) => {
         const data = testKeyMetricsData[query.toUpperCase()] || []
 
         return { data: data }
-    } catch (error: any) {
-        console.log("Key Metrics API error: ", error.message)
+    } catch (error) {
+        console.log("Key Metrics API error: ", error instanceof Error ? error.message : error)
 
         return "Unable to connect API"
     }
@@ -44,8 +44,8 @@ export const getIncomeStatement = async (query: string) => {
         )
 
         return { data: data }
-    } catch (error: any) {
-        console.log("Key Metrics API error: ", error.message)
+    } catch (error) {
+        console.log("Key Metrics API error: ", error instanceof Error ? error.message : error)
 
         return "Unable to connect API"
     }
@@ -58,8 +58,8 @@ export const getBalanceSheet = async (query: string) => {
         )
 
         return { data: data }
-    } catch (error: any) {
-        console.log("Key Metrics API error: ", error.message)
+    } catch (error) {
+        console.log("Key Metrics API error: ", error instanceof Error ? error.message : error)
 
         return "Unable to connect API"
     }
@@ -72,8 +72,8 @@ export const getCashFlowStatement = async (query: string) => {
         )
 
         return { data: data }
-    } catch (error: any) {
-        console.log("Key Metrics API error: ", error.message)
+    } catch (error) {
+        console.log("Key Metrics API error: ", error instanceof Error ? error.message : error)
 
         return "Unable to connect API"
     }
@@ -88,8 +88,8 @@ export const getCompanyPeers = async (query: string) => {
         }
 
         return response
-    } catch (error: any) {
-        console.log("Key Metrics API error: ", error.message)
+    } catch (error) {
+        console.log("Key Metrics API error: ", error instanceof Error ? error.message : error)
 
         return "Unable to connect API"
     }
@@ -104,8 +104,8 @@ export const getTenK = async (query: string) => {
         }
 
         return response
-    } catch (error: any) {
-        console.log("TenK Finder API error: ", error.message)
+    } catch (error) {
+        console.log("TenK Finder API error: ", error instanceof Error ? error.message : error)
 
         return "Unable to connect API"
     }

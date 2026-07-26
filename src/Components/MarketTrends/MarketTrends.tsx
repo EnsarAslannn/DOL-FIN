@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import { companyLogos } from "../Table/TestData"
 
-interface TrendStock {
+export interface TrendStock {
   name: string
   symbol: string
   price: number

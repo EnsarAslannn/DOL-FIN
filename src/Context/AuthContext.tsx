@@ -1,22 +1,12 @@
-import { createContext, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import type { UserProfile } from "../Models/User"
 import { useNavigate } from "react-router"
 import { getProfileAPI, loginAPI, logoutAPI, registerAPI } from "../Services/AuthService"
 import { toast } from "react-toastify"
 import React from "react"
-
-type UserContextType = {
-    user: UserProfile | null
-    registerUser: (email: string, username: string, password: string) => void
-    loginUser: (username: string, password: string) => void
-    logout: () => void
-    isLoggedIn: () => boolean
-    updateWalletBalance: (newBalance: number) => void
-}
+import { UserContext } from "./UserContext"
 
 type Props = { children: React.ReactNode }
-
-const UserContext = createContext<UserContextType>({} as UserContextType)
 
 export const UserProvider = ({ children }: Props) => {
     const navigate = useNavigate()
@@ -106,5 +96,3 @@ export const UserProvider = ({ children }: Props) => {
         </UserContext.Provider>
     )
 }
-
-export const useAuth = () => React.useContext(UserContext)

@@ -1,10 +1,17 @@
-type Props = {
-    config: any
-    data: any
+import type { ReactNode } from "react"
+
+export type TableColumn<T> = {
+    label: ReactNode
+    render: (row: T) => ReactNode
 }
 
-const Table = ({ config, data }: Props) => {
-    const renderedRows = data.map((company: any, rowIndex: number) => {
+type Props<T> = {
+    config: TableColumn<T>[]
+    data: T[]
+}
+
+const Table = <T extends { symbol?: string }>({ config, data }: Props<T>) => {
+    const renderedRows = data.map((company, rowIndex) => {
         const rowKey = `row-${company.symbol || "stock"}-${rowIndex}`
 
         return (
@@ -12,13 +19,13 @@ const Table = ({ config, data }: Props) => {
                 key={rowKey}
                 className="hover:bg-depth-2/50 transition-colors duration-100"
             >
-                {config.map((val: any, idx: number) => {
+                {config.map((col, idx) => {
                     return (
                         <td
                             key={`cell-${rowIndex}-${idx}`}
                             className="p-4 text-xs font-semibold text-foam font-mono whitespace-nowrap border-b border-ridge/20"
                         >
-                            {val.render(company)}
+                            {col.render(company)}
                         </td>
                     )
                 })}
@@ -26,13 +33,13 @@ const Table = ({ config, data }: Props) => {
         )
     })
 
-    const renderedHeaders = config.map((configItem: any, index: number) => {
+    const renderedHeaders = config.map((col, index) => {
         return (
             <th
                 className="p-4 text-left text-[10px] font-bold text-mist uppercase tracking-widest border-b border-ridge/50 font-mono"
                 key={`header-${index}`}
             >
-                {configItem.label}
+                {col.label}
             </th>
         )
     })

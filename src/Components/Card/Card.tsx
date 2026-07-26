@@ -3,10 +3,11 @@ import "./Card.css"
 import AddPortfolio from "../Portfolio/AddPortfolio/AddPortfolio"
 import { Link } from "react-router-dom"
 import { companyLogos } from "../../Components/Table/TestData"
+import type { StockSearchResult } from "../../Models/StockSearchResult"
 
 interface Props {
   id: string
-  searchResult: any
+  searchResult: StockSearchResult
   onPortfolioCreate: (e: SyntheticEvent) => void
 }
 

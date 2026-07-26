@@ -5,7 +5,6 @@ import SearchPage from "../Pages/SearchPage/SearchPage"
 import CompanyPage from "../Pages/CompanyPage/CompanyPage"
 import CompanyProfile from "../Pages/CompanyProfile/CompanyProfile"
 import IncomeStatement from "../Components/IncomeStatement/IncomeStatement"
-import DesignGuide from "../Pages/DesignGuide/DesignGuide"
 import BalanceSheet from "../Components/BalanceSheet/BalanceSheet"
 import CashFlowStatement from "../Components/CashFlowStatement/CashFlowStatement"
 import LoginPage from "../Pages/LoginPage/LoginPage"
@@ -37,8 +36,6 @@ export const router = createBrowserRouter([
                     </ProtectedRoute>
                 ),
             },
-            { path: "design-guide", element: <DesignGuide /> },
-
             {
                 path: "company/:ticker",
                 element: (

@@ -23,10 +23,7 @@ jobs:
         run: npm ci
 
       - name: Lint
-        # TODO: make this a hard gate once the ~76 pre-existing lint errors
-        # (unrelated to CI setup) are cleaned up.
         run: npm run lint
-        continue-on-error: true
 
       - name: Test
         run: npm test
