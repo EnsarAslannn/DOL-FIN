@@ -13,7 +13,7 @@ DOL-FIN, .NET Web API ve React (TypeScript) mimarisi üzerine kurulu; ilişkisel
 
 ## Teknoloji
 
-**Backend:** .NET 10.0 & ASP.NET Core Web API, Entity Framework Core & SQL Server, ASP.NET Core Identity & JWT, Serilog, Scalar API UI
+**Backend:** .NET 10.0 & ASP.NET Core Web API, Entity Framework Core & PostgreSQL, ASP.NET Core Identity & JWT, Serilog, Scalar API UI
 
 **Frontend:** React (TypeScript), Vite, Axios, Tailwind CSS
 
@@ -65,7 +65,7 @@ Local Mock Data: Hand-crafted local financial data set for TSLA, NVDA, AAPL, GOO
 
 Tech Stack
 
-Backend: .NET 10.0 & ASP.NET Core Web API, Entity Framework Core & SQL Server, ASP.NET Core Identity & JWT, Serilog, Scalar API UI
+Backend: .NET 10.0 & ASP.NET Core Web API, Entity Framework Core & PostgreSQL, ASP.NET Core Identity & JWT, Serilog, Scalar API UI
 
 Frontend: React (TypeScript), Vite, Axios, Tailwind CSS
 

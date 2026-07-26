@@ -4,8 +4,6 @@ import { useNavigate } from "react-router"
 import { loginAPI, registerAPI } from "../Services/AuthService"
 import { toast } from "react-toastify"
 import React from "react"
-import axios from "axios"
-import axiosInstance from "../Helpers/AxiosInstance"
 
 type UserContextType = {
     user: UserProfile | null
@@ -34,8 +32,6 @@ export const UserProvider = ({ children }: Props) => {
             const parsedToken = localToken.trim()
             setUser(JSON.parse(localUser))
             setToken(parsedToken)
-            axios.defaults.headers.common["Authorization"] = "Bearer " + parsedToken
-            axiosInstance.defaults.headers.common["Authorization"] = "Bearer " + parsedToken
         }
         setIsReady(true)
     }, [])
@@ -62,8 +58,6 @@ export const UserProvider = ({ children }: Props) => {
                     const receivedBalance = (res.data as any).walletBalance || (res.data as any).WalletBalance || 0
 
                     localStorage.setItem("token", receivedToken)
-                    axios.defaults.headers.common["Authorization"] = "Bearer " + receivedToken
-                    axiosInstance.defaults.headers.common["Authorization"] = "Bearer " + receivedToken
 
                     const userObj = {
                         userName: receivedUserName,
@@ -96,8 +90,6 @@ export const UserProvider = ({ children }: Props) => {
                     const receivedBalance = (res.data as any).walletBalance || (res.data as any).WalletBalance || 0
 
                     localStorage.setItem("token", receivedToken)
-                    axios.defaults.headers.common["Authorization"] = "Bearer " + receivedToken
-                    axiosInstance.defaults.headers.common["Authorization"] = "Bearer " + receivedToken
 
                     const userObj = {
                         userName: receivedUserName,
@@ -127,12 +119,6 @@ export const UserProvider = ({ children }: Props) => {
     const logout = () => {
         localStorage.removeItem("token")
         localStorage.removeItem("user")
-        if (axios.defaults.headers.common["Authorization"]) {
-            delete axios.defaults.headers.common["Authorization"]
-        }
-        if (axiosInstance.defaults.headers.common["Authorization"]) {
-            delete axiosInstance.defaults.headers.common["Authorization"]
-        }
         setUser(null)
         setToken(null)
         navigate("/")
