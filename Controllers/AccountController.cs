@@ -48,12 +48,13 @@ namespace api.Controllers
             if (!result.Succeeded)
                 return Unauthorized("Username not found and/or password incorrect");
 
+            SetAuthCookie(await _tokenService.CreateToken(user));
+
             return Ok(
                 new NewUserDto
                 {
                     UserName = user.UserName ?? string.Empty,
                     Email = user.Email ?? string.Empty,
-                    Token = await _tokenService.CreateToken(user),
                     WalletBalance = user.WalletBalance
                 }
             );
@@ -79,13 +80,36 @@ namespace api.Controllers
             if (!roleResult.Succeeded)
                 return BadRequest(roleResult.Errors);
 
+            SetAuthCookie(await _tokenService.CreateToken(appUser));
+
             return Ok(
                 new NewUserDto
                 {
                     UserName = appUser.UserName ?? string.Empty,
                     Email = appUser.Email ?? string.Empty,
-                    Token = await _tokenService.CreateToken(appUser),
                     WalletBalance = appUser.WalletBalance
+                }
+            );
+        }
+
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete("access_token");
+            return Ok();
+        }
+
+        private void SetAuthCookie(string token)
+        {
+            Response.Cookies.Append(
+                "access_token",
+                token,
+                new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.None,
+                    Expires = DateTimeOffset.UtcNow.AddDays(7),
                 }
             );
         }
