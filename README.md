@@ -8,6 +8,12 @@ DOL-FIN, .NET Web API ve React (TypeScript) mimarisi üzerine kurulu; ilişkisel
 
 Bu repo frontend'i içerir. Backend (.NET Web API) ayrı bir repoda: [DOL-FIN-api](https://github.com/EnsarAslannn/DOL-FIN-api).
 
+## Ekran Görüntüleri
+
+| Ana Sayfa | Arama & Portföy | Hisse Profili |
+|---|---|---|
+| ![Ana sayfa](./docs/screenshots/home.png) | ![Arama ve portföy](./docs/screenshots/search.png) | ![Hisse profili](./docs/screenshots/company-profile.png) |
+
 ## Özellikler
 
 - **Portföy & Varlık Yönetimi:** Kullanıcı bazlı sanal cüzdan ve varlık takibi sistemi.
@@ -100,6 +106,12 @@ DOL-FIN is an enterprise-focused financial management platform centered on relat
 **Live Demo:** [dol-fin.com](https://dol-fin.com)
 
 This repo holds the frontend. The backend (.NET Web API) lives in a separate repo: [DOL-FIN-api](https://github.com/EnsarAslannn/DOL-FIN-api).
+
+## Screenshots
+
+| Home | Search & Portfolio | Company Profile |
+|---|---|---|
+| ![Home page](./docs/screenshots/home.png) | ![Search and portfolio](./docs/screenshots/search.png) | ![Company profile](./docs/screenshots/company-profile.png) |
 
 ## Features
 
