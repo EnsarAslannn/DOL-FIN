@@ -43,7 +43,7 @@ export const logoutAPI = async () => {
 // in yet", not an error, so it deliberately skips handleError's toast/redirect.
 export const getProfileAPI = async () => {
   try {
-    const data = await axiosInstance.post<UserProfile>("account/profile")
+    const data = await axiosInstance.get<UserProfile>("account/profile")
     return data
   } catch {
     return undefined
