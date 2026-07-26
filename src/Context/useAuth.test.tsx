@@ -5,7 +5,7 @@ import type { AxiosResponse } from "axios"
 import { MemoryRouter } from "react-router"
 import { UserProvider, useAuth } from "./useAuth"
 import * as AuthService from "../Services/AuthService"
-import type { UserProfileToken } from "../Models/User"
+import type { UserProfile } from "../Models/User"
 
 vi.mock("../Services/AuthService")
 vi.mock("react-toastify", () => ({
@@ -33,62 +33,61 @@ const renderWithProvider = () =>
         </MemoryRouter>,
     )
 
+const asProfileResponse = (data: UserProfile) =>
+    ({ data, status: 200, statusText: "OK", headers: {}, config: {} }) as AxiosResponse<UserProfile>
+
 describe("useAuth", () => {
     beforeEach(() => {
         localStorage.clear()
         vi.clearAllMocks()
+        // Default: no active session on mount, unless a test overrides it.
+        vi.mocked(AuthService.getProfileAPI).mockResolvedValue(undefined)
+        vi.mocked(AuthService.logoutAPI).mockResolvedValue(undefined)
     })
 
-    it("stores token and user in localStorage after a successful login", async () => {
-        vi.mocked(AuthService.loginAPI).mockResolvedValue({
-            data: {
-                userName: "bob",
-                email: "bob@test.com",
-                token: "tok123",
-                walletBalance: 100,
-            },
-            status: 200,
-            statusText: "OK",
-            headers: {},
-            config: {} as AxiosResponse<UserProfileToken>["config"],
-        })
+    it("restores the session from the server on mount when a valid cookie exists", async () => {
+        vi.mocked(AuthService.getProfileAPI).mockResolvedValue(
+            asProfileResponse({ userName: "bob", email: "bob@test.com", walletBalance: 50 }),
+        )
 
         renderWithProvider()
 
-        await userEvent.click(await screen.findByText("login"))
-
-        await waitFor(() => expect(localStorage.getItem("token")).toBe("tok123"))
-        expect(JSON.parse(localStorage.getItem("user")!).userName).toBe("bob")
-        expect(screen.getByTestId("status").textContent).toBe("in")
+        await waitFor(() => expect(screen.getByTestId("status").textContent).toBe("in"))
+        expect(screen.getByTestId("username").textContent).toBe("bob")
     })
 
-    it("does not store credentials when login fails", async () => {
-        vi.mocked(AuthService.loginAPI).mockResolvedValue(undefined)
-
+    it("stays logged out when no session cookie is present", async () => {
         renderWithProvider()
 
-        await userEvent.click(await screen.findByText("login"))
-
-        expect(localStorage.getItem("token")).toBeNull()
+        await waitFor(() => expect(screen.getByTestId("status")).toBeInTheDocument())
         expect(screen.getByTestId("status").textContent).toBe("out")
     })
 
-    it("clears localStorage and auth state on logout", async () => {
-        localStorage.setItem("token", "tok123")
-        localStorage.setItem(
-            "user",
-            JSON.stringify({ userName: "bob", email: "bob@test.com", walletBalance: 0 }),
+    it("populates user state after a successful login (no token handling needed)", async () => {
+        vi.mocked(AuthService.loginAPI).mockResolvedValue(
+            asProfileResponse({ userName: "bob", email: "bob@test.com", walletBalance: 100 }),
         )
 
         renderWithProvider()
 
-        await waitFor(() =>
-            expect(screen.getByTestId("status").textContent).toBe("in"),
+        await userEvent.click(await screen.findByText("login"))
+
+        await waitFor(() => expect(screen.getByTestId("status").textContent).toBe("in"))
+        expect(JSON.parse(localStorage.getItem("user")!).userName).toBe("bob")
+    })
+
+    it("calls the logout endpoint and clears local state on logout", async () => {
+        vi.mocked(AuthService.getProfileAPI).mockResolvedValue(
+            asProfileResponse({ userName: "bob", email: "bob@test.com", walletBalance: 0 }),
         )
+
+        renderWithProvider()
+
+        await waitFor(() => expect(screen.getByTestId("status").textContent).toBe("in"))
 
         await userEvent.click(screen.getByText("logout"))
 
-        expect(localStorage.getItem("token")).toBeNull()
+        expect(AuthService.logoutAPI).toHaveBeenCalled()
         expect(localStorage.getItem("user")).toBeNull()
         expect(screen.getByTestId("status").textContent).toBe("out")
     })

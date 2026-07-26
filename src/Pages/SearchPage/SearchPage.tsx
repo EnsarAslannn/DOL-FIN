@@ -20,7 +20,7 @@ import Tile from "../../Components/Tile/Tile"
 import MarketTrends from "../../Components/MarketTrends/MarketTrends"
 import MarketNews from "../../Components/MarketNews/MarketNews"
 import { useAuth } from "../../Context/useAuth"
-import axios from "axios"
+import axiosInstance from "../../Helpers/AxiosInstance"
 import PurchasePortfolio from "../../Components/Portfolio/PurchasePortfolio/PurchasePortfolio"
 
 const SearchPage = () => {
@@ -41,8 +41,7 @@ const SearchPage = () => {
   }
 
   useEffect(() => {
-    const token = localStorage.getItem("token")
-    if (token && token.trim() !== "") {
+    if (user) {
       getPortfolio()
       getTrends()
     }
@@ -180,18 +179,13 @@ const SearchPage = () => {
     if (!search.trim()) return
 
     try {
-      const token = localStorage.getItem("token")
       const queryValue = search.trim()
 
-      const apiBaseURL = import.meta.env.VITE_API_URL || "https://localhost:7109";
-
       const url = queryValue.length <= 5
-        ? `${apiBaseURL}/api/stock?Symbol=${queryValue.toUpperCase()}`
-        : `${apiBaseURL}/api/stock?CompanyName=${queryValue}`
+        ? `/api/stock?Symbol=${queryValue.toUpperCase()}`
+        : `/api/stock?CompanyName=${queryValue}`
 
-      const response = await axios.get(url, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      const response = await axiosInstance.get(url)
 
       if (response && Array.isArray(response.data)) {
         setSearchResult(response.data)

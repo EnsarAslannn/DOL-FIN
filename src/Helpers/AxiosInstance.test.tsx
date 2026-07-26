@@ -1,13 +1,13 @@
-import { describe, it, expect, beforeEach } from "vitest"
+import { describe, it, expect } from "vitest"
 import type { InternalAxiosRequestConfig, AxiosResponse } from "axios"
 import axiosInstance from "./AxiosInstance"
 
-describe("axiosInstance request interceptor", () => {
-    beforeEach(() => {
-        localStorage.clear()
+describe("axiosInstance", () => {
+    it("sends credentials (cookies) with every request", () => {
+        expect(axiosInstance.defaults.withCredentials).toBe(true)
     })
 
-    const stubAdapter = () => {
+    it("does not attach a manual Authorization header (auth is cookie-based)", async () => {
         let captured: InternalAxiosRequestConfig | undefined
         axiosInstance.defaults.adapter = async (config) => {
             captured = config
@@ -19,35 +19,9 @@ describe("axiosInstance request interceptor", () => {
                 config,
             } as AxiosResponse
         }
-        return () => captured
-    }
-
-    it("attaches Authorization header from localStorage token", async () => {
-        localStorage.setItem("token", "abc123")
-        const getCaptured = stubAdapter()
 
         await axiosInstance.get("/ping")
 
-        expect(getCaptured()?.headers.Authorization).toBe("Bearer abc123")
-    })
-
-    it("does not attach Authorization header when no token is stored", async () => {
-        const getCaptured = stubAdapter()
-
-        await axiosInstance.get("/ping")
-
-        expect(getCaptured()?.headers.Authorization).toBeUndefined()
-    })
-
-    it("uses the freshest token on each request", async () => {
-        localStorage.setItem("token", "first")
-        const getCaptured = stubAdapter()
-
-        await axiosInstance.get("/ping")
-        expect(getCaptured()?.headers.Authorization).toBe("Bearer first")
-
-        localStorage.setItem("token", "second")
-        await axiosInstance.get("/ping")
-        expect(getCaptured()?.headers.Authorization).toBe("Bearer second")
+        expect(captured?.headers.Authorization).toBeUndefined()
     })
 })
