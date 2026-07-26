@@ -7,10 +7,7 @@ export const portfolioAddAPI = async (symbol: string, quantity: number) => {
     try {
         const data = await axiosInstance.post<{ message: string; newBalance: number }>(
             "/api/portfolio",
-            null,
-            {
-                params: { symbol, quantity }
-            }
+            { symbol, quantity }
         )
         return data
     } catch (error) {
@@ -22,10 +19,7 @@ export const portfolioSellAPI = async (symbol: string, quantity: number) => {
     try {
         const data = await axiosInstance.post<{ message: string; newBalance: number }>(
             "/api/portfolio/sell",
-            null,
-            {
-                params: { symbol, quantity }
-            }
+            { symbol, quantity }
         )
         return data
     } catch (error) {
@@ -46,10 +40,7 @@ export const portfolioDepositAPI = async (amount: number) => {
     try {
         const data = await axiosInstance.post<{ message: string; newBalance: number }>(
             "/api/portfolio/deposit",
-            null,
-            {
-                params: { amount }
-            }
+            { amount }
         )
         return data
     } catch (error) {
@@ -61,10 +52,7 @@ export const portfolioWithdrawAPI = async (amount: number) => {
     try {
         const data = await axiosInstance.post<{ message: string; newBalance: number }>(
             "/api/portfolio/withdraw",
-            null,
-            {
-                params: { amount }
-            }
+            { amount }
         )
         return data
     } catch (error) {
