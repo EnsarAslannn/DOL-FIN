@@ -1,13 +1,17 @@
 # 🐬 DOL-FIN
 
+[![CI](https://github.com/EnsarAslannn/DOL-FIN/actions/workflows/ci.yml/badge.svg)](https://github.com/EnsarAslannn/DOL-FIN/actions/workflows/ci.yml)
+
 DOL-FIN, .NET Web API ve React (TypeScript) mimarisi üzerine kurulu; ilişkisel veri akışlarını, dinamik portföy yönetimini ve kullanıcı etkileşimlerini merkezine alan kurumsal odaklı bir finansal yönetim platformudur.
 
-**Canlı Demo:** [ensaraslannn.github.io/DOL-FIN](https://ensaraslannn.github.io/DOL-FIN/)
+**Canlı Demo:** [dol-fin.com](https://dol-fin.com)
+
+Bu repo frontend'i içerir. Backend (.NET Web API) ayrı bir repoda: [DOL-FIN-api](https://github.com/EnsarAslannn/DOL-FIN-api).
 
 ## Özellikler
 
 - **Portföy & Varlık Yönetimi:** Kullanıcı bazlı sanal cüzdan ve varlık takibi sistemi.
-- **Güvenli Kimlik Doğrulama:** ASP.NET Core Identity altyapısı ile JWT (JSON Web Token) korumalı API uç noktaları.
+- **Güvenli Kimlik Doğrulama:** ASP.NET Core Identity altyapısı ile httpOnly cookie tabanlı JWT korumalı API uç noktaları, rol bazlı yetkilendirme (Admin/User) ve CSRF (double-submit cookie) koruması.
 - **İlişkisel Yorum Katmanı:** Hisse senedi sembolleriyle (ticker) doğrudan ilişkilendirilmiş dinamik yorum mimarisi.
 - **Yerel Simüle Veri:** Harici API bağımlılığı olmadan, TSLA, NVDA, AAPL, GOOGL ve MSFT için elle üretilmiş yerel finansal veri seti.
 
@@ -15,9 +19,40 @@ DOL-FIN, .NET Web API ve React (TypeScript) mimarisi üzerine kurulu; ilişkisel
 
 **Backend:** .NET 10.0 & ASP.NET Core Web API, Entity Framework Core & PostgreSQL, ASP.NET Core Identity & JWT, Serilog, Scalar API UI
 
-**Frontend:** React (TypeScript), Vite, Axios, Tailwind CSS
+**Frontend:** React 19 (TypeScript), Vite, Axios, Tailwind CSS
+
+**Test & CI:** xUnit + Moq (backend), Vitest + React Testing Library (frontend), GitHub Actions
 
 ## Kurulum
+
+Proje iki ayrı repodan oluşur; ikisini de çalıştırmanız gerekir.
+
+### 1. Backend ([DOL-FIN-api](https://github.com/EnsarAslannn/DOL-FIN-api))
+
+```bash
+git clone https://github.com/EnsarAslannn/DOL-FIN-api.git
+cd DOL-FIN-api
+dotnet restore
+```
+
+Gizli bilgileri (connection string, JWT imzalama anahtarı) `dotnet user-secrets` ile yerel olarak ayarlayın — bunlar `appsettings.json`'a hiçbir zaman yazılmamalıdır:
+
+```bash
+dotnet user-secrets init
+dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Host=localhost;Database=dolfin;Username=postgres;Password=..."
+dotnet user-secrets set "JWT:SigningKey" "<en az 64 karakterlik rastgele bir anahtar>"
+```
+
+Veritabanını oluşturup uygulamayı başlatın:
+
+```bash
+dotnet ef database update
+dotnet run
+```
+
+API varsayılan olarak `https://localhost:7109` üzerinde ayağa kalkar; interaktif API dokümantasyonuna `/scalar` üzerinden erişebilirsiniz.
+
+### 2. Frontend (bu repo)
 
 ```bash
 git clone https://github.com/EnsarAslannn/DOL-FIN.git
@@ -25,10 +60,10 @@ cd DOL-FIN
 npm install
 ```
 
-`.env` dosyasında API adresini tanımlayın:
+`.env` dosyası oluşturup API adresini tanımlayın:
 
 ```env
-VITE_API_BASE_URL=https://localhost:5001/api
+VITE_API_URL=https://localhost:7109
 ```
 
 Ardından çalıştırın:
@@ -37,56 +72,110 @@ Ardından çalıştırın:
 npm run dev
 ```
 
+## Testler
+
+```bash
+npm run lint
+npm test
+npm run build
+```
+
 ## Lisans
 
-Bu proje şu anda bir lisans dosyası içermemektedir.
+[MIT](./LICENSE)
 
 ## İletişim
 
 **Ensar Aslan** — [GitHub](https://github.com/EnsarAslannn)
 
+---
 
+# 🐬 DOL-FIN (English)
 
+[![CI](https://github.com/EnsarAslannn/DOL-FIN/actions/workflows/ci.yml/badge.svg)](https://github.com/EnsarAslannn/DOL-FIN/actions/workflows/ci.yml)
 
-🐬 DOL-FIN
+DOL-FIN is an enterprise-focused financial management platform centered on relational data flows, dynamic portfolio management, and user interactions, built on a .NET Web API and React (TypeScript) architecture.
 
-DOL-FIN is a financial management platform focusing on relational data flows, dynamic portfolio management, and user interactions, built on a .NET Web API and React (TypeScript) architecture.
+**Live Demo:** [dol-fin.com](https://dol-fin.com)
 
-Live Demo: ensaraslannn.github.io/DOL-FIN
+This repo holds the frontend. The backend (.NET Web API) lives in a separate repo: [DOL-FIN-api](https://github.com/EnsarAslannn/DOL-FIN-api).
 
-Features
+## Features
 
+- **Portfolio & Asset Management:** Per-user virtual wallet and asset tracking.
+- **Secure Authentication:** ASP.NET Core Identity backing httpOnly-cookie JWT auth, role-based authorization (Admin/User), and CSRF (double-submit cookie) protection.
+- **Relational Comment Layer:** Dynamic comment architecture directly linked to stock tickers.
+- **Local Mock Data:** Hand-crafted local financial data set for TSLA, NVDA, AAPL, GOOGL, and MSFT, with no external API dependency.
 
-Portfolio & Asset Management: User-based virtual wallet and asset tracking system.
-Secure Authentication: API endpoints protected by JWT (JSON Web Token), integrated with ASP.NET Core Identity infrastructure.
-Relational Comment Layer: Dynamic comment architecture directly linked to stock symbols (tickers).
-Local Mock Data: Hand-crafted local financial data set for TSLA, NVDA, AAPL, GOOGL, and MSFT, with no external API dependency.
+## Tech Stack
 
+**Backend:** .NET 10.0 & ASP.NET Core Web API, Entity Framework Core & PostgreSQL, ASP.NET Core Identity & JWT, Serilog, Scalar API UI
 
-Tech Stack
+**Frontend:** React 19 (TypeScript), Vite, Axios, Tailwind CSS
 
-Backend: .NET 10.0 & ASP.NET Core Web API, Entity Framework Core & PostgreSQL, ASP.NET Core Identity & JWT, Serilog, Scalar API UI
+**Testing & CI:** xUnit + Moq (backend), Vitest + React Testing Library (frontend), GitHub Actions
 
-Frontend: React (TypeScript), Vite, Axios, Tailwind CSS
+## Setup
 
-Installation
+The project spans two repos; you'll need both running.
 
-bashgit clone https://github.com/EnsarAslannn/DOL-FIN.git
+### 1. Backend ([DOL-FIN-api](https://github.com/EnsarAslannn/DOL-FIN-api))
+
+```bash
+git clone https://github.com/EnsarAslannn/DOL-FIN-api.git
+cd DOL-FIN-api
+dotnet restore
+```
+
+Set secrets (connection string, JWT signing key) locally via `dotnet user-secrets` — never commit these to `appsettings.json`:
+
+```bash
+dotnet user-secrets init
+dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Host=localhost;Database=dolfin;Username=postgres;Password=..."
+dotnet user-secrets set "JWT:SigningKey" "<a random key at least 64 characters long>"
+```
+
+Create the database and run the API:
+
+```bash
+dotnet ef database update
+dotnet run
+```
+
+The API listens on `https://localhost:7109` by default; interactive API docs are available at `/scalar`.
+
+### 2. Frontend (this repo)
+
+```bash
+git clone https://github.com/EnsarAslannn/DOL-FIN.git
 cd DOL-FIN
 npm install
+```
 
-Define the API address in your .env file:
+Create a `.env` file pointing at the API:
 
-envVITE_API_BASE_URL=https://localhost:5001/api
+```env
+VITE_API_URL=https://localhost:7109
+```
 
-Then run:
+Then run it:
 
-bashnpm run dev
+```bash
+npm run dev
+```
 
-License
+## Tests
 
-This project does not currently include a license file.
+```bash
+npm run lint
+npm test
+npm run build
+```
 
-Contact
+## License
 
-Ensar Aslan — GitHub
+[MIT](./LICENSE)
+
+## Contact
+
+**Ensar Aslan** — [GitHub](https://github.com/EnsarAslannn)
