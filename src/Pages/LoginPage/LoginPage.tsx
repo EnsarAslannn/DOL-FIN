@@ -78,14 +78,6 @@ const LoginPage = () => {
                   ""
                 )}
               </div>
-              <div className="flex items-center justify-between">
-                <a
-                  href="#"
-                  className="text-sm font-medium text-mist hover:text-pulse hover:underline transition-colors"
-                >
-                  Forgot password?
-                </a>
-              </div>
               <button
                 type="submit"
                 className="w-full text-abyss bg-pulse hover:bg-pulse-dim focus:ring-4 focus:outline-none focus:ring-pulse/20 font-bold rounded-lg text-sm px-5 py-2.5 text-center transition-colors"
