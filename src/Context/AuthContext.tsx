@@ -38,13 +38,22 @@ export const UserProvider = ({ children }: Props) => {
         })
     }
 
+    // The access_token cookie set by login/register only takes effect on the
+    // *next* request, so the CSRF cookie can't be issued in that same
+    // response (the server wouldn't yet see an authenticated identity to
+    // bind it to). This follow-up profile call is what actually primes it.
+    const primeCsrfCookie = async () => {
+        await getProfileAPI()
+    }
+
     const registerUser = async (email: string, username: string, password: string) => {
         await registerAPI(email, username, password)
-            .then((res) => {
+            .then(async (res) => {
                 if (res && res.data) {
                     setUser(res.data)
                     localStorage.setItem("user", JSON.stringify(res.data))
                     toast.success("Registration Success!")
+                    await primeCsrfCookie()
 
                     setTimeout(() => {
                         navigate("/search")
@@ -59,11 +68,12 @@ export const UserProvider = ({ children }: Props) => {
 
     const loginUser = async (username: string, password: string) => {
         await loginAPI(username, password)
-            .then((res) => {
+            .then(async (res) => {
                 if (res && res.data) {
                     setUser(res.data)
                     localStorage.setItem("user", JSON.stringify(res.data))
                     toast.success("Login Success!")
+                    await primeCsrfCookie()
 
                     setTimeout(() => {
                         navigate("/search")
