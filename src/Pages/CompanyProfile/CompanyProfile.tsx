@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useOutletContext } from "react-router"
-import type { CompanyKeyMetrics } from "../../company"
+import type { CompanyKeyMetrics, CompanyProfile as CompanyProfileType } from "../../company"
 import { getKeyMetrics, getCompanyProfile } from "../../api"
 import RatioList from "../../Components/RatioList/RatioList"
 import Spinners from "../../Components/Spinners/Spinners"
@@ -83,7 +83,7 @@ const tableConfig = [
 const CompanyProfile = () => {
   const ticker = useOutletContext<string>()
   const [companyData, setCompanyData] = useState<CompanyKeyMetrics>()
-  const [profile, setProfile] = useState<any>(null)
+  const [profile, setProfile] = useState<CompanyProfileType | null>(null)
 
   useEffect(() => {
     const getProfileData = async () => {

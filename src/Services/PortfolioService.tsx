@@ -1,5 +1,6 @@
 import axiosInstance from "../Helpers/AxiosInstance"
 import type { PortfolioGet } from "../Models/Portfolio"
+import type { StockSearchResult } from "../Models/StockSearchResult"
 import { handleError } from "../Helpers/ErrorHandler"
 
 export const portfolioAddAPI = async (symbol: string, quantity: number) => {
@@ -73,7 +74,7 @@ export const portfolioWithdrawAPI = async (amount: number) => {
 
 export const marketTrendsAPI = async () => {
     try {
-        const data = await axiosInstance.get<any[]>("/api/stock/trends")
+        const data = await axiosInstance.get<StockSearchResult[]>("/api/stock/trends")
         return data
     } catch (error) {
         handleError(error)

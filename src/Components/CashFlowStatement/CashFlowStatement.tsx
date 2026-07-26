@@ -101,7 +101,7 @@ const CashFlowStatement = () => {
 
     const latest = data[data.length - 1]
 
-    let seed = ticker ? ticker.charCodeAt(0) % 20 + 35 : 45
+    const seed = ticker ? ticker.charCodeAt(0) % 20 + 35 : 45
     const cycle = Math.max(seed + (latest.operatingCashFlow > 100000000000 ? -12 : 8), 15)
 
     const yieldValue = latest.operatingCashFlow > 0 ? (latest.freeCashFlow / latest.operatingCashFlow) * 100 : 0

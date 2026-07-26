@@ -1,7 +1,7 @@
 import { toast } from "react-toastify"
 import { commentGetAPI, commentPostAPI } from "../../Services/CommentService"
 import StockCommentForm from "./StockCommentForm/StockCommentForm"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import type { CommentGet } from "../../Models/Comment"
 import Spinners from "../Spinners/Spinners"
 import StockCommentList from "../StockCommentList/StockCommentList"
@@ -20,9 +20,26 @@ const StockComment = ({ stockSymbol, stockId }: Props) => {
   const [comments, setComments] = useState<CommentGet[] | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
 
-  useEffect(() => {
-    getComments()
+  const getComments = useCallback(() => {
+    setLoading(true)
+    commentGetAPI(stockSymbol)
+      .then((res) => {
+        setLoading(false)
+        if (res && res.data) {
+          setComments(res.data)
+        }
+      })
+      .catch(() => {
+        setLoading(false)
+      })
   }, [stockSymbol])
+
+  useEffect(() => {
+    const loadComments = () => {
+      getComments()
+    }
+    loadComments()
+  }, [getComments])
 
   const handleComment = (e: CommentFormInputs) => {
     commentPostAPI(e.title, e.content, stockId)
@@ -34,20 +51,6 @@ const StockComment = ({ stockSymbol, stockId }: Props) => {
       })
       .catch((e) => {
         toast.warning(e)
-      })
-  }
-
-  const getComments = () => {
-    setLoading(true)
-    commentGetAPI(stockSymbol)
-      .then((res) => {
-        setLoading(false)
-        if (res && res.data) {
-          setComments(res.data)
-        }
-      })
-      .catch(() => {
-        setLoading(false)
       })
   }
 

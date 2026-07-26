@@ -8,7 +8,7 @@ type Props = {
 }
 
 const ComparableFinder = ({ ticker }: Props) => {
-  const [companyPeers, setCompanyPeers] = useState<any>(null)
+  const [companyPeers, setCompanyPeers] = useState<unknown>(null)
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
 

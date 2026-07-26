@@ -1,16 +1,17 @@
 import axios from "axios"
 import { toast } from "react-toastify"
 
-export const handleError = (error: any) => {
+export const handleError = (error: unknown) => {
    if (axios.isAxiosError(error)) {
-      var err = error.response
-      if (Array.isArray(err?.data.errors)) {
-         for (let val of err?.data.errors) {
+      const err = error.response
+      const errors = err?.data?.errors
+      if (Array.isArray(errors)) {
+         for (const val of errors) {
             toast.warning(val.description)
          }
-      } else if (typeof err?.data.errors == "object") {
-         for (let e in err?.data.errors) {
-            toast.warning(err.data.errors[e][0])
+      } else if (typeof errors == "object" && errors) {
+         for (const e in errors) {
+            toast.warning(errors[e][0])
          }
       } else if (err?.status == 401) {
          toast.warning("Please login")

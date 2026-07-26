@@ -1,9 +1,10 @@
 import React, { type SyntheticEvent } from 'react'
 import Card from '../Card/Card'
 import { v4 as uuidv4 } from "uuid"
+import type { StockSearchResult } from "../../Models/StockSearchResult"
 
 interface Props {
-  searchResults: any[];
+  searchResults: StockSearchResult[];
   onPortfolioCreate: (e: SyntheticEvent) => void;
 }
 

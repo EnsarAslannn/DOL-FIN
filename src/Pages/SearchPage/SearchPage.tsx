@@ -1,14 +1,15 @@
 import {
+  useCallback,
   useEffect,
   useState,
   type ChangeEvent,
   type SyntheticEvent,
 } from "react"
-import type { CompanySearch } from "../../company"
 import Search from "../../Components/Search/Search"
 import ListPortfolio from "../../Components/Portfolio/ListPortfolio/ListPortfolio"
 import CardList from "../../Components/CardList/CardList"
 import type { PortfolioGet } from "../../Models/Portfolio"
+import type { StockSearchResult } from "../../Models/StockSearchResult"
 import {
   portfolioAddAPI,
   portfolioSellAPI,
@@ -17,7 +18,7 @@ import {
 } from "../../Services/PortfolioService"
 import { toast } from "react-toastify"
 import Tile from "../../Components/Tile/Tile"
-import MarketTrends from "../../Components/MarketTrends/MarketTrends"
+import MarketTrends, { type TrendStock } from "../../Components/MarketTrends/MarketTrends"
 import MarketNews from "../../Components/MarketNews/MarketNews"
 import { useAuth } from "../../Context/useAuth"
 import axiosInstance from "../../Helpers/AxiosInstance"
@@ -26,11 +27,11 @@ import PurchasePortfolio from "../../Components/Portfolio/PurchasePortfolio/Purc
 const SearchPage = () => {
   const { user, updateWalletBalance } = useAuth()
   const [search, setSearch] = useState<string>("")
-  const [searchResult, setSearchResult] = useState<CompanySearch[]>([])
+  const [searchResult, setSearchResult] = useState<StockSearchResult[]>([])
   const [serverError, setServerError] = useState<string>("")
   const [portfolioValues, setPortfolioValues] = useState<PortfolioGet[] | null>([])
   const [activePanel, setActivePanel] = useState<"worth" | "health" | "sector" | null>(null)
-  const [trendStocks, setTrendStocks] = useState<any[]>([])
+  const [trendStocks, setTrendStocks] = useState<TrendStock[]>([])
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [modalMode, setModalMode] = useState<"BUY" | "SELL">("BUY")
@@ -40,14 +41,7 @@ const SearchPage = () => {
     setSearch(e.target.value)
   }
 
-  useEffect(() => {
-    if (user) {
-      getPortfolio()
-      getTrends()
-    }
-  }, [user?.userName])
-
-  const getPortfolio = () => {
+  const getPortfolio = useCallback(() => {
     portfolioGetAPI()
       .then((res) => {
         if (res?.data) {
@@ -58,9 +52,9 @@ const SearchPage = () => {
         console.error(e)
         toast.warning("Could not get portfolio values!")
       })
-  }
+  }, [])
 
-  const getTrends = () => {
+  const getTrends = useCallback(() => {
     marketTrendsAPI()
       .then((res) => {
 
@@ -76,22 +70,22 @@ const SearchPage = () => {
           "BRK.B", "VISA", "JPM", "JNJ", "WMT"
         ]
 
-        const apiStocksMap: { [key: string]: any } = {}
+        const apiStocksMap: { [key: string]: StockSearchResult } = {}
         if (res?.data && Array.isArray(res.data)) {
-          res.data.forEach((stock: any) => {
+          res.data.forEach((stock: StockSearchResult) => {
             if (stock && stock.symbol) {
               apiStocksMap[stock.symbol.toUpperCase().trim()] = stock
             }
           })
         }
 
-        const formattedTrends = targetSymbols.map((sym) => {
+        const formattedTrends: TrendStock[] = targetSymbols.map((sym) => {
           const apiStock = apiStocksMap[sym]
 
           return {
             symbol: sym,
-            name: apiStock ? apiStock.companyName : `${sym} Corporation`,
-            price: apiStock ? apiStock.purchase : 0.00,
+            name: apiStock ? apiStock.companyName ?? `${sym} Corporation` : `${sym} Corporation`,
+            price: apiStock ? apiStock.purchase ?? 0.00 : 0.00,
             changePercent: trendStocksMap[sym] !== undefined ? trendStocksMap[sym] : 0.00
           }
         })
@@ -101,14 +95,25 @@ const SearchPage = () => {
       .catch((e) => {
         console.error("Market Trends Error:", e)
       })
-  }
+  }, [])
 
-  const onPortfolioCreateTrigger = (e: any) => {
+  useEffect(() => {
+    if (user) {
+      getPortfolio()
+      getTrends()
+    }
+    // Intentionally keyed on username only: wallet-balance-only updates to
+    // `user` shouldn't retrigger a portfolio/trends refetch.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.userName])
+
+  const onPortfolioCreateTrigger = (e: SyntheticEvent) => {
     e.preventDefault()
-    const symbol = e.target[0].value
+    const form = e.currentTarget as HTMLFormElement
+    const symbol = (form.elements[0] as HTMLInputElement).value
     const matchedStock = searchResult.find(
-      (s: any) => (s.symbol || s.Symbol || "").toUpperCase() === symbol.toUpperCase()
-    ) as any
+      (s) => (s.symbol || s.Symbol || "").toUpperCase() === symbol.toUpperCase()
+    )
     const price = matchedStock ? (matchedStock.purchase || matchedStock.Purchase || 0) : 0
 
     setModalMode("BUY")
@@ -156,9 +161,10 @@ const SearchPage = () => {
     }
   }
 
-  const onPortfolioDelete = (e: any) => {
+  const onPortfolioDelete = (e: SyntheticEvent) => {
     e.preventDefault()
-    const targetSymbol = e.target[0].value
+    const form = e.currentTarget as HTMLFormElement
+    const targetSymbol = (form.elements[0] as HTMLInputElement).value
 
     const matchedOwned = portfolioValues?.find(
       (p) => p.symbol.toUpperCase() === targetSymbol.toUpperCase()
@@ -169,7 +175,7 @@ const SearchPage = () => {
     setSelectedStock({
       symbol: matchedOwned.symbol,
       price: matchedOwned.purchase || 0,
-      maxQuantity: (matchedOwned as any).quantity || 0
+      maxQuantity: matchedOwned.quantity || 0
     })
     setIsModalOpen(true)
   }
@@ -191,7 +197,7 @@ const SearchPage = () => {
         setSearchResult(response.data)
         setServerError("")
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error("Search API Error:", error)
       setServerError("Unable to connect to local API server")
       toast.error("Could not fetch search results from local server!")
@@ -202,7 +208,7 @@ const SearchPage = () => {
     if (!portfolioValues) return 0
     return portfolioValues.reduce((total, item) => {
       const livePrice = item.purchase || 0
-      const quantity = (item as any).quantity || 0
+      const quantity = item.quantity || 0
       return total + (livePrice * quantity)
     }, 0)
   }
@@ -249,7 +255,7 @@ const SearchPage = () => {
 
     portfolioValues.forEach((item) => {
       const livePrice = item.purchase || 0
-      const quantity = (item as any).quantity || 0
+      const quantity = item.quantity || 0
       const totalAssetValue = livePrice * quantity
 
       if (item.industry?.toLowerCase().includes("software") || item.industry?.toLowerCase().includes("semiconductors") || item.industry?.toLowerCase().includes("technology")) {

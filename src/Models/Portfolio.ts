@@ -5,9 +5,8 @@ export type PortfolioGet = {
   purchase: number
   lastDiv: number
   industry: string
-  marketCap: number 
-  comments: any
-  quantity: number;   
+  marketCap: number
+  quantity: number;
   averagePrice: number
 }
 

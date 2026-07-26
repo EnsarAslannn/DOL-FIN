@@ -1,4 +1,4 @@
-export const formatLargeMonetaryNumber: any = (number: number) => {
+export const formatLargeMonetaryNumber = (number: number): string | undefined => {
   if (number < 0) {
     return "-" + formatLargeMonetaryNumber(-1 * number)
   }
@@ -15,7 +15,9 @@ export const formatLargeMonetaryNumber: any = (number: number) => {
   }
 }
 
-export const formatLargeNonMonetaryNumber: any = (number: number) => {
+export const formatLargeNonMonetaryNumber = (
+  number: number,
+): string | number | undefined => {
   if (number < 0) {
     return "-" + formatLargeMonetaryNumber(-1 * number)
   }

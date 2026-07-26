@@ -10,8 +10,8 @@ type Props = {
 const ListPortfolio = ({ portfolioValues, onPortfolioDelete }: Props) => {
   const totalPortfolioInvested = portfolioValues
     ? portfolioValues.reduce((sum, item) => {
-      const qty = (item as any).quantity || 0
-      const avg = (item as any).averagePrice || 0
+      const qty = item.quantity || 0
+      const avg = item.averagePrice || 0
       return sum + qty * avg
     }, 0)
     : 0
