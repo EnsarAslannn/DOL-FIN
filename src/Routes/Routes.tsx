@@ -1,30 +1,51 @@
+// This module is a router configuration, not a component -- it only ever
+// exports `router`, a plain object, so Fast Refresh doesn't apply here.
+/* eslint-disable react-refresh/only-export-components */
+import { lazy, Suspense } from "react"
+import type { ReactNode } from "react"
 import { createBrowserRouter } from "react-router-dom"
 import App from "../App"
-import HomePage from "../Pages/HomePage/HomePage"
-import SearchPage from "../Pages/SearchPage/SearchPage"
-import CompanyPage from "../Pages/CompanyPage/CompanyPage"
-import CompanyProfile from "../Pages/CompanyProfile/CompanyProfile"
-import IncomeStatement from "../Components/IncomeStatement/IncomeStatement"
-import BalanceSheet from "../Components/BalanceSheet/BalanceSheet"
-import CashFlowStatement from "../Components/CashFlowStatement/CashFlowStatement"
-import LoginPage from "../Pages/LoginPage/LoginPage"
-import RegisterPage from "../Pages/RegisterPage/RegisterPage"
 import ProtectedRoute from "./ProtectedRoute"
-import WalletPage from "../Pages/WalletPage/WalletPage"
+import Spinners from "../Components/Spinners/Spinners"
+
+const HomePage = lazy(() => import("../Pages/HomePage/HomePage"))
+const SearchPage = lazy(() => import("../Pages/SearchPage/SearchPage"))
+const CompanyPage = lazy(() => import("../Pages/CompanyPage/CompanyPage"))
+const CompanyProfile = lazy(() => import("../Pages/CompanyProfile/CompanyProfile"))
+const IncomeStatement = lazy(() => import("../Components/IncomeStatement/IncomeStatement"))
+const BalanceSheet = lazy(() => import("../Components/BalanceSheet/BalanceSheet"))
+const CashFlowStatement = lazy(() => import("../Components/CashFlowStatement/CashFlowStatement"))
+const LoginPage = lazy(() => import("../Pages/LoginPage/LoginPage"))
+const RegisterPage = lazy(() => import("../Pages/RegisterPage/RegisterPage"))
+const WalletPage = lazy(() => import("../Pages/WalletPage/WalletPage"))
+
+const PageFallback = () => (
+    <div className="w-full min-h-screen bg-abyss flex items-center justify-center">
+        <Spinners />
+    </div>
+)
+
+// Route-level code splitting means each page's chunk only downloads when the
+// user actually navigates there; without this, everything above bundled
+// into a single ~670KB JS chunk loaded up front regardless of which page
+// is visited first.
+const withSuspense = (element: ReactNode) => (
+    <Suspense fallback={<PageFallback />}>{element}</Suspense>
+)
 
 export const router = createBrowserRouter([
     {
         path: "/",
         element: <App />,
         children: [
-            { path: "", element: <HomePage /> },
-            { path: "login", element: <LoginPage /> },
-            { path: "register", element: <RegisterPage /> },
+            { path: "", element: withSuspense(<HomePage />) },
+            { path: "login", element: withSuspense(<LoginPage />) },
+            { path: "register", element: withSuspense(<RegisterPage />) },
             {
                 path: "search",
                 element: (
                     <ProtectedRoute>
-                        <SearchPage />
+                        {withSuspense(<SearchPage />)}
                     </ProtectedRoute>
                 ),
             },
@@ -32,7 +53,7 @@ export const router = createBrowserRouter([
                 path: "wallet",
                 element: (
                     <ProtectedRoute>
-                        <WalletPage />
+                        {withSuspense(<WalletPage />)}
                     </ProtectedRoute>
                 ),
             },
@@ -40,14 +61,14 @@ export const router = createBrowserRouter([
                 path: "company/:ticker",
                 element: (
                     <ProtectedRoute>
-                        <CompanyPage />
+                        {withSuspense(<CompanyPage />)}
                     </ProtectedRoute>
                 ),
                 children: [
-                    { path: "company-profile", element: <CompanyProfile /> },
-                    { path: "income-statement", element: <IncomeStatement /> },
-                    { path: "balance-sheet", element: <BalanceSheet /> },
-                    { path: "cashflow-statement", element: <CashFlowStatement /> },
+                    { path: "company-profile", element: withSuspense(<CompanyProfile />) },
+                    { path: "income-statement", element: withSuspense(<IncomeStatement />) },
+                    { path: "balance-sheet", element: withSuspense(<BalanceSheet />) },
+                    { path: "cashflow-statement", element: withSuspense(<CashFlowStatement />) },
                 ],
             },
         ],

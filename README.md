@@ -21,7 +21,7 @@ Bu repo frontend'i içerir. Backend (.NET Web API) ayrı bir repoda: [DOL-FIN-ap
 
 **Frontend:** React 19 (TypeScript), Vite, Axios, Tailwind CSS
 
-**Test & CI:** xUnit + Moq (backend), Vitest + React Testing Library (frontend), GitHub Actions
+**Test & CI:** xUnit + Moq (backend), Vitest + React Testing Library + Playwright (frontend), GitHub Actions
 
 ## Kurulum
 
@@ -76,8 +76,9 @@ npm run dev
 
 ```bash
 npm run lint
-npm test
+npm test          # birim testleri (Vitest)
 npm run build
+npm run test:e2e  # uçtan uca testler (Playwright) — önce build gerektirir
 ```
 
 ## Lisans
@@ -113,7 +114,7 @@ This repo holds the frontend. The backend (.NET Web API) lives in a separate rep
 
 **Frontend:** React 19 (TypeScript), Vite, Axios, Tailwind CSS
 
-**Testing & CI:** xUnit + Moq (backend), Vitest + React Testing Library (frontend), GitHub Actions
+**Testing & CI:** xUnit + Moq (backend), Vitest + React Testing Library + Playwright (frontend), GitHub Actions
 
 ## Setup
 
@@ -168,8 +169,9 @@ npm run dev
 
 ```bash
 npm run lint
-npm test
+npm test          # unit tests (Vitest)
 npm run build
+npm run test:e2e  # end-to-end tests (Playwright) -- requires a build first
 ```
 
 ## License
