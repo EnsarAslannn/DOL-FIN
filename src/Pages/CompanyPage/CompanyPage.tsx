@@ -8,7 +8,7 @@ import Tile from "../../Components/Tile/Tile"
 import Spinners from "../../Components/Spinners/Spinners"
 import StockComment from "../../Components/StockComment/StockComment"
 import { formatLargeNonMonetaryNumber } from "../../Helpers/NumberFormatting"
-import axios from "axios"
+import axiosInstance from "../../Helpers/AxiosInstance"
 
 const CompanyPage = () => {
   let { ticker } = useParams()
@@ -25,11 +25,7 @@ const CompanyPage = () => {
       setCompany(result?.data[0])
 
       try {
-        const token = localStorage.getItem("token")
-        const apiBaseURL = import.meta.env.VITE_API_URL || "https://localhost:7109"
-        const dbResult = await axios.get(`${apiBaseURL}/api/stock?Symbol=${ticker?.toUpperCase()}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
+        const dbResult = await axiosInstance.get(`/api/stock?Symbol=${ticker?.toUpperCase()}`)
         if (dbResult && dbResult.data && dbResult.data.length > 0) {
           const matchedStock = dbResult.data[0]
           setLocalDbId(matchedStock.id || matchedStock.Id || null)

@@ -1,28 +1,20 @@
 import React, { useState, useEffect } from "react"
 import { useAuth } from "../../Context/useAuth"
 import { portfolioDepositAPI, portfolioGetAPI, portfolioSellAPI } from "../../Services/PortfolioService"
+import { getProfileAPI } from "../../Services/AuthService"
 import type { PortfolioGet } from "../../Models/Portfolio"
 import { companyLogos } from "../../Components/Table/TestData"
 import { toast } from "react-toastify"
 import PurchasePortfolio from "../../Components/Portfolio/PurchasePortfolio/PurchasePortfolio"
-import axios from "axios"
 
 const WalletPage = () => {
-    const { updateWalletBalance } = useAuth()
+    const { user, updateWalletBalance } = useAuth()
     const [depositAmount, setDepositAmount] = useState<string>("")
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
     const [portfolioValues, setPortfolioValues] = useState<PortfolioGet[] | null>([])
     const [isSellModalOpen, setIsSellModalOpen] = useState<boolean>(false)
     const [selectedSellStock, setSelectedSellStock] = useState<{ symbol: string; price: number; maxQuantity: number } | null>(null)
     const [liveBalance, setLiveBalance] = useState<number>(0)
-
-    useEffect(() => {
-        const token = localStorage.getItem("token")
-        if (token && token.trim() !== "") {
-            getWalletPortfolio()
-            refreshWalletBalance()
-        }
-    }, [])
 
     const getWalletPortfolio = () => {
         portfolioGetAPI()
@@ -33,34 +25,18 @@ const WalletPage = () => {
     }
 
     const refreshWalletBalance = async () => {
-        try {
-            const token = localStorage.getItem("token")
-            if (!token) return
-
-            let apiBaseURL = import.meta.env.VITE_API_URL || "https://localhost:7109"
-            if (apiBaseURL.endsWith("/")) {
-                apiBaseURL = apiBaseURL.slice(0, -1)
-            }
-
-            const cleanAxios = axios.create()
-            const response = await cleanAxios.post(`${apiBaseURL}/api/account/profile`, {}, {
-                headers: {
-                    Authorization: `Bearer ${token.trim()}`,
-                    "Cache-Control": "no-cache",
-                    Pragma: "no-cache"
-                },
-            })
-
-            if (response && response.data) {
-                const balance = response.data.walletBalance !== undefined ? response.data.walletBalance : response.data.WalletBalance
-                if (balance !== undefined) {
-                    setLiveBalance(balance)
-                }
-            }
-        } catch (error) {
-            console.error("Failed to refresh wallet balance:", error)
+        const res = await getProfileAPI()
+        if (res?.data?.walletBalance !== undefined) {
+            setLiveBalance(res.data.walletBalance)
         }
     }
+
+    useEffect(() => {
+        if (user) {
+            getWalletPortfolio()
+            refreshWalletBalance()
+        }
+    }, [user])
 
     const handleDepositSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault()

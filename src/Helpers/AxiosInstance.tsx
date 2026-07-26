@@ -10,6 +10,7 @@ const getApiURL = () => {
 
 const axiosInstance = axios.create({
     baseURL: getApiURL(),
+    withCredentials: true,
     headers: {
         "Content-Type": "application/json",
     },
@@ -28,10 +29,6 @@ axiosInstance.interceptors.request.use(
             }
         }
 
-        const token = localStorage.getItem("token")
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`
-        }
         return config
     },
     (error) => {

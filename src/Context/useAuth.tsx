@@ -1,13 +1,12 @@
 import { createContext, useEffect, useState } from "react"
 import type { UserProfile } from "../Models/User"
 import { useNavigate } from "react-router"
-import { loginAPI, registerAPI } from "../Services/AuthService"
+import { getProfileAPI, loginAPI, logoutAPI, registerAPI } from "../Services/AuthService"
 import { toast } from "react-toastify"
 import React from "react"
 
 type UserContextType = {
     user: UserProfile | null
-    token: string | null
     registerUser: (email: string, username: string, password: string) => void
     loginUser: (username: string, password: string) => void
     logout: () => void
@@ -21,52 +20,40 @@ const UserContext = createContext<UserContextType>({} as UserContextType)
 
 export const UserProvider = ({ children }: Props) => {
     const navigate = useNavigate()
-    const [token, setToken] = useState<string | null>(null)
     const [user, setUser] = useState<UserProfile | null>(null)
     const [isReady, setIsReady] = useState(false)
 
     useEffect(() => {
-        const localUser = localStorage.getItem("user")
-        const localToken = localStorage.getItem("token")
-        if (localUser && localToken) {
-            const parsedToken = localToken.trim()
-            setUser(JSON.parse(localUser))
-            setToken(parsedToken)
+        // The JWT lives in an httpOnly cookie, invisible to JS, so the only
+        // way to know whether a session is active is to ask the server.
+        const restoreSession = async () => {
+            const res = await getProfileAPI()
+            if (res?.data) {
+                setUser(res.data)
+                localStorage.setItem("user", JSON.stringify(res.data))
+            } else {
+                localStorage.removeItem("user")
+            }
+            setIsReady(true)
         }
-        setIsReady(true)
+        restoreSession()
     }, [])
 
     const updateWalletBalance = (newBalance: number) => {
-        const localUser = localStorage.getItem("user")
-        if (localUser) {
-            const parsedUser = JSON.parse(localUser)
-            if (parsedUser.walletBalance !== newBalance) {
-                parsedUser.walletBalance = newBalance
-                localStorage.setItem("user", JSON.stringify(parsedUser))
-                setUser(parsedUser)
-            }
-        }
+        setUser((prev) => {
+            if (!prev || prev.walletBalance === newBalance) return prev
+            const updated = { ...prev, walletBalance: newBalance }
+            localStorage.setItem("user", JSON.stringify(updated))
+            return updated
+        })
     }
 
     const registerUser = async (email: string, username: string, password: string) => {
         await registerAPI(email, username, password)
             .then((res) => {
                 if (res && res.data) {
-                    const receivedToken = ((res.data as any).token || (res.data as any).Token).trim()
-                    const receivedUserName = (res.data as any).userName || (res.data as any).UserName
-                    const receivedEmail = (res.data as any).email || (res.data as any).Email
-                    const receivedBalance = (res.data as any).walletBalance || (res.data as any).WalletBalance || 0
-
-                    localStorage.setItem("token", receivedToken)
-
-                    const userObj = {
-                        userName: receivedUserName,
-                        email: receivedEmail,
-                        walletBalance: receivedBalance,
-                    }
-                    localStorage.setItem("user", JSON.stringify(userObj))
-                    setToken(receivedToken)
-                    setUser(userObj)
+                    setUser(res.data)
+                    localStorage.setItem("user", JSON.stringify(res.data))
                     toast.success("Registration Success!")
 
                     setTimeout(() => {
@@ -84,21 +71,8 @@ export const UserProvider = ({ children }: Props) => {
         await loginAPI(username, password)
             .then((res) => {
                 if (res && res.data) {
-                    const receivedToken = ((res.data as any).token || (res.data as any).Token).trim()
-                    const receivedUserName = (res.data as any).userName || (res.data as any).UserName
-                    const receivedEmail = (res.data as any).email || (res.data as any).Email
-                    const receivedBalance = (res.data as any).walletBalance || (res.data as any).WalletBalance || 0
-
-                    localStorage.setItem("token", receivedToken)
-
-                    const userObj = {
-                        userName: receivedUserName,
-                        email: receivedEmail,
-                        walletBalance: receivedBalance,
-                    }
-                    localStorage.setItem("user", JSON.stringify(userObj))
-                    setToken(receivedToken)
-                    setUser(userObj)
+                    setUser(res.data)
+                    localStorage.setItem("user", JSON.stringify(res.data))
                     toast.success("Login Success!")
 
                     setTimeout(() => {
@@ -117,16 +91,16 @@ export const UserProvider = ({ children }: Props) => {
     }
 
     const logout = () => {
-        localStorage.removeItem("token")
-        localStorage.removeItem("user")
-        setUser(null)
-        setToken(null)
-        navigate("/")
+        logoutAPI().finally(() => {
+            localStorage.removeItem("user")
+            setUser(null)
+            navigate("/")
+        })
     }
 
     return (
         <UserContext.Provider
-            value={{ loginUser, user, token, logout, isLoggedIn, registerUser, updateWalletBalance }}
+            value={{ loginUser, user, logout, isLoggedIn, registerUser, updateWalletBalance }}
         >
             {isReady ? children : null}
         </UserContext.Provider>
