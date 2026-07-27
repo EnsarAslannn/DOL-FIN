@@ -14,11 +14,12 @@ The frontend (React/TypeScript) lives in a separate repo: [DOL-FIN](https://gith
 - **CSRF Protection:** Double-submit cookie pattern (`IAntiforgery`) on every authenticated, state-changing request.
 - **Portfolio Engine:** Buy/sell/deposit/withdraw with transactional consistency (`IUnitOfWork`), ownership-checked comment CRUD, admin-only stock management.
 - **Rate Limiting:** IP-partitioned fixed-window limiter on login/register.
+- **Caching:** Redis-backed distributed cache (`HybridCache` + StackExchangeRedis) for stock and portfolio reads, with cache-aside invalidation on writes.
 - **API Docs:** Interactive OpenAPI docs via [Scalar](https://github.com/scalar/scalar) at `/scalar` (development environment).
 
 ## Tech Stack
 
-.NET 10.0 & ASP.NET Core Web API, Entity Framework Core & PostgreSQL (Npgsql), ASP.NET Core Identity & JWT Bearer auth, Serilog, xUnit + Moq for testing.
+.NET 10.0 & ASP.NET Core Web API, Entity Framework Core & PostgreSQL (Npgsql), Redis (StackExchangeRedis + HybridCache), ASP.NET Core Identity & JWT Bearer auth, Serilog, xUnit + Moq for testing.
 
 Deployed on [Railway](https://railway.app) via Docker; database migrations run automatically on startup.
 
@@ -28,12 +29,14 @@ Deployed on [Railway](https://railway.app) via Docker; database migrations run a
 
 - [.NET 10 SDK](https://dotnet.microsoft.com/download)
 - A local PostgreSQL instance (or a connection string to any reachable one)
+- Docker (for a local Redis instance via `docker compose up -d redis`)
 
 ### Steps
 
 ```bash
 git clone https://github.com/EnsarAslannn/DOL-FIN-api.git
 cd DOL-FIN-api
+docker compose up -d redis
 dotnet restore
 ```
 
@@ -44,6 +47,8 @@ dotnet user-secrets init
 dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Host=localhost;Database=dolfin;Username=postgres;Password=..."
 dotnet user-secrets set "JWT:SigningKey" "<a random key at least 64 characters long>"
 ```
+
+`appsettings.Development.json` already points `ConnectionStrings:Redis` at `localhost:6379`, matching the compose file above — no extra secret needed unless you're running Redis elsewhere.
 
 Apply migrations and run:
 
