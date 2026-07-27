@@ -43,7 +43,7 @@ namespace api.Controllers
             var user = await _userManager.FindByNameAsync(loginDto.UserName);
 
             if (user == null)
-                return Unauthorized("Invalid username!");
+                return Unauthorized("Invalid username or password");
 
             var result = await _signInManager.CheckPasswordSignInAsync(
                 user,
@@ -52,7 +52,7 @@ namespace api.Controllers
             );
 
             if (!result.Succeeded)
-                return Unauthorized("Username not found and/or password incorrect");
+                return Unauthorized("Invalid username or password");
 
             SetAuthCookie(await _tokenService.CreateToken(user));
 

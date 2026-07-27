@@ -2,6 +2,7 @@ using api.Dtos;
 using api.Interfaces;
 using api.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Hybrid;
 
 namespace api.Service
@@ -58,7 +59,21 @@ namespace api.Service
             }
         }
 
+        private const string ConcurrencyErrorMessage =
+            "Your account was updated by another request while this operation was in progress. Please try again.";
+
         private static string PortfolioCacheKey(string userId) => $"portfolio:user:{userId}";
+
+        private static void EnsureIdentityUpdateSucceeded(IdentityResult updateResult)
+        {
+            if (updateResult.Succeeded)
+                return;
+
+            if (updateResult.Errors.Any(e => e.Code == "ConcurrencyFailure"))
+                throw new InvalidOperationException(ConcurrencyErrorMessage);
+
+            throw new Exception("Failed to update user wallet balance.");
+        }
 
         // A write to the database already succeeded by the time we get here;
         // a Redis hiccup on invalidation must not turn that into a 500 for
@@ -89,48 +104,56 @@ namespace api.Service
             if (user.WalletBalance < totalCost)
                 throw new InvalidOperationException($"Insufficient funds. Required: ${totalCost:F2}, Available: ${user.WalletBalance:F2}");
 
-            var result = await _unitOfWork.ExecuteInTransactionAsync(async () =>
+            object result;
+            try
             {
-                user.WalletBalance -= totalCost;
-                await _userManager.UpdateAsync(user);
-
-                var existingPosition = await _portfolioRepo.GetByAppUserAndStockId(user.Id, stock.Id);
-
-                if (existingPosition != null)
+                result = await _unitOfWork.ExecuteInTransactionAsync(async () =>
                 {
-                    decimal existingTotalCost = existingPosition.AveragePrice * existingPosition.Quantity;
-                    decimal newTotalCost = existingTotalCost + totalCost;
+                    user.WalletBalance -= totalCost;
+                    EnsureIdentityUpdateSucceeded(await _userManager.UpdateAsync(user));
 
-                    existingPosition.Quantity += quantity;
-                    existingPosition.AveragePrice = newTotalCost / existingPosition.Quantity;
+                    var existingPosition = await _portfolioRepo.GetByAppUserAndStockId(user.Id, stock.Id);
 
-                    await _portfolioRepo.UpdateAsync(existingPosition);
-                }
-                else
-                {
-                    var portfolioModel = new Portfolio
+                    if (existingPosition != null)
                     {
-                        StockId = stock.Id,
+                        decimal existingTotalCost = existingPosition.AveragePrice * existingPosition.Quantity;
+                        decimal newTotalCost = existingTotalCost + totalCost;
+
+                        existingPosition.Quantity += quantity;
+                        existingPosition.AveragePrice = newTotalCost / existingPosition.Quantity;
+
+                        await _portfolioRepo.UpdateAsync(existingPosition);
+                    }
+                    else
+                    {
+                        var portfolioModel = new Portfolio
+                        {
+                            StockId = stock.Id,
+                            AppUserId = user.Id,
+                            Quantity = quantity,
+                            AveragePrice = stock.Purchase
+                        };
+                        await _portfolioRepo.CreateAsync(portfolioModel);
+                    }
+
+                    await _transactionRepo.AddAsync(new Transaction
+                    {
                         AppUserId = user.Id,
+                        Symbol = stock.Symbol.ToUpper(),
+                        CompanyName = stock.CompanyName,
+                        TransactionType = "BUY",
                         Quantity = quantity,
-                        AveragePrice = stock.Purchase
-                    };
-                    await _portfolioRepo.CreateAsync(portfolioModel);
-                }
+                        Price = stock.Purchase,
+                        Timestamp = DateTime.UtcNow
+                    });
 
-                await _transactionRepo.AddAsync(new Transaction
-                {
-                    AppUserId = user.Id,
-                    Symbol = stock.Symbol.ToUpper(),
-                    CompanyName = stock.CompanyName,
-                    TransactionType = "BUY",
-                    Quantity = quantity,
-                    Price = stock.Purchase,
-                    Timestamp = DateTime.UtcNow
+                    return (object)new { Message = "Stock purchased successfully", NewBalance = user.WalletBalance };
                 });
-
-                return (object)new { Message = "Stock purchased successfully", NewBalance = user.WalletBalance };
-            });
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw new InvalidOperationException(ConcurrencyErrorMessage);
+            }
 
             await InvalidatePortfolioCacheAsync(user.Id);
             return result;
@@ -151,34 +174,42 @@ namespace api.Service
 
             decimal totalRevenue = stock.Purchase * quantity;
 
-            var result = await _unitOfWork.ExecuteInTransactionAsync(async () =>
+            object result;
+            try
             {
-                user.WalletBalance += totalRevenue;
-                await _userManager.UpdateAsync(user);
+                result = await _unitOfWork.ExecuteInTransactionAsync(async () =>
+                {
+                    user.WalletBalance += totalRevenue;
+                    EnsureIdentityUpdateSucceeded(await _userManager.UpdateAsync(user));
 
-                if (existingPosition.Quantity == quantity)
-                {
-                    await _portfolioRepo.DeletePortfolio(user, symbol);
-                }
-                else
-                {
-                    existingPosition.Quantity -= quantity;
-                    await _portfolioRepo.UpdateAsync(existingPosition);
-                }
+                    if (existingPosition.Quantity == quantity)
+                    {
+                        await _portfolioRepo.DeletePortfolio(user, symbol);
+                    }
+                    else
+                    {
+                        existingPosition.Quantity -= quantity;
+                        await _portfolioRepo.UpdateAsync(existingPosition);
+                    }
 
-                await _transactionRepo.AddAsync(new Transaction
-                {
-                    AppUserId = user.Id,
-                    Symbol = stock.Symbol.ToUpper(),
-                    CompanyName = stock.CompanyName,
-                    TransactionType = "SELL",
-                    Quantity = quantity,
-                    Price = stock.Purchase,
-                    Timestamp = DateTime.UtcNow
+                    await _transactionRepo.AddAsync(new Transaction
+                    {
+                        AppUserId = user.Id,
+                        Symbol = stock.Symbol.ToUpper(),
+                        CompanyName = stock.CompanyName,
+                        TransactionType = "SELL",
+                        Quantity = quantity,
+                        Price = stock.Purchase,
+                        Timestamp = DateTime.UtcNow
+                    });
+
+                    return (object)new { Message = "Stock sold successfully", NewBalance = user.WalletBalance };
                 });
-
-                return (object)new { Message = "Stock sold successfully", NewBalance = user.WalletBalance };
-            });
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw new InvalidOperationException(ConcurrencyErrorMessage);
+            }
 
             await InvalidatePortfolioCacheAsync(user.Id);
             return result;
@@ -189,27 +220,32 @@ namespace api.Service
             if (amount <= 0)
                 throw new ArgumentException("Deposit amount must be greater than 0");
 
-            var result = await _unitOfWork.ExecuteInTransactionAsync(async () =>
+            object result;
+            try
             {
-                user.WalletBalance += amount;
-                var updateResult = await _userManager.UpdateAsync(user);
-
-                if (!updateResult.Succeeded)
-                    throw new Exception("Failed to update user wallet balance.");
-
-                await _transactionRepo.AddAsync(new Transaction
+                result = await _unitOfWork.ExecuteInTransactionAsync(async () =>
                 {
-                    AppUserId = user.Id,
-                    Symbol = "CASH",
-                    CompanyName = "Wallet Deposit",
-                    TransactionType = "DEPOSIT",
-                    Quantity = 1,
-                    Price = amount,
-                    Timestamp = DateTime.UtcNow
-                });
+                    user.WalletBalance += amount;
+                    EnsureIdentityUpdateSucceeded(await _userManager.UpdateAsync(user));
 
-                return (object)new { Message = "Funds deposited successfully", NewBalance = user.WalletBalance };
-            });
+                    await _transactionRepo.AddAsync(new Transaction
+                    {
+                        AppUserId = user.Id,
+                        Symbol = "CASH",
+                        CompanyName = "Wallet Deposit",
+                        TransactionType = "DEPOSIT",
+                        Quantity = 1,
+                        Price = amount,
+                        Timestamp = DateTime.UtcNow
+                    });
+
+                    return (object)new { Message = "Funds deposited successfully", NewBalance = user.WalletBalance };
+                });
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw new InvalidOperationException(ConcurrencyErrorMessage);
+            }
 
             await InvalidatePortfolioCacheAsync(user.Id);
             return result;
@@ -223,27 +259,32 @@ namespace api.Service
             if (user.WalletBalance < amount)
                 throw new InvalidOperationException($"Insufficient funds. Available: ${user.WalletBalance:F2}");
 
-            var result = await _unitOfWork.ExecuteInTransactionAsync(async () =>
+            object result;
+            try
             {
-                user.WalletBalance -= amount;
-                var updateResult = await _userManager.UpdateAsync(user);
-
-                if (!updateResult.Succeeded)
-                    throw new Exception("Failed to update user wallet balance.");
-
-                await _transactionRepo.AddAsync(new Transaction
+                result = await _unitOfWork.ExecuteInTransactionAsync(async () =>
                 {
-                    AppUserId = user.Id,
-                    Symbol = "CASH",
-                    CompanyName = "Wallet Withdraw",
-                    TransactionType = "WITHDRAW",
-                    Quantity = 1,
-                    Price = amount,
-                    Timestamp = DateTime.UtcNow
-                });
+                    user.WalletBalance -= amount;
+                    EnsureIdentityUpdateSucceeded(await _userManager.UpdateAsync(user));
 
-                return (object)new { Message = "Funds withdrawn successfully", NewBalance = user.WalletBalance };
-            });
+                    await _transactionRepo.AddAsync(new Transaction
+                    {
+                        AppUserId = user.Id,
+                        Symbol = "CASH",
+                        CompanyName = "Wallet Withdraw",
+                        TransactionType = "WITHDRAW",
+                        Quantity = 1,
+                        Price = amount,
+                        Timestamp = DateTime.UtcNow
+                    });
+
+                    return (object)new { Message = "Funds withdrawn successfully", NewBalance = user.WalletBalance };
+                });
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw new InvalidOperationException(ConcurrencyErrorMessage);
+            }
 
             await InvalidatePortfolioCacheAsync(user.Id);
             return result;
