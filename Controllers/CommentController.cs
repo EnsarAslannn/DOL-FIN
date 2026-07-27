@@ -17,19 +17,16 @@ namespace api.Controllers
     {
         private readonly ICommentRepository _commentRepo;
         private readonly IStockRepository _stockRepo;
-        private readonly IStockCacheInvalidator _stockCacheInvalidator;
         private readonly UserManager<AppUser> _userManager;
 
         public CommentController(
             ICommentRepository commentRepo,
             IStockRepository stockRepo,
-            IStockCacheInvalidator stockCacheInvalidator,
             UserManager<AppUser> userManager
         )
         {
             _commentRepo = commentRepo;
             _stockRepo = stockRepo;
-            _stockCacheInvalidator = stockCacheInvalidator;
             _userManager = userManager;
         }
 
@@ -73,7 +70,6 @@ namespace api.Controllers
 
             var commentModel = commentDto.ToCommentFromCreate(stockId, appUser.Id);
             await _commentRepo.CreateAsync(commentModel);
-            await _stockCacheInvalidator.InvalidateStockAsync(stockId);
 
             return CreatedAtAction(
                 nameof(GetById),
@@ -112,11 +108,6 @@ namespace api.Controllers
                 return NotFound("Comment not found");
             }
 
-            if (existingComment.StockId.HasValue)
-            {
-                await _stockCacheInvalidator.InvalidateStockAsync(existingComment.StockId.Value);
-            }
-
             return Ok(comment.ToCommentDto());
         }
 
@@ -142,11 +133,6 @@ namespace api.Controllers
             if (commentModel == null)
             {
                 return NotFound("Comment does not exist");
-            }
-
-            if (existingComment.StockId.HasValue)
-            {
-                await _stockCacheInvalidator.InvalidateStockAsync(existingComment.StockId.Value);
             }
 
             return Ok(commentModel);

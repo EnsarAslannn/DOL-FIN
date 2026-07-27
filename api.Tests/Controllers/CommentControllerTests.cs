@@ -21,11 +21,9 @@ namespace api.Tests.Controllers
             string? authenticatedUsername
         )
         {
-            var stockCacheInvalidator = new Mock<IStockCacheInvalidator>();
             var controller = new CommentController(
                 commentRepo.Object,
                 stockRepo.Object,
-                stockCacheInvalidator.Object,
                 userManager.Object
             );
 
