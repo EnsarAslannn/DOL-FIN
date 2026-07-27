@@ -1,5 +1,6 @@
 using System.Text;
 using api.Data;
+using api.Diagnostics;
 using api.Interfaces;
 using api.Models;
 using api.Repository;
@@ -62,7 +63,7 @@ builder
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 
-builder.Services.AddDbContext<ApplicationDBContext>(options =>
+void ConfigureCommon(DbContextOptionsBuilder options)
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
     options.ConfigureWarnings(warnings =>
@@ -70,6 +71,42 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
             Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning
         )
     );
+}
+
+if (builder.Environment.IsDevelopment())
+{
+    // N+1 detection interceptor is Development-only: resolving it from DI
+    // requires the (sp, options) AddDbContext overload, which rebuilds
+    // DbContextOptions per scope instead of once -- a small overhead we don't
+    // want leaking into Staging/Production, so those keep the plain overload.
+    builder.Services.AddHttpContextAccessor();
+    builder.Services.AddSingleton<NPlusOneDetectionInterceptor>();
+    builder.Services.AddDbContext<ApplicationDBContext>(
+        (sp, options) =>
+        {
+            ConfigureCommon(options);
+            options.AddInterceptors(sp.GetRequiredService<NPlusOneDetectionInterceptor>());
+        }
+    );
+}
+else
+{
+    builder.Services.AddDbContext<ApplicationDBContext>(ConfigureCommon);
+}
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+    options.InstanceName = "dolfin:";
+});
+
+builder.Services.AddHybridCache(options =>
+{
+    options.DefaultEntryOptions = new Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions
+    {
+        Expiration = TimeSpan.FromMinutes(5),
+        LocalCacheExpiration = TimeSpan.FromSeconds(30),
+    };
 });
 
 builder
@@ -126,7 +163,12 @@ builder
         };
     });
 
-builder.Services.AddScoped<IStockRepository, StockRepository>();
+builder.Services.AddScoped<StockRepository>();
+builder.Services.AddScoped<CachedStockRepository>();
+builder.Services.AddScoped<IStockRepository>(sp => sp.GetRequiredService<CachedStockRepository>());
+builder.Services.AddScoped<IStockCacheInvalidator>(sp =>
+    sp.GetRequiredService<CachedStockRepository>()
+);
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IPortfolioRepository, PortfolioRepository>();
