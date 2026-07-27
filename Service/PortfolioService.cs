@@ -2,23 +2,34 @@ using api.Dtos;
 using api.Interfaces;
 using api.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Caching.Hybrid;
 
 namespace api.Service
 {
     public class PortfolioService : IPortfolioService
     {
+        private static readonly HybridCacheEntryOptions PortfolioCacheOptions = new()
+        {
+            Expiration = TimeSpan.FromMinutes(5),
+            LocalCacheExpiration = TimeSpan.FromSeconds(30),
+        };
+
         private readonly IPortfolioRepository _portfolioRepo;
         private readonly IStockRepository _stockRepo;
         private readonly ITransactionRepository _transactionRepo;
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<AppUser> _userManager;
+        private readonly HybridCache _cache;
+        private readonly ILogger<PortfolioService> _logger;
 
         public PortfolioService(
             IPortfolioRepository portfolioRepo,
             IStockRepository stockRepo,
             ITransactionRepository transactionRepo,
             IUnitOfWork unitOfWork,
-            UserManager<AppUser> userManager
+            UserManager<AppUser> userManager,
+            HybridCache cache,
+            ILogger<PortfolioService> logger
         )
         {
             _portfolioRepo = portfolioRepo;
@@ -26,11 +37,42 @@ namespace api.Service
             _transactionRepo = transactionRepo;
             _unitOfWork = unitOfWork;
             _userManager = userManager;
+            _cache = cache;
+            _logger = logger;
         }
 
         public async Task<List<PortfolioDto>> GetUserPortfolioAsync(AppUser user)
         {
-            return await _portfolioRepo.GetUserPortfolio(user);
+            try
+            {
+                return await _cache.GetOrCreateAsync(
+                    PortfolioCacheKey(user.Id),
+                    async ct => await _portfolioRepo.GetUserPortfolio(user),
+                    PortfolioCacheOptions
+                );
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Redis unavailable, falling back to direct DB read for portfolio of user {UserId}", user.Id);
+                return await _portfolioRepo.GetUserPortfolio(user);
+            }
+        }
+
+        private static string PortfolioCacheKey(string userId) => $"portfolio:user:{userId}";
+
+        // A write to the database already succeeded by the time we get here;
+        // a Redis hiccup on invalidation must not turn that into a 500 for
+        // the caller -- worst case a stale entry lingers until its TTL expires.
+        private async Task InvalidatePortfolioCacheAsync(string userId)
+        {
+            try
+            {
+                await _cache.RemoveAsync(PortfolioCacheKey(userId));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Redis unavailable, could not invalidate portfolio cache for user {UserId}", userId);
+            }
         }
 
         public async Task<object> BuyStockAsync(AppUser user, string symbol, int quantity)
@@ -47,7 +89,7 @@ namespace api.Service
             if (user.WalletBalance < totalCost)
                 throw new InvalidOperationException($"Insufficient funds. Required: ${totalCost:F2}, Available: ${user.WalletBalance:F2}");
 
-            return await _unitOfWork.ExecuteInTransactionAsync(async () =>
+            var result = await _unitOfWork.ExecuteInTransactionAsync(async () =>
             {
                 user.WalletBalance -= totalCost;
                 await _userManager.UpdateAsync(user);
@@ -89,6 +131,9 @@ namespace api.Service
 
                 return (object)new { Message = "Stock purchased successfully", NewBalance = user.WalletBalance };
             });
+
+            await InvalidatePortfolioCacheAsync(user.Id);
+            return result;
         }
 
         public async Task<object> SellStockAsync(AppUser user, string symbol, int quantity)
@@ -106,7 +151,7 @@ namespace api.Service
 
             decimal totalRevenue = stock.Purchase * quantity;
 
-            return await _unitOfWork.ExecuteInTransactionAsync(async () =>
+            var result = await _unitOfWork.ExecuteInTransactionAsync(async () =>
             {
                 user.WalletBalance += totalRevenue;
                 await _userManager.UpdateAsync(user);
@@ -134,6 +179,9 @@ namespace api.Service
 
                 return (object)new { Message = "Stock sold successfully", NewBalance = user.WalletBalance };
             });
+
+            await InvalidatePortfolioCacheAsync(user.Id);
+            return result;
         }
 
         public async Task<object> DepositFundsAsync(AppUser user, decimal amount)
@@ -141,7 +189,7 @@ namespace api.Service
             if (amount <= 0)
                 throw new ArgumentException("Deposit amount must be greater than 0");
 
-            return await _unitOfWork.ExecuteInTransactionAsync(async () =>
+            var result = await _unitOfWork.ExecuteInTransactionAsync(async () =>
             {
                 user.WalletBalance += amount;
                 var updateResult = await _userManager.UpdateAsync(user);
@@ -162,6 +210,9 @@ namespace api.Service
 
                 return (object)new { Message = "Funds deposited successfully", NewBalance = user.WalletBalance };
             });
+
+            await InvalidatePortfolioCacheAsync(user.Id);
+            return result;
         }
 
         public async Task<object> WithdrawFundsAsync(AppUser user, decimal amount)
@@ -172,7 +223,7 @@ namespace api.Service
             if (user.WalletBalance < amount)
                 throw new InvalidOperationException($"Insufficient funds. Available: ${user.WalletBalance:F2}");
 
-            return await _unitOfWork.ExecuteInTransactionAsync(async () =>
+            var result = await _unitOfWork.ExecuteInTransactionAsync(async () =>
             {
                 user.WalletBalance -= amount;
                 var updateResult = await _userManager.UpdateAsync(user);
@@ -193,6 +244,9 @@ namespace api.Service
 
                 return (object)new { Message = "Funds withdrawn successfully", NewBalance = user.WalletBalance };
             });
+
+            await InvalidatePortfolioCacheAsync(user.Id);
+            return result;
         }
     }
 }
