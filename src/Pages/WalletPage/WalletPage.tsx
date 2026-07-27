@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useAuth } from "../../Context/useAuth"
-import { portfolioDepositAPI, portfolioGetAPI, portfolioSellAPI } from "../../Services/PortfolioService"
+import { portfolioDepositAPI, portfolioGetAPI, portfolioSellAPI, portfolioWithdrawAPI } from "../../Services/PortfolioService"
 import { getProfileAPI } from "../../Services/AuthService"
 import type { PortfolioGet } from "../../Models/Portfolio"
 import { companyLogos } from "../../Components/Table/TestData"
@@ -96,12 +96,22 @@ const WalletPage = () => {
         if (!selectedSellStock) return
 
         if (selectedSellStock.symbol === "USD") {
-            const newBalance = liveBalance - quantity
-            setLiveBalance(newBalance)
-            updateWalletBalance(newBalance)
-            setIsSellModalOpen(false)
-            setSelectedSellStock(null)
-            toast.success(`$${quantity.toLocaleString()} successfully withdrawn from wallet balance!`)
+            portfolioWithdrawAPI(quantity)
+                .then((res) => {
+                    if (res && res.status >= 200 && res.status < 300) {
+                        toast.success(`$${quantity.toLocaleString()} successfully withdrawn from wallet balance!`)
+                        if (res.data?.newBalance !== undefined) {
+                            setLiveBalance(res.data.newBalance)
+                            updateWalletBalance(res.data.newBalance)
+                        }
+                        setIsSellModalOpen(false)
+                        setSelectedSellStock(null)
+                    }
+                })
+                .catch((e) => {
+                    console.error(e)
+                    toast.error("Withdrawal failed. Please try again.")
+                })
             return
         }
 

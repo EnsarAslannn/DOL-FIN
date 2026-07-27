@@ -353,15 +353,15 @@ const SearchPage = () => {
                   Portfolio Analytics
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
-                  <div onClick={() => togglePanel("worth")} className="cursor-pointer">
+                  <button type="button" onClick={() => togglePanel("worth")} className="cursor-pointer text-left w-full">
                     <Tile title="Total Net Worth" subTitle={`$${estimatedTotalValue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} />
-                  </div>
-                  <div onClick={() => togglePanel("health")} className="cursor-pointer">
+                  </button>
+                  <button type="button" onClick={() => togglePanel("health")} className="cursor-pointer text-left w-full">
                     <Tile title="Portfolio Health" subTitle={portfolioHealth} />
-                  </div>
-                  <div onClick={() => togglePanel("sector")} className="cursor-pointer">
+                  </button>
+                  <button type="button" onClick={() => togglePanel("sector")} className="cursor-pointer text-left w-full">
                     <Tile title="Primary Sector" subTitle={sectorData.primarySector} />
-                  </div>
+                  </button>
                 </div>
 
                 <div

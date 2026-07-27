@@ -3,9 +3,12 @@ import { createRoot } from "react-dom/client"
 import "./index.css"
 import { RouterProvider } from "react-router-dom"
 import { router } from "./Routes/Routes.tsx"
+import ErrorBoundary from "./Components/ErrorBoundary/ErrorBoundary.tsx"
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <ErrorBoundary>
+      <RouterProvider router={router} />
+    </ErrorBoundary>
   </StrictMode>,
 )
