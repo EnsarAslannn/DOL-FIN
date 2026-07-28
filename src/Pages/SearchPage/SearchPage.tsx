@@ -321,7 +321,7 @@ const SearchPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
           <div className="lg:col-span-3 flex flex-col space-y-10">
             <div className="flex flex-col space-y-4">
-              <h2 className="text-2xl font-bold text-pulse tracking-tight border-b border-ridge/40 pb-3">
+              <h2 className="text-2xl font-bold text-foam tracking-[-0.02em] font-display border-b border-white/8 pb-3">
                 Search Results
               </h2>
               {searchResult.length > 0 ? (
@@ -332,7 +332,7 @@ const SearchPage = () => {
                   />
                 </div>
               ) : (
-                <div className="py-12 text-center bg-depth border border-ridge/40 rounded-xl shadow-sm">
+                <div className="py-16 text-center glass-panel rounded-2xl">
                   <span className="text-sm font-medium text-mist">
                     Use the search bar above to find and add instruments to your portfolio.
                   </span>
@@ -347,7 +347,7 @@ const SearchPage = () => {
 
             {portfolioValues && (
               <div className="w-full flex flex-col space-y-4 pt-2">
-                <h3 className="text-sm font-bold text-pulse uppercase tracking-wider pl-1">
+                <h3 className="text-[11px] font-bold text-pulse uppercase tracking-[0.16em] font-mono pl-1">
                   Portfolio Analytics
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
@@ -365,8 +365,8 @@ const SearchPage = () => {
                 <div
                   className={`transition-all duration-300 ease-in-out overflow-hidden ${activePanel === "worth" ? "max-h-[350px] opacity-100 mt-2" : "max-h-0 opacity-0 pointer-events-none"}`}
                 >
-                  <div className="w-full bg-depth border border-ridge/40 rounded-2xl p-6 shadow-2xl flex flex-col space-y-4 text-left">
-                    <div className="flex items-center justify-between border-b border-ridge/40 pb-3">
+                  <div className="glass-panel w-full rounded-2xl p-6 flex flex-col space-y-4 text-left">
+                    <div className="flex items-center justify-between border-b border-white/8 pb-3">
                       <div className="flex flex-col">
                         <span className="text-xs font-bold text-foam tracking-tight">
                           Net Worth Growth Timeline
@@ -381,11 +381,11 @@ const SearchPage = () => {
                     </div>
 
                     <div className="w-full h-44 relative pt-4 flex items-end">
-                      <div className="absolute inset-0 flex flex-col justify-between pointer-events-none border-l border-b border-ridge/20 pb-6 pl-2">
-                        <div className="w-full border-t border-ridge/20 text-[9px] font-bold font-mono text-mist/70 pt-0.5 text-right">
+                      <div className="absolute inset-0 flex flex-col justify-between pointer-events-none border-l border-b border-white/6 pb-6 pl-2">
+                        <div className="w-full border-t border-white/6 text-[9px] font-bold font-mono text-mist/70 pt-0.5 text-right">
                           ${maxVal.toFixed(0)}
                         </div>
-                        <div className="w-full border-t border-ridge/20 text-[9px] font-bold font-mono text-mist/70 pt-0.5 text-right">
+                        <div className="w-full border-t border-white/6 text-[9px] font-bold font-mono text-mist/70 pt-0.5 text-right">
                           ${((maxVal + minVal) / 2).toFixed(0)}
                         </div>
                         <div className="w-full text-[9px] font-bold font-mono text-mist/70 text-right">
@@ -430,8 +430,8 @@ const SearchPage = () => {
                 <div
                   className={`transition-all duration-300 ease-in-out overflow-hidden ${activePanel === "health" ? "max-h-[350px] opacity-100 mt-2" : "max-h-0 opacity-0 pointer-events-none"}`}
                 >
-                  <div className="w-full bg-depth border border-ridge/40 rounded-2xl p-6 shadow-2xl flex flex-col space-y-4 text-left">
-                    <div className="flex items-center justify-between border-b border-ridge/40 pb-3">
+                  <div className="glass-panel w-full rounded-2xl p-6 flex flex-col space-y-4 text-left">
+                    <div className="flex items-center justify-between border-b border-white/8 pb-3">
                       <div className="flex flex-col">
                         <span className="text-xs font-bold text-foam tracking-tight">
                           Portfolio Risk & Diversification Audit
@@ -445,7 +445,7 @@ const SearchPage = () => {
                         Active Strategy: {portfolioHealth}
                       </span>
                     </div>
-                    <div className="bg-abyss/40 p-4 rounded-xl border border-ridge/20 leading-relaxed">
+                    <div className="bg-black/35 p-5 rounded-xl border border-white/8 leading-relaxed">
                       <p className="text-xs font-bold text-mist mb-1.5 uppercase tracking-wider font-mono">
                         Macroeconomic & Structural Risk Analysis:
                       </p>
@@ -459,8 +459,8 @@ const SearchPage = () => {
                 <div
                   className={`transition-all duration-300 ease-in-out overflow-hidden ${activePanel === "sector" ? "max-h-[350px] opacity-100 mt-2" : "max-h-0 opacity-0 pointer-events-none"}`}
                 >
-                  <div className="w-full bg-depth border border-ridge/40 rounded-2xl p-6 shadow-2xl flex flex-col space-y-5 text-left">
-                    <div className="flex items-center justify-between border-b border-ridge/40 pb-3">
+                  <div className="glass-panel w-full rounded-2xl p-6 flex flex-col space-y-5 text-left">
+                    <div className="flex items-center justify-between border-b border-white/8 pb-3">
                       <div className="flex flex-col">
                         <span className="text-xs font-bold text-foam tracking-tight">
                           Sector Allocation Layout
@@ -474,9 +474,9 @@ const SearchPage = () => {
                           <span>Technology & Semiconductors</span>
                           <span>{sectorData.techPercent}.00%</span>
                         </div>
-                        <div className="w-full h-1.5 bg-depth-2 rounded-full overflow-hidden">
+                        <div className="w-full h-1.5 bg-white/8 rounded-full overflow-hidden">
                           <div
-                            className="h-full bg-purple-500 rounded-full"
+                            className="h-full bg-orchid rounded-full"
                             style={{ width: `${sectorData.techPercent}%` }}
                           ></div>
                         </div>
@@ -487,7 +487,7 @@ const SearchPage = () => {
                           <span>Other Sectors ({sectorData.primarySector})</span>
                           <span>{sectorData.otherPercent}.00%</span>
                         </div>
-                        <div className="w-full h-1.5 bg-depth-2 rounded-full overflow-hidden">
+                        <div className="w-full h-1.5 bg-white/8 rounded-full overflow-hidden">
                           <div
                             className="h-full bg-pulse-dim rounded-full"
                             style={{ width: `${sectorData.otherPercent}%` }}
@@ -509,7 +509,7 @@ const SearchPage = () => {
         </div>
 
         {serverError && (
-          <div className="text-center text-loss font-medium my-4 bg-loss/10 p-4 rounded-xl border border-loss/30">
+          <div className="text-center text-loss font-semibold my-4 bg-loss/10 p-4 rounded-xl border border-loss/30">
             {serverError}
           </div>
         )}

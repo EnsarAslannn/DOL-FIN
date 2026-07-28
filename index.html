@@ -2,9 +2,26 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <!-- PNG first (warm mark, high-res); the original .ico stays as fallback. -->
+    <link rel="icon" type="image/png" sizes="180x180" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+    <link rel="alternate icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DOL-FIN</title>
+    <meta name="theme-color" content="#0e0e0e" />
+    <meta name="color-scheme" content="dark" />
+    <meta
+      name="description"
+      content="DOL-FIN - track tickers, read the fundamentals underneath the price, and build a portfolio without paying for a premium terminal."
+    />
+    <title>DOL-FIN — Market Intelligence Terminal</title>
+    <!-- Paint the void before the bundle lands, so there is never a white flash. -->
+    <style>
+      html,
+      body,
+      #root {
+        background-color: #0e0e0e;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>

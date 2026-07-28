@@ -52,7 +52,7 @@ const Search: React.FC<Props> = ({
           </svg>
         </div>
         <input
-          className="w-full pl-12 pr-24 py-3.5 bg-depth text-foam placeholder-mist/70 text-sm rounded-xl border border-ridge/60 shadow-lg outline-none transition-all duration-200 focus:border-pulse focus:ring-2 focus:ring-pulse/10"
+          className="w-full pl-12 pr-28 py-4 bg-black/50 backdrop-blur-md text-foam placeholder-mist/60 text-sm rounded-xl border border-white/10 outline-none transition-all duration-200 focus:border-pulse/70 focus:shadow-[0_0_0_4px_rgba(255,87,26,0.12)]"
           id="search-input"
           placeholder="Search companies by ticker or name..."
           value={search}
@@ -64,15 +64,15 @@ const Search: React.FC<Props> = ({
 
         <button
           type="submit"
-          className="absolute right-2 px-5 py-2 bg-pulse hover:bg-pulse-dim text-abyss font-bold text-xs uppercase tracking-wider rounded-lg shadow-md transition-all duration-200 active:scale-95"
+          className="glow-action absolute right-2.5 px-5 py-2.5 bg-gradient-to-r from-pulse to-[#ff8a3d] text-white font-bold text-[11px] uppercase tracking-[0.12em] rounded-lg transition-all duration-200 active:scale-95 cursor-pointer"
         >
           Search
         </button>
       </form>
 
       {showSuggestions && (
-        <div className="absolute left-2 right-2 mt-2 z-50 bg-depth border border-ridge/60 rounded-xl shadow-2xl overflow-hidden max-h-60 flex flex-col text-left">
-          <div className="px-4 py-2 text-[10px] font-bold text-mist uppercase tracking-wider border-b border-ridge/40 bg-abyss/30 font-mono">
+        <div className="glass-panel absolute left-2 right-2 mt-2 z-50 rounded-xl shadow-2xl overflow-hidden max-h-60 flex flex-col text-left">
+          <div className="px-4 py-2.5 text-[10px] font-bold text-mist uppercase tracking-[0.14em] border-b border-white/8 font-mono">
             Featured Demo Assets
           </div>
           {suggestions
@@ -81,7 +81,7 @@ const Search: React.FC<Props> = ({
               <div
                 key={symbol}
                 onMouseDown={() => handleSuggestionClick(symbol)}
-                className="px-4 py-2.5 cursor-pointer text-sm font-semibold text-mist hover:bg-depth-2 hover:text-pulse transition-colors duration-150 font-mono"
+                className="px-4 py-2.5 cursor-pointer text-sm font-semibold text-mist hover:bg-white/5 hover:text-pulse transition-colors duration-150 font-mono"
               >
                 {symbol}
               </div>

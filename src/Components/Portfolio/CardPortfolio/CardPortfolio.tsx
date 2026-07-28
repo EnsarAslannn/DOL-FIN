@@ -28,7 +28,7 @@ const CardPortfolio = ({ portfolioValue, onPortfolioDelete, totalPortfolioInvest
   const barColor = isProfit ? "bg-gain" : "bg-loss"
 
   return (
-    <div className="group relative flex flex-col p-5 bg-depth rounded-2xl border border-ridge/40 shadow-lg transition-all duration-200 hover:border-ridge/50 hover:bg-depth-2">
+    <div className="group relative flex flex-col p-5 bg-depth rounded-2xl border border-white/8 transition-all duration-200 hover:border-pulse/25 hover:bg-depth-2/60">
       <div className="absolute top-3 right-3 opacity-30 group-hover:opacity-100 transition-opacity cursor-pointer z-10 text-mist">
         <DeletePortfolio
           portfolioValue={portfolioValue.symbol}
@@ -36,8 +36,8 @@ const CardPortfolio = ({ portfolioValue, onPortfolioDelete, totalPortfolioInvest
         />
       </div>
 
-      <div className="flex items-center space-x-3 border-b border-ridge/40 pb-3 mb-4">
-        <div className="w-10 h-10 rounded-xl bg-depth-2 border border-ridge/40 p-2 flex items-center justify-center shrink-0">
+      <div className="flex items-center space-x-3 border-b border-white/8 pb-3 mb-4">
+        <div className="w-10 h-10 rounded-xl bg-depth-2 border border-white/8 p-2 flex items-center justify-center shrink-0">
           {companyLogos[symbolUpper] ? (
             companyLogos[symbolUpper]()
           ) : (
@@ -98,12 +98,12 @@ const CardPortfolio = ({ portfolioValue, onPortfolioDelete, totalPortfolioInvest
         </div>
       </div>
 
-      <div className="w-full pt-3 border-t border-ridge/20 flex flex-col space-y-1">
+      <div className="w-full pt-3 border-t border-white/6 flex flex-col space-y-1">
         <div className="flex items-center justify-between text-[9px] font-bold text-mist uppercase tracking-wider">
           <span>Portfolio Weight</span>
           <span className="text-foam/85 font-mono">{weightString}</span>
         </div>
-        <div className="w-full h-1 bg-depth-2 rounded-full overflow-hidden">
+        <div className="w-full h-1 bg-white/8 rounded-full overflow-hidden">
           <div
             className={`h-full ${barColor} rounded-full`}
             style={{ width: weightString }}

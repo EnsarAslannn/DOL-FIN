@@ -32,7 +32,7 @@ const StockCommentForm = ({ handleComment }: Props) => {
         <input
           type="text"
           id="title"
-          className="bg-abyss border border-ridge/60 text-foam text-xs font-bold rounded-xl block w-full p-3 focus:outline-none focus:border-pulse placeholder-mist/60"
+          className="bg-black/50 border border-white/10 text-foam text-xs font-bold rounded-xl block w-full p-3.5 focus:outline-none focus:border-pulse/70 focus:shadow-[0_0_0_4px_rgba(255,87,26,0.12)] placeholder-mist/50 transition-all"
           placeholder="Title"
           {...register("title")}
         />
@@ -44,7 +44,7 @@ const StockCommentForm = ({ handleComment }: Props) => {
       </div>
 
       <div className="w-full text-left">
-        <div className="p-3 bg-abyss rounded-xl border border-ridge/60 focus-within:border-pulse transition-colors">
+        <div className="p-3.5 bg-black/50 rounded-xl border border-white/10 focus-within:border-pulse/70 focus-within:shadow-[0_0_0_4px_rgba(255,87,26,0.12)] transition-all">
           <label htmlFor="comment" className="sr-only">
             Your comment
           </label>
@@ -65,7 +65,7 @@ const StockCommentForm = ({ handleComment }: Props) => {
 
       <button
         type="submit"
-        className="py-2.5 px-6 text-xs font-bold text-abyss bg-pulse hover:bg-pulse-dim rounded-xl shadow-md shadow-pulse/10 self-start transition-all duration-150"
+        className="glow-action py-3 px-6 text-[11px] font-bold uppercase tracking-[0.12em] text-white bg-gradient-to-r from-pulse to-[#ff8a3d] rounded-xl self-start transition-all duration-150 active:scale-95 cursor-pointer"
       >
         Post comment
       </button>

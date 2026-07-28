@@ -1,63 +1,85 @@
-import { Link } from "react-router-dom"
-import logo from "../../assets/dolphin.png"
+import { Link, useLocation } from "react-router-dom"
+// Hue-rotated variant of dolphin.png -- same mark, moved out of the cold blues
+// so it sits inside the Obsidian Pulse palette instead of fighting it.
+import logo from "../../assets/dolphin-ember.png"
 import { useAuth } from "../../Context/useAuth"
 
 const Navbar = () => {
   const { user, logout } = useAuth()
+  const location = useLocation()
+
+  // The nav pill marks where you are; everything else stays recessed so the
+  // active item is the only lit element in the group.
+  const navLinkClass = (path: string) =>
+    `px-4 py-2 rounded-full text-[13px] font-semibold tracking-wide transition-all duration-200 ${
+      location.pathname.startsWith(path)
+        ? "bg-pulse/12 text-pulse shadow-[inset_0_0_0_1px_rgba(255,87,26,0.22)]"
+        : "text-mist hover:text-foam"
+    }`
 
   return (
-    <nav className="w-full bg-abyss border-b border-ridge/40 px-6 py-4 flex items-center justify-center font-sans relative z-50">
-      <div className="w-full max-w-6xl flex items-center justify-between">
+    <nav className="sticky top-0 w-full z-50 border-b border-white/8 bg-abyss/80 backdrop-blur-xl font-sans">
+      <div className="w-full max-w-6xl mx-auto px-6 h-20 flex items-center justify-between gap-6">
 
-        <div className="flex items-center space-x-10">
-          <Link to="/" className="flex items-center space-x-3 group">
-            <img src={logo} alt="DOLFIN Logo" className="h-9 object-contain" />
-            <span className="text-2xl font-bold tracking-wider text-pulse font-display uppercase select-none group-hover:text-foam transition-colors">
-              DOL-FIN
+        <div className="flex items-center gap-8">
+          <Link to="/" className="flex items-center gap-3 group shrink-0">
+            <span className="relative flex items-center justify-center">
+              <span className="absolute inset-0 rounded-full bg-pulse/25 blur-lg group-hover:bg-pulse/40 transition-colors" />
+              <img
+                src={logo}
+                alt="DOL-FIN Logo"
+                className="relative h-9 object-contain"
+              />
+            </span>
+            <span className="text-xl font-bold tracking-tight text-foam font-display uppercase select-none">
+              DOL<span className="text-pulse">-</span>FIN
             </span>
           </Link>
 
-          <div className="flex items-center space-x-8">
-            <Link
-              to="/search"
-              className="text-base font-semibold text-mist hover:text-pulse transition-colors"
-            >
+          <div className="hidden md:flex items-center gap-1 bg-depth/40 border border-white/5 rounded-full p-1">
+            <Link to="/search" className={navLinkClass("/search")}>
               Search
             </Link>
-
             {user && (
-              <Link
-                to="/wallet"
-                className="text-base font-semibold text-mist hover:text-pulse transition-colors"
-              >
+              <Link to="/wallet" className={navLinkClass("/wallet")}>
                 Wallet
               </Link>
             )}
           </div>
         </div>
 
-        <div className="flex items-center space-x-8">
-          <span className="text-sm font-semibold text-mist tracking-wide">
-            Welcome,{" "}
-            <span className="text-foam capitalize font-bold">
-              {user ? user.userName : "Guest"}
-            </span>
-          </span>
-
+        <div className="flex items-center gap-4">
           {user ? (
-            <button
-              onClick={logout}
-              className="py-2.5 px-6 text-sm font-bold text-foam bg-loss hover:bg-loss/85 rounded-xl shadow-md shadow-loss/10 transition-all duration-200 cursor-pointer"
-            >
-              Logout
-            </button>
+            <>
+              {/* The balance belongs in the chrome: it is the number a user
+                  checks constantly while moving between screens. */}
+              <div className="hidden sm:flex flex-col items-end leading-tight px-3 py-1.5 rounded-xl bg-depth/50 border border-white/5">
+                <span className="text-[9px] font-semibold uppercase tracking-[0.14em] text-mist">
+                  {user.userName}
+                </span>
+                <span className="text-xs font-bold text-pulse-dim font-mono">
+                  ${user.walletBalance?.toFixed(2) ?? "0.00"}
+                </span>
+              </div>
+              <button
+                onClick={logout}
+                className="py-2.5 px-5 text-xs font-bold uppercase tracking-wider text-mist hover:text-loss border border-white/8 hover:border-loss/40 hover:bg-loss/8 rounded-xl transition-all duration-200 cursor-pointer"
+              >
+                Logout
+              </button>
+            </>
           ) : (
-            <Link
-              to="/login"
-              className="py-2.5 px-6 text-sm font-bold text-abyss bg-pulse hover:bg-pulse/85 rounded-xl shadow-md shadow-pulse/10 transition-all duration-200 text-center cursor-pointer"
-            >
-              Login
-            </Link>
+            <>
+              <span className="hidden sm:inline text-xs font-medium text-mist tracking-wide">
+                Welcome, <span className="text-foam font-semibold">Guest</span>
+              </span>
+              <Link
+                to="/login"
+                className="glow-action py-2.5 px-6 text-xs font-bold uppercase tracking-wider text-white bg-gradient-to-r from-pulse to-[#ff8a3d] rounded-xl transition-all duration-200 text-center cursor-pointer active:scale-95"
+              >
+                Login
+              </Link>
+            </>
           )}
         </div>
 

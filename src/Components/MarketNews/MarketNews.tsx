@@ -3,7 +3,7 @@ import { realMarketNewsData } from "../../Components/Table/TestData"
 const MarketNews = () => {
   return (
     <div className="w-full flex flex-col space-y-4 mt-4">
-      <h2 className="text-xl font-bold text-foam tracking-tight border-b border-ridge/40 pb-3 flex items-center gap-2 text-left">
+      <h2 className="text-xl font-bold text-foam tracking-[-0.02em] font-display border-b border-white/8 pb-3 flex items-center gap-2 text-left">
         Latest Market Insights
       </h2>
       <div className="grid grid-cols-1 gap-3">
@@ -13,7 +13,7 @@ const MarketNews = () => {
             href={news.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-depth rounded-xl border border-ridge/40 shadow-lg hover:border-ridge/50 hover:bg-depth-2 transition-all duration-200 gap-3 text-left group block"
+            className="flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-depth rounded-xl border border-white/8 hover:border-pulse/25 hover:bg-depth-2/60 transition-all duration-200 gap-3 text-left group block"
           >
             <div className="flex flex-col space-y-2">
               <div className="flex items-center space-x-2">
@@ -37,7 +37,7 @@ const MarketNews = () => {
               )}
             </div>
             <div className="text-right shrink-0">
-              <span className="text-[10px] text-mist font-medium bg-depth-2 px-2 py-1 rounded-md border border-ridge/25">
+              <span className="text-[10px] text-mist font-medium font-mono bg-white/5 px-2 py-1 rounded-md border border-white/6">
                 {news.time}
               </span>
             </div>

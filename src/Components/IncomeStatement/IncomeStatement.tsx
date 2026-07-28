@@ -127,7 +127,7 @@ const IncomeStatement = () => {
 
   if (!allowedStocks.includes(ticker?.toUpperCase())) {
     return (
-      <div className="w-full bg-depth border border-ridge/40 rounded-2xl p-8 shadow-2xl flex flex-col items-center justify-center text-center min-h-[350px] space-y-4 my-4 animate-fadeIn">
+      <div className="glass-panel w-full rounded-2xl p-8 flex flex-col items-center justify-center text-center min-h-[350px] space-y-4 my-4 animate-fadeIn">
         <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 text-2xl shadow-sm">
           📊
         </div>
@@ -143,7 +143,7 @@ const IncomeStatement = () => {
           Financial data for <span className="font-bold font-mono text-pulse bg-pulse/10 px-1.5 py-0.5 rounded border border-pulse/20">{ticker?.toUpperCase()}</span> is currently unavailable for this demo version.
         </p>
         <div className="pt-2">
-          <p className="text-[11px] text-mist font-medium bg-abyss/40 border border-ridge/20 px-3 py-1.5 rounded-xl font-mono">
+          <p className="text-[11px] text-mist font-medium bg-black/40 border border-white/8 px-3 py-1.5 rounded-xl font-mono">
             Please audit premium corporate tiers: AAPL, MSFT, NVDA, TSLA, GOOGL
           </p>
         </div>
@@ -206,7 +206,7 @@ const IncomeStatement = () => {
     return (
       <div className="w-full flex flex-col space-y-4 mt-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-          <div className="bg-depth border border-ridge/40 rounded-2xl p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
+          <div className="bg-depth border border-white/8 rounded-2xl p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
             <div className="flex flex-col space-y-1">
               <span className="text-mist uppercase font-bold text-[10px] tracking-widest font-mono">
                 Net Profit Margin
@@ -233,7 +233,7 @@ const IncomeStatement = () => {
             </div>
           </div>
 
-          <div className="bg-depth border border-ridge/40 rounded-2xl p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
+          <div className="bg-depth border border-white/8 rounded-2xl p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
             <div className="flex flex-col space-y-1">
               <span className="text-mist uppercase font-bold text-[10px] tracking-widest font-mono">
                 Revenue Growth (YoY)
@@ -263,8 +263,8 @@ const IncomeStatement = () => {
           </div>
         </div>
 
-        <div className="w-full bg-depth border border-ridge/40 rounded-2xl p-5 shadow-xl flex flex-col space-y-3 text-left">
-          <div className="flex items-center justify-between border-b border-ridge/20 pb-2.5">
+        <div className="w-full bg-depth border border-white/8 rounded-2xl p-5 shadow-xl flex flex-col space-y-3 text-left">
+          <div className="flex items-center justify-between border-b border-white/6 pb-2.5">
             <h4 className="text-xs font-bold text-mist uppercase tracking-wider font-mono flex items-center gap-2">
               <svg
                 className="w-4 h-4 text-pulse"
@@ -306,7 +306,7 @@ const IncomeStatement = () => {
     <>
       {incomeStatement ? (
         <div className="w-full flex flex-col">
-          <div className="block w-full bg-depth shadow-xl rounded-2xl p-6 mb-6 border border-ridge/40 flex flex-col space-y-3 text-left">
+          <div className="block w-full bg-depth shadow-xl rounded-2xl p-6 mb-6 border border-white/8 flex flex-col space-y-3 text-left">
             <h3 className="text-base font-bold text-pulse uppercase tracking-wider font-mono">
               Understanding the Income Statement
             </h3>

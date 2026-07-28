@@ -13,22 +13,26 @@ export default {
       xl: "1440px",
     },
     extend: {
+      // Tailwind v4 reads the real tokens from the `@theme` block in
+      // src/index.css; this mirror exists only so editor tooling and anything
+      // still reaching for a config file see the same Obsidian Pulse values.
       colors: {
-        abyss: "#071316",
-        depth: "#0e2126",
-        "depth-2": "#14313a",
-        ridge: "#1b4a47",
-        pulse: "#45e8d6",
-        "pulse-dim": "#2b9c90",
+        abyss: "#0e0e0e",
+        depth: "#1c1b1b",
+        "depth-2": "#2a2a2a",
+        ridge: "#5c4037",
+        pulse: "#ff571a",
+        "pulse-dim": "#ffb59e",
         gain: "#5fe3a6",
-        loss: "#ff7a66",
-        foam: "#eaf6f4",
-        mist: "#82a6a3",
+        loss: "#ff5d73",
+        orchid: "#d1bcff",
+        foam: "#e5e2e1",
+        mist: "#ad897e",
       },
       fontFamily: {
-        sans: ["IBM Plex Sans", "sans-serif"],
-        display: ["Space Grotesk", "sans-serif"],
-        mono: ["IBM Plex Mono", "monospace"],
+        sans: ["Inter", "sans-serif"],
+        display: ["Montserrat", "sans-serif"],
+        mono: ["JetBrains Mono", "monospace"],
       },
       spacing: {
         180: "32rem",

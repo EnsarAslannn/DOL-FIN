@@ -6,6 +6,7 @@ import type { PortfolioGet } from "../../Models/Portfolio"
 import { companyLogos } from "../../Components/Table/TestData"
 import { toast } from "react-toastify"
 import PurchasePortfolio from "../../Components/Portfolio/PurchasePortfolio/PurchasePortfolio"
+import marketTerrain from "../../assets/generated/market-terrain.jpg"
 
 const WalletPage = () => {
     const { user, updateWalletBalance } = useAuth()
@@ -150,35 +151,45 @@ const WalletPage = () => {
     return (
         <div className="w-full min-h-screen bg-abyss font-sans pb-16 text-foam text-left">
             <div className="w-full max-w-6xl mx-auto px-6 pt-10 flex flex-col space-y-8">
-                <div className="border-b border-ridge/40 pb-4">
-                    <h1 className="text-2xl font-bold tracking-tight text-foam">Wallet Overview</h1>
-                    <p className="text-xs text-mist mt-1">Manage your funds and monitor estimated asset distribution.</p>
+                <div className="border-b border-white/8 pb-5">
+                    <h1 className="text-3xl font-bold tracking-[-0.02em] text-foam font-display">Wallet Overview</h1>
+                    <p className="text-xs text-mist mt-1.5">Manage your funds and monitor estimated asset distribution.</p>
                 </div>
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div className="lg:col-span-2 bg-depth border border-ridge/40 rounded-2xl p-6 shadow-xl flex flex-col justify-between relative overflow-hidden">
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-pulse/5 rounded-full blur-2xl pointer-events-none"></div>
-                        <div>
-                            <span className="text-xs font-bold text-mist uppercase tracking-wider">Est. Total Value</span>
-                            <div className="flex items-baseline space-x-2 mt-2">
-                                <h2 className="text-3xl font-mono font-bold text-foam">${estimatedTotalValue.toFixed(2)}</h2>
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div className="lg:col-span-2 glass-panel-hot rounded-2xl p-7 flex flex-col justify-between relative overflow-hidden min-h-[220px]">
+                        {/* Key art #5: the balance sheet as terrain. It lives behind
+                            the single largest number in the app, where an empty
+                            panel would otherwise be. */}
+                        <img
+                            src={marketTerrain}
+                            alt=""
+                            aria-hidden="true"
+                            className="absolute inset-0 w-full h-full object-cover opacity-30 pointer-events-none"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-r from-abyss via-abyss/80 to-abyss/30 pointer-events-none"></div>
+
+                        <div className="relative z-10">
+                            <span className="text-[10px] font-bold text-mist uppercase tracking-[0.16em] font-mono">Est. Total Value</span>
+                            <div className="flex items-baseline space-x-2 mt-3">
+                                <h2 className="text-5xl font-mono font-bold text-foam tracking-[-0.03em]">${estimatedTotalValue.toFixed(2)}</h2>
                                 <span className="text-sm font-bold text-mist font-mono">USD</span>
                             </div>
                         </div>
-                        <div className="grid grid-cols-2 gap-4 pt-6 mt-6 border-t border-ridge/20">
+                        <div className="relative z-10 grid grid-cols-2 gap-4 pt-6 mt-6 border-t border-white/8">
                             <div className="flex flex-col">
-                                <span className="text-[11px] font-bold text-mist uppercase tracking-wider">Cash Balance (Wallet)</span>
-                                <span className="text-base font-mono font-bold text-pulse mt-1">${liveBalance.toFixed(2)}</span>
+                                <span className="text-[10px] font-bold text-mist uppercase tracking-[0.14em]">Cash Balance (Wallet)</span>
+                                <span className="text-lg font-mono font-bold text-pulse mt-1.5">${liveBalance.toFixed(2)}</span>
                             </div>
                             <div className="flex flex-col">
-                                <span className="text-[11px] font-bold text-mist uppercase tracking-wider">Stocks Value (Portfolio)</span>
-                                <span className="text-base font-mono font-bold text-pulse-dim mt-1">${stocksValue.toFixed(2)}</span>
+                                <span className="text-[10px] font-bold text-mist uppercase tracking-[0.14em]">Stocks Value (Portfolio)</span>
+                                <span className="text-lg font-mono font-bold text-pulse-dim mt-1.5">${stocksValue.toFixed(2)}</span>
                             </div>
                         </div>
                     </div>
-                    <div className="bg-depth border border-ridge/40 rounded-2xl p-6 shadow-xl flex flex-col justify-between">
+                    <div className="bg-depth border border-white/8 rounded-2xl p-6 flex flex-col justify-between">
                         <div>
-                            <h3 className="text-sm font-bold text-foam tracking-wide uppercase mb-1">Deposit Cash</h3>
-                            <p className="text-[11px] text-mist mb-4">Add instant simulator credits into your trading account.</p>
+                            <h3 className="text-sm font-bold text-foam tracking-[0.1em] uppercase mb-1.5 font-display">Deposit Cash</h3>
+                            <p className="text-[11px] text-mist mb-4 leading-relaxed">Add instant simulator credits into your trading account.</p>
                         </div>
                         <form onSubmit={handleDepositSubmit} className="flex flex-col space-y-4 w-full">
                             <div>
@@ -191,7 +202,7 @@ const WalletPage = () => {
                                         placeholder="0.00"
                                         value={depositAmount}
                                         onChange={(e) => setDepositAmount(e.target.value)}
-                                        className="w-full pl-8 pr-16 py-3 bg-abyss border border-ridge/50 focus:border-pulse/80 rounded-xl focus:outline-none focus:ring-2 focus:ring-pulse/10 text-foam font-bold text-lg font-mono transition-all"
+                                        className="w-full pl-8 pr-16 py-3 bg-black/50 border border-white/10 focus:border-pulse/70 rounded-xl focus:outline-none focus:shadow-[0_0_0_4px_rgba(255,87,26,0.12)] text-foam font-bold text-lg font-mono transition-all"
                                     />
                                     <span className="absolute right-4 font-sans text-xs font-bold text-pulse bg-pulse/10 px-2 py-0.5 rounded border border-pulse/20">USD</span>
                                 </div>
@@ -199,9 +210,9 @@ const WalletPage = () => {
                             <button
                                 type="submit"
                                 disabled={isSubmitting || !depositAmount}
-                                className={`w-full py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-200 ${isSubmitting || !depositAmount
-                                    ? "bg-depth-2 text-mist/70 cursor-not-allowed border border-ridge/20"
-                                    : "bg-pulse hover:bg-pulse-dim text-abyss shadow-lg shadow-pulse/10 active:scale-[0.97]"
+                                className={`w-full py-3.5 rounded-xl font-bold text-xs uppercase tracking-[0.12em] transition-all duration-200 ${isSubmitting || !depositAmount
+                                    ? "bg-depth-2 text-mist/60 cursor-not-allowed border border-white/6"
+                                    : "glow-action bg-gradient-to-r from-pulse to-[#ff8a3d] text-white active:scale-[0.97] cursor-pointer"
                                     }`}
                             >
                                 {isSubmitting ? "Processing..." : "Confirm Deposit"}
@@ -209,25 +220,25 @@ const WalletPage = () => {
                         </form>
                     </div>
                 </div>
-                <div className="bg-depth border border-ridge/40 rounded-2xl shadow-xl overflow-hidden">
-                    <div className="px-6 py-4 border-b border-ridge/20 bg-abyss/30">
-                        <h3 className="text-sm font-bold text-mist uppercase tracking-wider">My Assets (Asset View)</h3>
+                <div className="bg-depth border border-white/8 rounded-2xl overflow-hidden">
+                    <div className="px-6 py-4 border-b border-white/8 bg-black/25">
+                        <h3 className="text-[11px] font-bold text-mist uppercase tracking-[0.16em] font-mono">My Assets (Asset View)</h3>
                     </div>
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse font-sans">
                             <thead>
-                                <tr className="border-b border-ridge/20 text-[11px] font-bold text-mist uppercase tracking-wider font-mono">
+                                <tr className="border-b border-white/6 text-[11px] font-bold text-mist uppercase tracking-wider font-mono">
                                     <th className="py-4 px-6">Asset Name</th>
                                     <th className="py-4 px-6 text-right">Market Price</th>
                                     <th className="py-4 px-6 text-right">Holdings Allocation</th>
                                     <th className="py-4 px-6 text-center w-24">Action</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-ridge/20 text-sm font-medium">
-                                <tr className="hover:bg-depth-2/20 transition-colors">
+                            <tbody className="divide-y divide-white/6 text-sm font-medium">
+                                <tr className="hover:bg-white/4 transition-colors">
                                     <td className="py-4 px-6 flex items-center space-x-4">
                                         {companyLogos["USD"] ? (
-                                            <div className="w-10 h-10 rounded-xl bg-depth-2 border border-ridge/40 p-2 flex items-center justify-center shrink-0 shadow-sm">
+                                            <div className="w-10 h-10 rounded-xl bg-depth-2 border border-white/8 p-2 flex items-center justify-center shrink-0 shadow-sm">
                                                 {companyLogos["USD"]()}
                                             </div>
                                         ) : (
@@ -250,7 +261,7 @@ const WalletPage = () => {
                                     <td className="py-4 px-6 text-center">
                                         <button
                                             onClick={triggerUsdSell}
-                                            className="px-3 py-1.5 bg-loss/10 hover:bg-loss border border-loss/20 text-loss hover:text-foam font-bold text-xs rounded-lg transition-all active:scale-95 cursor-pointer"
+                                            className="px-3 py-1.5 bg-loss/10 hover:bg-loss border border-loss/25 text-loss hover:text-abyss font-bold text-xs rounded-lg transition-all active:scale-95 cursor-pointer"
                                         >
                                             Sell
                                         </button>
@@ -263,11 +274,11 @@ const WalletPage = () => {
                                     const currentStockValue = livePrice * quantity
 
                                     return (
-                                        <tr key={item.id} className="hover:bg-depth-2/20 transition-colors">
+                                        <tr key={item.id} className="hover:bg-white/4 transition-colors">
                                             <td className="py-4 px-6">
                                                 <div className="flex items-center space-x-4">
                                                     {companyLogos[symbolUpper] ? (
-                                                        <div className="w-10 h-10 rounded-xl bg-depth-2 border border-ridge/40 p-2 flex items-center justify-center shrink-0 shadow-sm">
+                                                        <div className="w-10 h-10 rounded-xl bg-depth-2 border border-white/8 p-2 flex items-center justify-center shrink-0 shadow-sm">
                                                             {companyLogos[symbolUpper]()}
                                                         </div>
                                                     ) : (
@@ -293,7 +304,7 @@ const WalletPage = () => {
                                             <td className="py-4 px-6 text-center">
                                                 <button
                                                     onClick={() => triggerTableSell(item)}
-                                                    className="px-3 py-1.5 bg-loss/10 hover:bg-loss border border-loss/20 text-loss hover:text-foam font-bold text-xs rounded-lg transition-all active:scale-95 cursor-pointer"
+                                                    className="px-3 py-1.5 bg-loss/10 hover:bg-loss border border-loss/25 text-loss hover:text-abyss font-bold text-xs rounded-lg transition-all active:scale-95 cursor-pointer"
                                                 >
                                                     Sell
                                                 </button>

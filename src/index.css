@@ -1,12 +1,18 @@
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap");
 
 @import "tailwindcss";
 
 /*
-  DOL-FIN "sonar" design tokens.
-  The brand reads as an instrument for sounding the market's depths, not a
-  generic SaaS dark theme: a near-black abyss, a bioluminescent accent, and
-  ledger-style mono figures for anything numeric.
+  DOL-FIN "Obsidian Pulse" design tokens.
+
+  The brand reads as a night-flight cockpit for the markets: a true-black void
+  out of which glass surfaces emerge, lit by a single solar-flare accent.
+  Hierarchy comes from luminance (how much light an element emits), not from
+  drop shadows. Montserrat carries the headlines, Inter the interface, and a
+  mono face every figure that has to be read as a number.
+
+  Token names are the originals -- only their values moved -- so every existing
+  `bg-depth` / `text-pulse` class in the app re-themes in place.
 */
 @theme {
   --screen-sm: 480px;
@@ -14,20 +20,72 @@
   --screen-lg: 1020px;
   --screen-xl: 1440px;
 
-  --color-abyss: #071316;
-  --color-depth: #0e2126;
-  --color-depth-2: #14313a;
-  --color-ridge: #1b4a47;
-  --color-pulse: #45e8d6;
-  --color-pulse-dim: #2b9c90;
-  --color-gain: #5fe3a6;
-  --color-loss: #ff7a66;
-  --color-foam: #eaf6f4;
-  --color-mist: #82a6a3;
+  /* Void + surfaces: the deeper the element, the less light it holds. */
+  --color-abyss: #0e0e0e;
+  --color-depth: #1c1b1b;
+  --color-depth-2: #2a2a2a;
+  --color-ridge: #5c4037;
 
-  --font-sans: "IBM Plex Sans", sans-serif;
-  --font-display: "Space Grotesk", sans-serif;
-  --font-mono: "IBM Plex Mono", monospace;
+  /* Solar flare: the single light source of the system. */
+  --color-pulse: #ff571a;
+  --color-pulse-dim: #ffb59e;
+
+  /* Functional signals, kept in distinct hue families so a falling number
+     can never be mistaken for a brand accent. */
+  --color-gain: #5fe3a6;
+  --color-loss: #ff5d73;
+  --color-orchid: #d1bcff;
+
+  --color-foam: #e5e2e1;
+  --color-mist: #ad897e;
+
+  --font-sans: "Inter", sans-serif;
+  --font-display: "Montserrat", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
 
   --spacing-180: 32rem;
+}
+
+html,
+body {
+  background-color: var(--color-abyss);
+  color: var(--color-foam);
+}
+
+/* Numerals should line up column-to-column in every table and price readout. */
+.font-mono {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+::selection {
+  background-color: var(--color-pulse);
+  color: #ffffff;
+}
+
+/* The void swallows default scrollbars; give them the surface treatment. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-depth-2) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--color-depth-2);
+  border-radius: 9999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-ridge);
+  background-clip: content-box;
 }

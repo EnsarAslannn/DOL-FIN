@@ -62,10 +62,10 @@ const PurchasePortfolio: React.FC<PurchasePortfolioProps> = ({
     }
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-abyss/70 backdrop-blur-sm">
-            <div className="w-full max-w-md p-6 mx-4 rounded-2xl bg-depth border border-ridge/50 shadow-2xl text-foam transform transition-all font-sans">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-abyss/80 backdrop-blur-md">
+            <div className="glass-panel-hot w-full max-w-md p-7 mx-4 rounded-2xl text-foam transform transition-all font-sans animate-fadeIn">
                 <div className="flex justify-between items-center mb-6">
-                    <h3 className="text-xl font-bold tracking-wide font-display">
+                    <h3 className="text-xl font-bold tracking-[-0.01em] font-display">
                         {mode === "BUY" ? "Buy" : "Sell"} <span className={mode === "BUY" ? "text-gain" : "text-loss"}>{stockSymbol}</span>
                     </h3>
                     <button
@@ -76,7 +76,7 @@ const PurchasePortfolio: React.FC<PurchasePortfolioProps> = ({
                     </button>
                 </div>
 
-                <div className="space-y-2 mb-6 p-3 rounded-lg bg-abyss border border-ridge/40 text-sm">
+                <div className="space-y-2 mb-6 p-4 rounded-xl bg-black/40 border border-white/8 text-sm">
                     <div className="flex justify-between">
                         <span className="text-mist">Wallet Balance:</span>
                         <span className="font-semibold text-foam font-mono">
@@ -111,11 +111,11 @@ const PurchasePortfolio: React.FC<PurchasePortfolioProps> = ({
                         onChange={(e) =>
                             setQuantity(Math.max(1, parseInt(e.target.value) || 0))
                         }
-                        className="w-full px-4 py-3 bg-abyss border border-ridge/50 rounded-xl focus:outline-none focus:border-pulse text-foam font-semibold text-lg font-mono transition-colors"
+                        className="w-full px-4 py-3.5 bg-black/50 border border-white/10 rounded-xl focus:outline-none focus:border-pulse/70 focus:shadow-[0_0_0_4px_rgba(255,87,26,0.12)] text-foam font-semibold text-lg font-mono transition-all"
                     />
                 </div>
 
-                <div className="flex justify-between items-center mb-6 pt-4 border-t border-ridge/40">
+                <div className="flex justify-between items-center mb-6 pt-4 border-t border-white/8">
                     <span className="text-sm font-medium text-mist">
                         {mode === "BUY" ? "Total Cost:" : "Total Revenue:"}
                     </span>
@@ -152,18 +152,18 @@ const PurchasePortfolio: React.FC<PurchasePortfolioProps> = ({
                 <div className="flex space-x-3">
                     <button
                         onClick={onClose}
-                        className="flex-1 py-3 px-4 bg-depth-2 hover:bg-ridge/40 active:bg-ridge/60 text-mist rounded-xl font-medium transition-colors"
+                        className="flex-1 py-3.5 px-4 bg-white/5 hover:bg-white/10 border border-white/8 text-mist hover:text-foam rounded-xl font-semibold text-xs uppercase tracking-[0.12em] transition-all cursor-pointer"
                     >
                         Cancel
                     </button>
                     <button
                         onClick={handleConfirm}
                         disabled={quantity <= 0 || isInsufficientFunds || isInsufficientShares}
-                        className={`flex-1 py-3 px-4 rounded-xl font-semibold transition-all ${quantity <= 0 || isInsufficientFunds || isInsufficientShares
-                                ? "bg-depth-2 text-mist/50 cursor-not-allowed"
+                        className={`flex-1 py-3.5 px-4 rounded-xl font-bold text-xs uppercase tracking-[0.12em] transition-all cursor-pointer ${quantity <= 0 || isInsufficientFunds || isInsufficientShares
+                                ? "bg-white/5 text-mist/40 cursor-not-allowed border border-white/6"
                                 : mode === "BUY"
-                                    ? "bg-gain hover:bg-gain/85 text-abyss shadow-lg shadow-gain/20"
-                                    : "bg-loss hover:bg-loss/85 text-abyss shadow-lg shadow-loss/20"
+                                    ? "bg-gain hover:brightness-110 text-abyss shadow-[0_0_24px_-6px_rgba(95,227,166,0.6)] active:scale-[0.98]"
+                                    : "bg-loss hover:brightness-110 text-abyss shadow-[0_0_24px_-6px_rgba(255,93,115,0.6)] active:scale-[0.98]"
                             }`}
                     >
                         {mode === "BUY" ? "Confirm Buy" : "Confirm Sell"}

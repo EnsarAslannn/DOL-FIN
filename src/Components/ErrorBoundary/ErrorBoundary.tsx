@@ -23,7 +23,7 @@ class ErrorBoundary extends Component<Props, State> {
         if (this.state.hasError) {
             return (
                 <div className="w-full min-h-screen bg-abyss font-sans flex items-center justify-center px-6">
-                    <div className="max-w-md w-full bg-depth border border-ridge/40 rounded-2xl shadow-xl p-8 text-center flex flex-col items-center space-y-4">
+                    <div className="max-w-md w-full bg-depth border border-white/8 rounded-2xl shadow-xl p-8 text-center flex flex-col items-center space-y-4">
                         <h1 className="text-xl font-bold text-foam">Something went wrong</h1>
                         <p className="text-sm text-mist">
                             An unexpected error occurred while rendering this page. Please refresh to continue.

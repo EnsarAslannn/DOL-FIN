@@ -5,8 +5,11 @@ type Props = {
 
 const Tile = ({ title, subTitle }: Props) => {
   return (
-    <div className="w-full bg-depth border border-ridge/50 rounded-2xl p-5 shadow-2xl flex items-center justify-between min-h-[115px] transition-all duration-200 hover:border-pulse/30 group relative overflow-hidden">
-      <div className="absolute right-14 bottom-2 w-20 h-8 opacity-10 group-hover:opacity-25 transition-opacity duration-300 hidden sm:block">
+    <div className="w-full bg-depth border border-white/8 rounded-2xl p-5 flex items-center justify-between min-h-[115px] transition-all duration-200 hover:border-pulse/30 hover:bg-depth-2/50 group relative overflow-hidden">
+      {/* A hairline of flare along the top edge -- the tile's only light source
+          until it is hovered. */}
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-pulse/40 to-transparent opacity-60 group-hover:opacity-100 transition-opacity" />
+      <div className="absolute right-14 bottom-2 w-20 h-8 opacity-20 group-hover:opacity-45 transition-opacity duration-300 hidden sm:block">
         {(title === "Company Name" || title === "Total Net Worth") && (
           <svg
             viewBox="0 0 100 40"
@@ -34,7 +37,7 @@ const Tile = ({ title, subTitle }: Props) => {
         {title === "Market Cap" && (
           <svg
             viewBox="0 0 100 40"
-            className="w-full h-full stroke-purple-300 stroke-2 fill-none"
+            className="w-full h-full stroke-orchid stroke-2 fill-none"
           >
             <path d="M0,15 Q30,40 60,15 T100,5" />
           </svg>
@@ -42,15 +45,15 @@ const Tile = ({ title, subTitle }: Props) => {
       </div>
 
       <div className="flex flex-col space-y-2 text-left z-10">
-        <h5 className="text-mist uppercase font-bold text-[10px] tracking-widest font-mono">
+        <h5 className="text-mist uppercase font-bold text-[10px] tracking-[0.16em] font-mono">
           {title}
         </h5>
-        <span className="font-bold text-xl text-foam tracking-tight font-display">
+        <span className="font-bold text-xl text-foam tracking-[-0.02em] font-display">
           {subTitle}
         </span>
       </div>
 
-      <div className="p-3 bg-abyss/50 rounded-xl flex items-center justify-center shrink-0 border border-ridge/40 z-10 shadow-inner group-hover:scale-105 transition-transform">
+      <div className="p-3 bg-black/40 rounded-xl flex items-center justify-center shrink-0 border border-white/8 z-10 group-hover:scale-105 group-hover:border-white/15 transition-all">
         {(title === "Company Name" || title === "Total Net Worth") && (
           <svg
             className="w-5 h-5 text-pulse"
@@ -98,7 +101,7 @@ const Tile = ({ title, subTitle }: Props) => {
         )}
         {title === "Market Cap" && (
           <svg
-            className="w-5 h-5 text-purple-300"
+            className="w-5 h-5 text-orchid"
             fill="none"
             stroke="currentColor"
             strokeWidth="2.5"

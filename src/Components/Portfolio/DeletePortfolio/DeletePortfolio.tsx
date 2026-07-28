@@ -15,7 +15,7 @@ const DeletePortfolio = ({ onPortfolioDelete, portfolioValue }: Props) => {
         <input hidden={true} defaultValue={portfolioValue} />
         <button
           type="submit"
-          className="flex items-center justify-center w-6 h-6 text-xs font-bold text-mist bg-depth-2 rounded-full transition-all duration-200 hover:bg-loss/10 hover:text-loss shadow-sm active:scale-90"
+          className="flex items-center justify-center w-6 h-6 text-xs font-bold text-mist bg-white/8 border border-white/8 rounded-full transition-all duration-200 hover:bg-loss/15 hover:text-loss hover:border-loss/40 active:scale-90 cursor-pointer"
           title="Remove from portfolio"
         >
           <svg

@@ -23,13 +23,13 @@ const MarketTrends = ({ stocks }: MarketTrendsProps) => {
   }
 
   return (
-    <div className="w-full bg-depth rounded-2xl border border-ridge/40 shadow-xl p-5 font-sans text-foam">
-      <div className="flex items-center justify-between mb-5 border-b border-ridge/50 pb-3">
-        <h3 className="text-xs font-bold text-pulse uppercase tracking-wider flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-pulse shadow-[0_0_8px_#45e8d6] animate-pulse"></span>
+    <div className="glass-panel w-full rounded-2xl p-5 font-sans text-foam">
+      <div className="flex items-center justify-between mb-5 border-b border-white/10 pb-3">
+        <h3 className="text-xs font-bold text-pulse uppercase tracking-[0.14em] flex items-center gap-2.5">
+          <span className="w-2 h-2 rounded-full bg-pulse shadow-[0_0_10px_#ff571a] animate-pulse"></span>
           Market Trends
         </h3>
-        <span className="text-[10px] text-mist font-bold uppercase bg-depth-2 px-2 py-0.5 rounded">
+        <span className="text-[10px] text-mist font-bold uppercase tracking-[0.1em] bg-white/5 border border-white/8 px-2 py-0.5 rounded">
           Live Equities
         </span>
       </div>
@@ -43,10 +43,10 @@ const MarketTrends = ({ stocks }: MarketTrendsProps) => {
             <div
               key={index}
               onClick={() => handleTrendClick(item.symbol)}
-              className="flex items-center justify-between p-2 rounded-xl transition-all duration-150 hover:bg-depth-2 cursor-pointer border border-transparent hover:border-pulse/20 shadow-sm active:scale-[0.99]"
+              className="flex items-center justify-between p-2.5 rounded-xl transition-all duration-150 hover:bg-white/5 cursor-pointer border border-transparent hover:border-pulse/25 active:scale-[0.99]"
             >
               <div className="flex items-center space-x-3 text-left">
-                <div className="w-7 h-7 rounded-lg bg-depth-2 border border-ridge/40 p-1 flex items-center justify-center shrink-0">
+                <div className="w-7 h-7 rounded-lg bg-white/5 border border-white/8 p-1 flex items-center justify-center shrink-0">
                   {companyLogos[symbolUpper] ? (
                     companyLogos[symbolUpper]()
                   ) : (

@@ -3251,7 +3251,7 @@ export const realMarketNewsData = [
     time: "4 hours ago",
     url: "https://www.reuters.com/technology",
     category: "NVIDIA",
-    badgeColor: "bg-purple-500/10 text-purple-400 border border-purple-500/20",
+    badgeColor: "bg-orchid/10 text-orchid border border-orchid/25",
   },
   {
     title: "Apple Intelligence Features Drive iPhone Supercycle Forecasts for Q3",

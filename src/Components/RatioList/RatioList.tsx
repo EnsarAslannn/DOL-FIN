@@ -22,7 +22,7 @@ const RatioList = <T,>({ config, data }: Props<T>) => {
               {row.subTitle && row.subTitle}
             </p>
           </div>
-          <div className="inline-flex items-center text-sm font-semibold text-foam font-mono">
+          <div className="inline-flex items-center text-sm font-bold text-pulse-dim font-mono">
             {row.render(data)}
           </div>
         </div>
@@ -31,8 +31,8 @@ const RatioList = <T,>({ config, data }: Props<T>) => {
   })
 
   return (
-    <div className="bg-depth border border-ridge/40 rounded-2xl p-4 sm:p-6 shadow-xl h-full">
-      <ul className="divide-y divide-ridge/20">{renderedRows}</ul>
+    <div className="bg-depth border border-white/8 rounded-2xl p-4 sm:p-6 h-full">
+      <ul className="divide-y divide-white/6">{renderedRows}</ul>
     </div>
   )
 }

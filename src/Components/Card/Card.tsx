@@ -32,13 +32,13 @@ const Card: React.FC<Props> = ({
 
   return (
     <div
-      className="flex flex-col md:flex-row items-center justify-between p-5 my-3 w-full bg-depth rounded-2xl border border-ridge/40 shadow-xl transition-all duration-200 hover:border-ridge group/card"
+      className="flex flex-col md:flex-row items-center justify-between p-5 my-3 w-full bg-depth rounded-2xl border border-white/8 transition-all duration-200 hover:border-pulse/25 hover:bg-depth-2/40 group/card"
       key={id}
       id={id}
     >
       <div className="flex items-start space-x-4 w-full md:w-auto">
         {companyLogos[symbolUpper] ? (
-          <div className="relative flex items-center justify-center w-11 h-11 rounded-xl bg-depth-2 border border-ridge/50 p-2.5 shrink-0 mt-1 shadow-2xs">
+          <div className="relative flex items-center justify-center w-11 h-11 rounded-xl bg-depth-2 border border-white/10 p-2.5 shrink-0 mt-1 shadow-2xs">
             {companyLogos[symbolUpper]()}
             <span className="sonar-ring opacity-0 group-hover/card:opacity-100" />
           </div>
@@ -57,7 +57,7 @@ const Card: React.FC<Props> = ({
             >
               {name}
             </Link>
-            <span className="px-2 py-0.5 bg-depth-2 text-mist font-semibold text-xs rounded-md border border-ridge/40 font-mono">
+            <span className="px-2 py-0.5 bg-white/5 text-mist font-semibold text-xs rounded-md border border-white/8 font-mono tracking-wide">
               {symbolUpper}
             </span>
           </div>
@@ -73,25 +73,25 @@ const Card: React.FC<Props> = ({
           <div className="flex items-center flex-wrap gap-2 pt-1">
             <Link
               to={`/company/${symbolUpper}/company-profile`}
-              className="text-[11px] font-bold text-mist bg-depth-2/60 hover:bg-pulse/10 hover:text-pulse border border-ridge/40 px-2.5 py-1 rounded-md transition-all duration-150 flex items-center gap-1 shadow-2xs"
+              className="text-[11px] font-bold text-mist bg-black/30 hover:bg-pulse/10 hover:text-pulse border border-white/8 hover:border-pulse/30 px-2.5 py-1 rounded-md transition-all duration-150 flex items-center gap-1"
             >
               📊 Profile
             </Link>
             <Link
               to={`/company/${symbolUpper}/income-statement`}
-              className="text-[11px] font-bold text-mist bg-depth-2/60 hover:bg-pulse/10 hover:text-pulse border border-ridge/40 px-2.5 py-1 rounded-md transition-all duration-150 flex items-center gap-1 shadow-2xs"
+              className="text-[11px] font-bold text-mist bg-black/30 hover:bg-pulse/10 hover:text-pulse border border-white/8 hover:border-pulse/30 px-2.5 py-1 rounded-md transition-all duration-150 flex items-center gap-1"
             >
               📈 Income
             </Link>
             <Link
               to={`/company/${symbolUpper}/balance-sheet`}
-              className="text-[11px] font-bold text-mist bg-depth-2/60 hover:bg-pulse/10 hover:text-pulse border border-ridge/40 px-2.5 py-1 rounded-md transition-all duration-150 flex items-center gap-1 shadow-2xs"
+              className="text-[11px] font-bold text-mist bg-black/30 hover:bg-pulse/10 hover:text-pulse border border-white/8 hover:border-pulse/30 px-2.5 py-1 rounded-md transition-all duration-150 flex items-center gap-1"
             >
               🧾 Balance Sheet
             </Link>
             <Link
               to={`/company/${symbolUpper}/cashflow-statement`}
-              className="text-[11px] font-bold text-mist bg-depth-2/60 hover:bg-pulse/10 hover:text-pulse border border-ridge/40 px-2.5 py-1 rounded-md transition-all duration-150 flex items-center gap-1 shadow-2xs"
+              className="text-[11px] font-bold text-mist bg-black/30 hover:bg-pulse/10 hover:text-pulse border border-white/8 hover:border-pulse/30 px-2.5 py-1 rounded-md transition-all duration-150 flex items-center gap-1"
             >
               💸 Cash Flow
             </Link>

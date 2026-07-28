@@ -18,7 +18,7 @@ const ListPortfolio = ({ portfolioValues, onPortfolioDelete }: Props) => {
 
   return (
     <div className="flex flex-col space-y-4">
-      <h3 className="text-2xl font-bold text-pulse tracking-tight border-b border-ridge/40 pb-3 text-left">
+      <h3 className="text-2xl font-bold text-foam tracking-[-0.02em] font-display border-b border-white/8 pb-3 text-left">
         My Portfolio
       </h3>
 
@@ -36,7 +36,7 @@ const ListPortfolio = ({ portfolioValues, onPortfolioDelete }: Props) => {
           })}
         </div>
       ) : (
-        <div className="py-12 text-center bg-depth border border-ridge/40 rounded-xl shadow-sm">
+        <div className="py-16 text-center glass-panel rounded-2xl">
           <span className="text-sm font-medium text-mist">
             Your portfolio is currently empty.
           </span>

@@ -6,7 +6,7 @@ type Props = {
 
 const StockCommentListItem = ({ comment }: Props) => {
   return (
-    <div className="flex flex-col p-4 bg-abyss/60 border border-ridge/20 rounded-xl text-left shadow-sm transition-all duration-200 hover:border-ridge/50">
+    <div className="flex flex-col p-4 bg-black/35 border border-white/6 rounded-xl text-left transition-all duration-200 hover:border-white/12 hover:bg-black/50">
       <div className="flex items-center justify-between mb-2.5">
         <div className="flex items-center space-x-2">
           <div className="w-6 h-6 flex items-center justify-center rounded-md bg-pulse/10 border border-pulse/20 text-pulse text-[10px] font-bold uppercase">

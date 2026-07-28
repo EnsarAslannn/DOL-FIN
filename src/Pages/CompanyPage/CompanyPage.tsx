@@ -42,7 +42,7 @@ const CompanyPage = () => {
       <div className="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden bg-abyss text-foam min-h-screen">
         <Sidebar />
         <CompanyDashboard>
-          <div className="w-full bg-depth border border-ridge/40 rounded-2xl p-8 shadow-2xl flex flex-col items-center justify-center text-center min-h-[450px] space-y-4 my-4 animate-fadeIn">
+          <div className="glass-panel w-full rounded-2xl p-8 flex flex-col items-center justify-center text-center min-h-[450px] space-y-4 my-4 animate-fadeIn">
             <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 text-2xl shadow-sm">
               📊
             </div>
@@ -58,7 +58,7 @@ const CompanyPage = () => {
               Financial data for <span className="font-bold font-mono text-pulse bg-pulse/10 px-1.5 py-0.5 rounded border border-pulse/20">{ticker?.toUpperCase()}</span> is currently unavailable for this demo version.
             </p>
             <div className="pt-2">
-              <p className="text-[11px] text-mist font-medium bg-abyss/40 border border-ridge/20 px-3 py-1.5 rounded-xl font-mono">
+              <p className="text-[11px] text-mist font-medium bg-black/40 border border-white/8 px-3 py-1.5 rounded-xl font-mono">
                 Please audit premium corporate tiers: AAPL, MSFT, NVDA, TSLA, GOOGL
               </p>
             </div>
@@ -97,7 +97,7 @@ const CompanyPage = () => {
               <Outlet context={ticker} />
             </div>
 
-            <div className="w-full mt-6 border-t border-ridge/40 pt-6">
+            <div className="w-full mt-6 border-t border-white/8 pt-6">
               {localDbId !== null && (
                 <StockComment
                   stockSymbol={ticker!}

@@ -103,7 +103,7 @@ const CompanyProfile = () => {
 
   if (!allowedStocks.includes(ticker?.toUpperCase())) {
     return (
-      <div className="w-full bg-depth border border-ridge/40 rounded-2xl p-8 shadow-2xl flex flex-col items-center justify-center text-center min-h-[350px] space-y-4 my-4 animate-fadeIn">
+      <div className="glass-panel w-full rounded-2xl p-8 flex flex-col items-center justify-center text-center min-h-[350px] space-y-4 my-4 animate-fadeIn">
         <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 text-2xl shadow-sm">
           📊
         </div>
@@ -119,7 +119,7 @@ const CompanyProfile = () => {
           Financial data for <span className="font-bold font-mono text-pulse bg-pulse/10 px-1.5 py-0.5 rounded border border-pulse/20">{ticker?.toUpperCase()}</span> is currently unavailable for this demo version.
         </p>
         <div className="pt-2">
-          <p className="text-[11px] text-mist font-medium bg-abyss/40 border border-ridge/20 px-3 py-1.5 rounded-xl font-mono">
+          <p className="text-[11px] text-mist font-medium bg-black/40 border border-white/8 px-3 py-1.5 rounded-xl font-mono">
             Please audit premium corporate tiers: AAPAL, MSFT, NVDA, TSLA, GOOGL
           </p>
         </div>
@@ -137,8 +137,8 @@ const CompanyProfile = () => {
 
   return (
     <div className="w-full flex flex-col font-sans text-foam">
-      <div className="block w-full bg-depth shadow-xl rounded-2xl p-6 my-4 border border-ridge/40 flex flex-col space-y-3">
-        <h3 className="text-base font-bold text-pulse uppercase tracking-wider text-left font-mono">
+      <div className="block w-full bg-depth rounded-2xl p-6 my-4 border border-white/8 flex flex-col space-y-3">
+        <h3 className="text-[11px] font-bold text-pulse uppercase tracking-[0.16em] text-left font-mono">
           Company Description
         </h3>
         <p className="text-foam text-base font-normal leading-relaxed antialiased text-left">
@@ -147,16 +147,16 @@ const CompanyProfile = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-4 w-full">
-        <div className="bg-depth shadow-xl rounded-2xl p-6 border border-ridge/40 flex flex-col justify-start space-y-6">
+        <div className="bg-depth rounded-2xl p-6 border border-white/8 flex flex-col justify-start space-y-6">
           <div className="flex flex-col space-y-3">
-            <h3 className="text-base font-bold text-pulse uppercase tracking-wider text-left font-mono">
+            <h3 className="text-[11px] font-bold text-pulse uppercase tracking-[0.16em] text-left font-mono">
               Similar Companies
             </h3>
             <div className="flex flex-wrap items-center gap-2 pt-1 [&_button]:px-5 [&_button]:py-2.5 [&_button]:text-sm">
               <ComparableFinder ticker={profile.symbol} />
             </div>
           </div>
-          <div className="bg-abyss/40 rounded-xl p-5 border border-ridge/20 text-left mt-auto w-full">
+          <div className="bg-black/35 rounded-xl p-5 border border-white/8 text-left mt-auto w-full">
             <p className="text-sm text-foam/85 leading-relaxed">
               <strong className="text-foam block mb-1.5 font-mono text-xs uppercase tracking-wide">
                 Industry Peers
@@ -167,16 +167,16 @@ const CompanyProfile = () => {
           </div>
         </div>
 
-        <div className="bg-depth shadow-xl rounded-2xl p-6 border border-ridge/40 flex flex-col justify-start space-y-6">
+        <div className="bg-depth rounded-2xl p-6 border border-white/8 flex flex-col justify-start space-y-6">
           <div className="flex flex-col space-y-3">
-            <h3 className="text-base font-bold text-pulse uppercase tracking-wider text-left font-mono">
+            <h3 className="text-[11px] font-bold text-pulse uppercase tracking-[0.16em] text-left font-mono">
               10-K REPORT
             </h3>
             <div className="flex flex-wrap items-center gap-2 pt-1 [&_a]:px-5 [&_a]:py-2.5 [&_a]:text-sm">
               <TenKFinder ticker={profile.symbol} />
             </div>
           </div>
-          <div className="bg-abyss/40 rounded-xl p-5 border border-ridge/20 text-left mt-auto w-full min-h-[105px] flex flex-col justify-center">
+          <div className="bg-black/35 rounded-xl p-5 border border-white/8 text-left mt-auto w-full min-h-[105px] flex flex-col justify-center">
             <p className="text-sm text-foam/85 leading-relaxed">
               <strong className="text-foam block mb-1.5 font-mono text-xs uppercase tracking-wide">
                 What is a 10-K Report?
