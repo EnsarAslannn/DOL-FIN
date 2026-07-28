@@ -20,9 +20,6 @@ export const UserProvider = ({ children }: Props) => {
             const res = await getProfileAPI()
             if (res?.data) {
                 setUser(res.data)
-                localStorage.setItem("user", JSON.stringify(res.data))
-            } else {
-                localStorage.removeItem("user")
             }
             setIsReady(true)
         }
@@ -32,9 +29,7 @@ export const UserProvider = ({ children }: Props) => {
     const updateWalletBalance = (newBalance: number) => {
         setUser((prev) => {
             if (!prev || prev.walletBalance === newBalance) return prev
-            const updated = { ...prev, walletBalance: newBalance }
-            localStorage.setItem("user", JSON.stringify(updated))
-            return updated
+            return { ...prev, walletBalance: newBalance }
         })
     }
 
@@ -51,7 +46,6 @@ export const UserProvider = ({ children }: Props) => {
             .then(async (res) => {
                 if (res && res.data) {
                     setUser(res.data)
-                    localStorage.setItem("user", JSON.stringify(res.data))
                     toast.success("Registration Success!")
                     await primeCsrfCookie()
 
@@ -71,7 +65,6 @@ export const UserProvider = ({ children }: Props) => {
             .then(async (res) => {
                 if (res && res.data) {
                     setUser(res.data)
-                    localStorage.setItem("user", JSON.stringify(res.data))
                     toast.success("Login Success!")
                     await primeCsrfCookie()
 
@@ -92,7 +85,6 @@ export const UserProvider = ({ children }: Props) => {
 
     const logout = () => {
         logoutAPI().finally(() => {
-            localStorage.removeItem("user")
             setUser(null)
             navigate("/")
         })

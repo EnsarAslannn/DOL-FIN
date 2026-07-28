@@ -21,7 +21,7 @@ import Tile from "../../Components/Tile/Tile"
 import MarketTrends, { type TrendStock } from "../../Components/MarketTrends/MarketTrends"
 import MarketNews from "../../Components/MarketNews/MarketNews"
 import { useAuth } from "../../Context/useAuth"
-import axiosInstance from "../../Helpers/AxiosInstance"
+import { searchStocksBySymbolAPI, searchStocksByCompanyNameAPI } from "../../Services/StockService"
 import PurchasePortfolio from "../../Components/Portfolio/PurchasePortfolio/PurchasePortfolio"
 
 const SearchPage = () => {
@@ -187,11 +187,9 @@ const SearchPage = () => {
     try {
       const queryValue = search.trim()
 
-      const url = queryValue.length <= 5
-        ? `/api/stock?Symbol=${queryValue.toUpperCase()}`
-        : `/api/stock?CompanyName=${queryValue}`
-
-      const response = await axiosInstance.get(url)
+      const response = queryValue.length <= 5
+        ? await searchStocksBySymbolAPI(queryValue.toUpperCase())
+        : await searchStocksByCompanyNameAPI(queryValue)
 
       if (response && Array.isArray(response.data)) {
         setSearchResult(response.data)

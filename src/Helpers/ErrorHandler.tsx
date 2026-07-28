@@ -16,10 +16,8 @@ export const handleError = (error: unknown) => {
       } else if (err?.status == 401) {
          toast.warning("Please login")
          window.location.href = "/login"
-      } else if (err?.data) {
-         toast.warning(err.data)
       } else if (err) {
-         toast.warning(err?.data)
+         toast.warning(typeof err.data === "string" ? err.data : "Beklenmeyen bir hata oluştu")
       }
    }
 }

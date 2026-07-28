@@ -6,7 +6,7 @@ import { handleError } from "../Helpers/ErrorHandler"
 export const portfolioAddAPI = async (symbol: string, quantity: number) => {
     try {
         const data = await axiosInstance.post<{ message: string; newBalance: number }>(
-            "/api/portfolio",
+            "portfolio",
             { symbol, quantity }
         )
         return data
@@ -18,7 +18,7 @@ export const portfolioAddAPI = async (symbol: string, quantity: number) => {
 export const portfolioSellAPI = async (symbol: string, quantity: number) => {
     try {
         const data = await axiosInstance.post<{ message: string; newBalance: number }>(
-            "/api/portfolio/sell",
+            "portfolio/sell",
             { symbol, quantity }
         )
         return data
@@ -29,7 +29,7 @@ export const portfolioSellAPI = async (symbol: string, quantity: number) => {
 
 export const portfolioGetAPI = async () => {
     try {
-        const data = await axiosInstance.get<PortfolioGet[]>("/api/portfolio")
+        const data = await axiosInstance.get<PortfolioGet[]>("portfolio")
         return data
     } catch (error) {
         handleError(error)
@@ -39,7 +39,7 @@ export const portfolioGetAPI = async () => {
 export const portfolioDepositAPI = async (amount: number) => {
     try {
         const data = await axiosInstance.post<{ message: string; newBalance: number }>(
-            "/api/portfolio/deposit",
+            "portfolio/deposit",
             { amount }
         )
         return data
@@ -51,7 +51,7 @@ export const portfolioDepositAPI = async (amount: number) => {
 export const portfolioWithdrawAPI = async (amount: number) => {
     try {
         const data = await axiosInstance.post<{ message: string; newBalance: number }>(
-            "/api/portfolio/withdraw",
+            "portfolio/withdraw",
             { amount }
         )
         return data
@@ -62,7 +62,7 @@ export const portfolioWithdrawAPI = async (amount: number) => {
 
 export const marketTrendsAPI = async () => {
     try {
-        const data = await axiosInstance.get<StockSearchResult[]>("/api/stock/trends")
+        const data = await axiosInstance.get<StockSearchResult[]>("stock/trends")
         return data
     } catch (error) {
         handleError(error)

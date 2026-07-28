@@ -20,7 +20,7 @@ export const commentPostAPI = async (
 
 export const commentGetAPI = async (symbol: string) => {
     try {
-        const data = await axiosInstance.get<CommentGet[]>(`comment?Symbol=${symbol}`)
+        const data = await axiosInstance.get<CommentGet[]>("comment", { params: { Symbol: symbol } })
         return data
     } catch (error) {
         handleError(error)

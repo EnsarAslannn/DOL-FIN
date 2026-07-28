@@ -8,7 +8,7 @@ import Tile from "../../Components/Tile/Tile"
 import Spinners from "../../Components/Spinners/Spinners"
 import StockComment from "../../Components/StockComment/StockComment"
 import { formatLargeNonMonetaryNumber } from "../../Helpers/NumberFormatting"
-import axiosInstance from "../../Helpers/AxiosInstance"
+import { searchStocksBySymbolAPI } from "../../Services/StockService"
 
 const allowedStocks = ["AAPL", "MSFT", "NVDA", "TSLA", "GOOGL"]
 
@@ -25,7 +25,7 @@ const CompanyPage = () => {
       setCompany(result?.data[0])
 
       try {
-        const dbResult = await axiosInstance.get(`/api/stock?Symbol=${ticker?.toUpperCase()}`)
+        const dbResult = await searchStocksBySymbolAPI(ticker?.toUpperCase() ?? "")
         if (dbResult && dbResult.data && dbResult.data.length > 0) {
           const matchedStock = dbResult.data[0]
           setLocalDbId(matchedStock.id || matchedStock.Id || null)

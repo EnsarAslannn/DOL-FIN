@@ -25,17 +25,6 @@ const mutatingMethods = new Set(["post", "put", "delete", "patch"])
 
 axiosInstance.interceptors.request.use(
     (config) => {
-        if (config.baseURL && config.baseURL.includes("localhost") && config.url) {
-            if (config.url.startsWith("/api/")) {
-                config.url = config.url.replace("/api/", "")
-            } else if (config.url.startsWith("api/")) {
-                config.url = config.url.replace("api/", "")
-            }
-            if (!config.url.startsWith("/")) {
-                config.url = `/${config.url}`
-            }
-        }
-
         // Double-submit CSRF check: the backend issues a JS-readable
         // XSRF-TOKEN cookie on login/session-restore; echoing its value
         // back as a header proves the request didn't come from a

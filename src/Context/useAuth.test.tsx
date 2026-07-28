@@ -39,7 +39,6 @@ const asProfileResponse = (data: UserProfile) =>
 
 describe("useAuth", () => {
     beforeEach(() => {
-        localStorage.clear()
         vi.clearAllMocks()
         // Default: no active session on mount, unless a test overrides it.
         vi.mocked(AuthService.getProfileAPI).mockResolvedValue(undefined)
@@ -74,7 +73,7 @@ describe("useAuth", () => {
         await userEvent.click(await screen.findByText("login"))
 
         await waitFor(() => expect(screen.getByTestId("status").textContent).toBe("in"))
-        expect(JSON.parse(localStorage.getItem("user")!).userName).toBe("bob")
+        expect(screen.getByTestId("username").textContent).toBe("bob")
     })
 
     it("calls the logout endpoint and clears local state on logout", async () => {
@@ -89,7 +88,6 @@ describe("useAuth", () => {
         await userEvent.click(screen.getByText("logout"))
 
         expect(AuthService.logoutAPI).toHaveBeenCalled()
-        expect(localStorage.getItem("user")).toBeNull()
         expect(screen.getByTestId("status").textContent).toBe("out")
     })
 })

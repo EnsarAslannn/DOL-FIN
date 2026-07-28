@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest"
-import type { InternalAxiosRequestConfig, AxiosResponse } from "axios"
+import axios, { type InternalAxiosRequestConfig, type AxiosResponse } from "axios"
 import axiosInstance from "./AxiosInstance"
 
 const capture = async (method: "get" | "post") => {
@@ -54,5 +54,19 @@ describe("axiosInstance", () => {
         const captured = await capture("post")
 
         expect(captured?.headers["X-CSRF-TOKEN"]).toBeUndefined()
+    })
+
+    it("never resolves a bare service path (e.g. 'portfolio') to a double /api/api/ prefix", async () => {
+        let config: InternalAxiosRequestConfig | undefined
+        axiosInstance.defaults.adapter = async (c) => {
+            config = c
+            return { data: {}, status: 200, statusText: "OK", headers: {}, config: c } as AxiosResponse
+        }
+
+        await axiosInstance.get("portfolio")
+
+        const fullUrl = axios.getUri(config)
+        expect(fullUrl).not.toContain("/api/api/")
+        expect(fullUrl).toContain("/api/portfolio")
     })
 })
