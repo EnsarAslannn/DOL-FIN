@@ -301,6 +301,8 @@ using (var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDBContext>();
     db.Database.Migrate();
 
+    await StockSeeder.SeedAsync(db);
+
     var adminUsername = app.Configuration["Admin:SeedUsername"];
     if (!string.IsNullOrWhiteSpace(adminUsername))
     {
