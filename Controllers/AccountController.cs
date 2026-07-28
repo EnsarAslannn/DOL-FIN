@@ -1,5 +1,5 @@
-using System.Security.Claims;
 using api.Dtos.Account;
+using api.Extensions;
 using api.Interfaces;
 using api.Models;
 using Microsoft.AspNetCore.Antiforgery;
@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
-using Microsoft.EntityFrameworkCore;
 
 namespace api.Controllers
 {
@@ -18,21 +17,18 @@ namespace api.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly ITokenService _tokenService;
         private readonly SignInManager<AppUser> _signInManager;
-        private readonly Data.ApplicationDBContext _context;
         private readonly IAntiforgery _antiforgery;
 
         public AccountController(
             UserManager<AppUser> userManager,
             ITokenService tokenService,
             SignInManager<AppUser> signInManager,
-            Data.ApplicationDBContext context,
             IAntiforgery antiforgery
         )
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _signInManager = signInManager;
-            _context = context;
             _antiforgery = antiforgery;
         }
 
@@ -48,8 +44,11 @@ namespace api.Controllers
             var result = await _signInManager.CheckPasswordSignInAsync(
                 user,
                 loginDto.Password,
-                false
+                lockoutOnFailure: true
             );
+
+            if (result.IsLockedOut)
+                return Unauthorized("Account is temporarily locked due to too many failed login attempts. Please try again later.");
 
             if (!result.Succeeded)
                 return Unauthorized("Invalid username or password");
@@ -100,8 +99,19 @@ namespace api.Controllers
         }
 
         [HttpPost("logout")]
-        public IActionResult Logout()
+        [Authorize]
+        public async Task<IActionResult> Logout()
         {
+            // Rotating the SecurityStamp invalidates every JWT already issued
+            // to this user (see OnTokenValidated in Program.cs), not just the
+            // cookie deleted below -- a copy of the token held elsewhere
+            // (XSS, shared machine, log leak) stops working immediately.
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                await _userManager.UpdateSecurityStampAsync(user);
+            }
+
             Response.Cookies.Delete("access_token");
             Response.Cookies.Delete("XSRF-TOKEN");
             Response.Cookies.Delete("af-token");
@@ -118,7 +128,10 @@ namespace api.Controllers
                     HttpOnly = true,
                     Secure = true,
                     SameSite = SameSiteMode.None,
-                    Expires = DateTimeOffset.UtcNow.AddDays(7),
+                    // Matches the JWT's own lifetime (TokenService.CreateToken)
+                    // so the browser doesn't keep sending an already-expired
+                    // token for days after it stops working.
+                    Expires = DateTimeOffset.UtcNow.AddHours(4),
                 }
             );
 
@@ -164,29 +177,9 @@ namespace api.Controllers
             // survives a full reload.
             IssueCsrfCookie();
 
-            var userName = User.Identity?.Name
-                ?? User.FindFirst(ClaimTypes.Name)?.Value
-                ?? User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name")?.Value;
-
-            if (string.IsNullOrEmpty(userName))
-            {
-                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value
-                    ?? User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
-
-                if (!string.IsNullOrEmpty(userId))
-                {
-                    var userById = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == userId);
-                    if (userById != null)
-                    {
-                        return Ok(new { userById.WalletBalance, userById.UserName, userById.Email });
-                    }
-                }
-                return Unauthorized("User identity context could not be resolved from token claims.");
-            }
-
-            var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.UserName == userName);
+            var user = await User.GetAuthenticatedUserAsync(_userManager);
             if (user == null)
-                return NotFound("User database record not found.");
+                return Unauthorized("User identity context could not be resolved from token claims.");
 
             return Ok(new { user.WalletBalance, user.UserName, user.Email });
         }

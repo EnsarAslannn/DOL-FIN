@@ -20,16 +20,29 @@ namespace api.Service
             _userManager = userManager;
             var key = _config["JWT:SigningKey"]
                 ?? throw new InvalidOperationException("JWT SigningKey is missing!");
-            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+            var keyBytes = Encoding.UTF8.GetBytes(key);
+
+            // HS512 needs a key at least as long as its output (64 bytes) to
+            // deliver its full security margin; a shorter key would still
+            // "work" but produces forgeable-in-practice signatures.
+            if (keyBytes.Length < 64)
+                throw new InvalidOperationException(
+                    "JWT SigningKey must be at least 64 bytes (512 bits) long for HS512."
+                );
+
+            _key = new SymmetricSecurityKey(keyBytes);
         }
 
         public async Task<string> CreateToken(AppUser user)
         {
+            var securityStamp = await _userManager.GetSecurityStampAsync(user);
+
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Email, user.Email ?? ""),
                 new Claim(ClaimTypes.Name, user.UserName ?? ""),
-                new Claim(ClaimTypes.NameIdentifier, user.Id)
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim("SecurityStamp", securityStamp ?? "")
             };
 
             var roles = await _userManager.GetRolesAsync(user);
@@ -43,7 +56,12 @@ namespace api.Service
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddDays(7),
+                // Kept short because logout/revocation is enforced via the
+                // SecurityStamp claim (see OnTokenValidated in Program.cs),
+                // not via server-side token storage -- a short lifetime
+                // bounds how long a stolen token stays valid even without
+                // an explicit revocation event.
+                Expires = DateTime.UtcNow.AddHours(4),
                 SigningCredentials = creds,
                 Issuer = _config["JWT:Issuer"],
                 Audience = _config["JWT:Audience"],

@@ -1,4 +1,5 @@
 using api.Dtos.Portfolio;
+using api.Extensions;
 using api.Interfaces;
 using api.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -24,7 +25,7 @@ namespace api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUserPortfolio()
         {
-            var appUser = await GetAuthenticatedUserAsync();
+            var appUser = await User.GetAuthenticatedUserAsync(_userManager);
             if (appUser == null)
                 return Unauthorized("User context not found.");
 
@@ -35,7 +36,7 @@ namespace api.Controllers
         [HttpPost]
         public async Task<IActionResult> AddPortfolio([FromBody] TradeRequestDto request)
         {
-            var appUser = await GetAuthenticatedUserAsync();
+            var appUser = await User.GetAuthenticatedUserAsync(_userManager);
             if (appUser == null)
                 return Unauthorized("User context not found.");
 
@@ -57,7 +58,7 @@ namespace api.Controllers
         [HttpPost("sell")]
         public async Task<IActionResult> SellPortfolio([FromBody] TradeRequestDto request)
         {
-            var appUser = await GetAuthenticatedUserAsync();
+            var appUser = await User.GetAuthenticatedUserAsync(_userManager);
             if (appUser == null)
                 return Unauthorized("User context not found.");
 
@@ -79,7 +80,7 @@ namespace api.Controllers
         [HttpPost("deposit")]
         public async Task<IActionResult> DepositFunds([FromBody] AmountRequestDto request)
         {
-            var appUser = await GetAuthenticatedUserAsync();
+            var appUser = await User.GetAuthenticatedUserAsync(_userManager);
             if (appUser == null)
                 return Unauthorized("User context not found.");
 
@@ -97,7 +98,7 @@ namespace api.Controllers
         [HttpPost("withdraw")]
         public async Task<IActionResult> WithdrawFunds([FromBody] AmountRequestDto request)
         {
-            var appUser = await GetAuthenticatedUserAsync();
+            var appUser = await User.GetAuthenticatedUserAsync(_userManager);
             if (appUser == null)
                 return Unauthorized("User context not found.");
 
@@ -114,29 +115,6 @@ namespace api.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }
-
-        private async Task<AppUser?> GetAuthenticatedUserAsync()
-        {
-            var username = User.Identity?.Name
-                ?? User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value
-                ?? User.FindFirst("name")?.Value
-                ?? User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name")?.Value;
-
-            if (string.IsNullOrEmpty(username))
-            {
-                var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
-                    ?? User.FindFirst("sub")?.Value
-                    ?? User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
-
-                if (!string.IsNullOrEmpty(userId))
-                {
-                    return await _userManager.FindByIdAsync(userId);
-                }
-                return null;
-            }
-
-            return await _userManager.FindByNameAsync(username);
         }
     }
 }

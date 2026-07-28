@@ -67,7 +67,7 @@ namespace api.Controllers
                 return BadRequest("Stock does not exist");
             }
 
-            var appUser = await GetAuthenticatedUserAsync();
+            var appUser = await User.GetAuthenticatedUserAsync(_userManager);
             if (appUser == null)
                 return Unauthorized("User context not found.");
 
@@ -88,7 +88,7 @@ namespace api.Controllers
             [FromBody] UpdateCommentRequestDto updateDto
         )
         {
-            var appUser = await GetAuthenticatedUserAsync();
+            var appUser = await User.GetAuthenticatedUserAsync(_userManager);
             if (appUser == null)
                 return Unauthorized("User context not found.");
 
@@ -123,7 +123,7 @@ namespace api.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var appUser = await GetAuthenticatedUserAsync();
+            var appUser = await User.GetAuthenticatedUserAsync(_userManager);
             if (appUser == null)
                 return Unauthorized("User context not found.");
 
@@ -150,15 +150,6 @@ namespace api.Controllers
             }
 
             return Ok(commentModel);
-        }
-
-        private async Task<AppUser?> GetAuthenticatedUserAsync()
-        {
-            var username = User.GetUsername();
-            if (string.IsNullOrEmpty(username))
-                return null;
-
-            return await _userManager.FindByNameAsync(username);
         }
     }
 }

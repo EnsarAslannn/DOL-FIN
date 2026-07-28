@@ -24,7 +24,7 @@ namespace api.Mappers
         {
             return new Stock
             {
-                Symbol = stockDto.Symbol,
+                Symbol = stockDto.Symbol.Trim().ToUpperInvariant(),
                 CompanyName = stockDto.CompanyName,
                 Purchase = stockDto.Purchase,
                 LastDiv = stockDto.LastDiv,

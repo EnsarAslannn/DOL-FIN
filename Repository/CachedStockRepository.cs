@@ -12,6 +12,7 @@ namespace api.Repository
     public class CachedStockRepository : IStockRepository, IStockCacheInvalidator
     {
         private const string TrendsKey = "stock:trends";
+        private const string ListTag = "stock:list";
 
         private static readonly HybridCacheEntryOptions ListCacheOptions = new()
         {
@@ -53,7 +54,8 @@ namespace api.Repository
                 var cached = await _cache.GetOrCreateAsync(
                     BuildListCacheKey(query),
                     async ct => ToCacheModels(await _inner.GetAllAsync(query)),
-                    ListCacheOptions
+                    ListCacheOptions,
+                    tags: [ListTag]
                 );
 
                 return FromCacheModels(cached);
@@ -136,6 +138,7 @@ namespace api.Repository
         {
             var created = await _inner.CreateAsync(stockModel);
             await InvalidateTrendsAsync();
+            await InvalidateListAsync();
             return created;
         }
 
@@ -154,6 +157,7 @@ namespace api.Repository
                 await InvalidateSymbolAsync(updated.Symbol);
             }
             await InvalidateTrendsAsync();
+            await InvalidateListAsync();
 
             return updated;
         }
@@ -167,6 +171,7 @@ namespace api.Repository
             await SafeRemoveAsync(IdKey(id));
             await InvalidateSymbolAsync(deleted.Symbol);
             await InvalidateTrendsAsync();
+            await InvalidateListAsync();
 
             return deleted;
         }
@@ -174,6 +179,13 @@ namespace api.Repository
         public Task InvalidateStockAsync(int stockId) => SafeRemoveAsync(IdKey(stockId));
 
         public Task InvalidateTrendsAsync() => SafeRemoveAsync(TrendsKey);
+
+        // Every GetAllAsync result is tagged with ListTag regardless of its
+        // filter/sort/paging params (see BuildListCacheKey), so removing by
+        // tag clears all cached list pages/variants in one call instead of
+        // leaving stale entries behind for whichever filter combinations
+        // weren't explicitly keyed here.
+        private Task InvalidateListAsync() => SafeRemoveByTagAsync(ListTag);
 
         private Task InvalidateSymbolAsync(string? symbol) =>
             string.IsNullOrWhiteSpace(symbol) ? Task.CompletedTask : SafeRemoveAsync(SymbolKey(symbol));
@@ -191,6 +203,18 @@ namespace api.Repository
             catch (Exception ex)
             {
                 _logger.LogWarning(ex, "Redis unavailable, could not invalidate cache key {Key}", key);
+            }
+        }
+
+        private async Task SafeRemoveByTagAsync(string tag)
+        {
+            try
+            {
+                await _cache.RemoveByTagAsync(tag);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Redis unavailable, could not invalidate cache tag {Tag}", tag);
             }
         }
 

@@ -45,6 +45,11 @@ namespace api.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody] CreateStockRequestDto stockDto)
         {
+            if (await _stockRepo.GetBySymbolAsync(stockDto.Symbol) != null)
+            {
+                return Conflict($"A stock with symbol '{stockDto.Symbol.Trim().ToUpperInvariant()}' already exists.");
+            }
+
             var stockModel = stockDto.ToStockFromCreateDto();
             await _stockRepo.CreateAsync(stockModel);
 
@@ -62,6 +67,12 @@ namespace api.Controllers
             [FromBody] UpdateStockRequestDto updateDto
         )
         {
+            var conflicting = await _stockRepo.GetBySymbolAsync(updateDto.Symbol);
+            if (conflicting != null && conflicting.Id != id)
+            {
+                return Conflict($"A stock with symbol '{updateDto.Symbol.Trim().ToUpperInvariant()}' already exists.");
+            }
+
             var stockModel = await _stockRepo.UpdateAsync(id, updateDto);
 
             if (stockModel == null)

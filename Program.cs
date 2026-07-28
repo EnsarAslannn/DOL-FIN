@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Text;
 using api.Data;
 using api.Diagnostics;
@@ -125,6 +126,22 @@ builder.Services.AddHybridCache(options =>
     };
 });
 
+var jwtSigningKeyBytes = Encoding.UTF8.GetBytes(
+    builder.Configuration["JWT:SigningKey"]
+        ?? throw new InvalidOperationException("JWT SigningKey is missing in configuration!")
+);
+
+// HS512 needs a key at least as long as its output (64 bytes) to deliver its
+// full security margin -- a shorter key would still "work" but produces
+// forgeable-in-practice signatures. Fail fast at startup rather than
+// silently accepting a weak key.
+if (jwtSigningKeyBytes.Length < 64)
+{
+    throw new InvalidOperationException(
+        "JWT SigningKey must be at least 64 bytes (512 bits) long for HS512."
+    );
+}
+
 builder
     .Services.AddIdentity<AppUser, IdentityRole>(options =>
     {
@@ -133,6 +150,10 @@ builder
         options.Password.RequireUppercase = true;
         options.Password.RequireNonAlphanumeric = true;
         options.Password.RequiredLength = 12;
+
+        options.Lockout.MaxFailedAccessAttempts = 5;
+        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+        options.Lockout.AllowedForNewUsers = true;
     })
     .AddEntityFrameworkStores<ApplicationDBContext>();
 
@@ -157,14 +178,7 @@ builder
             ValidAudience = builder.Configuration["JWT:Audience"],
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(
-                    builder.Configuration["JWT:SigningKey"]
-                        ?? throw new InvalidOperationException(
-                            "JWT SigningKey is missing in configuration!"
-                        )
-                )
-            ),
+            IssuerSigningKey = new SymmetricSecurityKey(jwtSigningKeyBytes),
             ClockSkew = TimeSpan.Zero
         };
         options.Events = new JwtBearerEvents
@@ -177,6 +191,32 @@ builder
                     context.Token = cookieToken;
                 }
                 return Task.CompletedTask;
+            },
+            // Tokens carry the user's SecurityStamp as it was at issuance time.
+            // Comparing it against the current DB value lets Logout/password
+            // changes actually revoke outstanding tokens instead of just
+            // deleting the client's cookie -- without needing a full
+            // refresh-token/blacklist system.
+            OnTokenValidated = async context =>
+            {
+                var stampClaim = context.Principal?.FindFirst("SecurityStamp")?.Value;
+                var userId = context.Principal?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                if (string.IsNullOrEmpty(stampClaim) || string.IsNullOrEmpty(userId))
+                {
+                    context.Fail("Token is missing required security stamp claims.");
+                    return;
+                }
+
+                var userManager = context.HttpContext.RequestServices
+                    .GetRequiredService<UserManager<AppUser>>();
+                var user = await userManager.FindByIdAsync(userId);
+                var currentStamp = user == null ? null : await userManager.GetSecurityStampAsync(user);
+
+                if (user == null || currentStamp != stampClaim)
+                {
+                    context.Fail("Token has been revoked.");
+                }
             }
         };
     });
@@ -265,10 +305,20 @@ using (var scope = app.Services.CreateScope())
     if (!string.IsNullOrWhiteSpace(adminUsername))
     {
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
-        var adminUser = await userManager.FindByNameAsync(adminUsername);
-        if (adminUser != null && !await userManager.IsInRoleAsync(adminUser, "Admin"))
+
+        // Only ever auto-promote while the system has no Admin yet. Without
+        // this guard, anyone who registers the configured seed username
+        // before the real owner does would be silently promoted to Admin on
+        // the next restart/deploy -- registration is public and unauthenticated.
+        // Once a real Admin exists, this block becomes a no-op.
+        var existingAdmins = await userManager.GetUsersInRoleAsync("Admin");
+        if (existingAdmins.Count == 0)
         {
-            await userManager.AddToRoleAsync(adminUser, "Admin");
+            var adminUser = await userManager.FindByNameAsync(adminUsername);
+            if (adminUser != null)
+            {
+                await userManager.AddToRoleAsync(adminUser, "Admin");
+            }
         }
     }
 }

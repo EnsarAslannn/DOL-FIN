@@ -54,12 +54,13 @@ namespace api.Repository
                 );
             }
 
-            if (queryObject.IsDescending)
-            {
-                comments = comments.OrderByDescending(c => c.CreatedOn);
-            }
+            comments = queryObject.IsDescending
+                ? comments.OrderByDescending(c => c.CreatedOn)
+                : comments.OrderBy(c => c.CreatedOn);
 
-            return await comments.ToListAsync();
+            var skipNumber = (queryObject.PageNumber - 1) * queryObject.PageSize;
+
+            return await comments.Skip(skipNumber).Take(queryObject.PageSize).ToListAsync();
         }
 
         public async Task<Comment?> UpdateAsync(int id, Comment commentModel)

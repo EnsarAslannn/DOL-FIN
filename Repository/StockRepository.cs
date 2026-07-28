@@ -39,10 +39,11 @@ namespace api.Repository
 
         public async Task<List<Stock>> GetAllAsync(QueryObject query)
         {
-            var stocks = _context
-                .Stock.Include(c => c.Comments)
-                .ThenInclude(a => a.AppUser)
-                .AsQueryable();
+            // Comments are intentionally not eager-loaded here: they're
+            // unbounded per stock, and no caller of the list endpoint reads
+            // StockDto.Comments -- the dedicated (paginated) comment endpoint
+            // is the actual source for that data.
+            var stocks = _context.Stock.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(query.CompanyName))
             {
@@ -88,7 +89,8 @@ namespace api.Repository
 
         public async Task<Stock?> GetBySymbolAsync(string symbol)
         {
-            return await _context.Stock.FirstOrDefaultAsync(s => s.Symbol == symbol);
+            var normalized = symbol.Trim().ToUpperInvariant();
+            return await _context.Stock.FirstOrDefaultAsync(s => s.Symbol.ToUpper() == normalized);
         }
 
         public Task<bool> StockExists(int id)
@@ -105,7 +107,7 @@ namespace api.Repository
                 return null;
             }
 
-            existingStock.Symbol = stockDto.Symbol;
+            existingStock.Symbol = stockDto.Symbol.Trim().ToUpperInvariant();
             existingStock.CompanyName = stockDto.CompanyName;
             existingStock.Purchase = stockDto.Purchase;
             existingStock.LastDiv = stockDto.LastDiv;

@@ -9,6 +9,10 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    env:
+      # Pins CLI output to English regardless of runner locale -- the
+      # "vulnerable packages" grep check below matches on English text.
+      DOTNET_CLI_UI_LANGUAGE: en
 
     steps:
       - uses: actions/checkout@v4
@@ -18,11 +22,28 @@ jobs:
         with:
           dotnet-version: "10.0.x"
 
+      # api.csproj deliberately excludes api.Tests/**/*.cs from its own
+      # compile (see the <Compile Remove> in api.csproj), so restoring/
+      # building/testing api.csproj alone never touches api.Tests -- "dotnet
+      # test" against it silently succeeds with zero tests discovered.
+      # Targeting api.Tests.csproj (which references api.csproj) is what
+      # actually exercises the suite; without this the CI "Test" step was a
+      # no-op that always reported success.
       - name: Restore
-        run: dotnet restore
+        run: dotnet restore api.Tests/api.Tests.csproj
+
+      - name: Check formatting
+        run: |
+          dotnet format api.csproj --verify-no-changes --severity warn
+          dotnet format api.Tests/api.Tests.csproj --verify-no-changes --severity warn
 
       - name: Build
-        run: dotnet build --no-restore --configuration Release
+        run: dotnet build api.Tests/api.Tests.csproj --no-restore --configuration Release
 
       - name: Test
-        run: dotnet test --no-build --configuration Release --verbosity normal
+        run: dotnet test api.Tests/api.Tests.csproj --no-build --configuration Release --verbosity normal
+
+      - name: Check for vulnerable packages
+        run: |
+          dotnet list api.Tests/api.Tests.csproj package --vulnerable --include-transitive | tee vuln.txt
+          ! grep -q "has the following vulnerable packages" vuln.txt
