@@ -180,13 +180,15 @@ const SearchPage = () => {
     setIsModalOpen(true)
   }
 
-  const onSearchSubmit = async (e: SyntheticEvent) => {
+  const onSearchSubmit = async (e: SyntheticEvent, overrideQuery?: string) => {
     e.preventDefault()
-    if (!search.trim()) return
+
+    // A suggestion click passes its symbol in directly, because `search` has
+    // not caught up with that click yet at the time the handler runs.
+    const queryValue = (overrideQuery ?? search).trim()
+    if (!queryValue) return
 
     try {
-      const queryValue = search.trim()
-
       const response = queryValue.length <= 5
         ? await searchStocksBySymbolAPI(queryValue.toUpperCase())
         : await searchStocksByCompanyNameAPI(queryValue)

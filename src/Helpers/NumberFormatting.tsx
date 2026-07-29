@@ -19,7 +19,9 @@ export const formatLargeNonMonetaryNumber = (
   number: number,
 ): string | number | undefined => {
   if (number < 0) {
-    return "-" + formatLargeMonetaryNumber(-1 * number)
+    // Recurse into *this* formatter, not the monetary one -- delegating there
+    // stamped a currency symbol onto a plain number ("-$1.2B" for -1.2B).
+    return "-" + formatLargeNonMonetaryNumber(-1 * number)
   }
   if (number < 1000) {
     return number
