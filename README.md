@@ -10,13 +10,14 @@ Bu repo frontend'i içerir. Backend (.NET Web API) ayrı bir repoda: [DOL-FIN-ap
 
 ## Ekran Görüntüleri
 
-| Ana Sayfa | Arama & Portföy | Hisse Profili |
-|---|---|---|
-| ![Ana sayfa](./docs/screenshots/home.png) | ![Arama ve portföy](./docs/screenshots/search.png) | ![Hisse profili](./docs/screenshots/company-profile.png) |
+| Ana Sayfa | Arama & Portföy | Hisse Profili | Cüzdan |
+|---|---|---|---|
+| ![Ana sayfa](./docs/screenshots/home.png) | ![Arama ve portföy](./docs/screenshots/search.png) | ![Hisse profili](./docs/screenshots/company-profile.png) | ![Cüzdan](./docs/screenshots/wallet.png) |
 
 ## Özellikler
 
 - **Portföy & Varlık Yönetimi:** Kullanıcı bazlı sanal cüzdan ve varlık takibi sistemi.
+- **Cüzdan Genel Görünümü:** Nakit bakiye, toplam varlık değeri ve pozisyon bazlı dağılım tek ekranda; anlık simüle mevduat ve satış işlemleri.
 - **Güvenli Kimlik Doğrulama:** ASP.NET Core Identity altyapısı ile httpOnly cookie tabanlı JWT korumalı API uç noktaları, rol bazlı yetkilendirme (Admin/User) ve CSRF (double-submit cookie) koruması.
 - **İlişkisel Yorum Katmanı:** Hisse senedi sembolleriyle (ticker) doğrudan ilişkilendirilmiş dinamik yorum mimarisi.
 - **Yerel Simüle Veri:** Harici API bağımlılığı olmadan, TSLA, NVDA, AAPL, GOOGL ve MSFT için elle üretilmiş yerel finansal veri seti.
@@ -82,9 +83,9 @@ npm run dev
 
 ```bash
 npm run lint
-npm test          # birim testleri (Vitest)
+npm test # birim testleri (Vitest)
 npm run build
-npm run test:e2e  # uçtan uca testler (Playwright) — önce build gerektirir
+npm run test:e2e # uçtan uca testler (Playwright) — önce build gerektirir
 ```
 
 ## Lisans
@@ -109,13 +110,14 @@ This repo holds the frontend. The backend (.NET Web API) lives in a separate rep
 
 ## Screenshots
 
-| Home | Search & Portfolio | Company Profile |
-|---|---|---|
-| ![Home page](./docs/screenshots/home.png) | ![Search and portfolio](./docs/screenshots/search.png) | ![Company profile](./docs/screenshots/company-profile.png) |
+| Home | Search & Portfolio | Company Profile | Wallet |
+|---|---|---|---|
+| ![Home page](./docs/screenshots/home.png) | ![Search and portfolio](./docs/screenshots/search.png) | ![Company profile](./docs/screenshots/company-profile.png) | ![Wallet](./docs/screenshots/wallet.png) |
 
 ## Features
 
 - **Portfolio & Asset Management:** Per-user virtual wallet and asset tracking.
+- **Wallet Overview:** Cash balance, total asset value, and position-level allocation in one view, with instant simulated deposits and sell actions.
 - **Secure Authentication:** ASP.NET Core Identity backing httpOnly-cookie JWT auth, role-based authorization (Admin/User), and CSRF (double-submit cookie) protection.
 - **Relational Comment Layer:** Dynamic comment architecture directly linked to stock tickers.
 - **Local Mock Data:** Hand-crafted local financial data set for TSLA, NVDA, AAPL, GOOGL, and MSFT, with no external API dependency.
@@ -181,9 +183,9 @@ npm run dev
 
 ```bash
 npm run lint
-npm test          # unit tests (Vitest)
+npm test # unit tests (Vitest)
 npm run build
-npm run test:e2e  # end-to-end tests (Playwright) -- requires a build first
+npm run test:e2e # end-to-end tests (Playwright) -- requires a build first
 ```
 
 ## License
