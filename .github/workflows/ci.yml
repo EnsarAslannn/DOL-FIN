@@ -78,3 +78,56 @@ jobs:
 
       - name: Test
         run: dotnet test api.IntegrationTests/api.IntegrationTests.csproj --no-build --configuration Release --verbosity normal
+
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # This is what actually catches a broken image before Railway does --
+      # `dotnet build`/`dotnet test` above never touch the Dockerfile itself,
+      # so a change that breaks the image (missing file in a COPY, a project
+      # reference the multi-stage build doesn't know about) would otherwise
+      # only surface as a failed production deploy.
+      - name: Build image
+        run: docker build -t dolfin-api:ci .
+
+      # Boots the actual built image against real Postgres + Redis containers
+      # and waits for /health to return 200 -- the same check Railway's
+      # deploy healthcheck (see railway.json) gates traffic cutover on.
+      - name: Smoke test container startup and /health
+        run: |
+          docker network create dolfin-ci
+
+          docker run -d --name postgres --network dolfin-ci \
+            -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres123 -e POSTGRES_DB=dolfin \
+            postgres:17-alpine
+
+          docker run -d --name redis --network dolfin-ci redis:7-alpine
+
+          for i in $(seq 1 30); do
+            docker exec postgres pg_isready -U postgres && break
+            sleep 1
+          done
+
+          docker run -d --name api --network dolfin-ci -p 8080:8080 \
+            -e ASPNETCORE_ENVIRONMENT=Production \
+            -e ConnectionStrings__DefaultConnection="Host=postgres;Port=5432;Database=dolfin;Username=postgres;Password=postgres123" \
+            -e ConnectionStrings__Redis="redis:6379" \
+            -e JWT__SigningKey="ci-smoke-test-signing-key-not-a-real-secret-64-bytes-minimum-000" \
+            -e JWT__Issuer="https://dol-fin.com" \
+            -e JWT__Audience="https://dol-fin.com" \
+            dolfin-api:ci
+
+          for i in $(seq 1 30); do
+            if curl -fs http://localhost:8080/health; then
+              echo
+              echo "Health check passed"
+              exit 0
+            fi
+            sleep 1
+          done
+
+          echo "Health check never returned 200 within 30s"
+          docker logs api
+          exit 1

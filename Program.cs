@@ -177,6 +177,30 @@ builder.Services.AddHybridCache(options =>
     };
 });
 
+var healthChecksBuilder = builder
+    .Services.AddHealthChecks()
+    .AddNpgSql(
+        builder.Configuration.GetConnectionString("DefaultConnection")
+            ?? throw new InvalidOperationException("DefaultConnection is missing in configuration!"),
+        name: "postgres"
+    );
+
+var redisConnectionStringForHealthCheck = builder.Configuration.GetConnectionString("Redis");
+if (!string.IsNullOrWhiteSpace(redisConnectionStringForHealthCheck))
+{
+    // Redis is an optional accelerator here, not a hard dependency --
+    // CachedStockRepository and PortfolioService already fall back to direct
+    // DB reads if it's unreachable (see their try/catch blocks). Reporting a
+    // Redis outage as Degraded rather than Unhealthy keeps Railway from
+    // restarting/routing away from an instance that's still fully able to
+    // serve requests, just without the cache.
+    healthChecksBuilder.AddRedis(
+        redisConnectionStringForHealthCheck,
+        name: "redis",
+        failureStatus: Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Degraded
+    );
+}
+
 var jwtSigningKeyBytes = Encoding.UTF8.GetBytes(
     builder.Configuration["JWT:SigningKey"]
         ?? throw new InvalidOperationException("JWT SigningKey is missing in configuration!")
@@ -430,6 +454,13 @@ app.Use(
         await next();
     }
 );
+
+// Unauthenticated by design -- Railway's deploy healthcheck (see
+// railway.json) and the Dockerfile's own HEALTHCHECK both need to reach this
+// with no token. Checks Postgres (hard dependency) and Redis (soft
+// dependency, reported as Degraded rather than Unhealthy -- see the
+// AddRedis() call above).
+app.MapHealthChecks("/health");
 
 // Live-generated from the controllers' XML doc comments and
 // [ProducesResponseType] attributes via AddOpenApi() above -- this used to

@@ -1,10 +1,62 @@
 services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dolfin-api
+    ports:
+      - "5002:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      PORT: "8080"
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=dolfin;Username=postgres;Password=postgres123"
+      ConnectionStrings__Redis: "redis:6379"
+      # Dev-only placeholder -- never reuse this value anywhere real. The
+      # actual JWT signing key lives in Railway's env vars / user-secrets,
+      # never in a file that gets committed.
+      JWT__SigningKey: "local-dev-only-signing-key-do-not-use-in-production-64-bytes-minimum-000"
+      JWT__Issuer: "https://dol-fin.com"
+      JWT__Audience: "https://dol-fin.com"
+      Admin__SeedUsername: "admin"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./Logs:/app/Logs
+
+  postgres:
+    image: postgres:17-alpine
+    container_name: dolfin-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+      POSTGRES_DB: dolfin
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   redis:
     image: redis:7-alpine
+    container_name: dolfin-redis
     ports:
       - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
       timeout: 3s
       retries: 5
+
+volumes:
+  postgres_data:
+  redis_data:
