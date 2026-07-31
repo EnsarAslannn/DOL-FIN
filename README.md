@@ -13,10 +13,11 @@ The frontend (React/TypeScript) lives in a separate repo: [DOL-FIN](https://gith
 
 - **Authentication:** ASP.NET Core Identity, JWT delivered via an httpOnly cookie (not exposed to JS), role-based authorization (`Admin`/`User`).
 - **CSRF Protection:** Double-submit cookie pattern (`IAntiforgery`) on every authenticated, state-changing request.
-- **Portfolio Engine:** Buy/sell/deposit/withdraw with transactional consistency (`IUnitOfWork`), ownership-checked comment CRUD, admin-only stock management.
+- **Portfolio Engine:** Buy/sell/deposit/withdraw with transactional consistency (`IUnitOfWork`), portfolio metrics/allocation warnings/rebalancing suggestions, price alerts with a background check, ownership-checked comment CRUD, admin-only stock management.
+- **Validation:** Centralized [FluentValidation](https://docs.fluentvalidation.net/) validators for every request DTO, enforced by a single global action filter (`ValidationActionFilter`) instead of ad hoc checks in controllers.
 - **Rate Limiting:** IP-partitioned fixed-window limiter on login/register.
 - **Caching:** Redis-backed distributed cache (`HybridCache` + StackExchangeRedis) for stock and portfolio reads, with cache-aside invalidation on writes.
-- **API Docs:** Interactive OpenAPI docs via [Scalar](https://github.com/scalar/scalar) at `/scalar` (development environment).
+- **API Docs:** Interactive OpenAPI docs via [Scalar](https://github.com/scalar/scalar) at `/scalar`, generated live from the controllers' XML doc comments (see [API Documentation](#api-documentation) below) — not a hand-maintained file, so it can't drift from the real routes.
 
 ## Tech Stack
 
@@ -62,24 +63,50 @@ The API listens on `https://localhost:7109` by default; interactive docs are at 
 
 To make a locally-registered user an admin, set `Admin:SeedUsername` (via `dotnet user-secrets` or `appsettings.Development.json`) to that user's username and restart — the app grants the `Admin` role to a matching user on startup if they aren't already in it.
 
+## API Documentation
+
+The OpenAPI document is generated live at request time from the controllers'
+XML doc comments and `[ProducesResponseType]` attributes — not a
+hand-maintained file, so it can't quietly drift from the real routes the way
+a manually-exported spec would.
+
+- **Interactive docs (Scalar):** `/scalar` — try requests directly from the browser.
+- **Raw OpenAPI document:** `/openapi.json` — paste it into [editor.swagger.io](https://editor.swagger.io) to validate it independently, or point any OpenAPI-aware client generator at it.
+
+```bash
+curl http://localhost:5002/openapi.json
+```
+
+Every action documents its realistic response codes (200/400/401/403/404/409)
+and, where the response has one, its concrete DTO type; validation failures
+(400) come back as a standard `ValidationProblemDetails` with a per-field
+`errors` object (see the FluentValidation section above).
+
 ## Tests
 
 ```bash
-dotnet test
+dotnet test api.sln
 ```
 
-14 tests covering comment ownership authorization (IDOR regression), stock CRUD role restrictions, and JWT role-claim generation.
+Two projects: `api.Tests` (unit tests — repositories against EF Core
+InMemory, services and validators via Moq) and `api.IntegrationTests`
+(endpoint tests against a real Postgres + Redis via Testcontainers —
+requires Docker running locally). Both run in CI on every push; see
+`.github/workflows/ci.yml`.
 
 ## Project Structure
 
 ```
-Controllers/    API endpoints (Account, Stock, Portfolio, Comment)
-Service/        Business logic (PortfolioService, TokenService)
-Repository/     Data access behind interfaces
-Dtos/           Request/response contracts
-Models/         EF Core entities
-Migrations/     EF Core migrations
-api.Tests/      xUnit test project
+Controllers/           API endpoints (Account, Stock, Portfolio, Comment, PriceAlert)
+Service/               Business logic (PortfolioService, PortfolioAnalyticsService,
+                       RebalancingService, PriceAlertService + its background job, TokenService)
+Repository/            Data access behind interfaces
+Validation/            FluentValidation validators + the global ValidationActionFilter
+Dtos/                  Request/response contracts
+Models/                EF Core entities
+Migrations/            EF Core migrations
+api.Tests/              xUnit unit test project
+api.IntegrationTests/   xUnit integration test project (Testcontainers)
 ```
 
 ## License

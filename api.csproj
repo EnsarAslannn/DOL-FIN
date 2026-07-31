@@ -5,6 +5,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <OpenApiGenerateDocuments>false</OpenApiGenerateDocuments>
     <UserSecretsId>7f6d3b8b-6b9b-4b9d-8f8e-6e3b3f8c9b2a</UserSecretsId>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- Only controller actions are XML-documented (that's the surface that
+         actually reaches the OpenAPI document/Scalar UI); suppressing this
+         instead of adding a <summary> to every DTO/model/service property
+         in the app just to silence the compiler. -->
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,9 +35,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="wwwroot\openapi.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="wwwroot\favicon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

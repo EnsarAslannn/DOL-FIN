@@ -85,7 +85,35 @@ builder.Services.Configure<Microsoft.AspNetCore.Mvc.ApiBehaviorOptions>(options 
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer(
+        (document, _, _) =>
+        {
+            document.Info = new Microsoft.OpenApi.OpenApiInfo
+            {
+                Title = "DOLFIN API",
+                Version = "v1",
+                Description =
+                    "Portfolio management API: stock catalog, user portfolios, trading, price alerts, and portfolio analytics.",
+            };
+            document.Servers =
+            [
+                new Microsoft.OpenApi.OpenApiServer
+                {
+                    Url = "https://api-production-a1b64.up.railway.app",
+                    Description = "Production (Railway)",
+                },
+                new Microsoft.OpenApi.OpenApiServer
+                {
+                    Url = "http://localhost:5002",
+                    Description = "Local development",
+                },
+            ];
+            return Task.CompletedTask;
+        }
+    );
+});
 
 void ConfigureCommon(DbContextOptionsBuilder options)
 {
@@ -403,43 +431,28 @@ app.Use(
     }
 );
 
-app.MapGet(
-    "/openapi.json",
-    async context =>
-    {
-        context.Response.ContentType = "application/json";
-
-        var filePath = Path.Combine(AppContext.BaseDirectory, "wwwroot", "openapi.json");
-
-        if (!File.Exists(filePath))
-        {
-            filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "openapi.json");
-        }
-
-        if (File.Exists(filePath))
-        {
-            await context.Response.SendFileAsync(filePath);
-        }
-        else
-        {
-            context.Response.StatusCode = 404;
-            await context.Response.WriteAsync($"OpenAPI JSON file not found! Looked in: {AppContext.BaseDirectory} and {Directory.GetCurrentDirectory()}");
-        }
-    }
-);
+// Live-generated from the controllers' XML doc comments and
+// [ProducesResponseType] attributes via AddOpenApi() above -- this used to
+// serve a hand-maintained wwwroot/openapi.json that had already drifted from
+// the real routes (stale server URL, missing half the controllers). Fixed at
+// the source instead of re-editing that file by hand again.
+app.MapOpenApi("/openapi.json");
 
 app.MapControllers();
-if (app.Environment.IsDevelopment())
-{
-    app.MapScalarApiReference(options =>
-    {
-        options.WithTitle("Dolfin API")
-               .WithTheme(ScalarTheme.DeepSpace)
-               .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
 
-        options.OpenApiRoutePattern = "/openapi.json";
-    });
-}
+// Available in every environment, not just Development: this is read-only
+// API documentation with no privileged access of its own, and the whole
+// point of asking for "production-ready" docs is that they're reachable in
+// production.
+app.MapScalarApiReference(options =>
+{
+    options
+        .WithTitle("DOLFIN API")
+        .WithTheme(ScalarTheme.DeepSpace)
+        .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
+
+    options.OpenApiRoutePattern = "/openapi.json";
+});
 
 try
 {
