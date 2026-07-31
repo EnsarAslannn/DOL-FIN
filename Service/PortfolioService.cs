@@ -1,3 +1,4 @@
+using api.Caching;
 using api.Dtos;
 using api.Interfaces;
 using api.Models;
@@ -9,18 +10,13 @@ namespace api.Service
 {
     public class PortfolioService : IPortfolioService
     {
-        private static readonly HybridCacheEntryOptions PortfolioCacheOptions = new()
-        {
-            Expiration = TimeSpan.FromMinutes(5),
-            LocalCacheExpiration = TimeSpan.FromSeconds(30),
-        };
-
         private readonly IPortfolioRepository _portfolioRepo;
         private readonly IStockRepository _stockRepo;
         private readonly ITransactionRepository _transactionRepo;
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<AppUser> _userManager;
         private readonly HybridCache _cache;
+        private readonly ICacheMetrics _metrics;
         private readonly ILogger<PortfolioService> _logger;
 
         public PortfolioService(
@@ -30,6 +26,7 @@ namespace api.Service
             IUnitOfWork unitOfWork,
             UserManager<AppUser> userManager,
             HybridCache cache,
+            ICacheMetrics metrics,
             ILogger<PortfolioService> logger
         )
         {
@@ -39,6 +36,7 @@ namespace api.Service
             _unitOfWork = unitOfWork;
             _userManager = userManager;
             _cache = cache;
+            _metrics = metrics;
             _logger = logger;
         }
 
@@ -46,10 +44,11 @@ namespace api.Service
         {
             try
             {
-                return await _cache.GetOrCreateAsync(
-                    PortfolioCacheKey(user.Id),
+                return await _cache.GetOrCreateWithMetricsAsync(
+                    _metrics,
+                    CacheKeys.PortfolioByUser(user.Id),
                     async ct => await _portfolioRepo.GetUserPortfolio(user),
-                    PortfolioCacheOptions
+                    CacheConfiguration.Portfolio
                 );
             }
             catch (Exception ex)
@@ -61,8 +60,6 @@ namespace api.Service
 
         private const string ConcurrencyErrorMessage =
             "Your account was updated by another request while this operation was in progress. Please try again.";
-
-        private static string PortfolioCacheKey(string userId) => $"portfolio:user:{userId}";
 
         private static void EnsureIdentityUpdateSucceeded(IdentityResult updateResult)
         {
@@ -82,7 +79,7 @@ namespace api.Service
         {
             try
             {
-                await _cache.RemoveAsync(PortfolioCacheKey(userId));
+                await _cache.RemoveAsync(CacheKeys.PortfolioByUser(userId));
             }
             catch (Exception ex)
             {

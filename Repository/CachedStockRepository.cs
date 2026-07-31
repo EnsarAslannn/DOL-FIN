@@ -1,3 +1,4 @@
+using api.Caching;
 using api.Dtos.Stock;
 using api.Helpers;
 using api.Interfaces;
@@ -11,39 +12,21 @@ namespace api.Repository
     // interfaces, so this can be swapped in via DI without touching either.
     public class CachedStockRepository : IStockRepository, IStockCacheInvalidator
     {
-        private const string TrendsKey = "stock:trends";
-        private const string ListTag = "stock:list";
-
-        private static readonly HybridCacheEntryOptions ListCacheOptions = new()
-        {
-            Expiration = TimeSpan.FromSeconds(60),
-            LocalCacheExpiration = TimeSpan.FromSeconds(30),
-        };
-
-        private static readonly HybridCacheEntryOptions DetailCacheOptions = new()
-        {
-            Expiration = TimeSpan.FromMinutes(5),
-            LocalCacheExpiration = TimeSpan.FromSeconds(30),
-        };
-
-        private static readonly HybridCacheEntryOptions TrendsCacheOptions = new()
-        {
-            Expiration = TimeSpan.FromMinutes(10),
-            LocalCacheExpiration = TimeSpan.FromSeconds(30),
-        };
-
         private readonly StockRepository _inner;
         private readonly HybridCache _cache;
+        private readonly ICacheMetrics _metrics;
         private readonly ILogger<CachedStockRepository> _logger;
 
         public CachedStockRepository(
             StockRepository inner,
             HybridCache cache,
+            ICacheMetrics metrics,
             ILogger<CachedStockRepository> logger
         )
         {
             _inner = inner;
             _cache = cache;
+            _metrics = metrics;
             _logger = logger;
         }
 
@@ -51,11 +34,12 @@ namespace api.Repository
         {
             try
             {
-                var cached = await _cache.GetOrCreateAsync(
-                    BuildListCacheKey(query),
+                var cached = await _cache.GetOrCreateWithMetricsAsync(
+                    _metrics,
+                    CacheKeys.StockList(query),
                     async ct => ToCacheModels(await _inner.GetAllAsync(query)),
-                    ListCacheOptions,
-                    tags: [ListTag]
+                    CacheConfiguration.StockList,
+                    tags: [CacheKeys.StockListTag]
                 );
 
                 return FromCacheModels(cached);
@@ -71,14 +55,15 @@ namespace api.Repository
         {
             try
             {
-                var cached = await _cache.GetOrCreateAsync(
-                    IdKey(id),
+                var cached = await _cache.GetOrCreateWithMetricsAsync(
+                    _metrics,
+                    CacheKeys.StockById(id),
                     async ct =>
                     {
                         var stock = await _inner.GetByIdAsync(id);
                         return stock is null ? null : ToCacheModel(stock);
                     },
-                    DetailCacheOptions
+                    CacheConfiguration.StockDetail
                 );
 
                 return cached is null ? null : FromCacheModel(cached);
@@ -94,14 +79,15 @@ namespace api.Repository
         {
             try
             {
-                var cached = await _cache.GetOrCreateAsync(
-                    SymbolKey(symbol),
+                var cached = await _cache.GetOrCreateWithMetricsAsync(
+                    _metrics,
+                    CacheKeys.StockBySymbol(symbol),
                     async ct =>
                     {
                         var stock = await _inner.GetBySymbolAsync(symbol);
                         return stock is null ? null : ToCacheModel(stock);
                     },
-                    DetailCacheOptions
+                    CacheConfiguration.StockDetail
                 );
 
                 return cached is null ? null : FromCacheModel(cached);
@@ -117,10 +103,11 @@ namespace api.Repository
         {
             try
             {
-                var cached = await _cache.GetOrCreateAsync(
-                    TrendsKey,
+                var cached = await _cache.GetOrCreateWithMetricsAsync(
+                    _metrics,
+                    CacheKeys.StockTrends,
                     async ct => ToCacheModels(await _inner.GetMarketTrendsAsync()),
-                    TrendsCacheOptions
+                    CacheConfiguration.StockTrends
                 );
 
                 return FromCacheModels(cached);
@@ -142,12 +129,12 @@ namespace api.Repository
             // GetBySymbolAsync duplicate check immediately before calling this,
             // which caches a "not found" result for this exact symbol key.
             // Without clearing it here, that stale negative entry outlives the
-            // creation (DetailCacheOptions is a 5-minute TTL) and makes the new
+            // creation (StockDetail is a 5-minute TTL) and makes the new
             // stock invisible to GetBySymbolAsync -- both to a follow-up
             // duplicate-symbol check (which then 500s on the DB's unique
             // constraint instead of returning 409) and to BuyStockAsync looking
             // the symbol up to place a trade.
-            await SafeRemoveAsync(SymbolKey(created.Symbol));
+            await SafeRemoveAsync(CacheKeys.StockBySymbol(created.Symbol));
             await InvalidateTrendsAsync();
             await InvalidateListAsync();
             return created;
@@ -161,7 +148,7 @@ namespace api.Repository
             if (updated is null)
                 return null;
 
-            await SafeRemoveAsync(IdKey(id));
+            await SafeRemoveAsync(CacheKeys.StockById(id));
             await InvalidateSymbolAsync(oldSymbol);
             if (!string.Equals(oldSymbol, updated.Symbol, StringComparison.OrdinalIgnoreCase))
             {
@@ -179,7 +166,7 @@ namespace api.Repository
             if (deleted is null)
                 return null;
 
-            await SafeRemoveAsync(IdKey(id));
+            await SafeRemoveAsync(CacheKeys.StockById(id));
             await InvalidateSymbolAsync(deleted.Symbol);
             await InvalidateTrendsAsync();
             await InvalidateListAsync();
@@ -187,19 +174,19 @@ namespace api.Repository
             return deleted;
         }
 
-        public Task InvalidateStockAsync(int stockId) => SafeRemoveAsync(IdKey(stockId));
+        public Task InvalidateStockAsync(int stockId) => SafeRemoveAsync(CacheKeys.StockById(stockId));
 
-        public Task InvalidateTrendsAsync() => SafeRemoveAsync(TrendsKey);
+        public Task InvalidateTrendsAsync() => SafeRemoveAsync(CacheKeys.StockTrends);
 
-        // Every GetAllAsync result is tagged with ListTag regardless of its
-        // filter/sort/paging params (see BuildListCacheKey), so removing by
-        // tag clears all cached list pages/variants in one call instead of
-        // leaving stale entries behind for whichever filter combinations
-        // weren't explicitly keyed here.
-        private Task InvalidateListAsync() => SafeRemoveByTagAsync(ListTag);
+        // Every GetAllAsync result is tagged with StockListTag regardless of
+        // its filter/sort/paging params (see CacheKeys.StockList), so
+        // removing by tag clears all cached list pages/variants in one call
+        // instead of leaving stale entries behind for whichever filter
+        // combinations weren't explicitly keyed here.
+        private Task InvalidateListAsync() => SafeRemoveByTagAsync(CacheKeys.StockListTag);
 
         private Task InvalidateSymbolAsync(string? symbol) =>
-            string.IsNullOrWhiteSpace(symbol) ? Task.CompletedTask : SafeRemoveAsync(SymbolKey(symbol));
+            string.IsNullOrWhiteSpace(symbol) ? Task.CompletedTask : SafeRemoveAsync(CacheKeys.StockBySymbol(symbol));
 
         // A write to the database already succeeded by the time we get here;
         // a Redis hiccup on invalidation must not turn that into a 500 for
@@ -227,27 +214,6 @@ namespace api.Repository
             {
                 _logger.LogWarning(ex, "Redis unavailable, could not invalidate cache tag {Tag}", tag);
             }
-        }
-
-        private static string IdKey(int id) => $"stock:id:{id}";
-
-        private static string SymbolKey(string symbol) =>
-            $"stock:symbol:{symbol.Trim().ToUpperInvariant()}";
-
-        private static string BuildListCacheKey(QueryObject query)
-        {
-            string Norm(string? value) =>
-                string.IsNullOrWhiteSpace(value) ? "_" : value.Trim().ToLowerInvariant();
-
-            return string.Join(
-                '|',
-                "stock:list:" + Norm(query.Symbol),
-                Norm(query.CompanyName),
-                Norm(query.SortBy),
-                query.IsDescending,
-                query.PageNumber,
-                query.PageSize
-            );
         }
 
         // Cache payload types, deliberately decoupled from the EF entities:

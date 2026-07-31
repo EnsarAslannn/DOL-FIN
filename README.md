@@ -16,7 +16,7 @@ The frontend (React/TypeScript) lives in a separate repo: [DOL-FIN](https://gith
 - **Portfolio Engine:** Buy/sell/deposit/withdraw with transactional consistency (`IUnitOfWork`), portfolio metrics/allocation warnings/rebalancing suggestions, price alerts with a background check, ownership-checked comment CRUD, admin-only stock management.
 - **Validation:** Centralized [FluentValidation](https://docs.fluentvalidation.net/) validators for every request DTO, enforced by a single global action filter (`ValidationActionFilter`) instead of ad hoc checks in controllers.
 - **Rate Limiting:** IP-partitioned fixed-window limiter on login/register.
-- **Caching:** Redis-backed distributed cache (`HybridCache` + StackExchangeRedis) for stock and portfolio reads, with cache-aside invalidation on writes.
+- **Caching:** Redis-backed distributed cache (`HybridCache` + StackExchangeRedis) for stock, comment, and portfolio reads, with cache-aside invalidation on writes, per-key hit/miss metrics, and cache warming on startup (see [Caching Strategy](#caching-strategy) below).
 - **API Docs:** Interactive OpenAPI docs via [Scalar](https://github.com/scalar/scalar) at `/scalar`, generated live from the controllers' XML doc comments (see [API Documentation](#api-documentation) below) — not a hand-maintained file, so it can't drift from the real routes.
 - **Health Checks:** `/health` verifies Postgres (hard dependency) and Redis (soft dependency — reported `Degraded`, not `Unhealthy`, since the app already falls back to direct DB reads if Redis is unreachable). Gates both the Dockerfile's own `HEALTHCHECK` and Railway's deploy healthcheck (`railway.json`).
 
@@ -109,6 +109,47 @@ Every action documents its realistic response codes (200/400/401/403/404/409)
 and, where the response has one, its concrete DTO type; validation failures
 (400) come back as a standard `ValidationProblemDetails` with a per-field
 `errors` object (see the FluentValidation section above).
+
+## Caching Strategy
+
+Cache-aside, via `HybridCache` (an in-process L1 + Redis L2 tier) wrapping
+each repository/service behind its existing interface — `StockController`,
+`CommentController`, and `PortfolioController` never know caching is
+involved. Keys and TTLs are centralized in `Caching/CacheKeys.cs` and
+`Caching/CacheConfiguration.cs`, the single source of truth for both.
+
+| Data | Cached? | TTL | Invalidated on |
+|---|---|---|---|
+| Stock list (`GET /api/stock`) | ✅ | 60s | Any stock create/update/delete (tag-based, clears every filter/sort/page variant at once) |
+| Stock by id/symbol | ✅ | 5m | That stock's own create/update/delete |
+| Market trends (`GET /api/stock/trends`) | ✅ | 10m | Any stock create/update/delete; also warmed once on startup (`CacheWarmingService`) — the one endpoint with a single canonical key that's worth pre-populating |
+| Comment list (`GET /api/comment`) | ✅ | 60s | Any comment create/update/delete (tag-based) |
+| Comment by id (`GET /api/comment/{id}`) | ✅ | 5m | That comment's own update/delete |
+| User's portfolio positions (`GET /api/portfolio`) | ✅ | 5m | Buy/sell/deposit/withdraw for that user |
+| Portfolio metrics/warnings/rebalance | ❌ | — | Computed in-memory from the (already-cached) position list above — a position list rarely exceeds a few dozen rows, so a second cache layer on top would save a LINQ pass, not a DB round trip |
+| Price alerts/notifications | ❌ | — | Small, per-user lists with low read volume; caching them would add invalidation complexity for negligible benefit |
+
+**Stampede protection:** `HybridCache.GetOrCreateAsync` already coalesces
+concurrent callers for the same key within one process — only the first
+caller's factory runs; the rest await its result. There's no separate
+distributed-lock layer on top of that: this app runs as a single Railway
+instance, so a hand-rolled Redis `SETNX` lock would duplicate protection the
+library already provides, for a cross-process race that isn't in play here.
+
+**Resilience:** every cache read/write is wrapped in try/catch that falls
+back to a direct DB read/no-op on a Redis failure (see the `SafeRemoveAsync`/
+catch blocks in `CachedStockRepository`, `CachedCommentRepository`, and
+`PortfolioService`) — a Redis outage degrades response times, it doesn't
+break the app (see the `/health` endpoint reporting Redis as `Degraded`
+rather than `Unhealthy` for the same reason).
+
+**Monitoring:** `ICacheMetrics` (a DI singleton, not static state) records a
+hit/miss per cache key, exposed read-only via `GET /api/diagnostics/cache-metrics`
+(Admin only). `GET /api/diagnostics/redis-info` reports live Redis server
+stats (memory, connected clients, ops/sec, key count) via a dedicated
+`IConnectionMultiplexer` registered only when a Redis connection string is
+configured — both counters are in-memory/live, not persisted, and reset on
+every restart.
 
 ## Tests
 

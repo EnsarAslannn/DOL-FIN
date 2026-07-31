@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using System.Text;
+using api.Caching;
 using api.Data;
 using api.Diagnostics;
 using api.Interfaces;
@@ -146,27 +147,55 @@ else
     builder.Services.AddDbContext<ApplicationDBContext>(ConfigureCommon);
 }
 
+var redisConnectionString = builder.Configuration.GetConnectionString("Redis");
+
+// Default StackExchange.Redis retry/timeout settings can keep a command
+// retrying for 15-20+ seconds before giving up when Redis is unreachable --
+// far too slow for a cache that's supposed to be an optional accelerator.
+// Fail fast so CachedStockRepository's/CachedCommentRepository's/
+// PortfolioService's try/catch fallback to the DB kicks in quickly instead
+// of hanging the request. Shared by AddStackExchangeRedisCache and the
+// IConnectionMultiplexer registered below so both talk to Redis with
+// identical settings instead of two configurations quietly drifting apart.
+StackExchange.Redis.ConfigurationOptions? BuildRedisConfigurationOptions()
+{
+    if (string.IsNullOrWhiteSpace(redisConnectionString))
+        return null;
+
+    var configurationOptions = StackExchange.Redis.ConfigurationOptions.Parse(redisConnectionString);
+    configurationOptions.ConnectTimeout = 1000;
+    configurationOptions.ConnectRetry = 1;
+    configurationOptions.SyncTimeout = 1000;
+    configurationOptions.AsyncTimeout = 1000;
+    configurationOptions.AbortOnConnectFail = false;
+    // StackExchange.Redis blocks INFO/KEYS (and other server-management
+    // commands) by default as a safety gate against accidentally running
+    // them against production -- DiagnosticsController.GetRedisInfo needs
+    // both. The cache connection never issues either, so enabling this
+    // process-wide is harmless for it.
+    configurationOptions.AllowAdmin = true;
+    return configurationOptions;
+}
+
 builder.Services.AddStackExchangeRedisCache(options =>
 {
-    var redisConnectionString = builder.Configuration.GetConnectionString("Redis");
-    if (!string.IsNullOrWhiteSpace(redisConnectionString))
+    var configurationOptions = BuildRedisConfigurationOptions();
+    if (configurationOptions != null)
     {
-        // Default StackExchange.Redis retry/timeout settings can keep a
-        // command retrying for 15-20+ seconds before giving up when Redis is
-        // unreachable -- far too slow for a cache that's supposed to be an
-        // optional accelerator. Fail fast so CachedStockRepository's/
-        // PortfolioService's try/catch fallback to the DB kicks in quickly
-        // instead of hanging the request.
-        var configurationOptions = StackExchange.Redis.ConfigurationOptions.Parse(redisConnectionString);
-        configurationOptions.ConnectTimeout = 1000;
-        configurationOptions.ConnectRetry = 1;
-        configurationOptions.SyncTimeout = 1000;
-        configurationOptions.AsyncTimeout = 1000;
-        configurationOptions.AbortOnConnectFail = false;
         options.ConfigurationOptions = configurationOptions;
     }
     options.InstanceName = "dolfin:";
 });
+
+if (!string.IsNullOrWhiteSpace(redisConnectionString))
+{
+    // Used by DiagnosticsController's redis-info endpoint to report live
+    // server stats (memory, connected clients, ops/sec) -- StackExchangeRedisCache
+    // above manages its own internal connection and doesn't expose one for this.
+    builder.Services.AddSingleton<StackExchange.Redis.IConnectionMultiplexer>(_ =>
+        StackExchange.Redis.ConnectionMultiplexer.Connect(BuildRedisConfigurationOptions()!)
+    );
+}
 
 builder.Services.AddHybridCache(options =>
 {
@@ -185,17 +214,16 @@ var healthChecksBuilder = builder
         name: "postgres"
     );
 
-var redisConnectionStringForHealthCheck = builder.Configuration.GetConnectionString("Redis");
-if (!string.IsNullOrWhiteSpace(redisConnectionStringForHealthCheck))
+if (!string.IsNullOrWhiteSpace(redisConnectionString))
 {
     // Redis is an optional accelerator here, not a hard dependency --
-    // CachedStockRepository and PortfolioService already fall back to direct
-    // DB reads if it's unreachable (see their try/catch blocks). Reporting a
-    // Redis outage as Degraded rather than Unhealthy keeps Railway from
-    // restarting/routing away from an instance that's still fully able to
-    // serve requests, just without the cache.
+    // CachedStockRepository, CachedCommentRepository, and PortfolioService
+    // already fall back to direct DB reads if it's unreachable (see their
+    // try/catch blocks). Reporting a Redis outage as Degraded rather than
+    // Unhealthy keeps Railway from restarting/routing away from an instance
+    // that's still fully able to serve requests, just without the cache.
     healthChecksBuilder.AddRedis(
-        redisConnectionStringForHealthCheck,
+        redisConnectionString,
         name: "redis",
         failureStatus: Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus.Degraded
     );
@@ -296,13 +324,17 @@ builder
         };
     });
 
+builder.Services.AddSingleton<ICacheMetrics, CacheMetrics>();
+
 builder.Services.AddScoped<StockRepository>();
 builder.Services.AddScoped<CachedStockRepository>();
 builder.Services.AddScoped<IStockRepository>(sp => sp.GetRequiredService<CachedStockRepository>());
 builder.Services.AddScoped<IStockCacheInvalidator>(sp =>
     sp.GetRequiredService<CachedStockRepository>()
 );
-builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+builder.Services.AddScoped<CommentRepository>();
+builder.Services.AddScoped<CachedCommentRepository>();
+builder.Services.AddScoped<ICommentRepository>(sp => sp.GetRequiredService<CachedCommentRepository>());
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IPortfolioRepository, PortfolioRepository>();
 builder.Services.AddScoped<IPortfolioService, PortfolioService>();
@@ -312,6 +344,7 @@ builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<IPriceAlertRepository, PriceAlertRepository>();
 builder.Services.AddScoped<IPriceAlertService, PriceAlertService>();
 builder.Services.AddHostedService<PriceAlertBackgroundService>();
+builder.Services.AddScoped<ICacheWarmingService, CacheWarmingService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Without this, DataProtection keys live only in the container's ephemeral
@@ -410,6 +443,9 @@ using (var scope = app.Services.CreateScope())
             }
         }
     }
+
+    var cacheWarmingService = scope.ServiceProvider.GetRequiredService<ICacheWarmingService>();
+    await cacheWarmingService.WarmAsync();
 }
 
 app.UseForwardedHeaders();

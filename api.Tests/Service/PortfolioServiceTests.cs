@@ -1,3 +1,4 @@
+using api.Caching;
 using api.Interfaces;
 using api.Models;
 using api.Service;
@@ -59,6 +60,7 @@ namespace api.Tests.Service
                 unitOfWork.Object,
                 userManager.Object,
                 cache.Object,
+                new CacheMetrics(),
                 logger.Object
             );
         }
