@@ -19,6 +19,10 @@ namespace api.Data
 
         public DbSet<Transaction> Transactions { get; set; }
 
+        public DbSet<PriceAlert> PriceAlerts { get; set; }
+
+        public DbSet<AlertNotification> AlertNotifications { get; set; }
+
         public DbSet<Microsoft.AspNetCore.DataProtection.EntityFrameworkCore.DataProtectionKey> DataProtectionKeys { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -60,6 +64,31 @@ namespace api.Data
                 .HasOne(u => u.Stock)
                 .WithMany(u => u.Portfolios)
                 .HasForeignKey(p => p.StockId);
+
+            builder.Entity<PriceAlert>().HasIndex(a => a.AppUserId);
+
+            builder
+                .Entity<PriceAlert>()
+                .HasOne(a => a.AppUser)
+                .WithMany()
+                .HasForeignKey(a => a.AppUserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder
+                .Entity<PriceAlert>()
+                .HasOne(a => a.Stock)
+                .WithMany()
+                .HasForeignKey(a => a.StockId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<AlertNotification>().HasIndex(n => n.AppUserId);
+
+            builder
+                .Entity<AlertNotification>()
+                .HasOne(n => n.PriceAlert)
+                .WithMany()
+                .HasForeignKey(n => n.PriceAlertId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             List<IdentityRole> roles = new List<IdentityRole>
             {

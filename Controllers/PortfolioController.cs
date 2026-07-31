@@ -15,11 +15,20 @@ namespace api.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly IPortfolioService _portfolioService;
+        private readonly IPortfolioAnalyticsService _analyticsService;
+        private readonly IRebalancingService _rebalancingService;
 
-        public PortfolioController(UserManager<AppUser> userManager, IPortfolioService portfolioService)
+        public PortfolioController(
+            UserManager<AppUser> userManager,
+            IPortfolioService portfolioService,
+            IPortfolioAnalyticsService analyticsService,
+            IRebalancingService rebalancingService
+        )
         {
             _userManager = userManager;
             _portfolioService = portfolioService;
+            _analyticsService = analyticsService;
+            _rebalancingService = rebalancingService;
         }
 
         [HttpGet]
@@ -31,6 +40,39 @@ namespace api.Controllers
 
             var userPortfolio = await _portfolioService.GetUserPortfolioAsync(appUser);
             return Ok(userPortfolio);
+        }
+
+        [HttpGet("metrics")]
+        public async Task<IActionResult> GetMetrics()
+        {
+            var appUser = await User.GetAuthenticatedUserAsync(_userManager);
+            if (appUser == null)
+                return Unauthorized("User context not found.");
+
+            var metrics = await _analyticsService.GetMetricsAsync(appUser);
+            return Ok(metrics);
+        }
+
+        [HttpGet("warnings")]
+        public async Task<IActionResult> GetAllocationWarnings()
+        {
+            var appUser = await User.GetAuthenticatedUserAsync(_userManager);
+            if (appUser == null)
+                return Unauthorized("User context not found.");
+
+            var warnings = await _analyticsService.GetAllocationWarningsAsync(appUser);
+            return Ok(warnings);
+        }
+
+        [HttpGet("rebalance")]
+        public async Task<IActionResult> GetRebalancingRecommendation()
+        {
+            var appUser = await User.GetAuthenticatedUserAsync(_userManager);
+            if (appUser == null)
+                return Unauthorized("User context not found.");
+
+            var recommendation = await _rebalancingService.GetRecommendationAsync(appUser);
+            return Ok(recommendation);
         }
 
         [HttpPost]

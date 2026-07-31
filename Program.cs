@@ -64,6 +64,12 @@ builder
             .Json
             .ReferenceLoopHandling
             .Ignore;
+        // Without this, PriceAlert.Condition (and any future enum) serializes
+        // as its underlying int -- fine for the app's own client, but an
+        // opaque, renumbering-fragile contract for anyone else calling the API.
+        options.SerializerSettings.Converters.Add(
+            new Newtonsoft.Json.Converters.StringEnumConverter()
+        );
     });
 
 // ValidationActionFilter is the single validation gate now (see
@@ -248,7 +254,12 @@ builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IPortfolioRepository, PortfolioRepository>();
 builder.Services.AddScoped<IPortfolioService, PortfolioService>();
+builder.Services.AddScoped<IPortfolioAnalyticsService, PortfolioAnalyticsService>();
+builder.Services.AddScoped<IRebalancingService, RebalancingService>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+builder.Services.AddScoped<IPriceAlertRepository, PriceAlertRepository>();
+builder.Services.AddScoped<IPriceAlertService, PriceAlertService>();
+builder.Services.AddHostedService<PriceAlertBackgroundService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Without this, DataProtection keys live only in the container's ephemeral
