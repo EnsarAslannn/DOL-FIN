@@ -6,6 +6,8 @@ using api.Interfaces;
 using api.Models;
 using api.Repository;
 using api.Service;
+using api.Validation;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
@@ -52,7 +54,10 @@ builder.Services.AddCors(options =>
 
 
 builder
-    .Services.AddControllers()
+    .Services.AddControllers(options =>
+    {
+        options.Filters.Add<ValidationActionFilter>();
+    })
     .AddNewtonsoftJson(options =>
     {
         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft
@@ -60,6 +65,18 @@ builder
             .ReferenceLoopHandling
             .Ignore;
     });
+
+// ValidationActionFilter is the single validation gate now (see
+// api/Validation/), so the built-in DataAnnotations-driven 400 must be
+// suppressed -- it runs before any custom action filter and would otherwise
+// win first with its own (differently-shaped) response, making the
+// FluentValidation errors below unreachable.
+builder.Services.Configure<Microsoft.AspNetCore.Mvc.ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter = true;
+});
+
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();

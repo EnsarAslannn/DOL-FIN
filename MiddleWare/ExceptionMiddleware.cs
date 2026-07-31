@@ -1,6 +1,7 @@
 using System.Net;
 using System.Text.Json;
 using api.Models;
+using api.Validation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -26,11 +27,34 @@ namespace api.Middleware
             {
                 await _next(httpContext);
             }
+            // The normal path is ValidationActionFilter rejecting a request
+            // before the action runs, which never throws this. This is only a
+            // safety net for a validator invoked manually deeper in the call
+            // stack (e.g. via ValidateAndThrow), so it still produces the same
+            // 400 shape instead of falling through to the generic 500 below.
+            catch (FluentValidation.ValidationException validationException)
+            {
+                await HandleValidationExceptionAsync(httpContext, validationException);
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Unexpected error: {Message}", ex.Message);
                 await HandleExceptionAsync(httpContext, ex);
             }
+        }
+
+        private static async Task HandleValidationExceptionAsync(
+            HttpContext context,
+            FluentValidation.ValidationException exception
+        )
+        {
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+
+            var problemDetails = ValidationProblemFactory.Create(exception.Errors);
+
+            var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+            await context.Response.WriteAsync(JsonSerializer.Serialize(problemDetails, options));
         }
 
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)
