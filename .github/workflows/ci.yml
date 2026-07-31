@@ -47,3 +47,34 @@ jobs:
         run: |
           dotnet list api.Tests/api.Tests.csproj package --vulnerable --include-transitive | tee vuln.txt
           ! grep -q "has the following vulnerable packages" vuln.txt
+
+  integration-tests:
+    runs-on: ubuntu-latest
+    env:
+      DOTNET_CLI_UI_LANGUAGE: en
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      # Same reasoning as api.Tests above: api.IntegrationTests is also
+      # excluded from api.csproj's own compile, so it must be targeted
+      # directly. Testcontainers pulls and starts real Postgres 17 + Redis
+      # containers, which ubuntu-latest runners support out of the box via
+      # the preinstalled Docker daemon -- no docker-compose service block
+      # needed.
+      - name: Restore
+        run: dotnet restore api.IntegrationTests/api.IntegrationTests.csproj
+
+      - name: Check formatting
+        run: dotnet format api.IntegrationTests/api.IntegrationTests.csproj --verify-no-changes --severity warn
+
+      - name: Build
+        run: dotnet build api.IntegrationTests/api.IntegrationTests.csproj --no-restore --configuration Release
+
+      - name: Test
+        run: dotnet test api.IntegrationTests/api.IntegrationTests.csproj --no-build --configuration Release --verbosity normal

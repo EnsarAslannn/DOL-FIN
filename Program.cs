@@ -279,6 +279,13 @@ builder.Services.AddRateLimiter(options =>
     // target for credential-stuffing/brute-force attempts. Partitioned by
     // client IP (via the trusted X-Forwarded-For set up above) rather than
     // a single global bucket, so one abusive client can't lock everyone out.
+    // Configurable (rather than hardcoded) so integration tests can raise
+    // the ceiling instead of tripping it just by exercising several
+    // register/login flows back-to-back against one shared test host.
+    var authRateLimitPermits = builder.Configuration.GetValue<int?>("RateLimiting:AuthPermitLimit") ?? 10;
+    var authRateLimitWindow = TimeSpan.FromSeconds(
+        builder.Configuration.GetValue<int?>("RateLimiting:AuthWindowSeconds") ?? 60
+    );
     options.AddPolicy(
         "auth",
         httpContext =>
@@ -286,8 +293,8 @@ builder.Services.AddRateLimiter(options =>
                 partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown",
                 factory: _ => new System.Threading.RateLimiting.FixedWindowRateLimiterOptions
                 {
-                    PermitLimit = 10,
-                    Window = TimeSpan.FromMinutes(1),
+                    PermitLimit = authRateLimitPermits,
+                    Window = authRateLimitWindow,
                     QueueLimit = 0,
                 }
             )

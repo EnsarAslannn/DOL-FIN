@@ -39,5 +39,8 @@
     <Compile Remove="api.Tests/**/*.cs" />
     <Content Remove="api.Tests/**/*" />
     <None Remove="api.Tests/**/*" />
+    <Compile Remove="api.IntegrationTests/**/*.cs" />
+    <Content Remove="api.IntegrationTests/**/*" />
+    <None Remove="api.IntegrationTests/**/*" />
   </ItemGroup>
 </Project>

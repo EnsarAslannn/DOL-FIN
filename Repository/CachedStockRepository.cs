@@ -137,6 +137,17 @@ namespace api.Repository
         public async Task<Stock> CreateAsync(Stock stockModel)
         {
             var created = await _inner.CreateAsync(stockModel);
+
+            // The caller (StockController.Create) always does its own
+            // GetBySymbolAsync duplicate check immediately before calling this,
+            // which caches a "not found" result for this exact symbol key.
+            // Without clearing it here, that stale negative entry outlives the
+            // creation (DetailCacheOptions is a 5-minute TTL) and makes the new
+            // stock invisible to GetBySymbolAsync -- both to a follow-up
+            // duplicate-symbol check (which then 500s on the DB's unique
+            // constraint instead of returning 409) and to BuyStockAsync looking
+            // the symbol up to place a trade.
+            await SafeRemoveAsync(SymbolKey(created.Symbol));
             await InvalidateTrendsAsync();
             await InvalidateListAsync();
             return created;
