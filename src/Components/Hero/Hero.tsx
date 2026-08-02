@@ -4,6 +4,7 @@ import {
   realMarketNewsData,
 } from "../../Components/Table/TestData"
 import MarketTicker from "../MarketTicker/MarketTicker"
+import AnimatedGroup from "../AnimatedGroup/AnimatedGroup"
 import { Link } from "react-router-dom"
 import heroVortex from "../../assets/generated/hero-vortex.jpg"
 import networkMesh from "../../assets/generated/network-mesh.jpg"
@@ -89,7 +90,7 @@ const Hero = () => {
         </div>
 
         <div className="container mx-auto px-6 pt-24 pb-16 max-w-6xl relative z-10">
-          <div className="text-center flex flex-col items-center">
+          <AnimatedGroup className="text-center flex flex-col items-center">
             <span className="text-[11px] font-bold text-pulse uppercase tracking-[0.16em] bg-pulse/8 px-4 py-1.5 rounded-full border border-pulse/25 inline-flex items-center gap-2.5 mb-8">
               <span className="relative flex w-2 h-2">
                 <span className="sonar-ring" />
@@ -124,7 +125,7 @@ const Hero = () => {
                 How it works
               </a>
             </div>
-          </div>
+          </AnimatedGroup>
         </div>
       </div>
 
