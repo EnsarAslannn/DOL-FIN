@@ -14,8 +14,6 @@ export const UserProvider = ({ children }: Props) => {
     const [isReady, setIsReady] = useState(false)
 
     useEffect(() => {
-        // The JWT lives in an httpOnly cookie, invisible to JS, so the only
-        // way to know whether a session is active is to ask the server.
         const restoreSession = async () => {
             const res = await getProfileAPI()
             if (res?.data) {
@@ -33,10 +31,6 @@ export const UserProvider = ({ children }: Props) => {
         })
     }
 
-    // The access_token cookie set by login/register only takes effect on the
-    // *next* request, so the CSRF cookie can't be issued in that same
-    // response (the server wouldn't yet see an authenticated identity to
-    // bind it to). This follow-up profile call is what actually primes it.
     const primeCsrfCookie = async () => {
         await getProfileAPI()
     }

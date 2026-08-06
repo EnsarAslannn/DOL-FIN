@@ -1,8 +1,6 @@
 import { useState, type ChangeEvent, type SyntheticEvent } from "react"
 
 interface Props {
-  // `overrideQuery` lets a caller submit a term directly instead of relying on
-  // the `search` state the parent is holding -- see handleSuggestionClick.
   onSearchSubmit: (e: SyntheticEvent, overrideQuery?: string) => void
   search: string | undefined
   handleSearchChange: (e: ChangeEvent<HTMLInputElement>) => void
@@ -24,10 +22,6 @@ const Search: React.FC<Props> = ({
     handleSearchChange(customEvent)
     setShowSuggestions(false)
 
-    // Hand the symbol to the parent directly. Submitting without it read the
-    // parent's `search` state, which this click has only just queued an update
-    // for -- so the search ran against the previous term, and against an empty
-    // box it bailed out entirely and no request was ever sent.
     const mockFormEvent = { preventDefault: () => { } } as SyntheticEvent
     onSearchSubmit(mockFormEvent, symbol)
   }

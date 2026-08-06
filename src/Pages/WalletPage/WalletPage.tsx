@@ -157,9 +157,7 @@ const WalletPage = () => {
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div className="lg:col-span-2 glass-panel-hot rounded-2xl p-7 flex flex-col justify-between relative overflow-hidden min-h-[220px]">
-                        {/* Key art #5: the balance sheet as terrain. It lives behind
-                            the single largest number in the app, where an empty
-                            panel would otherwise be. */}
+                        {}
                         <img
                             src={marketTerrain}
                             alt=""

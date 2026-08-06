@@ -102,8 +102,6 @@ const SearchPage = () => {
       getPortfolio()
       getTrends()
     }
-    // Intentionally keyed on username only: wallet-balance-only updates to
-    // `user` shouldn't retrigger a portfolio/trends refetch.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.userName])
 
@@ -183,8 +181,6 @@ const SearchPage = () => {
   const onSearchSubmit = async (e: SyntheticEvent, overrideQuery?: string) => {
     e.preventDefault()
 
-    // A suggestion click passes its symbol in directly, because `search` has
-    // not caught up with that click yet at the time the handler runs.
     const queryValue = (overrideQuery ?? search).trim()
     if (!queryValue) return
 

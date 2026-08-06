@@ -40,7 +40,6 @@ const asProfileResponse = (data: UserProfile) =>
 describe("useAuth", () => {
     beforeEach(() => {
         vi.clearAllMocks()
-        // Default: no active session on mount, unless a test overrides it.
         vi.mocked(AuthService.getProfileAPI).mockResolvedValue(undefined)
         vi.mocked(AuthService.logoutAPI).mockResolvedValue(undefined)
     })

@@ -73,11 +73,9 @@ const Hero = () => {
     >
       <MarketTicker />
 
-      {/* ---- Hero stage -------------------------------------------------- */}
+      {}
       <div className="relative">
-        {/* Generated key art: the flare the whole palette is drawn from. It
-            sits behind the headline, screened into the void so it reads as
-            emitted light rather than a pasted-in photograph. */}
+        {}
         <div className="absolute inset-x-0 -top-24 h-[820px] pointer-events-none select-none">
           <img
             src={heroVortex}
@@ -130,7 +128,7 @@ const Hero = () => {
       </div>
 
       <div className="container mx-auto px-6 max-w-6xl relative z-10 flex flex-col">
-        {/* ---- Movers -------------------------------------------------- */}
+        {}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-28">
           <div className="glass-panel-hot rounded-2xl p-6">
             <div className="flex items-center justify-between mb-6 border-b border-white/8 pb-3">
@@ -207,10 +205,9 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* ---- How it works -------------------------------------------- */}
+        {}
         <div id="how-it-works" className="relative rounded-3xl overflow-hidden mb-28">
-          {/* Key art #2: a lit node network, standing in for the three stages
-              connecting into one account. */}
+          {}
           <div className="absolute inset-0 pointer-events-none select-none">
             <img
               src={networkMesh}
@@ -253,7 +250,7 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* ---- Sandbox promise ----------------------------------------- */}
+        {}
         <div className="glass-panel-hot rounded-3xl overflow-hidden mb-28 grid grid-cols-1 md:grid-cols-2 items-center">
           <div className="p-8 sm:p-12 flex flex-col gap-5 order-2 md:order-1">
             <span className="text-[10px] font-bold text-pulse uppercase tracking-[0.16em] font-mono">
@@ -277,7 +274,7 @@ const Hero = () => {
             </Link>
           </div>
 
-          {/* Key art #3: the glass core -- the visual argument for "sandbox". */}
+          {}
           <div className="relative h-64 md:h-full min-h-[320px] order-1 md:order-2">
             <img
               src={vaultCore}
@@ -289,7 +286,7 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* ---- Market insights ----------------------------------------- */}
+        {}
         <div className="mb-28">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-foam tracking-[-0.02em] font-display">
@@ -339,7 +336,7 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* ---- Help center --------------------------------------------- */}
+        {}
         <div className="max-w-3xl mx-auto w-full">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-foam tracking-[-0.02em] font-display">

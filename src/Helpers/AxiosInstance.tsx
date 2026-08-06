@@ -25,10 +25,6 @@ const mutatingMethods = new Set(["post", "put", "delete", "patch"])
 
 axiosInstance.interceptors.request.use(
     (config) => {
-        // Double-submit CSRF check: the backend issues a JS-readable
-        // XSRF-TOKEN cookie on login/session-restore; echoing its value
-        // back as a header proves the request didn't come from a
-        // cross-site page riding the httpOnly auth cookie alone.
         if (config.method && mutatingMethods.has(config.method.toLowerCase())) {
             const csrfToken = readCookie("XSRF-TOKEN")
             if (csrfToken) {

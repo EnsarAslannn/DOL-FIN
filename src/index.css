@@ -2,36 +2,24 @@
 
 @import "tailwindcss";
 
-/*
-  DOL-FIN "Obsidian Pulse" design tokens.
 
-  The brand reads as a night-flight cockpit for the markets: a true-black void
-  out of which glass surfaces emerge, lit by a single solar-flare accent.
-  Hierarchy comes from luminance (how much light an element emits), not from
-  drop shadows. Montserrat carries the headlines, Inter the interface, and a
-  mono face every figure that has to be read as a number.
-
-  Token names are the originals -- only their values moved -- so every existing
-  `bg-depth` / `text-pulse` class in the app re-themes in place.
-*/
 @theme {
   --screen-sm: 480px;
   --screen-md: 768px;
   --screen-lg: 1020px;
   --screen-xl: 1440px;
 
-  /* Void + surfaces: the deeper the element, the less light it holds. */
+  
   --color-abyss: #0e0e0e;
   --color-depth: #1c1b1b;
   --color-depth-2: #2a2a2a;
   --color-ridge: #5c4037;
 
-  /* Solar flare: the single light source of the system. */
+  
   --color-pulse: #ff571a;
   --color-pulse-dim: #ffb59e;
 
-  /* Functional signals, kept in distinct hue families so a falling number
-     can never be mistaken for a brand accent. */
+  
   --color-gain: #5fe3a6;
   --color-loss: #ff5d73;
   --color-orchid: #d1bcff;
@@ -52,7 +40,7 @@ body {
   color: var(--color-foam);
 }
 
-/* Numerals should line up column-to-column in every table and price readout. */
+
 .font-mono {
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum";
@@ -63,7 +51,7 @@ body {
   color: #ffffff;
 }
 
-/* The void swallows default scrollbars; give them the surface treatment. */
+
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--color-depth-2) transparent;

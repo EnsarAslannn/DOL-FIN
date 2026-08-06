@@ -1,5 +1,3 @@
-// This module is a router configuration, not a component -- it only ever
-// exports `router`, a plain object, so Fast Refresh doesn't apply here.
 /* eslint-disable react-refresh/only-export-components */
 import { lazy, Suspense } from "react"
 import type { ReactNode } from "react"
@@ -25,10 +23,6 @@ const PageFallback = () => (
     </div>
 )
 
-// Route-level code splitting means each page's chunk only downloads when the
-// user actually navigates there; without this, everything above bundled
-// into a single ~670KB JS chunk loaded up front regardless of which page
-// is visited first.
 const withSuspense = (element: ReactNode) => (
     <Suspense fallback={<PageFallback />}>{element}</Suspense>
 )

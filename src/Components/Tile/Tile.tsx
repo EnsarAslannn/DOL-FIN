@@ -6,8 +6,7 @@ type Props = {
 const Tile = ({ title, subTitle }: Props) => {
   return (
     <div className="w-full bg-depth border border-white/8 rounded-2xl p-5 flex items-center justify-between min-h-[115px] transition-all duration-200 hover:border-pulse/30 hover:bg-depth-2/50 group relative overflow-hidden">
-      {/* A hairline of flare along the top edge -- the tile's only light source
-          until it is hovered. */}
+      {}
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-pulse/40 to-transparent opacity-60 group-hover:opacity-100 transition-opacity" />
       <div className="absolute right-14 bottom-2 w-20 h-8 opacity-20 group-hover:opacity-45 transition-opacity duration-300 hidden sm:block">
         {(title === "Company Name" || title === "Total Net Worth") && (

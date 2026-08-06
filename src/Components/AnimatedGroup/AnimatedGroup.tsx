@@ -34,8 +34,6 @@ const itemVariants: Variants = {
   },
 }
 
-// Slow-motion reveal: children fade/blur/rise in on mount, staggered one
-// after another instead of popping in all at once.
 const AnimatedGroup = ({ children, className }: Props) => {
   return (
     <motion.div

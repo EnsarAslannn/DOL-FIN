@@ -5,7 +5,7 @@ const MarketTicker = () => {
 
   return (
     <div className="relative w-full bg-black/40 backdrop-blur-md text-foam py-2.5 border-b border-white/8 overflow-hidden flex items-center select-none">
-      {/* Fade the tape into the void at both ends instead of cutting it off. */}
+      {}
       <div className="pointer-events-none absolute inset-y-0 left-0 w-24 z-10 bg-gradient-to-r from-abyss to-transparent" />
       <div className="pointer-events-none absolute inset-y-0 right-0 w-24 z-10 bg-gradient-to-l from-abyss to-transparent" />
       <div className="animate-marquee gap-8">

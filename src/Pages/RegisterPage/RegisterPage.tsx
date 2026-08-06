@@ -45,8 +45,7 @@ const RegisterPage = () => {
 
   return (
     <section className="bg-abyss min-h-[calc(100vh-5rem)] font-sans flex items-stretch">
-      {/* Same key art as sign-in: the two screens are one threshold, and
-          reusing the image is what makes them read as a pair. */}
+      {}
       <div className="hidden lg:block relative w-1/2 xl:w-[55%] overflow-hidden border-r border-white/8">
         <img
           src={authSkyline}

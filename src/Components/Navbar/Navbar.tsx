@@ -1,6 +1,4 @@
 import { Link, useLocation } from "react-router-dom"
-// Hue-rotated variant of dolphin.png -- same mark, moved out of the cold blues
-// so it sits inside the Obsidian Pulse palette instead of fighting it.
 import logo from "../../assets/dolphin-ember.png"
 import { useAuth } from "../../Context/useAuth"
 
@@ -8,8 +6,6 @@ const Navbar = () => {
   const { user, logout } = useAuth()
   const location = useLocation()
 
-  // The nav pill marks where you are; everything else stays recessed so the
-  // active item is the only lit element in the group.
   const navLinkClass = (path: string) =>
     `px-4 py-2 rounded-full text-[13px] font-semibold tracking-wide transition-all duration-200 ${
       location.pathname.startsWith(path)
@@ -51,8 +47,7 @@ const Navbar = () => {
         <div className="flex items-center gap-4">
           {user ? (
             <>
-              {/* The balance belongs in the chrome: it is the number a user
-                  checks constantly while moving between screens. */}
+              {}
               <div className="hidden sm:flex flex-col items-end leading-tight px-3 py-1.5 rounded-xl bg-depth/50 border border-white/5">
                 <span className="text-[9px] font-semibold uppercase tracking-[0.14em] text-mist">
                   {user.userName}

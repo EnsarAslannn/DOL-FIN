@@ -12,13 +12,8 @@ const CardList: React.FC<Props> = ({ searchResults, onPortfolioCreate }: Props) 
     <>
       {searchResults.length > 0 ? (
         searchResults.map((result, index) => {
-          // Büyük veya küçük harfli sembol yapısını garantiye alıyoruz
           const currentSymbol = result.symbol || result.Symbol || `stock-${index}`;
 
-          // The key has to stay stable across renders. A fresh uuid on every
-          // pass made React tear down and rebuild every card whenever the page
-          // re-rendered -- including on each keystroke in the search box, since
-          // that updates state the parent owns.
           return <Card
             id={currentSymbol}
             key={currentSymbol}

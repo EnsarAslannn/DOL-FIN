@@ -56,14 +56,14 @@ export const mockSearchData: CompanySearch[] = [
     currency: "USD",
     stockExchange: "NASDAQ",
     exchangeShortName: "NASDAQ",
-  }, // AMZN yerine GOOGL eklendi
+  }, 
   {
     symbol: "NVDA",
     name: "NVIDIA Corporation",
     currency: "USD",
     stockExchange: "NASDAQ",
     exchangeShortName: "NASDAQ",
-  }, // NVDA eklendi
+  }, 
 ]
 
 export const mockProfileData: { [key: string]: CompanyProfile } = {
@@ -279,7 +279,7 @@ export const testKeyMetricsData: Record<string, CompanyKeyMetrics[]> = {
       pocfratioTTM: 28.5,
       pfcfRatioTTM: 42.0,
       pbRatioTTM: 12.1,
-      ptbRatioTTM: 19.3, // ptbRatioTTM olarak güncellendi
+      ptbRatioTTM: 19.3, 
       evToSalesTTM: 11.9,
       enterpriseValueOverEBITDATTM: 24.6,
       evToOperatingCashFlowTTM: 28.8,
@@ -588,9 +588,6 @@ export const testKeyMetricsData: Record<string, CompanyKeyMetrics[]> = {
 }
 
 export const testCashFlowData: CompanyCashFlow[] = [
-  // =========================================================================
-  // 🎯 APPLE (AAPL) DATA - 2025, 2024, 2023
-  // =========================================================================
   {
     date: "2025-09-30",
     symbol: "AAPL",
@@ -719,9 +716,6 @@ export const testCashFlowData: CompanyCashFlow[] = [
       "https://www.sec.gov/Archives/edgar/data/320193/000032019323000106/aapl-20230930.htm",
   },
 
-  // =========================================================================
-  // 🎯 MICROSOFT (MSFT) DATA - 2025, 2024, 2023
-  // =========================================================================
   {
     date: "2025-06-30",
     symbol: "MSFT",
@@ -849,9 +843,6 @@ export const testCashFlowData: CompanyCashFlow[] = [
     finalLink: "https://www.sec.gov/edgar/browse/?CIK=0000789019",
   },
 
-  // =========================================================================
-  // 🎯 TESLA (TSLA) DATA - 2025, 2024, 2023
-  // =========================================================================
   {
     date: "2025-12-31",
     symbol: "TSLA",
@@ -980,9 +971,6 @@ export const testCashFlowData: CompanyCashFlow[] = [
       "https://www.sec.gov/Archives/edgar/data/1318605/000162828024002390/tsla-20231231.htm",
   },
 
-  // =========================================================================
-  // 🎯 GOOGLE (GOOGL) DATA - 2025, 2024, 2023
-  // =========================================================================
   {
     date: "2025-12-31",
     symbol: "GOOGL",
@@ -1111,9 +1099,6 @@ export const testCashFlowData: CompanyCashFlow[] = [
       "https://www.sec.gov/Archives/edgar/data/1652044/000165204424000022/goog-20231231.htm",
   },
 
-  // =========================================================================
-  // 🎯 NVIDIA (NVDA) DATA - 2025, 2024, 2023
-  // =========================================================================
   {
     date: "2026-01-25",
     symbol: "NVDA",
@@ -1244,9 +1229,6 @@ export const testCashFlowData: CompanyCashFlow[] = [
 ]
 
 export const testBalanceSheetData: CompanyBalanceSheet[] = [
-  // =========================================================================
-  // 🎯 APPLE (AAPL) DATA - 2025, 2024, 2023
-  // =========================================================================
   {
     date: "2025-09-30",
     symbol: "AAPL",
@@ -1417,9 +1399,6 @@ export const testBalanceSheetData: CompanyBalanceSheet[] = [
       "https://www.sec.gov/Archives/edgar/data/320193/000032019323000106/aapl-20230930.htm",
   },
 
-  // =========================================================================
-  // 🎯 MICROSOFT (MSFT) DATA - 2025, 2024, 2023
-  // =========================================================================
   {
     date: "2025-06-30",
     symbol: "MSFT",
@@ -1589,9 +1568,6 @@ export const testBalanceSheetData: CompanyBalanceSheet[] = [
     finalLink: "https://www.sec.gov/edgar/browse/?CIK=0000789019",
   },
 
-  // =========================================================================
-  // 🎯 TESLA (TSLA) DATA - 2025, 2024, 2023
-  // =========================================================================
   {
     date: "2025-12-31",
     symbol: "TSLA",
@@ -1762,9 +1738,6 @@ export const testBalanceSheetData: CompanyBalanceSheet[] = [
       "https://www.sec.gov/Archives/edgar/data/1318605/000162828024002390/tsla-20231231.htm",
   },
 
-  // =========================================================================
-  // 🎯 GOOGLE (GOOGL) DATA - 2025, 2024, 2023
-  // =========================================================================
   {
     date: "2025-12-31",
     symbol: "GOOGL",
@@ -1935,9 +1908,6 @@ export const testBalanceSheetData: CompanyBalanceSheet[] = [
       "https://www.sec.gov/Archives/edgar/data/1652044/000165204424000022/goog-20231231.htm",
   },
 
-  // =========================================================================
-  // 🎯 NVIDIA (NVDA) DATA - 2025, 2024, 2023
-  // =========================================================================
   {
     date: "2026-01-25",
     symbol: "NVDA",
@@ -2296,9 +2266,6 @@ export const TestDataCompany = [
 ]
 
 export const testIncomeStatementData: CompanyIncomeStatement[] = [
-  // =========================================================================
-  // 🎯 APPLE (AAPL) DATA - 2025, 2024, 2023
-  // =========================================================================
   {
     date: "2025-09-30",
     symbol: "AAPL",
@@ -2421,9 +2388,6 @@ export const testIncomeStatementData: CompanyIncomeStatement[] = [
       "https://www.sec.gov/Archives/edgar/data/320193/000032019323000106/aapl-20230930.htm",
   },
 
-  // =========================================================================
-  // 🎯 MICROSOFT (MSFT) DATA - 2025, 2024, 2023
-  // =========================================================================
   {
     date: "2025-06-30",
     symbol: "MSFT",
@@ -2545,9 +2509,6 @@ export const testIncomeStatementData: CompanyIncomeStatement[] = [
     finalLink: "https://www.sec.gov/edgar/browse/?CIK=0000789019",
   },
 
-  // =========================================================================
-  // 🎯 TESLA (TSLA) DATA - 2025, 2024, 2023
-  // =========================================================================
   {
     date: "2025-12-31",
     symbol: "TSLA",
@@ -2670,9 +2631,6 @@ export const testIncomeStatementData: CompanyIncomeStatement[] = [
       "https://www.sec.gov/Archives/edgar/data/1318605/000162828024002390/tsla-20231231.htm",
   },
 
-  // =========================================================================
-  // 🎯 GOOGLE (GOOGL) DATA - 2025, 2024, 2023
-  // =========================================================================
   {
     date: "2025-12-31",
     symbol: "GOOGL",
@@ -2795,9 +2753,6 @@ export const testIncomeStatementData: CompanyIncomeStatement[] = [
       "https://www.sec.gov/Archives/edgar/data/1652044/000165204424000022/goog-20231231.htm",
   },
 
-  // =========================================================================
-  // 🎯 NVIDIA (NVDA) DATA - 2025, 2024, 2023
-  // =========================================================================
   {
     date: "2026-01-25",
     symbol: "NVDA",

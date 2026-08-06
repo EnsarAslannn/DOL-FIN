@@ -39,8 +39,6 @@ export const logoutAPI = async () => {
   }
 }
 
-// Silent auth check used on app mount — a 401 here just means "not logged
-// in yet", not an error, so it deliberately skips handleError's toast/redirect.
 export const getProfileAPI = async () => {
   try {
     const data = await axiosInstance.get<UserProfile>("account/profile")
