@@ -26,7 +26,7 @@ namespace api.IntegrationTests
 
             Assert.Contains("/api/alerts", body);
             Assert.Contains("/api/portfolio/metrics", body);
-            Assert.Contains("Log in with a username and password", body);
+            Assert.Contains("/api/account/login", body);
         }
 
         [Fact]
