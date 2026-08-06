@@ -30,8 +30,6 @@ namespace api.Tests.Mappers
 
             var dto = portfolio.ToPortfolioDto();
 
-            // PortfolioDto.Id intentionally mirrors the stock id, not the
-            // portfolio row's own id -- the client keys positions by stock.
             Assert.Equal(stock.Id, dto.Id);
             Assert.Equal(stock.Symbol, dto.Symbol);
             Assert.Equal(stock.CompanyName, dto.CompanyName);

@@ -7,11 +7,6 @@ namespace api.Validation
 {
     public static class ValidationProblemFactory
     {
-        // Shared by ValidationActionFilter (the normal path -- a validator
-        // rejects a request before the action runs) and ExceptionMiddleware
-        // (defense in depth, in case a validator is ever invoked manually
-        // deeper in the call stack via ValidateAndThrow) so both paths return
-        // the exact same error shape.
         public static ValidationProblemDetails Create(IEnumerable<ValidationFailure> failures)
         {
             var modelState = new ModelStateDictionary();

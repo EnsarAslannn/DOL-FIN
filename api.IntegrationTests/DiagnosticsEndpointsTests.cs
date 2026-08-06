@@ -48,7 +48,6 @@ namespace api.IntegrationTests
             );
             var stock = await createResponse.Content.ReadFromJsonAsync<StockDto>();
 
-            // First GET is a miss (fills the cache); second is a hit.
             await admin.GetAsync($"/api/stock/{stock!.Id}");
             await admin.GetAsync($"/api/stock/{stock.Id}");
 

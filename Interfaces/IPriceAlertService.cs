@@ -13,10 +13,6 @@ namespace api.Interfaces
 
         Task<List<PriceAlert>> GetActiveAlertsAsync(AppUser user);
 
-        // Evaluates every untriggered active alert against its stock's current
-        // price and creates a notification for each one that now matches.
-        // Returns how many fired, for logging by the caller (see
-        // PriceAlertBackgroundService).
         Task<int> CheckAndTriggerAlertsAsync();
 
         Task<List<AlertNotification>> GetNotificationsAsync(AppUser user);

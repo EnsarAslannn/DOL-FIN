@@ -52,8 +52,6 @@ namespace api.IntegrationTests
         {
             var client = await AuthHelper.CreateAuthenticatedClientAsync(_factory);
             await client.PostAsJsonAsync("/api/portfolio/deposit", new { Amount = 5000m });
-            // A lone position is inherently 100% of the portfolio -- well past
-            // the single-stock concentration threshold.
             await client.PostAsJsonAsync("/api/portfolio", new { Symbol = "AAPL", Quantity = 1 });
 
             var response = await client.GetAsync("/api/portfolio/warnings");

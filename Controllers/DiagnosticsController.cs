@@ -5,11 +5,6 @@ using StackExchange.Redis;
 
 namespace api.Controllers
 {
-    /// <summary>
-    /// Cache and Redis observability. Admin only -- this exposes internal
-    /// operational state (hit rates, server memory/connections), not
-    /// anything a regular user needs or should see.
-    /// </summary>
     [Route("api/diagnostics")]
     [ApiController]
     [Authorize(Roles = "Admin")]
@@ -33,15 +28,6 @@ namespace api.Controllers
             _logger = logger;
         }
 
-        /// <summary>
-        /// Per-key cache hit/miss counts and hit rate since process start.
-        /// </summary>
-        /// <remarks>
-        /// In-memory only (see CacheMetrics) -- these counters reset on every
-        /// deploy/restart and aren't shared across instances if this ever runs
-        /// on more than one.
-        /// </remarks>
-        /// <response code="200">A map of cache key to { hits, misses, hitRate }.</response>
         [HttpGet("cache-metrics")]
         [ProducesResponseType(typeof(IReadOnlyDictionary<string, CacheKeyStats>), StatusCodes.Status200OK)]
         public IActionResult GetCacheMetrics()
@@ -49,17 +35,6 @@ namespace api.Controllers
             return Ok(_cacheMetrics.GetSnapshot());
         }
 
-        /// <summary>
-        /// Live Redis server stats: memory usage, connected clients, ops/sec, key count.
-        /// </summary>
-        /// <remarks>
-        /// Returns <c>{ "configured": false }</c> if no Redis connection
-        /// string is set for this environment (caching then runs DB-only --
-        /// see CachedStockRepository/CachedCommentRepository/PortfolioService's
-        /// fallback behavior), rather than treating that as an error.
-        /// </remarks>
-        /// <response code="200">Redis stats, or `{ "configured": false }`.</response>
-        /// <response code="503">Redis is configured but unreachable.</response>
         [HttpGet("redis-info")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]

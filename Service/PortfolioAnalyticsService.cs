@@ -6,15 +6,8 @@ namespace api.Service
 {
     public class PortfolioAnalyticsService : IPortfolioAnalyticsService
     {
-        // A single position over this share of the portfolio's current value
-        // gets an individual concentration warning.
         private const decimal SingleStockWarningThresholdPercent = 40m;
 
-        // Positions are grouped by Stock.Industry (real seeded data -- see
-        // StockSeeder) rather than a hardcoded ticker list like "FAANG": a
-        // fixed symbol list goes stale the moment a new stock is added or an
-        // existing one changes classification, where Industry is already the
-        // field the rest of the app treats as the sector.
         private const decimal SectorWarningThresholdPercent = 60m;
 
         private readonly IPortfolioService _portfolioService;
@@ -37,9 +30,6 @@ namespace api.Service
                     Industry = p.Industry,
                     Quantity = p.Quantity,
                     AverageCostPerShare = p.AveragePrice,
-                    // Stock.Purchase is the only price this app tracks; there is
-                    // no separate live-quote field to distinguish "cost" from
-                    // "current" at the stock level (see StockAllocationDto).
                     CurrentPrice = p.Purchase,
                     CurrentValue = p.Quantity * p.Purchase,
                 })

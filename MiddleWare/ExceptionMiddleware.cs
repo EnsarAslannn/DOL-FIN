@@ -27,11 +27,6 @@ namespace api.Middleware
             {
                 await _next(httpContext);
             }
-            // The normal path is ValidationActionFilter rejecting a request
-            // before the action runs, which never throws this. This is only a
-            // safety net for a validator invoked manually deeper in the call
-            // stack (e.g. via ValidateAndThrow), so it still produces the same
-            // 400 shape instead of falling through to the generic 500 below.
             catch (FluentValidation.ValidationException validationException)
             {
                 await HandleValidationExceptionAsync(httpContext, validationException);

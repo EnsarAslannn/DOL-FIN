@@ -48,7 +48,6 @@ namespace api.Tests.Service
         [Fact]
         public async Task GetRecommendationAsync_OverweightStock_SuggestsSell()
         {
-            // Two holdings, target 50% each; AAPL is 90% -> heavily overweight.
             var metrics = new PortfolioMetricsDto
             {
                 CurrentValue = 1000m,

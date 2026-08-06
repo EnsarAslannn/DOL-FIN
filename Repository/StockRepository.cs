@@ -39,10 +39,6 @@ namespace api.Repository
 
         public async Task<List<Stock>> GetAllAsync(QueryObject query)
         {
-            // Comments are intentionally not eager-loaded here: they're
-            // unbounded per stock, and no caller of the list endpoint reads
-            // StockDto.Comments -- the dedicated (paginated) comment endpoint
-            // is the actual source for that data.
             var stocks = _context.Stock.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(query.CompanyName))

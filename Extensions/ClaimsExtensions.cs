@@ -6,11 +6,6 @@ namespace api.Extensions
 {
     public static class ClaimsExtensions
     {
-        // Single source of truth for resolving the AppUser behind a
-        // ClaimsPrincipal. Previously AccountController, PortfolioController
-        // and CommentController each re-implemented this with slightly
-        // different (and, for CommentController, weaker) fallback chains --
-        // a future auth-scheme change had three divergent places to update.
         public static async Task<AppUser?> GetAuthenticatedUserAsync(
             this ClaimsPrincipal user,
             UserManager<AppUser> userManager

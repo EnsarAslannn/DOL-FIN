@@ -12,10 +12,6 @@ namespace api.Validation
                 .WithMessage("Symbol is required")
                 .MaximumLength(10)
                 .WithMessage("Symbol must be at most 10 characters")
-                // "." is allowed alongside letters/digits: share-class tickers
-                // like "BRK.B" are part of the seeded demo stock universe (see
-                // StockSeeder), so a plain alphanumeric-only pattern would
-                // reject re-creating/updating one of them.
                 .Matches("^[A-Za-z0-9.]+$")
                 .WithMessage("Symbol may only contain letters, digits, and a dot");
 

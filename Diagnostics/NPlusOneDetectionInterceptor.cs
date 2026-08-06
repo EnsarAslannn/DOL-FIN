@@ -4,9 +4,6 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace api.Diagnostics
 {
-    // Development-only: tracks how many times each normalized SQL shape runs
-    // within a single HTTP request and logs a warning once it looks like an
-    // N+1 pattern (same query re-issued per row instead of via .Include()).
     public class NPlusOneDetectionInterceptor : DbCommandInterceptor
     {
         private const string CountsKey = "NPlusOne.Counts";
@@ -55,12 +52,9 @@ namespace api.Diagnostics
             return base.ReaderExecutingAsync(command, eventData, result, cancellationToken);
         }
 
-        // internal (not private) so unit tests can drive it directly without
-        // having to construct a real EF Core CommandEventData.
         internal void Track(DbCommand command)
         {
             var httpContext = _httpContextAccessor.HttpContext;
-            // No HttpContext during startup (e.g. db.Database.Migrate()) -- not a real request.
             if (httpContext is null)
                 return;
 

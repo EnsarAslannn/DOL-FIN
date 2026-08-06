@@ -2,11 +2,6 @@ using System.Collections.Concurrent;
 
 namespace api.Caching
 {
-    // Registered as a singleton in DI (see Program.cs) rather than exposed as
-    // static state -- a static ConcurrentDictionary would be shared process-
-    // wide with no way to isolate it between tests or reason about its
-    // lifetime, for no benefit over a singleton service that's just as cheap
-    // to inject everywhere it's needed.
     public sealed class CacheMetrics : ICacheMetrics
     {
         private sealed class Counters

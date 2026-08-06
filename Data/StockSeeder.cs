@@ -3,18 +3,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace api.Data
 {
-    /// <summary>
-    /// Fills the Stocks table with the demo universe the client is built
-    /// around. Search, the market-trends rail and the portfolio flows all key
-    /// off these exact symbols, so an empty table leaves the whole app looking
-    /// broken (`/stock/trends` answers 404 and search returns nothing).
-    /// </summary>
     public static class StockSeeder
     {
-        // Prices and names mirror the client's demo tape so a ticker shows the
-        // same figure wherever it appears. Industry strings matter beyond
-        // display: the portfolio sector breakdown buckets on "software",
-        // "semiconductors" and "technology".
         private static readonly Stock[] DemoStocks =
         {
             new() { Symbol = "MSFT",  CompanyName = "Microsoft Corporation",   Purchase = 425.50m, LastDiv = 0.75m, Industry = "Software - Infrastructure",        MarketCap = 3_160_000_000_000 },
@@ -36,10 +26,6 @@ namespace api.Data
 
         public static async Task SeedAsync(ApplicationDBContext db)
         {
-            // Seeded at runtime rather than through HasData: fixed primary keys
-            // in a migration would leave Postgres' identity sequence pointing at
-            // 1, so the next stock inserted through the API would collide with a
-            // seeded row. Letting the database assign the keys avoids that.
             var existing = await db
                 .Stock.Select(s => s.Symbol.ToUpper())
                 .ToListAsync();
@@ -53,9 +39,6 @@ namespace api.Data
                 return;
             }
 
-            // Prices on rows that already exist are left alone -- users may hold
-            // positions bought against them, and rewriting the price on every
-            // restart would silently restate their profit and loss.
             await db.Stock.AddRangeAsync(missing);
             await db.SaveChangesAsync();
         }

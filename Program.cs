@@ -65,19 +65,11 @@ builder
             .Json
             .ReferenceLoopHandling
             .Ignore;
-        // Without this, PriceAlert.Condition (and any future enum) serializes
-        // as its underlying int -- fine for the app's own client, but an
-        // opaque, renumbering-fragile contract for anyone else calling the API.
         options.SerializerSettings.Converters.Add(
             new Newtonsoft.Json.Converters.StringEnumConverter()
         );
     });
 
-// ValidationActionFilter is the single validation gate now (see
-// api/Validation/), so the built-in DataAnnotations-driven 400 must be
-// suppressed -- it runs before any custom action filter and would otherwise
-// win first with its own (differently-shaped) response, making the
-// FluentValidation errors below unreachable.
 builder.Services.Configure<Microsoft.AspNetCore.Mvc.ApiBehaviorOptions>(options =>
 {
     options.SuppressModelStateInvalidFilter = true;
@@ -128,10 +120,6 @@ void ConfigureCommon(DbContextOptionsBuilder options)
 
 if (builder.Environment.IsDevelopment())
 {
-    // N+1 detection interceptor is Development-only: resolving it from DI
-    // requires the (sp, options) AddDbContext overload, which rebuilds
-    // DbContextOptions per scope instead of once -- a small overhead we don't
-    // want leaking into Staging/Production, so those keep the plain overload.
     builder.Services.AddHttpContextAccessor();
     builder.Services.AddSingleton<NPlusOneDetectionInterceptor>();
     builder.Services.AddDbContext<ApplicationDBContext>(
@@ -149,14 +137,6 @@ else
 
 var redisConnectionString = builder.Configuration.GetConnectionString("Redis");
 
-// Default StackExchange.Redis retry/timeout settings can keep a command
-// retrying for 15-20+ seconds before giving up when Redis is unreachable --
-// far too slow for a cache that's supposed to be an optional accelerator.
-// Fail fast so CachedStockRepository's/CachedCommentRepository's/
-// PortfolioService's try/catch fallback to the DB kicks in quickly instead
-// of hanging the request. Shared by AddStackExchangeRedisCache and the
-// IConnectionMultiplexer registered below so both talk to Redis with
-// identical settings instead of two configurations quietly drifting apart.
 StackExchange.Redis.ConfigurationOptions? BuildRedisConfigurationOptions()
 {
     if (string.IsNullOrWhiteSpace(redisConnectionString))
@@ -168,11 +148,6 @@ StackExchange.Redis.ConfigurationOptions? BuildRedisConfigurationOptions()
     configurationOptions.SyncTimeout = 1000;
     configurationOptions.AsyncTimeout = 1000;
     configurationOptions.AbortOnConnectFail = false;
-    // StackExchange.Redis blocks INFO/KEYS (and other server-management
-    // commands) by default as a safety gate against accidentally running
-    // them against production -- DiagnosticsController.GetRedisInfo needs
-    // both. The cache connection never issues either, so enabling this
-    // process-wide is harmless for it.
     configurationOptions.AllowAdmin = true;
     return configurationOptions;
 }
@@ -189,9 +164,6 @@ builder.Services.AddStackExchangeRedisCache(options =>
 
 if (!string.IsNullOrWhiteSpace(redisConnectionString))
 {
-    // Used by DiagnosticsController's redis-info endpoint to report live
-    // server stats (memory, connected clients, ops/sec) -- StackExchangeRedisCache
-    // above manages its own internal connection and doesn't expose one for this.
     builder.Services.AddSingleton<StackExchange.Redis.IConnectionMultiplexer>(_ =>
         StackExchange.Redis.ConnectionMultiplexer.Connect(BuildRedisConfigurationOptions()!)
     );
@@ -216,12 +188,6 @@ var healthChecksBuilder = builder
 
 if (!string.IsNullOrWhiteSpace(redisConnectionString))
 {
-    // Redis is an optional accelerator here, not a hard dependency --
-    // CachedStockRepository, CachedCommentRepository, and PortfolioService
-    // already fall back to direct DB reads if it's unreachable (see their
-    // try/catch blocks). Reporting a Redis outage as Degraded rather than
-    // Unhealthy keeps Railway from restarting/routing away from an instance
-    // that's still fully able to serve requests, just without the cache.
     healthChecksBuilder.AddRedis(
         redisConnectionString,
         name: "redis",
@@ -234,10 +200,6 @@ var jwtSigningKeyBytes = Encoding.UTF8.GetBytes(
         ?? throw new InvalidOperationException("JWT SigningKey is missing in configuration!")
 );
 
-// HS512 needs a key at least as long as its output (64 bytes) to deliver its
-// full security margin -- a shorter key would still "work" but produces
-// forgeable-in-practice signatures. Fail fast at startup rather than
-// silently accepting a weak key.
 if (jwtSigningKeyBytes.Length < 64)
 {
     throw new InvalidOperationException(
@@ -295,11 +257,6 @@ builder
                 }
                 return Task.CompletedTask;
             },
-            // Tokens carry the user's SecurityStamp as it was at issuance time.
-            // Comparing it against the current DB value lets Logout/password
-            // changes actually revoke outstanding tokens instead of just
-            // deleting the client's cookie -- without needing a full
-            // refresh-token/blacklist system.
             OnTokenValidated = async context =>
             {
                 var stampClaim = context.Principal?.FindFirst("SecurityStamp")?.Value;
@@ -347,37 +304,19 @@ builder.Services.AddHostedService<PriceAlertBackgroundService>();
 builder.Services.AddScoped<ICacheWarmingService, CacheWarmingService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-// Without this, DataProtection keys live only in the container's ephemeral
-// filesystem: every redeploy generates a fresh key ring, silently
-// invalidating every previously-issued CSRF token (and anything else that
-// depends on DataProtection) until each client's next page load re-issues one.
 builder.Services.AddDataProtection().PersistKeysToDbContext<ApplicationDBContext>();
 
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
-    // Railway terminates TLS at its edge proxy and forwards plain HTTP to
-    // the container, so Request.IsHttps is false unless we trust its
-    // X-Forwarded-Proto header -- the antiforgery system in particular
-    // refuses to issue a Secure cookie without this.
     options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
     options.KnownIPNetworks.Clear();
     options.KnownProxies.Clear();
-    // Railway's X-Forwarded-For has two hops: "<real client ip>, <railway
-    // edge ip>". The default ForwardLimit of 1 only unwraps the nearest
-    // hop, which is Railway's own (rotating) edge IP -- not the real
-    // client -- silently breaking anything keyed on RemoteIpAddress (e.g.
-    // the login/register rate limiter below).
     options.ForwardLimit = 2;
 });
 
 builder.Services.AddAntiforgery(options =>
 {
     options.HeaderName = "X-CSRF-TOKEN";
-    // This is the antiforgery system's own internal cookie token -- it is
-    // never read by JS. The value the frontend actually echoes back as the
-    // X-CSRF-TOKEN header is a *different*, paired value (the "request
-    // token") that AccountController issues in a separate XSRF-TOKEN
-    // cookie; see AccountController.IssueCsrfCookie.
     options.Cookie.Name = "af-token";
     options.Cookie.HttpOnly = true;
     options.Cookie.SameSite = SameSiteMode.None;
@@ -388,13 +327,6 @@ builder.Services.AddRateLimiter(options =>
 {
     options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
 
-    // Login/register have no auth to gate them, so they're the natural
-    // target for credential-stuffing/brute-force attempts. Partitioned by
-    // client IP (via the trusted X-Forwarded-For set up above) rather than
-    // a single global bucket, so one abusive client can't lock everyone out.
-    // Configurable (rather than hardcoded) so integration tests can raise
-    // the ceiling instead of tripping it just by exercising several
-    // register/login flows back-to-back against one shared test host.
     var authRateLimitPermits = builder.Configuration.GetValue<int?>("RateLimiting:AuthPermitLimit") ?? 10;
     var authRateLimitWindow = TimeSpan.FromSeconds(
         builder.Configuration.GetValue<int?>("RateLimiting:AuthWindowSeconds") ?? 60
@@ -428,11 +360,6 @@ using (var scope = app.Services.CreateScope())
     {
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
 
-        // Only ever auto-promote while the system has no Admin yet. Without
-        // this guard, anyone who registers the configured seed username
-        // before the real owner does would be silently promoted to Admin on
-        // the next restart/deploy -- registration is public and unauthenticated.
-        // Once a real Admin exists, this block becomes a no-op.
         var existingAdmins = await userManager.GetUsersInRoleAsync("Admin");
         if (existingAdmins.Count == 0)
         {
@@ -491,26 +418,12 @@ app.Use(
     }
 );
 
-// Unauthenticated by design -- Railway's deploy healthcheck (see
-// railway.json) and the Dockerfile's own HEALTHCHECK both need to reach this
-// with no token. Checks Postgres (hard dependency) and Redis (soft
-// dependency, reported as Degraded rather than Unhealthy -- see the
-// AddRedis() call above).
 app.MapHealthChecks("/health");
 
-// Live-generated from the controllers' XML doc comments and
-// [ProducesResponseType] attributes via AddOpenApi() above -- this used to
-// serve a hand-maintained wwwroot/openapi.json that had already drifted from
-// the real routes (stale server URL, missing half the controllers). Fixed at
-// the source instead of re-editing that file by hand again.
 app.MapOpenApi("/openapi.json");
 
 app.MapControllers();
 
-// Available in every environment, not just Development: this is read-only
-// API documentation with no privileged access of its own, and the whole
-// point of asking for "production-ready" docs is that they're reachable in
-// production.
 app.MapScalarApiReference(options =>
 {
     options

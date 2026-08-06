@@ -57,9 +57,6 @@ namespace api.Tests.Service
 
         private static List<string> ReadRoleClaims(string jwt)
         {
-            // JwtSecurityTokenHandler writes ClaimTypes.Role using the short
-            // outbound JWT claim name "role"; ReadJwtToken returns raw (unmapped)
-            // claim types, so we must match on "role" here, not ClaimTypes.Role.
             var token = new JwtSecurityTokenHandler().ReadJwtToken(jwt);
             return token
                 .Claims.Where(c => c.Type == "role")

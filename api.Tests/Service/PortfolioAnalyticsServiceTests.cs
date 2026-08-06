@@ -49,8 +49,8 @@ namespace api.Tests.Service
 
             var metrics = await service.GetMetricsAsync(MakeUser());
 
-            Assert.Equal(2000m, metrics.TotalInvestedAmount); // 10*100 + 5*200
-            Assert.Equal(2750m, metrics.CurrentValue); // 10*150 + 5*250
+            Assert.Equal(2000m, metrics.TotalInvestedAmount);
+            Assert.Equal(2750m, metrics.CurrentValue);
             Assert.Equal(750m, metrics.GainLossAmount);
         }
 
@@ -65,7 +65,6 @@ namespace api.Tests.Service
 
             var metrics = await service.GetMetricsAsync(MakeUser());
 
-            // invested 2000, now worth 2500 -> +25%
             Assert.Equal(25m, metrics.GainLossPercent);
         }
 
@@ -88,8 +87,8 @@ namespace api.Tests.Service
         {
             var positions = new List<PortfolioDto>
             {
-                MakePosition(1, "AAPL", "Consumer Electronics", quantity: 10, averagePrice: 100m, currentPrice: 100m), // $1000
-                MakePosition(2, "MSFT", "Software", quantity: 10, averagePrice: 100m, currentPrice: 300m), // $3000
+                MakePosition(1, "AAPL", "Consumer Electronics", quantity: 10, averagePrice: 100m, currentPrice: 100m),
+                MakePosition(2, "MSFT", "Software", quantity: 10, averagePrice: 100m, currentPrice: 300m),
             };
             var service = CreateService(positions);
 
@@ -106,8 +105,8 @@ namespace api.Tests.Service
         {
             var positions = new List<PortfolioDto>
             {
-                MakePosition(1, "AAPL", "Consumer Electronics", quantity: 10, averagePrice: 100m, currentPrice: 100m), // $1000, 90.9%
-                MakePosition(2, "WMT", "Discount Stores", quantity: 1, averagePrice: 100m, currentPrice: 100m), // $100
+                MakePosition(1, "AAPL", "Consumer Electronics", quantity: 10, averagePrice: 100m, currentPrice: 100m),
+                MakePosition(2, "WMT", "Discount Stores", quantity: 1, averagePrice: 100m, currentPrice: 100m),
             };
             var service = CreateService(positions);
 

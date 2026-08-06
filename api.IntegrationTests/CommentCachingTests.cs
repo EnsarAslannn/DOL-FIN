@@ -51,7 +51,6 @@ namespace api.IntegrationTests
             );
             Assert.Equal(HttpStatusCode.Created, firstCreate.StatusCode);
 
-            // Populates the list cache for this symbol filter.
             var firstList = await client.GetAsync($"/api/comment?symbol={stock.Symbol}");
             var firstComments = await firstList.Content.ReadFromJsonAsync<List<CommentDto>>();
             Assert.Single(firstComments!);
@@ -80,7 +79,6 @@ namespace api.IntegrationTests
             );
             var created = await createResponse.Content.ReadFromJsonAsync<CommentDto>();
 
-            // Populates the by-id cache.
             var beforeUpdate = await client.GetAsync($"/api/comment/{created!.Id}");
             var beforeDto = await beforeUpdate.Content.ReadFromJsonAsync<CommentDto>();
             Assert.Equal("Original title", beforeDto!.Title);
@@ -108,7 +106,6 @@ namespace api.IntegrationTests
             );
             var created = await createResponse.Content.ReadFromJsonAsync<CommentDto>();
 
-            // Populates the by-id cache.
             await client.GetAsync($"/api/comment/{created!.Id}");
 
             var deleteResponse = await client.DeleteAsync($"/api/comment/{created.Id}");

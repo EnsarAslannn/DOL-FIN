@@ -72,9 +72,6 @@ namespace api.Service
             throw new Exception("Failed to update user wallet balance.");
         }
 
-        // A write to the database already succeeded by the time we get here;
-        // a Redis hiccup on invalidation must not turn that into a 500 for
-        // the caller -- worst case a stale entry lingers until its TTL expires.
         private async Task InvalidatePortfolioCacheAsync(string userId)
         {
             try

@@ -19,12 +19,6 @@ namespace api.IntegrationTests
     {
         private readonly DolfinApiFactory _factory;
 
-        // AddNewtonsoftJson (see Program.cs) serializes responses with a
-        // camelCase contract resolver and PriceAlertCondition as a string --
-        // neither of which System.Net.Http.Json's default, no-options
-        // ReadFromJsonAsync understands (it's case-sensitive PascalCase
-        // matching with enums as raw ints), so every property silently comes
-        // back at its default value instead of throwing.
         private static readonly JsonSerializerOptions JsonOptions = new()
         {
             PropertyNameCaseInsensitive = true,
@@ -142,9 +136,6 @@ namespace api.IntegrationTests
                 }
             );
 
-            // The real trigger path is a 24h background timer (see
-            // PriceAlertBackgroundService); invoking the service directly here
-            // exercises the same evaluation logic without waiting on it.
             using (var scope = _factory.Services.CreateScope())
             {
                 var alertService = scope.ServiceProvider.GetRequiredService<IPriceAlertService>();

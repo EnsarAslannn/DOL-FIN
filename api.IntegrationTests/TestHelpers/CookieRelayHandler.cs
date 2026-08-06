@@ -1,12 +1,5 @@
 namespace api.IntegrationTests.TestHelpers
 {
-    // WebApplicationFactory's HttpClient talks to an in-memory TestServer, so a
-    // stock HttpClientHandler + CookieContainer won't relay cookies the way a
-    // browser would (and would refuse to echo back Secure cookies over the
-    // http:// TestServer transport anyway). This manually threads Set-Cookie
-    // response values back onto the next request's Cookie header, and mirrors
-    // the XSRF-TOKEN cookie into the X-CSRF-TOKEN header the CSRF middleware
-    // in Program.cs requires on every authenticated mutating request.
     public sealed class CookieRelayHandler : DelegatingHandler
     {
         private readonly Dictionary<string, string> _cookies = new(StringComparer.OrdinalIgnoreCase);

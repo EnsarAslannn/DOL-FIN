@@ -19,12 +19,6 @@ namespace api.IntegrationTests
             _factory = factory;
         }
 
-        // The app serializes responses via Newtonsoft.Json (see Program.cs's
-        // AddNewtonsoftJson), which -- unlike System.Text.Json -- ignores
-        // ValidationProblemDetails' [JsonPropertyName("errors")] attribute and
-        // emits the raw C# property name instead. Reading case-insensitively
-        // keeps this test correct regardless of which "Errors"/"errors" casing
-        // is actually on the wire.
         private static JsonElement GetErrorsElement(JsonDocument document)
         {
             foreach (var property in document.RootElement.EnumerateObject())

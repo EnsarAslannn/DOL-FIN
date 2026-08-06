@@ -4,13 +4,6 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace api.Validation
 {
-    // Registered globally (see Program.cs) instead of per-controller: for every
-    // action argument that has a matching IValidator<T> registered in DI, runs
-    // it before the action executes and short-circuits with a 400
-    // ValidationProblemDetails on failure. This is the sole validation gate --
-    // ApiBehaviorOptions.SuppressModelStateInvalidFilter is set in Program.cs so
-    // the built-in DataAnnotations-driven 400 (which would otherwise win first
-    // and pre-empt this with a differently-shaped response) never fires.
     public class ValidationActionFilter : IAsyncActionFilter
     {
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)

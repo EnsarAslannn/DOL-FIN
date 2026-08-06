@@ -100,10 +100,6 @@ namespace api.IntegrationTests
             using var secondScope = _factory.Services.CreateScope();
             var secondRepo = secondScope.ServiceProvider.GetRequiredService<StockRepository>();
 
-            // This bypasses StockController's own duplicate-symbol check (which
-            // returns a friendly 409) to prove the Stocks.Symbol unique index
-            // configured in ApplicationDBContext is enforced by Postgres itself,
-            // not just by the application-layer guard in front of it.
             await Assert.ThrowsAsync<DbUpdateException>(
                 () =>
                     secondRepo.CreateAsync(

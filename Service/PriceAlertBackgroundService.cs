@@ -6,12 +6,6 @@ using Microsoft.Extensions.Logging;
 
 namespace api.Service
 {
-    // Lightweight stand-in for a job scheduler: this app has no Hangfire/
-    // Quartz infrastructure (and no Hangfire storage tables), and a single
-    // periodic timer is all a daily price check needs. Runs in its own DI
-    // scope per tick since IPriceAlertService/ApplicationDBContext are scoped
-    // services and this class itself is a singleton (BackgroundService
-    // convention).
     public class PriceAlertBackgroundService : BackgroundService
     {
         private readonly IServiceScopeFactory _scopeFactory;
@@ -42,8 +36,6 @@ namespace api.Service
                 }
                 catch (Exception ex)
                 {
-                    // A failed check must not crash the host -- it just tries
-                    // again on the next tick.
                     _logger.LogError(ex, "Price alert background check failed");
                 }
 
@@ -53,7 +45,6 @@ namespace api.Service
                 }
                 catch (OperationCanceledException)
                 {
-                    // Expected during shutdown.
                 }
             }
         }

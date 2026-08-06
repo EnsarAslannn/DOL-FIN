@@ -22,9 +22,6 @@ namespace api.Service
                 ?? throw new InvalidOperationException("JWT SigningKey is missing!");
             var keyBytes = Encoding.UTF8.GetBytes(key);
 
-            // HS512 needs a key at least as long as its output (64 bytes) to
-            // deliver its full security margin; a shorter key would still
-            // "work" but produces forgeable-in-practice signatures.
             if (keyBytes.Length < 64)
                 throw new InvalidOperationException(
                     "JWT SigningKey must be at least 64 bytes (512 bits) long for HS512."
@@ -56,11 +53,6 @@ namespace api.Service
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                // Kept short because logout/revocation is enforced via the
-                // SecurityStamp claim (see OnTokenValidated in Program.cs),
-                // not via server-side token storage -- a short lifetime
-                // bounds how long a stolen token stays valid even without
-                // an explicit revocation event.
                 Expires = DateTime.UtcNow.AddHours(4),
                 SigningCredentials = creds,
                 Issuer = _config["JWT:Issuer"],

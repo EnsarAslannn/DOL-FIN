@@ -29,11 +29,6 @@ namespace api.Data
         {
             base.OnModelCreating(builder);
 
-            // Prevents lost updates when two requests for the same user race
-            // (e.g. concurrent withdraw/sell): SaveChanges includes the row's
-            // xmin (Postgres' built-in row-version system column) in the
-            // WHERE clause and throws DbUpdateConcurrencyException if it
-            // changed since the entity was read. No data column is added.
             builder.Entity<AppUser>()
                 .Property<uint>("xmin")
                 .HasColumnName("xmin")
@@ -97,11 +92,6 @@ namespace api.Data
                     Id = "c89b788a-3642-47df-bc6c-13654b03517c",
                     Name = "Admin",
                     NormalizedName = "ADMIN",
-                    // Pinned to the value already persisted by the InitialCreate
-                    // migration. IdentityRole.ConcurrencyStamp defaults to a new
-                    // Guid per instance, which made the model non-deterministic
-                    // across builds (EF flagged pending changes on every
-                    // migrations/database-update run) -- must stay static.
                     ConcurrencyStamp = "180dc409-91b3-4204-ac43-5c253ce4fad3",
                 },
                 new IdentityRole

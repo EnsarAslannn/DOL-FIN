@@ -11,7 +11,6 @@ namespace api.Models
         public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
         public int? StockId { get; set; }
 
-        //Navigation
         public Stock? Stock { get; set; }
 
         public required string AppUserId { get; set; }

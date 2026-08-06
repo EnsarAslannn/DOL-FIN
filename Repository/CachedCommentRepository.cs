@@ -6,14 +6,6 @@ using Microsoft.Extensions.Caching.Hybrid;
 
 namespace api.Repository
 {
-    // Cache-aside decorator around CommentRepository, mirroring
-    // CachedStockRepository's pattern: CommentController depends on
-    // ICommentRepository, so this swaps in via DI without touching it.
-    // GetById is [AllowAnonymous] on CommentController (permalink views) and
-    // GettAllAsync backs the paginated per-stock comment thread -- both are
-    // read-heavy, user-generated-but-not-real-time data, which is exactly
-    // what was previously left uncached here despite Stock already having
-    // this treatment.
     public class CachedCommentRepository : ICommentRepository
     {
         private readonly CommentRepository _inner;
@@ -108,9 +100,6 @@ namespace api.Repository
             return deleted;
         }
 
-        // Every GettAllAsync result is tagged with CommentListTag regardless
-        // of its filter/paging params, so removing by tag clears every
-        // cached page/variant in one call.
         private Task InvalidateListAsync() => SafeRemoveByTagAsync(CacheKeys.CommentListTag);
 
         private async Task SafeRemoveAsync(string key)
@@ -137,10 +126,6 @@ namespace api.Repository
             }
         }
 
-        // Decoupled from the EF entity for the same reason as
-        // CachedStockRepository's CachedStock: drops AppUser fields other
-        // than Id/UserName so Identity secrets never get written to Redis,
-        // and drops Comment.Stock so there's no cycle for the serializer.
         private sealed class CachedComment
         {
             public int Id { get; set; }

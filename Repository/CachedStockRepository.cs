@@ -7,9 +7,6 @@ using Microsoft.Extensions.Caching.Hybrid;
 
 namespace api.Repository
 {
-    // Cache-aside decorator around StockRepository. Keeps StockRepository itself
-    // free of caching concerns; StockController/CommentController depend on the
-    // interfaces, so this can be swapped in via DI without touching either.
     public class CachedStockRepository : IStockRepository, IStockCacheInvalidator
     {
         private readonly StockRepository _inner;
@@ -125,15 +122,6 @@ namespace api.Repository
         {
             var created = await _inner.CreateAsync(stockModel);
 
-            // The caller (StockController.Create) always does its own
-            // GetBySymbolAsync duplicate check immediately before calling this,
-            // which caches a "not found" result for this exact symbol key.
-            // Without clearing it here, that stale negative entry outlives the
-            // creation (StockDetail is a 5-minute TTL) and makes the new
-            // stock invisible to GetBySymbolAsync -- both to a follow-up
-            // duplicate-symbol check (which then 500s on the DB's unique
-            // constraint instead of returning 409) and to BuyStockAsync looking
-            // the symbol up to place a trade.
             await SafeRemoveAsync(CacheKeys.StockBySymbol(created.Symbol));
             await InvalidateTrendsAsync();
             await InvalidateListAsync();
@@ -178,20 +166,11 @@ namespace api.Repository
 
         public Task InvalidateTrendsAsync() => SafeRemoveAsync(CacheKeys.StockTrends);
 
-        // Every GetAllAsync result is tagged with StockListTag regardless of
-        // its filter/sort/paging params (see CacheKeys.StockList), so
-        // removing by tag clears all cached list pages/variants in one call
-        // instead of leaving stale entries behind for whichever filter
-        // combinations weren't explicitly keyed here.
         private Task InvalidateListAsync() => SafeRemoveByTagAsync(CacheKeys.StockListTag);
 
         private Task InvalidateSymbolAsync(string? symbol) =>
             string.IsNullOrWhiteSpace(symbol) ? Task.CompletedTask : SafeRemoveAsync(CacheKeys.StockBySymbol(symbol));
 
-        // A write to the database already succeeded by the time we get here;
-        // a Redis hiccup on invalidation must not turn that into a 500 for
-        // the caller (and must not block DB writes on a cache that's down) --
-        // worst case a stale entry lingers until its TTL expires.
         private async Task SafeRemoveAsync(string key)
         {
             try
@@ -216,14 +195,6 @@ namespace api.Repository
             }
         }
 
-        // Cache payload types, deliberately decoupled from the EF entities:
-        // - drops AppUser fields other than Id/UserName (the only ones
-        //   CommentMapper.ToCommentDto reads) so Identity secrets like
-        //   PasswordHash/SecurityStamp never get written to Redis.
-        // - drops Comment.Stock / Stock.Portfolios back-references so there is
-        //   no cycle for the JSON serializer to trip over (EF relationship
-        //   fixup would otherwise wire Comment.Stock back to the parent for
-        //   tracked queries like GetAllAsync).
         private sealed class CachedComment
         {
             public int Id { get; set; }

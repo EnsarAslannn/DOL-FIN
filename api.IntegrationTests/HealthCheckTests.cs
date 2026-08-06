@@ -28,8 +28,6 @@ namespace api.IntegrationTests
         [Fact]
         public async Task Health_IsReachableWithoutAuthentication()
         {
-            // No AuthHelper/cookie here at all -- Railway's deploy healthcheck
-            // and the Dockerfile's own HEALTHCHECK both hit this with no token.
             var client = TestClientFactory.CreateHttpsClient(_factory);
 
             var response = await client.GetAsync("/health");

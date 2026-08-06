@@ -50,12 +50,6 @@ namespace api.Repository
 
         public async Task<Portfolio?> GetByAppUserAndStockId(string appUserId, int stockId)
         {
-            // Must stay tracked: the entity's shadow `xmin` concurrency token (see
-            // ApplicationDBContext) is only populated on tracked reads. With
-            // AsNoTracking() the token defaults to 0 when this entity is later
-            // attached via UpdateAsync, so the WHERE xmin=@p clause never matches
-            // and every buy/sell of an existing position spuriously throws
-            // DbUpdateConcurrencyException.
             return await _context.Portfolios
                 .FirstOrDefaultAsync(x => x.AppUserId == appUserId && x.StockId == stockId);
         }

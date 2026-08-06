@@ -10,8 +10,6 @@ namespace api.Interfaces
 
         Task<List<PriceAlert>> GetActiveAlertsForUserAsync(string appUserId);
 
-        // Used by the background job, which evaluates every user's alerts in
-        // one pass rather than being told which user to check.
         Task<List<PriceAlert>> GetAllUntriggeredActiveAlertsAsync();
 
         Task UpdateAsync(PriceAlert alert);

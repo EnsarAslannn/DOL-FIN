@@ -18,10 +18,6 @@ namespace api.Models
 
         public bool IsActive { get; set; } = true;
 
-        // Set the first time the condition is met; a triggered alert is left
-        // inactive rather than deleted so GetNotificationsAsync has something
-        // to join back against, and isn't re-evaluated on every subsequent
-        // background check (see PriceAlertService.CheckAndTriggerAlertsAsync).
         public DateTime? TriggeredAt { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

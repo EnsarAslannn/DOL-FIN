@@ -133,7 +133,6 @@ namespace api.Tests.Service
 
             await service.BuyStockAsync(user, "AAPL", 10);
 
-            // (10 * 80 + 10 * 100) / 20 = 90
             Assert.Equal(20, existingPosition.Quantity);
             Assert.Equal(90m, existingPosition.AveragePrice);
             portfolioRepo.Verify(p => p.UpdateAsync(existingPosition), Times.Once);

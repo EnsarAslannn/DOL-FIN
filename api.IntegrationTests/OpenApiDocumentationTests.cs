@@ -24,9 +24,6 @@ namespace api.IntegrationTests
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             var body = await response.Content.ReadAsStringAsync();
 
-            // Proves this is the live document (built from the controllers +
-            // XML doc comments), not the old hand-maintained wwwroot file --
-            // that file never had /api/alerts or the analytics endpoints.
             Assert.Contains("/api/alerts", body);
             Assert.Contains("/api/portfolio/metrics", body);
             Assert.Contains("Log in with a username and password", body);

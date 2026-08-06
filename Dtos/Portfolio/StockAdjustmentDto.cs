@@ -7,10 +7,8 @@ namespace api.Dtos.Portfolio
         public decimal CurrentAllocationPercent { get; set; }
         public decimal TargetAllocationPercent { get; set; }
 
-        // "Buy", "Sell", or "Hold"
         public string Action { get; set; } = string.Empty;
 
-        // Always >= 0; Action indicates the direction.
         public int SuggestedQuantity { get; set; }
     }
 }

@@ -4,14 +4,8 @@ using api.Models;
 
 namespace api.Service
 {
-    // Deliberately simple: suggests an equal-weight target across the user's
-    // current holdings. Real portfolio optimization (mean-variance, target
-    // asset-class splits, tax-aware rebalancing) is out of scope for this MVP.
     public class RebalancingService : IRebalancingService
     {
-        // Within this band of the equal-weight target, no action is suggested
-        // -- otherwise a portfolio that's already essentially balanced would
-        // get noisy "buy 1 / sell 1 share" suggestions purely from rounding.
         private const decimal ToleranceBandPercent = 2m;
 
         private readonly IPortfolioAnalyticsService _analyticsService;
