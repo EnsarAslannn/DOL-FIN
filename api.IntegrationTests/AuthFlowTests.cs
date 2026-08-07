@@ -72,5 +72,81 @@ namespace api.IntegrationTests
 
             Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
         }
+
+        [Fact]
+        public async Task GetUserProfile_WhenAuthenticated_ReturnsUserDetailsAndIssuesCsrfCookie()
+        {
+            var username = $"profileuser{Guid.NewGuid():N}"[..20];
+            var client = TestClientFactory.CreateHttpsClient(_factory, new CookieRelayHandler());
+
+            var registerResponse = await client.PostAsJsonAsync(
+                "/api/account/register",
+                new RegisterDto
+                {
+                    Username = username,
+                    Email = $"{username}@test.local",
+                    Password = AuthHelper.DefaultPassword,
+                }
+            );
+            registerResponse.EnsureSuccessStatusCode();
+
+            var profileResponse = await client.GetAsync("/api/account/profile");
+
+            Assert.Equal(HttpStatusCode.OK, profileResponse.StatusCode);
+            Assert.True(profileResponse.Headers.TryGetValues("Set-Cookie", out var setCookies));
+            Assert.Contains(setCookies!, c => c.StartsWith("XSRF-TOKEN="));
+
+            var body = await profileResponse.Content.ReadFromJsonAsync<UserProfileResponse>();
+            Assert.NotNull(body);
+            Assert.Equal(username, body!.UserName);
+            Assert.Equal(0, body.WalletBalance);
+        }
+
+        [Fact]
+        public async Task Logout_ThenAccessProtectedEndpoint_ReturnsUnauthorized()
+        {
+            var client = await AuthHelper.CreateAuthenticatedClientAsync(_factory);
+
+            var before = await client.GetAsync("/api/portfolio");
+            Assert.Equal(HttpStatusCode.OK, before.StatusCode);
+
+            var logoutResponse = await client.PostAsync("/api/account/logout", content: null);
+            Assert.Equal(HttpStatusCode.OK, logoutResponse.StatusCode);
+
+            var after = await client.GetAsync("/api/portfolio");
+            Assert.Equal(HttpStatusCode.Unauthorized, after.StatusCode);
+        }
+
+        [Fact]
+        public async Task MutatingRequest_WithoutCsrfToken_ReturnsForbidden()
+        {
+            var username = $"nocsrfuser{Guid.NewGuid():N}"[..20];
+            var client = TestClientFactory.CreateHttpsClient(_factory, new CookieRelayHandler());
+
+            // Registering authenticates the client (sets access_token) but, unlike
+            // AuthHelper.CreateAuthenticatedClientAsync, this deliberately skips the
+            // GET /api/account/profile call that primes the XSRF-TOKEN cookie.
+            var registerResponse = await client.PostAsJsonAsync(
+                "/api/account/register",
+                new RegisterDto
+                {
+                    Username = username,
+                    Email = $"{username}@test.local",
+                    Password = AuthHelper.DefaultPassword,
+                }
+            );
+            registerResponse.EnsureSuccessStatusCode();
+
+            var response = await client.PostAsync("/api/account/logout", content: null);
+
+            Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+        }
+
+        private class UserProfileResponse
+        {
+            public string UserName { get; set; } = string.Empty;
+            public string Email { get; set; } = string.Empty;
+            public decimal WalletBalance { get; set; }
+        }
     }
 }
