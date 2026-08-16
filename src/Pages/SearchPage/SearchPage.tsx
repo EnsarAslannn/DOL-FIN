@@ -306,9 +306,9 @@ const SearchPage = () => {
   const areaD = `${pathD} L ${points[points.length - 1].x} 150 L 0 150 Z`
 
   return (
-    <div className="w-full min-h-screen bg-abyss font-sans pb-16 text-foam">
+    <div className="w-full min-h-screen bg-paper-white font-sans pb-section text-carbon-black">
       <div className="w-full max-w-full mx-auto px-6 md:px-10 flex flex-col space-y-6">
-        <div className="w-full pt-6">
+        <div className="w-full pt-28">
           <Search
             onSearchSubmit={onSearchSubmit}
             search={search}
@@ -319,7 +319,7 @@ const SearchPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
           <div className="lg:col-span-3 flex flex-col space-y-10">
             <div className="flex flex-col space-y-4">
-              <h2 className="text-2xl font-bold text-foam tracking-[-0.02em] font-display border-b border-white/8 pb-3">
+              <h2 className="text-heading font-normal text-carbon-black border-b border-mist-gray pb-3">
                 Search Results
               </h2>
               {searchResult.length > 0 ? (
@@ -330,8 +330,8 @@ const SearchPage = () => {
                   />
                 </div>
               ) : (
-                <div className="py-16 text-center glass-panel rounded-2xl">
-                  <span className="text-sm font-medium text-mist">
+                <div className="py-16 text-center rounded-card border border-mist-gray bg-paper-white">
+                  <span className="text-sm font-normal text-zinc-gray">
                     Use the search bar above to find and add instruments to your portfolio.
                   </span>
                 </div>
@@ -345,7 +345,7 @@ const SearchPage = () => {
 
             {portfolioValues && (
               <div className="w-full flex flex-col space-y-4 pt-2">
-                <h3 className="text-[11px] font-bold text-pulse uppercase tracking-[0.16em] font-mono pl-1">
+                <h3 className="text-caption font-normal text-zinc-gray uppercase tracking-[0.16em] font-mono pl-1">
                   Portfolio Analytics
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
@@ -363,30 +363,30 @@ const SearchPage = () => {
                 <div
                   className={`transition-all duration-300 ease-in-out overflow-hidden ${activePanel === "worth" ? "max-h-[350px] opacity-100 mt-2" : "max-h-0 opacity-0 pointer-events-none"}`}
                 >
-                  <div className="glass-panel w-full rounded-2xl p-6 flex flex-col space-y-4 text-left">
-                    <div className="flex items-center justify-between border-b border-white/8 pb-3">
+                  <div className="w-full rounded-card border border-mist-gray bg-paper-white p-6 flex flex-col space-y-4 text-left">
+                    <div className="flex items-center justify-between border-b border-mist-gray pb-3">
                       <div className="flex flex-col">
-                        <span className="text-xs font-bold text-foam tracking-tight">
+                        <span className="text-xs font-bold text-carbon-black tracking-tight">
                           Net Worth Growth Timeline
                         </span>
-                        <span className="text-[10px] text-mist font-medium mt-0.5">
+                        <span className="text-caption text-zinc-gray font-normal mt-0.5">
                           Live historical context based on wallet & asset capitalization
                         </span>
                       </div>
-                      <span className="text-[10px] font-bold text-gain bg-gain/10 px-2 py-0.5 rounded border border-gain/20">
+                      <span className="text-caption font-bold text-gain bg-gain/10 px-2 py-0.5 rounded border border-gain/20">
                         All-Time High
                       </span>
                     </div>
 
                     <div className="w-full h-44 relative pt-4 flex items-end">
-                      <div className="absolute inset-0 flex flex-col justify-between pointer-events-none border-l border-b border-white/6 pb-6 pl-2">
-                        <div className="w-full border-t border-white/6 text-[9px] font-bold font-mono text-mist/70 pt-0.5 text-right">
+                      <div className="absolute inset-0 flex flex-col justify-between pointer-events-none border-l border-b border-mist-gray pb-6 pl-2">
+                        <div className="w-full border-t border-mist-gray text-caption font-bold font-mono text-zinc-gray pt-0.5 text-right">
                           ${maxVal.toFixed(0)}
                         </div>
-                        <div className="w-full border-t border-white/6 text-[9px] font-bold font-mono text-mist/70 pt-0.5 text-right">
+                        <div className="w-full border-t border-mist-gray text-caption font-bold font-mono text-zinc-gray pt-0.5 text-right">
                           ${((maxVal + minVal) / 2).toFixed(0)}
                         </div>
-                        <div className="w-full text-[9px] font-bold font-mono text-mist/70 text-right">
+                        <div className="w-full text-caption font-bold font-mono text-zinc-gray text-right">
                           ${minVal.toFixed(0)}
                         </div>
                       </div>
@@ -394,13 +394,13 @@ const SearchPage = () => {
                       <svg viewBox="0 0 500 150" className="w-full h-full pr-4 pl-8 z-10 overflow-visible">
                         <defs>
                           <linearGradient id="chartGlow" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#5fe3a6" stopOpacity="0.25" />
-                            <stop offset="100%" stopColor="#5fe3a6" stopOpacity="0.0" />
+                            <stop offset="0%" stopColor="#3d6b55" stopOpacity="0.25" />
+                            <stop offset="100%" stopColor="#3d6b55" stopOpacity="0.0" />
                           </linearGradient>
                         </defs>
                         <path
                           d={pathD}
-                          className="stroke-gain stroke-2 fill-none drop-shadow-[0_0_8px_rgba(95,227,166,0.4)]"
+                          className="stroke-gain stroke-2 fill-none "
                         />
                         <path
                           d={areaD}
@@ -412,11 +412,11 @@ const SearchPage = () => {
                       </svg>
                     </div>
 
-                    <div className="grid grid-cols-6 text-center text-[10px] font-bold text-mist font-mono pl-8 pr-4">
+                    <div className="grid grid-cols-6 text-center text-caption font-bold text-zinc-gray font-mono pl-8 pr-4">
                       {timelineData.map((t, idx) => (
                         <div key={idx} className="flex flex-col space-y-0.5">
                           <span>{t.date}</span>
-                          <span className="text-mist text-[9px] font-medium">
+                          <span className="text-zinc-gray text-caption font-normal">
                             ${t.val.toFixed(0)}
                           </span>
                         </div>
@@ -428,26 +428,26 @@ const SearchPage = () => {
                 <div
                   className={`transition-all duration-300 ease-in-out overflow-hidden ${activePanel === "health" ? "max-h-[350px] opacity-100 mt-2" : "max-h-0 opacity-0 pointer-events-none"}`}
                 >
-                  <div className="glass-panel w-full rounded-2xl p-6 flex flex-col space-y-4 text-left">
-                    <div className="flex items-center justify-between border-b border-white/8 pb-3">
+                  <div className="w-full rounded-card border border-mist-gray bg-paper-white p-6 flex flex-col space-y-4 text-left">
+                    <div className="flex items-center justify-between border-b border-mist-gray pb-3">
                       <div className="flex flex-col">
-                        <span className="text-xs font-bold text-foam tracking-tight">
+                        <span className="text-xs font-bold text-carbon-black tracking-tight">
                           Portfolio Risk & Diversification Audit
                         </span>
-                        <span className="text-[10px] text-mist font-medium mt-0.5">
+                        <span className="text-caption text-zinc-gray font-normal mt-0.5">
                           Quantifying capital exposure and asset correlation metrics
                         </span>
                       </div>
-                      <span className={`text-[10px] font-bold bg-abyss/80 px-2 py-0.5 rounded border ${portfolioValues && portfolioValues.length > 3 ? "text-gain border-gain/20" : "text-amber-400 border-amber-500/20"
+                      <span className={`text-caption font-bold bg-fog-gray px-2 py-0.5 rounded border ${portfolioValues && portfolioValues.length > 3 ? "text-gain border-gain/20" : "text-zinc-gray border-mist-gray"
                         }`}>
                         Active Strategy: {portfolioHealth}
                       </span>
                     </div>
-                    <div className="bg-black/35 p-5 rounded-xl border border-white/8 leading-relaxed">
-                      <p className="text-xs font-bold text-mist mb-1.5 uppercase tracking-wider font-mono">
+                    <div className="bg-fog-gray p-5 rounded-card border border-mist-gray leading-relaxed">
+                      <p className="text-xs font-bold text-zinc-gray mb-1.5 uppercase tracking-wider font-mono">
                         Macroeconomic & Structural Risk Analysis:
                       </p>
-                      <p className="text-sm text-foam/85 font-medium tracking-normal leading-6">
+                      <p className="text-sm text-carbon-black font-normal tracking-normal leading-6">
                         {healthDetails.description}
                       </p>
                     </div>
@@ -457,10 +457,10 @@ const SearchPage = () => {
                 <div
                   className={`transition-all duration-300 ease-in-out overflow-hidden ${activePanel === "sector" ? "max-h-[350px] opacity-100 mt-2" : "max-h-0 opacity-0 pointer-events-none"}`}
                 >
-                  <div className="glass-panel w-full rounded-2xl p-6 flex flex-col space-y-5 text-left">
-                    <div className="flex items-center justify-between border-b border-white/8 pb-3">
+                  <div className="w-full rounded-card border border-mist-gray bg-paper-white p-6 flex flex-col space-y-5 text-left">
+                    <div className="flex items-center justify-between border-b border-mist-gray pb-3">
                       <div className="flex flex-col">
-                        <span className="text-xs font-bold text-foam tracking-tight">
+                        <span className="text-xs font-bold text-carbon-black tracking-tight">
                           Sector Allocation Layout
                         </span>
                       </div>
@@ -468,26 +468,26 @@ const SearchPage = () => {
 
                     <div className="flex flex-col space-y-3.5 pt-1">
                       <div className="flex flex-col space-y-1">
-                        <div className="flex items-center justify-between text-[10px] font-bold text-mist font-mono">
+                        <div className="flex items-center justify-between text-caption font-bold text-zinc-gray font-mono">
                           <span>Technology & Semiconductors</span>
                           <span>{sectorData.techPercent}.00%</span>
                         </div>
-                        <div className="w-full h-1.5 bg-white/8 rounded-full overflow-hidden">
+                        <div className="w-full h-1.5 bg-fog-gray rounded-full overflow-hidden">
                           <div
-                            className="h-full bg-orchid rounded-full"
+                            className="h-full bg-carbon-black rounded-full"
                             style={{ width: `${sectorData.techPercent}%` }}
                           ></div>
                         </div>
                       </div>
 
                       <div className="flex flex-col space-y-1">
-                        <div className="flex items-center justify-between text-[10px] font-bold text-mist font-mono">
+                        <div className="flex items-center justify-between text-caption font-bold text-zinc-gray font-mono">
                           <span>Other Sectors ({sectorData.primarySector})</span>
                           <span>{sectorData.otherPercent}.00%</span>
                         </div>
-                        <div className="w-full h-1.5 bg-white/8 rounded-full overflow-hidden">
+                        <div className="w-full h-1.5 bg-fog-gray rounded-full overflow-hidden">
                           <div
-                            className="h-full bg-pulse-dim rounded-full"
+                            className="h-full bg-ash-gray rounded-full"
                             style={{ width: `${sectorData.otherPercent}%` }}
                           ></div>
                         </div>
@@ -507,7 +507,7 @@ const SearchPage = () => {
         </div>
 
         {serverError && (
-          <div className="text-center text-loss font-semibold my-4 bg-loss/10 p-4 rounded-xl border border-loss/30">
+          <div className="text-center text-loss font-normal my-4 bg-loss/10 p-4 rounded-card border border-loss/30">
             {serverError}
           </div>
         )}

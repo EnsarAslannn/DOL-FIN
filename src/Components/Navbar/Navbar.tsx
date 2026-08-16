@@ -6,78 +6,76 @@ const Navbar = () => {
   const { user, logout } = useAuth()
   const location = useLocation()
 
+  // Ghost text links: no background, no border. Underline on hover only,
+  // and persistently on the active route.
   const navLinkClass = (path: string) =>
-    `px-4 py-2 rounded-full text-[13px] font-semibold tracking-wide transition-all duration-200 ${
+    `text-[13px] font-normal tracking-[-0.009em] underline-offset-[6px] transition-colors duration-200 ${
       location.pathname.startsWith(path)
-        ? "bg-pulse/12 text-pulse shadow-[inset_0_0_0_1px_rgba(255,87,26,0.22)]"
-        : "text-mist hover:text-foam"
+        ? "text-paper-white underline"
+        : "text-paper-white/60 hover:text-paper-white hover:underline"
     }`
 
   return (
-    <nav className="sticky top-0 w-full z-50 border-b border-white/8 bg-abyss/80 backdrop-blur-xl font-sans">
-      <div className="w-full max-w-6xl mx-auto px-6 h-20 flex items-center justify-between gap-6">
-
-        <div className="flex items-center gap-8">
-          <Link to="/" className="flex items-center gap-3 group shrink-0">
-            <span className="relative flex items-center justify-center">
-              <span className="absolute inset-0 rounded-full bg-pulse/25 blur-lg group-hover:bg-pulse/40 transition-colors" />
+    <nav className="fixed inset-x-0 top-4 z-50 px-4 font-sans">
+      <div className="mx-auto w-full max-w-page">
+        <div className="flex h-14 items-center justify-between gap-6 rounded-nav bg-carbon-black px-[19px]">
+          <div className="flex items-center gap-8">
+            <Link to="/" className="flex shrink-0 items-center gap-2.5">
               <img
                 src={logo}
                 alt="DOL-FIN Logo"
-                className="relative h-9 object-contain"
+                className="h-7 object-contain"
               />
-            </span>
-            <span className="text-xl font-bold tracking-tight text-foam font-display uppercase select-none">
-              DOL<span className="text-pulse">-</span>FIN
-            </span>
-          </Link>
-
-          <div className="hidden md:flex items-center gap-1 bg-depth/40 border border-white/5 rounded-full p-1">
-            <Link to="/search" className={navLinkClass("/search")}>
-              Search
+              <span className="select-none text-body-lg font-bold uppercase tracking-[-0.02em] text-paper-white">
+                DOL<span className="text-sunrise-coral">-</span>FIN
+              </span>
             </Link>
-            {user && (
-              <Link to="/wallet" className={navLinkClass("/wallet")}>
-                Wallet
+
+            <div className="hidden items-center gap-6 md:flex">
+              <Link to="/search" className={navLinkClass("/search")}>
+                Search
               </Link>
+              {user && (
+                <Link to="/wallet" className={navLinkClass("/wallet")}>
+                  Wallet
+                </Link>
+              )}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4">
+            {user ? (
+              <>
+                <div className="hidden items-baseline gap-2 rounded-pill bg-paper-white/10 px-3 py-1.5 sm:flex">
+                  <span className="text-caption font-normal uppercase tracking-[0.1em] text-paper-white/60">
+                    {user.userName}
+                  </span>
+                  <span className="font-mono text-caption font-normal text-paper-white">
+                    ${user.walletBalance?.toFixed(2) ?? "0.00"}
+                  </span>
+                </div>
+                <button
+                  onClick={logout}
+                  className="cursor-pointer text-[13px] font-normal tracking-[-0.009em] text-paper-white/60 underline-offset-[6px] transition-colors duration-200 hover:text-paper-white hover:underline"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <span className="hidden text-[13px] font-normal text-paper-white/60 sm:inline">
+                  Welcome, <span className="text-paper-white">Guest</span>
+                </span>
+                <Link
+                  to="/login"
+                  className="rounded-pill bg-sunrise-coral px-6 py-2.5 text-center text-[13px] font-bold tracking-[-0.009em] text-paper-white transition-opacity duration-200 hover:opacity-90"
+                >
+                  Login
+                </Link>
+              </>
             )}
           </div>
         </div>
-
-        <div className="flex items-center gap-4">
-          {user ? (
-            <>
-              {}
-              <div className="hidden sm:flex flex-col items-end leading-tight px-3 py-1.5 rounded-xl bg-depth/50 border border-white/5">
-                <span className="text-[9px] font-semibold uppercase tracking-[0.14em] text-mist">
-                  {user.userName}
-                </span>
-                <span className="text-xs font-bold text-pulse-dim font-mono">
-                  ${user.walletBalance?.toFixed(2) ?? "0.00"}
-                </span>
-              </div>
-              <button
-                onClick={logout}
-                className="py-2.5 px-5 text-xs font-bold uppercase tracking-wider text-mist hover:text-loss border border-white/8 hover:border-loss/40 hover:bg-loss/8 rounded-xl transition-all duration-200 cursor-pointer"
-              >
-                Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <span className="hidden sm:inline text-xs font-medium text-mist tracking-wide">
-                Welcome, <span className="text-foam font-semibold">Guest</span>
-              </span>
-              <Link
-                to="/login"
-                className="glow-action py-2.5 px-6 text-xs font-bold uppercase tracking-wider text-white bg-gradient-to-r from-pulse to-[#ff8a3d] rounded-xl transition-all duration-200 text-center cursor-pointer active:scale-95"
-              >
-                Login
-              </Link>
-            </>
-          )}
-        </div>
-
       </div>
     </nav>
   )

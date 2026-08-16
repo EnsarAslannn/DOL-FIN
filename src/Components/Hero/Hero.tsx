@@ -6,9 +6,17 @@ import {
 import MarketTicker from "../MarketTicker/MarketTicker"
 import AnimatedGroup from "../AnimatedGroup/AnimatedGroup"
 import { Link } from "react-router-dom"
-import heroVortex from "../../assets/generated/hero-vortex.jpg"
-import networkMesh from "../../assets/generated/network-mesh.jpg"
-import vaultCore from "../../assets/generated/vault-core.jpg"
+import heroStill from "../../assets/extra/hero-still.webp"
+import heroVideo from "../../assets/extra/HeroDOLFIN.mp4"
+import networkMesh from "../../assets/extra/market-skyline.webp"
+import atriumLight from "../../assets/extra/atrium-light.webp"
+import { usePrefersReducedMotion } from "../../Helpers/usePrefersReducedMotion"
+
+const trustBadges = [
+  "Simulated data",
+  "No card required",
+  "Read-only market data",
+]
 
 const faqs = [
   {
@@ -33,26 +41,73 @@ const faqs = [
 
 const stages = [
   {
-    label: "Stage 01",
-    icon: "🔐",
+    label: "01",
     title: "Create your workspace",
     copy: "Register to get a private portfolio only you can see and edit.",
   },
   {
-    label: "Stage 02",
-    icon: "🔍",
+    label: "02",
     title: "Query any ticker",
     copy: "Pull up income statements, balance sheets, and cash flow for any company on the platform.",
   },
   {
-    label: "Stage 03",
-    icon: "💼",
+    label: "03",
     title: "Build your portfolio",
     copy: "Add tickers to your watchlist and track performance as it moves.",
   },
 ]
 
+const Chevron = ({ className = "" }: { className?: string }) => (
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 16 16"
+    fill="none"
+    aria-hidden="true"
+    className={`shrink-0 ${className}`}
+  >
+    <path
+      d="M6 3.5L10.5 8L6 12.5"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
+
+/** Trust badge row — pairs with every primary CTA, per DESIGN.md. */
+const TrustBadges = () => (
+  <ul className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+    {trustBadges.map((badge) => (
+      <li
+        key={badge}
+        className="flex items-center gap-2 text-caption font-normal text-paper-white/75"
+      >
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 12 12"
+          fill="none"
+          aria-hidden="true"
+          className="shrink-0 text-paper-white/80"
+        >
+          <path
+            d="M2.5 6.2L4.8 8.5L9.5 3.8"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+        {badge}
+      </li>
+    ))}
+  </ul>
+)
+
 const Hero = () => {
+  const prefersReducedMotion = usePrefersReducedMotion()
   const [openFaq, setOpenFaq] = useState<number | null>(null)
 
   const toggleFaq = (index: number) => {
@@ -69,235 +124,199 @@ const Hero = () => {
   return (
     <section
       id="hero"
-      className="w-full bg-abyss text-foam font-sans min-h-screen flex flex-col pb-4 relative overflow-hidden"
+      className="w-full bg-paper-white text-carbon-black font-sans relative"
     >
-      <MarketTicker />
-
-      {}
-      <div className="relative">
-        {}
-        <div className="absolute inset-x-0 -top-24 h-[820px] pointer-events-none select-none">
+      {/* Full-bleed cinematic hero. The nav pill floats over this block. */}
+      <div className="relative flex min-h-screen w-full flex-col overflow-hidden">
+        {prefersReducedMotion ? (
           <img
-            src={heroVortex}
+            src={heroStill}
             alt=""
             aria-hidden="true"
-            className="art-layer animate-drift w-full h-full opacity-45"
+            className="absolute inset-0 h-full w-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-abyss/70 via-abyss/25 to-abyss" />
-          <div className="absolute inset-0 grid-veil" />
-        </div>
+        ) : (
+          <video
+            className="absolute inset-0 h-full w-full object-cover"
+            poster={heroStill}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            aria-hidden="true"
+            tabIndex={-1}
+          >
+            <source src={heroVideo} type="video/mp4" />
+          </video>
+        )}
 
-        <div className="container mx-auto px-6 pt-24 pb-16 max-w-6xl relative z-10">
-          <AnimatedGroup className="text-center flex flex-col items-center">
-            <span className="text-[11px] font-bold text-pulse uppercase tracking-[0.16em] bg-pulse/8 px-4 py-1.5 rounded-full border border-pulse/25 inline-flex items-center gap-2.5 mb-8">
-              <span className="relative flex w-2 h-2">
+        {/* Scrim. A flat base plus a vertical gradient that deepens at the
+            top and bottom, so the floating nav and the CTA row keep their
+            contrast against the brightest frames of the loop. */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-carbon-black/50"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-b from-carbon-black/75 via-carbon-black/30 to-carbon-black/85"
+        />
+
+        <div className="relative z-10 flex flex-1 items-center justify-center px-6 pb-24 pt-36">
+          <AnimatedGroup className="flex flex-col items-center text-center">
+            <span className="mb-8 inline-flex items-center gap-2.5 font-mono text-caption font-normal uppercase tracking-[0.16em] text-paper-white/85">
+              <span className="relative flex h-2 w-2 text-paper-white">
                 <span className="sonar-ring" />
-                <span className="w-2 h-2 rounded-full bg-pulse shrink-0" />
+                <span className="h-2 w-2 shrink-0 rounded-full bg-paper-white" />
               </span>
               Live sounding · 5 tickers in range
             </span>
 
-            <h1 className="text-5xl sm:text-7xl font-extrabold text-foam tracking-[-0.03em] mb-6 max-w-4xl leading-[1.05] font-display">
+            {/* Weight 400 at display size is the system's signature. */}
+            <h1 className="mb-6 max-w-4xl text-heading-lg font-normal text-paper-white md:text-display">
               Find the signal
               <br />
-              <span className="text-pulse glow-text">beneath the noise</span>
+              beneath the noise
             </h1>
 
-            <p className="text-base sm:text-lg text-mist max-w-xl leading-relaxed mb-10">
+            <p className="mb-10 max-w-[480px] text-body-lg font-normal text-paper-white/85">
               Track the tickers you care about, read what other investors are
-              saying, and dive into the fundamentals underneath the price —
-              without paying for a premium terminal.
+              saying, and dive into the fundamentals underneath the price.
             </p>
 
-            <div className="flex flex-wrap items-center justify-center gap-4">
+            <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
               <Link
                 to="/search"
-                className="glow-action py-4 px-10 text-xs font-bold uppercase tracking-[0.12em] text-white bg-gradient-to-r from-pulse to-[#ff8a3d] rounded-xl transition-all duration-200 hover:-translate-y-0.5 active:scale-95"
+                className="inline-flex items-center gap-2 rounded-pill bg-sunrise-coral px-8 py-[15px] text-body-lg font-bold tracking-[-0.009em] text-paper-white transition-opacity duration-200 hover:opacity-90"
               >
                 Launch Terminal
+                <Chevron className="h-4 w-4" />
               </Link>
               <a
                 href="#how-it-works"
-                className="py-4 px-8 text-xs font-bold uppercase tracking-[0.12em] text-mist hover:text-foam border border-white/10 hover:border-white/25 rounded-xl transition-all duration-200"
+                className="text-body font-normal tracking-[-0.005em] text-paper-white/80 underline-offset-[6px] transition-colors duration-200 hover:text-paper-white hover:underline"
               >
                 How it works
               </a>
             </div>
+
+            <TrustBadges />
           </AnimatedGroup>
         </div>
       </div>
 
-      <div className="container mx-auto px-6 max-w-6xl relative z-10 flex flex-col">
-        {}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-28">
-          <div className="glass-panel-hot rounded-2xl p-6">
-            <div className="flex items-center justify-between mb-6 border-b border-white/8 pb-3">
-              <h3 className="text-sm font-bold text-foam tracking-wide flex items-center gap-2.5 font-display">
-                <span className="w-2 h-2 rounded-full bg-gain shadow-[0_0_10px_#5fe3a6]"></span>
-                Top Volatility Gainers
-              </h3>
-              <span className="text-[10px] text-mist uppercase font-bold tracking-[0.12em]">
-                Spot Live
-              </span>
-            </div>
-            <div className="flex flex-col space-y-4">
-              {gainers.map((item, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center justify-between text-xs border-b border-white/5 pb-3 last:border-0 last:pb-0"
-                >
-                  <div className="flex items-center space-x-3">
-                    <img
-                      src={item.logoUrl}
-                      alt=""
-                      className="w-7 h-7 object-contain rounded-lg bg-white/5 border border-white/8 p-1"
+      <MarketTicker />
+
+      <div className="relative z-10 mx-auto flex w-full max-w-page flex-col px-6">
+        {/* Movers */}
+        <div className="pt-section">
+          <h2 className="mb-8 max-w-2xl text-heading md:text-heading-lg font-normal text-carbon-black">
+            Where the tape is moving
+          </h2>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {[
+              { title: "Top Volatility Gainers", meta: "Spot Live", rows: gainers, up: true },
+              { title: "Market Short Watch", meta: "Simulated", rows: losers, up: false },
+            ].map((panel) => (
+              <div
+                key={panel.title}
+                className="rounded-card border border-mist-gray bg-paper-white p-card"
+              >
+                <div className="mb-card flex items-center justify-between border-b border-mist-gray pb-3">
+                  <h3 className="flex items-center gap-2.5 text-subheading font-normal text-carbon-black">
+                    <span
+                      className={`h-2 w-2 rounded-full ${panel.up ? "bg-gain" : "bg-loss"}`}
                     />
-                    <span className="font-bold text-foam">{item.name}</span>
-                  </div>
-                  <div className="flex items-center space-x-4">
-                    <span className="font-mono font-medium text-mist">
-                      {item.value}
-                    </span>
-                    <span className="text-gain font-bold bg-gain/10 border border-gain/20 px-2 py-0.5 rounded text-[11px] min-w-[65px] text-center font-mono">
-                      {item.change}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="glass-panel rounded-2xl p-6">
-            <div className="flex items-center justify-between mb-6 border-b border-white/8 pb-3">
-              <h3 className="text-sm font-bold text-foam tracking-wide flex items-center gap-2.5 font-display">
-                <span className="w-2 h-2 rounded-full bg-loss shadow-[0_0_10px_#ff5d73]"></span>
-                Market Short Watch
-              </h3>
-              <span className="text-[10px] text-mist uppercase font-bold tracking-[0.12em]">
-                Simulated
-              </span>
-            </div>
-            <div className="flex flex-col space-y-4">
-              {losers.map((item, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center justify-between text-xs border-b border-white/5 pb-3 last:border-0 last:pb-0"
-                >
-                  <div className="flex items-center space-x-3">
-                    <img
-                      src={item.logoUrl}
-                      alt=""
-                      className="w-7 h-7 object-contain rounded-lg bg-white/5 border border-white/8 p-1"
-                    />
-                    <span className="font-bold text-foam">{item.name}</span>
-                  </div>
-                  <div className="flex items-center space-x-4">
-                    <span className="font-mono font-medium text-mist">
-                      {item.value}
-                    </span>
-                    <span className="text-loss font-bold bg-loss/10 border border-loss/20 px-2 py-0.5 rounded text-[11px] min-w-[65px] text-center font-mono">
-                      {item.change}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {}
-        <div id="how-it-works" className="relative rounded-3xl overflow-hidden mb-28">
-          {}
-          <div className="absolute inset-0 pointer-events-none select-none">
-            <img
-              src={networkMesh}
-              alt=""
-              aria-hidden="true"
-              className="w-full h-full object-cover opacity-80"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-abyss/70 via-abyss/45 to-abyss/90" />
-          </div>
-
-          <div className="relative z-10 px-6 sm:px-10 py-16">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-foam tracking-[-0.02em] font-display">
-                How DOL-FIN Works
-              </h2>
-              <p className="text-sm text-mist mt-2">
-                Three stages between you and a synchronized portfolio.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
-              {stages.map((stage) => (
-                <div
-                  key={stage.label}
-                  className="glass-panel flex flex-col items-center p-7 rounded-2xl relative"
-                >
-                  <span className="absolute -top-3 left-6 bg-gradient-to-r from-pulse to-[#ff8a3d] text-white font-bold text-[10px] uppercase tracking-[0.12em] px-2.5 py-1 rounded-md font-mono">
-                    {stage.label}
+                    {panel.title}
+                  </h3>
+                  <span className="font-mono text-caption font-normal uppercase tracking-[0.14em] text-zinc-gray">
+                    {panel.meta}
                   </span>
-                  <div className="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center text-xl mb-4 mt-2 border border-white/8">
-                    {stage.icon}
-                  </div>
-                  <h3 className="font-bold text-foam text-sm">{stage.title}</h3>
-                  <p className="text-[11px] text-mist mt-2 text-center leading-relaxed">
-                    {stage.copy}
-                  </p>
                 </div>
-              ))}
-            </div>
+                <div className="flex flex-col">
+                  {panel.rows.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-center justify-between border-b border-mist-gray py-3 last:border-0 last:pb-0"
+                    >
+                      <div className="flex items-center gap-element">
+                        <img
+                          src={item.logoUrl}
+                          alt=""
+                          className="h-7 w-7 rounded-icon object-contain"
+                        />
+                        <span className="text-body font-normal text-carbon-black">
+                          {item.name}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <span className="font-mono text-body font-normal text-zinc-gray">
+                          {item.value}
+                        </span>
+                        <span
+                          className={`min-w-[72px] text-right font-mono text-body font-bold ${
+                            panel.up ? "text-gain" : "text-loss"
+                          }`}
+                        >
+                          {panel.up ? "▲" : "▼"} {item.change}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
-        {}
-        <div className="glass-panel-hot rounded-3xl overflow-hidden mb-28 grid grid-cols-1 md:grid-cols-2 items-center">
-          <div className="p-8 sm:p-12 flex flex-col gap-5 order-2 md:order-1">
-            <span className="text-[10px] font-bold text-pulse uppercase tracking-[0.16em] font-mono">
-              Sandboxed by design
-            </span>
-            <h3 className="text-2xl sm:text-3xl font-bold text-foam tracking-[-0.02em] font-display leading-tight">
-              Every position you take
-              <br />
-              stays inside the vault
-            </h3>
-            <p className="text-sm text-mist leading-relaxed max-w-md">
-              Balances, trades, and comments are scoped to your account and run
-              against simulated data. Nothing here touches a real brokerage —
-              so you can be wrong as often as it takes to get good.
-            </p>
-            <Link
-              to="/register"
-              className="self-start mt-2 py-3 px-7 text-xs font-bold uppercase tracking-[0.12em] text-foam border border-pulse/40 hover:bg-pulse/10 hover:border-pulse rounded-xl transition-all duration-200"
-            >
-              Create an account
-            </Link>
-          </div>
+        {/* How it works */}
+        <div id="how-it-works" className="pt-section">
+          <h2 className="max-w-2xl text-heading md:text-heading-lg font-normal text-carbon-black">
+            How DOL-FIN works
+          </h2>
+          <p className="mt-4 max-w-[480px] text-body-lg font-normal text-zinc-gray">
+            Three stages between you and a synchronized portfolio.
+          </p>
 
-          {}
-          <div className="relative h-64 md:h-full min-h-[320px] order-1 md:order-2">
-            <img
-              src={vaultCore}
-              alt=""
-              aria-hidden="true"
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-abyss via-abyss/20 to-transparent md:from-abyss md:via-abyss/40" />
+          <img
+            src={atriumLight}
+            alt=""
+            aria-hidden="true"
+            className="mt-10 aspect-[21/9] w-full rounded-card object-cover"
+          />
+
+          <div className="mt-10 grid grid-cols-1 items-stretch gap-6 md:grid-cols-3">
+            {stages.map((stage) => (
+              <div
+                key={stage.label}
+                className="flex flex-col rounded-card border border-mist-gray bg-paper-white p-card"
+              >
+                <span className="flex h-9 w-9 items-center justify-center rounded-icon border border-mist-gray font-mono text-caption font-bold text-carbon-black">
+                  {stage.label}
+                </span>
+                <h3 className="mt-5 text-subheading font-normal text-carbon-black">
+                  {stage.title}
+                </h3>
+                <p className="mt-2 text-body font-normal text-zinc-gray">
+                  {stage.copy}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
 
-        {}
-        <div className="mb-28">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-foam tracking-[-0.02em] font-display">
-              Latest Market Insights
-            </h2>
-            <p className="text-sm text-mist mt-2">
-              What's moving across global equities right now.
-            </p>
-          </div>
+        {/* Market insights */}
+        <div className="pt-section">
+          <h2 className="max-w-2xl text-heading md:text-heading-lg font-normal text-carbon-black">
+            Latest market insights
+          </h2>
+          <p className="mt-4 max-w-[480px] text-body-lg font-normal text-zinc-gray">
+            What's moving across global equities right now.
+          </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
             {realMarketNewsData &&
               realMarketNewsData.map((news, idx) => (
                 <a
@@ -305,91 +324,113 @@ const Hero = () => {
                   href={news.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="glass-panel p-6 rounded-2xl flex flex-col justify-between text-left transition-all duration-200 hover:border-pulse/25 hover:-translate-y-0.5 group"
+                  className="group flex flex-col justify-between rounded-card border border-mist-gray bg-paper-white p-card text-left transition-colors duration-200 hover:border-ash-gray"
                 >
                   <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-[10px] font-bold uppercase tracking-[0.12em] bg-white/5 border border-white/8 text-mist px-2.5 py-1 rounded-md">
+                    <div className="mb-4 flex items-center justify-between">
+                      <span className="rounded-smallcard border border-mist-gray bg-fog-gray px-2.5 py-1 font-mono text-caption font-normal uppercase tracking-[0.12em] text-zinc-gray">
                         {news.category}
                       </span>
-                      <span className="text-[10px] text-mist font-medium font-mono">
+                      <span className="font-mono text-caption font-normal text-zinc-gray">
                         {news.time}
                       </span>
                     </div>
-                    <h3 className="font-bold text-foam text-sm leading-snug group-hover:text-pulse transition-colors mb-2">
+                    <h3 className="mb-2 text-subheading font-normal text-carbon-black">
                       {news.title}
                     </h3>
-                    <p className="text-xs text-mist leading-relaxed line-clamp-2">
+                    <p className="line-clamp-2 text-body font-normal text-zinc-gray">
                       {news.summary}
                     </p>
                   </div>
-                  <div className="mt-5 pt-4 border-t border-white/8 flex items-center justify-between text-[11px] font-bold text-mist">
+                  <div className="mt-5 flex items-center justify-between border-t border-mist-gray pt-4 text-caption font-normal text-zinc-gray">
                     <span>
-                      Source: <span className="text-foam/80">{news.source}</span>
+                      Source:{" "}
+                      <span className="text-carbon-black">{news.source}</span>
                     </span>
-                    <span className="text-pulse group-hover:translate-x-1 transition-transform flex items-center gap-1">
-                      Read article ➔
+                    <span className="flex items-center gap-1 text-carbon-black underline-offset-4 group-hover:underline">
+                      Read article
+                      <Chevron />
                     </span>
                   </div>
                 </a>
               ))}
           </div>
         </div>
+      </div>
 
-        {}
-        <div className="max-w-3xl mx-auto w-full">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-foam tracking-[-0.02em] font-display">
-              Help center
-            </h2>
-            <p className="text-sm text-mist mt-2">
-              Common questions about the platform and where the data comes from.
-            </p>
-          </div>
-
-          <div className="space-y-3">
-            {faqs.map((faq) => (
-              <div
-                key={faq.id}
-                className={`glass-panel rounded-2xl overflow-hidden transition-colors ${
-                  openFaq === faq.id ? "border-pulse/25" : ""
-                }`}
-              >
-                <button
-                  onClick={() => toggleFaq(faq.id)}
-                  className="w-full p-5 text-left font-bold text-sm text-foam flex items-center justify-between hover:text-pulse transition-colors cursor-pointer"
-                >
-                  <span className="flex items-center gap-3">
-                    <span className="text-mist font-mono">
-                      {String(faq.id).padStart(2, "0")}
-                    </span>
-                    {faq.question}
-                  </span>
-                  <span
-                    className={`text-xs transition-transform duration-200 ${
-                      openFaq === faq.id ? "rotate-180 text-pulse" : "text-mist"
-                    }`}
-                  >
-                    ▼
-                  </span>
-                </button>
-                <div
-                  className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                    openFaq === faq.id ? "max-h-40 border-t border-white/8" : "max-h-0"
-                  }`}
-                >
-                  <p className="p-5 text-xs text-mist leading-relaxed bg-black/20">
-                    {faq.answer}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+      {/* Sandbox CTA — the page's second cinematic dark moment. */}
+      <div className="relative mt-section w-full overflow-hidden">
+        <img
+          src={networkMesh}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-carbon-black/75"
+        />
+        <div className="relative z-10 mx-auto flex max-w-page flex-col items-center px-6 py-section text-center">
+          <span className="font-mono text-caption font-normal uppercase tracking-[0.16em] text-paper-white/75">
+            Sandboxed by design
+          </span>
+          <h2 className="mt-6 max-w-3xl text-heading md:text-heading-lg font-normal text-paper-white">
+            Every position you take stays inside the vault
+          </h2>
+          <p className="mt-5 max-w-[480px] text-body-lg font-normal text-paper-white/85">
+            Balances, trades, and comments are scoped to your account and run
+            against simulated data. Nothing here touches a real brokerage.
+          </p>
+          <Link
+            to="/register"
+            className="mt-10 inline-flex items-center gap-2 rounded-pill bg-sunrise-coral px-8 py-[15px] text-body-lg font-bold tracking-[-0.009em] text-paper-white transition-opacity duration-200 hover:opacity-90"
+          >
+            Create an account
+            <Chevron className="h-4 w-4" />
+          </Link>
+          <TrustBadges />
         </div>
       </div>
 
-      <footer className="w-full mt-20 pt-8 border-t border-white/8 text-[10px] text-mist/70 font-medium tracking-[0.12em] uppercase text-center">
-        © 2026 DOL-FIN · Simulated data, run in a secure sandbox
+      {/* FAQ — no boxes, no borders. Whitespace and type size do the work. */}
+      <div className="relative z-10 mx-auto w-full max-w-page px-6 pb-section pt-section">
+        <h2 className="mb-10 text-heading md:text-heading-lg font-normal text-carbon-black">
+          Frequently asked questions
+        </h2>
+
+        <div className="flex flex-col gap-element">
+          {faqs.map((faq) => (
+            <div key={faq.id} className="w-full">
+              <button
+                onClick={() => toggleFaq(faq.id)}
+                aria-expanded={openFaq === faq.id}
+                className="flex w-full cursor-pointer items-start justify-between gap-6 py-4 text-left"
+              >
+                <span className="text-heading-sm md:text-heading font-normal text-carbon-black">
+                  {faq.question}
+                </span>
+                <span className="shrink-0 whitespace-nowrap pt-2 text-[13px] font-normal text-zinc-gray underline-offset-4 hover:underline">
+                  {openFaq === faq.id ? "Close" : "Read more"}
+                </span>
+              </button>
+              <div
+                className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                  openFaq === faq.id ? "max-h-40" : "max-h-0"
+                }`}
+              >
+                <p className="max-w-2xl pb-6 text-body-lg font-normal text-zinc-gray">
+                  {faq.answer}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <footer className="w-full border-t border-mist-gray bg-fog-gray">
+        <div className="mx-auto w-full max-w-page px-6 py-8 text-center font-mono text-caption font-normal uppercase tracking-[0.14em] text-zinc-gray">
+          © 2026 DOL-FIN · Simulated data, run in a secure sandbox
+        </div>
       </footer>
     </section>
   )

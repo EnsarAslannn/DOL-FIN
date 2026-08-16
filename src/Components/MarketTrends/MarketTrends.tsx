@@ -23,18 +23,21 @@ const MarketTrends = ({ stocks }: MarketTrendsProps) => {
   }
 
   return (
-    <div className="glass-panel w-full rounded-2xl p-5 font-sans text-foam">
-      <div className="flex items-center justify-between mb-5 border-b border-white/10 pb-3">
-        <h3 className="text-xs font-bold text-pulse uppercase tracking-[0.14em] flex items-center gap-2.5">
-          <span className="w-2 h-2 rounded-full bg-pulse shadow-[0_0_10px_#ff571a] animate-pulse"></span>
+    <div className="w-full rounded-card border border-mist-gray bg-paper-white p-card font-sans text-carbon-black">
+      <div className="mb-5 flex items-center justify-between border-b border-mist-gray pb-3">
+        <h3 className="flex items-center gap-2.5 text-subheading font-normal text-carbon-black">
+          <span className="relative flex h-2 w-2 text-carbon-black">
+            <span className="sonar-ring" />
+            <span className="h-2 w-2 shrink-0 rounded-full bg-carbon-black" />
+          </span>
           Market Trends
         </h3>
-        <span className="text-[10px] text-mist font-bold uppercase tracking-[0.1em] bg-white/5 border border-white/8 px-2 py-0.5 rounded">
+        <span className="font-mono text-caption font-normal uppercase tracking-[0.14em] text-zinc-gray">
           Live Equities
         </span>
       </div>
 
-      <div className="flex flex-col space-y-4 w-full">
+      <div className="flex w-full flex-col">
         {stocks.map((item, index) => {
           const isPositive = item.changePercent >= 0
           const symbolUpper = item.symbol.toUpperCase()
@@ -43,37 +46,37 @@ const MarketTrends = ({ stocks }: MarketTrendsProps) => {
             <div
               key={index}
               onClick={() => handleTrendClick(item.symbol)}
-              className="flex items-center justify-between p-2.5 rounded-xl transition-all duration-150 hover:bg-white/5 cursor-pointer border border-transparent hover:border-pulse/25 active:scale-[0.99]"
+              className="flex cursor-pointer items-center justify-between rounded-card p-2.5 transition-colors duration-150 hover:bg-fog-gray"
             >
-              <div className="flex items-center space-x-3 text-left">
-                <div className="w-7 h-7 rounded-lg bg-white/5 border border-white/8 p-1 flex items-center justify-center shrink-0">
+              <div className="flex min-w-0 flex-1 items-center space-x-3 text-left">
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-icon border border-mist-gray bg-paper-white p-1">
                   {companyLogos[symbolUpper] ? (
                     companyLogos[symbolUpper]()
                   ) : (
-                    <div className="w-full h-full bg-pulse-dim/10 text-pulse-dim text-[9px] font-bold flex items-center justify-center rounded">
+                    <div className="flex h-full w-full items-center justify-center rounded-smallcard font-mono text-caption font-bold text-carbon-black">
                       {item.symbol.substring(0, 2).toUpperCase()}
                     </div>
                   )}
                 </div>
-                <div className="flex flex-col">
-                  <span className="font-bold text-foam text-xs tracking-tight">
-                    {item.name} ({symbolUpper})
+                <div className="flex min-w-0 flex-col">
+                  <span className="truncate text-body font-normal text-carbon-black">
+                    {item.name}
                   </span>
-                  <span className="text-[10px] text-mist uppercase font-medium tracking-tight">
-                    Equity Asset
+                  <span className="font-mono text-caption font-normal uppercase tracking-[0.12em] text-zinc-gray">
+                    {symbolUpper}
                   </span>
                 </div>
               </div>
 
-              <div className="flex flex-col text-right space-y-0.5">
-                <span className="font-semibold text-foam font-mono text-xs">
+              <div className="flex shrink-0 flex-col items-end space-y-0.5 pl-3 text-right">
+                <span className="whitespace-nowrap font-mono text-body font-normal text-carbon-black">
                   ${item.price.toFixed(2)}
                 </span>
                 <span
-                  className={`text-[10px] font-bold px-1.5 py-0.5 rounded text-center min-w-[55px] font-mono ${isPositive ? "bg-gain/10 text-gain" : "bg-loss/10 text-loss"
-                    }`}
+                  className={`whitespace-nowrap font-mono text-caption font-bold ${isPositive ? "text-gain" : "text-loss"}`}
                 >
-                  {isPositive ? "+" : ""}{item.changePercent.toFixed(2)}%
+                  {isPositive ? "▲ +" : "▼ "}
+                  {item.changePercent.toFixed(2)}%
                 </span>
               </div>
             </div>

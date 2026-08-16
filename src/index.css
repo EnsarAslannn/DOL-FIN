@@ -1,60 +1,107 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap");
-
 @import "tailwindcss";
 
-
 @theme {
-  --screen-sm: 480px;
-  --screen-md: 768px;
-  --screen-lg: 1020px;
-  --screen-xl: 1440px;
+  /* Superpower — Bioluminescent health command center. See DESIGN.md. */
 
-  
-  --color-abyss: #0e0e0e;
-  --color-depth: #1c1b1b;
-  --color-depth-2: #2a2a2a;
-  --color-ridge: #5c4037;
+  /* Colors */
+  --color-sunrise-coral: #fc5f2b;
+  --color-coral-glow: #ff8b64;
+  --color-carbon-black: #18181b;
+  --color-pure-black: #000000;
+  --color-zinc-gray: #71717a;
+  --color-ash-gray: #a1a1aa;
+  --color-mist-gray: #e4e4e7;
+  --color-fog-gray: #f4f4f5;
+  --color-paper-white: #ffffff;
 
-  
-  --color-pulse: #ff571a;
-  --color-pulse-dim: #ffb59e;
+  /* Market direction. A functional exception to the dichromatic rule, kept
+     heavily desaturated (S27%/S30% against coral's S97%) so it reads as
+     data rather than decoration. Never the sole carrier of meaning — always
+     paired with a glyph and a sign. Both clear AA on Paper White (6.12:1,
+     6.34:1) and on Fog Gray (5.57:1, 5.77:1). */
+  --color-gain: #3d6b55;
+  --color-loss: #8e4c54;
 
-  
-  --color-gain: #5fe3a6;
-  --color-loss: #ff5d73;
-  --color-orchid: #d1bcff;
+  /* Typography. NB International Pro is proprietary; Inter Tight is the
+     substitute named in DESIGN.md. One family carries everything. */
+  --font-sans: "Inter Tight", ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, monospace;
 
-  --color-foam: #e5e2e1;
-  --color-mist: #ad897e;
+  /* Type scale. Line-height compresses as size grows; tracking goes more
+     negative. DESIGN.md's table writes these in px, but its prose and CSS
+     block both mean em (-0.025em at 66px) — em is used here. */
+  --text-caption: 11px;
+  --text-caption--line-height: 1.5;
+  --text-caption--letter-spacing: -0.005em;
 
-  --font-sans: "Inter", sans-serif;
-  --font-display: "Montserrat", sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  --text-body: 15px;
+  --text-body--line-height: 1.5;
+  --text-body--letter-spacing: -0.005em;
 
+  --text-body-lg: 17px;
+  --text-body-lg--line-height: 1.4;
+  --text-body-lg--letter-spacing: -0.009em;
+
+  --text-subheading: 19px;
+  --text-subheading--line-height: 1.4;
+  --text-subheading--letter-spacing: -0.009em;
+
+  --text-heading-sm: 22px;
+  --text-heading-sm--line-height: 1.25;
+  --text-heading-sm--letter-spacing: -0.012em;
+
+  --text-heading: 30px;
+  --text-heading--line-height: 1.2;
+  --text-heading--letter-spacing: -0.013em;
+
+  --text-heading-lg: 45px;
+  --text-heading-lg--line-height: 1.13;
+  --text-heading-lg--letter-spacing: -0.015em;
+
+  --text-display: 66px;
+  --text-display--line-height: 1;
+  --text-display--letter-spacing: -0.025em;
+
+  /* Radii */
+  --radius-smallcard: 5px;
+  --radius-icon: 7.5px;
+  --radius-card: 15px;
+  --radius-nav: 15px;
+  --radius-pill: 9999px;
+
+  /* The system's only shadow. Most surfaces carry none. */
+  --shadow-subtle: rgba(0, 0, 0, 0.05) 0px 2px 2px 0px;
+
+  /* Layout */
+  --container-page: 1200px;
+  --spacing-section: 75px;
+  --spacing-card: 19px;
+  --spacing-element: 11px;
   --spacing-180: 32rem;
 }
 
 html,
 body {
-  background-color: var(--color-abyss);
-  color: var(--color-foam);
+  background-color: var(--color-paper-white);
+  color: var(--color-carbon-black);
 }
 
-
+/* Financial figures must not reflow as digits change. */
 .font-mono {
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum";
 }
 
 ::selection {
-  background-color: var(--color-pulse);
-  color: #ffffff;
+  background-color: var(--color-sunrise-coral);
+  color: var(--color-paper-white);
 }
-
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--color-depth-2) transparent;
+  scrollbar-color: var(--color-mist-gray) transparent;
 }
 
 *::-webkit-scrollbar {
@@ -67,13 +114,13 @@ body {
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: var(--color-depth-2);
+  background-color: var(--color-mist-gray);
   border-radius: 9999px;
   border: 3px solid transparent;
   background-clip: content-box;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background-color: var(--color-ridge);
+  background-color: var(--color-ash-gray);
   background-clip: content-box;
 }

@@ -127,23 +127,32 @@ const IncomeStatement = () => {
 
   if (!allowedStocks.includes(ticker?.toUpperCase())) {
     return (
-      <div className="glass-panel w-full rounded-2xl p-8 flex flex-col items-center justify-center text-center min-h-[350px] space-y-4 my-4 animate-fadeIn">
-        <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 text-2xl shadow-sm">
-          📊
+      <div className="rounded-card border border-mist-gray bg-paper-white w-full rounded-card p-8 flex flex-col items-center justify-center text-center min-h-[350px] space-y-4 my-4 animate-fadeIn">
+        <div className="flex h-16 w-16 items-center justify-center rounded-icon border border-mist-gray bg-fog-gray">
+          <svg
+                className="h-6 w-6 text-carbon-black"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 3v18h18M7 15l3.5-4 3 2.5L20 7" />
+              </svg>
         </div>
         <div className="flex flex-col space-y-1">
-          <h3 className="text-lg font-bold text-foam tracking-tight">
+          <h3 className="text-subheading font-normal text-carbon-black tracking-tight">
             Financial Data Unavailable
           </h3>
-          <p className="text-xs text-mist font-mono">
+          <p className="text-body text-zinc-gray font-mono">
             SCOPE_LIMITATION_WARNING // LIVE_DEMO_RESTRICITON
           </p>
         </div>
-        <p className="text-sm text-mist max-w-md leading-relaxed">
-          Financial data for <span className="font-bold font-mono text-pulse bg-pulse/10 px-1.5 py-0.5 rounded border border-pulse/20">{ticker?.toUpperCase()}</span> is currently unavailable for this demo version.
+        <p className="text-body text-zinc-gray max-w-md leading-relaxed">
+          Financial data for <span className="font-bold font-mono text-carbon-black bg-fog-gray px-1.5 py-0.5 rounded border border-mist-gray">{ticker?.toUpperCase()}</span> is currently unavailable for this demo version.
         </p>
         <div className="pt-2">
-          <p className="text-[11px] text-mist font-medium bg-black/40 border border-white/8 px-3 py-1.5 rounded-xl font-mono">
+          <p className="text-caption text-zinc-gray font-normal bg-fog-gray border border-mist-gray px-3 py-1.5 rounded-card font-mono">
             Please audit premium corporate tiers: AAPL, MSFT, NVDA, TSLA, GOOGL
           </p>
         </div>
@@ -206,48 +215,48 @@ const IncomeStatement = () => {
     return (
       <div className="w-full flex flex-col space-y-4 mt-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-          <div className="bg-depth border border-white/8 rounded-2xl p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
+          <div className="bg-paper-white border border-mist-gray rounded-card p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
             <div className="flex flex-col space-y-1">
-              <span className="text-mist uppercase font-bold text-[10px] tracking-widest font-mono">
+              <span className="text-zinc-gray uppercase font-bold text-caption tracking-widest font-mono">
                 Net Profit Margin
               </span>
 
-              <span className="font-bold text-2xl text-foam font-mono">
+              <span className="font-normal text-heading text-carbon-black font-mono">
                 {metrics.marginFormatted}
               </span>
             </div>
 
             <div className="w-full flex flex-col space-y-1.5 mt-3">
-              <div className="w-full h-1 bg-depth-2 rounded-full overflow-hidden">
+              <div className="w-full h-1 bg-fog-gray rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-pulse-dim rounded-full"
+                  className="h-full bg-ash-gray rounded-full"
                   style={{
                     width: `${Math.min(Math.max(metrics.margin, 5), 100)}%`,
                   }}
                 ></div>
               </div>
 
-              <span className="text-[10px] text-mist font-medium font-mono">
+              <span className="text-caption text-zinc-gray font-normal font-mono">
                 Net conversion efficiency of capital deployment
               </span>
             </div>
           </div>
 
-          <div className="bg-depth border border-white/8 rounded-2xl p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
+          <div className="bg-paper-white border border-mist-gray rounded-card p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
             <div className="flex flex-col space-y-1">
-              <span className="text-mist uppercase font-bold text-[10px] tracking-widest font-mono">
+              <span className="text-zinc-gray uppercase font-bold text-caption tracking-widest font-mono">
                 Revenue Growth (YoY)
               </span>
 
               <span
-                className={`font-bold text-2xl font-mono ${metrics.growth >= 0 ? "text-gain" : "text-loss"}`}
+                className={`font-normal text-heading font-mono ${metrics.growth >= 0 ? "text-gain" : "text-loss"}`}
               >
                 {metrics.growthFormatted}
               </span>
             </div>
 
             <div className="w-full flex flex-col space-y-1.5 mt-3">
-              <div className="w-full h-1 bg-depth-2 rounded-full overflow-hidden">
+              <div className="w-full h-1 bg-fog-gray rounded-full overflow-hidden">
                 <div
                   className={`h-full rounded-full ${metrics.growth >= 0 ? "bg-gain" : "bg-loss"}`}
                   style={{
@@ -256,18 +265,18 @@ const IncomeStatement = () => {
                 ></div>
               </div>
 
-              <span className="text-[10px] text-mist font-medium font-mono">
+              <span className="text-caption text-zinc-gray font-normal font-mono">
                 Top-line macroeconomic scalability expansion metric
               </span>
             </div>
           </div>
         </div>
 
-        <div className="w-full bg-depth border border-white/8 rounded-2xl p-5 shadow-xl flex flex-col space-y-3 text-left">
-          <div className="flex items-center justify-between border-b border-white/6 pb-2.5">
-            <h4 className="text-xs font-bold text-mist uppercase tracking-wider font-mono flex items-center gap-2">
+        <div className="w-full bg-paper-white border border-mist-gray rounded-card p-5 shadow-xl flex flex-col space-y-3 text-left">
+          <div className="flex items-center justify-between border-b border-mist-gray pb-2.5">
+            <h4 className="text-body font-bold text-zinc-gray uppercase tracking-wider font-mono flex items-center gap-2">
               <svg
-                className="w-4 h-4 text-pulse"
+                className="w-4 h-4 text-carbon-black"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2.5"
@@ -283,18 +292,18 @@ const IncomeStatement = () => {
             </h4>
 
             <span
-              className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded font-mono ${metrics.status === "STRONG"
+              className={`text-caption font-bold uppercase px-2 py-0.5 rounded font-mono ${metrics.status === "STRONG"
                 ? "bg-gain/10 text-gain"
                 : metrics.status === "WEAK"
                   ? "bg-loss/10 text-loss"
-                  : "bg-amber-500/10 text-amber-400"
+                  : "bg-fog-gray text-zinc-gray"
                 }`}
             >
               {metrics.status} OUTLOOK
             </span>
           </div>
 
-          <p className="text-sm text-foam/85 leading-relaxed font-sans font-normal">
+          <p className="text-body text-carbon-black leading-relaxed font-sans font-normal">
             {metrics.summaryText}
           </p>
         </div>
@@ -306,30 +315,30 @@ const IncomeStatement = () => {
     <>
       {incomeStatement ? (
         <div className="w-full flex flex-col">
-          <div className="block w-full bg-depth shadow-xl rounded-2xl p-6 mb-6 border border-white/8 flex flex-col space-y-3 text-left">
-            <h3 className="text-base font-bold text-pulse uppercase tracking-wider font-mono">
+          <div className="block w-full bg-paper-white shadow-xl rounded-card p-6 mb-6 border border-mist-gray flex flex-col space-y-3 text-left">
+            <h3 className="text-body-lg font-bold text-carbon-black uppercase tracking-wider font-mono">
               Understanding the Income Statement
             </h3>
 
-            <p className="text-foam text-base font-normal leading-relaxed antialiased">
+            <p className="text-carbon-black text-body-lg font-normal leading-relaxed antialiased">
               An{" "}
-              <strong className="text-foam font-semibold">
+              <strong className="text-carbon-black font-normal">
                 Income Statement
               </strong>{" "}
               (Profit and Loss Statement) maps out a corporate institution's
               core financial velocity over a sequential reporting period. It
               tracks how total{" "}
-              <strong className="text-pulse">Revenue (Top-Line)</strong>{" "}
+              <strong className="text-carbon-black">Revenue (Top-Line)</strong>{" "}
               transitions down into operational expenses, tax components, and
               finally yields the net consolidated{" "}
-              <strong className="text-pulse-dim">
+              <strong className="text-zinc-gray">
                 Profit or Loss (Bottom-Line)
               </strong>
               .
             </p>
 
-            <p className="text-foam/85 text-sm font-normal leading-relaxed antialiased pt-1">
-              <strong className="text-foam block mb-1 font-mono text-xs uppercase tracking-wide">
+            <p className="text-carbon-black text-body font-normal leading-relaxed antialiased pt-1">
+              <strong className="text-carbon-black block mb-1 font-mono text-body uppercase tracking-wide">
                 Why is it Critical?
               </strong>
               While the Balance Sheet records asset and liability weight levels,

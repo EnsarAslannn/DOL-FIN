@@ -27,18 +27,19 @@ const Search: React.FC<Props> = ({
   }
 
   return (
-    <section className="relative w-full max-w-2xl mx-auto mt-6 mb-2 px-2 font-sans">
+    <section className="relative mx-auto mb-2 mt-6 w-full max-w-2xl px-2 font-sans">
       <form
-        className="relative flex items-center w-full"
+        className="relative flex w-full items-center"
         onSubmit={onSearchSubmit}
       >
-        <div className="absolute left-4 text-mist pointer-events-none flex items-center justify-center">
+        <div className="pointer-events-none absolute left-5 flex items-center justify-center text-ash-gray">
           <svg
-            className="w-5 h-5"
+            className="h-5 w-5"
             fill="none"
             stroke="currentColor"
-            strokeWidth="2.5"
+            strokeWidth="1.5"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"
@@ -48,7 +49,7 @@ const Search: React.FC<Props> = ({
           </svg>
         </div>
         <input
-          className="w-full pl-12 pr-28 py-4 bg-black/50 backdrop-blur-md text-foam placeholder-mist/60 text-sm rounded-xl border border-white/10 outline-none transition-all duration-200 focus:border-pulse/70 focus:shadow-[0_0_0_4px_rgba(255,87,26,0.12)]"
+          className="w-full rounded-pill border border-mist-gray bg-paper-white py-4 pl-14 pr-32 text-body font-normal text-carbon-black outline-none transition-colors duration-200 placeholder:text-ash-gray focus:border-sunrise-coral focus:ring-2 focus:ring-sunrise-coral/25"
           id="search-input"
           placeholder="Search companies by ticker or name..."
           value={search}
@@ -60,15 +61,15 @@ const Search: React.FC<Props> = ({
 
         <button
           type="submit"
-          className="glow-action absolute right-2.5 px-5 py-2.5 bg-gradient-to-r from-pulse to-[#ff8a3d] text-white font-bold text-[11px] uppercase tracking-[0.12em] rounded-lg transition-all duration-200 active:scale-95 cursor-pointer"
+          className="absolute right-2 cursor-pointer rounded-pill bg-sunrise-coral px-6 py-2.5 text-body font-bold tracking-[-0.009em] text-paper-white transition-opacity duration-200 hover:opacity-90"
         >
           Search
         </button>
       </form>
 
       {showSuggestions && (
-        <div className="glass-panel absolute left-2 right-2 mt-2 z-50 rounded-xl shadow-2xl overflow-hidden max-h-60 flex flex-col text-left">
-          <div className="px-4 py-2.5 text-[10px] font-bold text-mist uppercase tracking-[0.14em] border-b border-white/8 font-mono">
+        <div className="absolute left-2 right-2 z-50 mt-2 flex max-h-60 flex-col overflow-hidden rounded-card border border-mist-gray bg-paper-white text-left shadow-subtle">
+          <div className="border-b border-mist-gray px-4 py-2.5 font-mono text-caption font-normal uppercase tracking-[0.14em] text-zinc-gray">
             Featured Demo Assets
           </div>
           {suggestions
@@ -77,7 +78,7 @@ const Search: React.FC<Props> = ({
               <div
                 key={symbol}
                 onMouseDown={() => handleSuggestionClick(symbol)}
-                className="px-4 py-2.5 cursor-pointer text-sm font-semibold text-mist hover:bg-white/5 hover:text-pulse transition-colors duration-150 font-mono"
+                className="cursor-pointer px-4 py-2.5 font-mono text-body font-normal text-carbon-black transition-colors duration-150 hover:bg-fog-gray"
               >
                 {symbol}
               </div>

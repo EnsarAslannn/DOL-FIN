@@ -6,7 +6,8 @@ import type { PortfolioGet } from "../../Models/Portfolio"
 import { companyLogos } from "../../Components/Table/TestData"
 import { toast } from "react-toastify"
 import PurchasePortfolio from "../../Components/Portfolio/PurchasePortfolio/PurchasePortfolio"
-import marketTerrain from "../../assets/generated/market-terrain.jpg"
+import marketTerrain from "../../assets/extra/capital-stack.webp"
+import { fieldClass } from "../../Helpers/formStyles"
 
 const WalletPage = () => {
     const { user, updateWalletBalance } = useAuth()
@@ -149,50 +150,52 @@ const WalletPage = () => {
     const estimatedTotalValue = liveBalance + stocksValue
 
     return (
-        <div className="w-full min-h-screen bg-abyss font-sans pb-16 text-foam text-left">
-            <div className="w-full max-w-6xl mx-auto px-6 pt-10 flex flex-col space-y-8">
-                <div className="border-b border-white/8 pb-5">
-                    <h1 className="text-3xl font-bold tracking-[-0.02em] text-foam font-display">Wallet Overview</h1>
-                    <p className="text-xs text-mist mt-1.5">Manage your funds and monitor estimated asset distribution.</p>
+        <div className="w-full min-h-screen bg-paper-white font-sans pb-section text-carbon-black text-left">
+            <div className="w-full max-w-page mx-auto px-6 pt-28 flex flex-col space-y-8">
+                <div className="border-b border-mist-gray pb-5">
+                    <h1 className="text-heading md:text-heading-lg font-normal text-carbon-black">Wallet Overview</h1>
+                    <p className="mt-3 text-body-lg font-normal text-zinc-gray">Manage your funds and monitor estimated asset distribution.</p>
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div className="lg:col-span-2 glass-panel-hot rounded-2xl p-7 flex flex-col justify-between relative overflow-hidden min-h-[220px]">
-                        {}
+                    {/* The page's single dark surface — a contained product crop
+                        under a scrim, giving the spec's dark/light contrast. */}
+                    <div className="lg:col-span-2 relative flex min-h-[220px] flex-col justify-between overflow-hidden rounded-card bg-carbon-black p-7">
                         <img
                             src={marketTerrain}
                             alt=""
                             aria-hidden="true"
-                            className="absolute inset-0 w-full h-full object-cover opacity-30 pointer-events-none"
+                            className="pointer-events-none absolute inset-0 h-full w-full object-cover"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-r from-abyss via-abyss/80 to-abyss/30 pointer-events-none"></div>
+                        <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-carbon-black/70" />
+                        <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-gradient-to-r from-carbon-black via-carbon-black/80 to-transparent" />
 
                         <div className="relative z-10">
-                            <span className="text-[10px] font-bold text-mist uppercase tracking-[0.16em] font-mono">Est. Total Value</span>
-                            <div className="flex items-baseline space-x-2 mt-3">
-                                <h2 className="text-5xl font-mono font-bold text-foam tracking-[-0.03em]">${estimatedTotalValue.toFixed(2)}</h2>
-                                <span className="text-sm font-bold text-mist font-mono">USD</span>
+                            <span className="font-mono text-caption font-normal uppercase tracking-[0.16em] text-paper-white/75">Est. Total Value</span>
+                            <div className="mt-3 flex items-baseline space-x-2">
+                                <h2 className="font-mono text-heading-lg font-normal text-paper-white">${estimatedTotalValue.toFixed(2)}</h2>
+                                <span className="font-mono text-body font-normal text-paper-white/75">USD</span>
                             </div>
                         </div>
-                        <div className="relative z-10 grid grid-cols-2 gap-4 pt-6 mt-6 border-t border-white/8">
+                        <div className="relative z-10 mt-6 grid grid-cols-2 gap-4 border-t border-paper-white/20 pt-6">
                             <div className="flex flex-col">
-                                <span className="text-[10px] font-bold text-mist uppercase tracking-[0.14em]">Cash Balance (Wallet)</span>
-                                <span className="text-lg font-mono font-bold text-pulse mt-1.5">${liveBalance.toFixed(2)}</span>
+                                <span className="font-mono text-caption font-normal uppercase tracking-[0.14em] text-paper-white/75">Cash Balance (Wallet)</span>
+                                <span className="mt-1.5 font-mono text-subheading font-normal text-paper-white">${liveBalance.toFixed(2)}</span>
                             </div>
                             <div className="flex flex-col">
-                                <span className="text-[10px] font-bold text-mist uppercase tracking-[0.14em]">Stocks Value (Portfolio)</span>
-                                <span className="text-lg font-mono font-bold text-pulse-dim mt-1.5">${stocksValue.toFixed(2)}</span>
+                                <span className="font-mono text-caption font-normal uppercase tracking-[0.14em] text-paper-white/75">Stocks Value (Portfolio)</span>
+                                <span className="mt-1.5 font-mono text-subheading font-normal text-paper-white">${stocksValue.toFixed(2)}</span>
                             </div>
                         </div>
                     </div>
-                    <div className="bg-depth border border-white/8 rounded-2xl p-6 flex flex-col justify-between">
+                    <div className="flex flex-col justify-between rounded-card border border-mist-gray bg-paper-white p-card">
                         <div>
-                            <h3 className="text-sm font-bold text-foam tracking-[0.1em] uppercase mb-1.5 font-display">Deposit Cash</h3>
-                            <p className="text-[11px] text-mist mb-4 leading-relaxed">Add instant simulator credits into your trading account.</p>
+                            <h3 className="mb-2 text-subheading font-normal text-carbon-black">Deposit Cash</h3>
+                            <p className="mb-4 text-body font-normal text-zinc-gray">Add instant simulator credits into your trading account.</p>
                         </div>
                         <form onSubmit={handleDepositSubmit} className="flex flex-col space-y-4 w-full">
                             <div>
                                 <div className="relative flex items-center">
-                                    <span className="absolute left-4 font-mono text-sm font-bold text-mist">$</span>
+                                    <span className="absolute left-4 font-mono text-body font-normal text-zinc-gray">$</span>
                                     <input
                                         type="number"
                                         min="0.01"
@@ -200,17 +203,17 @@ const WalletPage = () => {
                                         placeholder="0.00"
                                         value={depositAmount}
                                         onChange={(e) => setDepositAmount(e.target.value)}
-                                        className="w-full pl-8 pr-16 py-3 bg-black/50 border border-white/10 focus:border-pulse/70 rounded-xl focus:outline-none focus:shadow-[0_0_0_4px_rgba(255,87,26,0.12)] text-foam font-bold text-lg font-mono transition-all"
+                                        className={`${fieldClass} pl-8 pr-16 font-mono`}
                                     />
-                                    <span className="absolute right-4 font-sans text-xs font-bold text-pulse bg-pulse/10 px-2 py-0.5 rounded border border-pulse/20">USD</span>
+                                    <span className="absolute right-4 rounded-smallcard border border-mist-gray bg-fog-gray px-2 py-0.5 font-mono text-caption font-normal text-zinc-gray">USD</span>
                                 </div>
                             </div>
                             <button
                                 type="submit"
                                 disabled={isSubmitting || !depositAmount}
-                                className={`w-full py-3.5 rounded-xl font-bold text-xs uppercase tracking-[0.12em] transition-all duration-200 ${isSubmitting || !depositAmount
-                                    ? "bg-depth-2 text-mist/60 cursor-not-allowed border border-white/6"
-                                    : "glow-action bg-gradient-to-r from-pulse to-[#ff8a3d] text-white active:scale-[0.97] cursor-pointer"
+                                className={`w-full rounded-pill py-[15px] text-body font-bold tracking-[-0.009em] transition-opacity duration-200 ${isSubmitting || !depositAmount
+                                    ? "cursor-not-allowed border border-mist-gray bg-fog-gray text-ash-gray"
+                                    : "bg-sunrise-coral text-paper-white hover:opacity-90 cursor-pointer"
                                     }`}
                             >
                                 {isSubmitting ? "Processing..." : "Confirm Deposit"}
@@ -218,48 +221,52 @@ const WalletPage = () => {
                         </form>
                     </div>
                 </div>
-                <div className="bg-depth border border-white/8 rounded-2xl overflow-hidden">
-                    <div className="px-6 py-4 border-b border-white/8 bg-black/25">
-                        <h3 className="text-[11px] font-bold text-mist uppercase tracking-[0.16em] font-mono">My Assets (Asset View)</h3>
+                <div className="bg-paper-white border border-mist-gray rounded-card overflow-hidden">
+                    <div className="px-6 py-4 border-b border-mist-gray bg-fog-gray">
+                        <h3 className="font-mono text-caption font-bold uppercase tracking-[0.16em] text-zinc-gray">My Assets (Asset View)</h3>
                     </div>
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse font-sans">
                             <thead>
-                                <tr className="border-b border-white/6 text-[11px] font-bold text-mist uppercase tracking-wider font-mono">
+                                <tr className="border-b border-mist-gray font-mono text-caption font-bold uppercase tracking-[0.16em] text-zinc-gray">
                                     <th className="py-4 px-6">Asset Name</th>
                                     <th className="py-4 px-6 text-right">Market Price</th>
                                     <th className="py-4 px-6 text-right">Holdings Allocation</th>
                                     <th className="py-4 px-6 text-center w-24">Action</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-white/6 text-sm font-medium">
-                                <tr className="hover:bg-white/4 transition-colors">
-                                    <td className="py-4 px-6 flex items-center space-x-4">
-                                        {companyLogos["USD"] ? (
-                                            <div className="w-10 h-10 rounded-xl bg-depth-2 border border-white/8 p-2 flex items-center justify-center shrink-0 shadow-sm">
-                                                {companyLogos["USD"]()}
+                            <tbody className="divide-y divide-mist-gray text-body font-normal">
+                                <tr className="hover:bg-fog-gray transition-colors">
+                                    <td className="px-6 py-4">
+                                        <div className="flex items-center space-x-4">
+                                            {companyLogos["USD"] ? (
+                                                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-icon border border-mist-gray bg-paper-white p-2">
+                                                    {companyLogos["USD"]()}
+                                                </div>
+                                            ) : (
+                                                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-icon border border-mist-gray bg-fog-gray font-mono text-caption font-bold text-carbon-black">
+                                                    USD
+                                                </div>
+                                            )}
+                                            <div className="flex flex-col">
+                                                <span className="text-body font-normal text-carbon-black">United States Dollar</span>
+                                                <span className="font-mono text-caption font-normal tracking-wide text-zinc-gray">CASH</span>
                                             </div>
-                                        ) : (
-                                            <div className="w-10 h-10 rounded-xl bg-pulse/10 text-pulse font-bold text-xs flex items-center justify-center border border-pulse/20 font-mono shadow-sm">
-                                                USD
-                                            </div>
-                                        )}
-                                        <div className="flex flex-col">
-                                            <span className="text-foam font-bold">United States Dollar</span>
-                                            <span className="text-xs text-mist font-mono font-bold tracking-wide">CASH</span>
                                         </div>
                                     </td>
-                                    <td className="py-4 px-6 text-right font-mono text-mist font-semibold">$1.00</td>
-                                    <td className="py-4 px-6 text-right flex flex-col items-end justify-center">
-                                        <span className="text-foam font-mono font-bold">${liveBalance.toFixed(2)}</span>
-                                        <span className="text-xs text-mist font-mono mt-0.5">
-                                            {estimatedTotalValue > 0 ? ((liveBalance / estimatedTotalValue) * 100).toFixed(1) : 0}%
-                                        </span>
+                                    <td className="px-6 py-4 text-right font-mono text-body font-normal text-zinc-gray">$1.00</td>
+                                    <td className="px-6 py-4 text-right">
+                                        <div className="flex flex-col items-end justify-center">
+                                            <span className="font-mono text-body font-normal text-carbon-black">${liveBalance.toFixed(2)}</span>
+                                            <span className="mt-0.5 font-mono text-caption font-normal text-zinc-gray">
+                                                {estimatedTotalValue > 0 ? ((liveBalance / estimatedTotalValue) * 100).toFixed(1) : 0}%
+                                            </span>
+                                        </div>
                                     </td>
-                                    <td className="py-4 px-6 text-center">
+                                    <td className="px-6 py-4 text-center">
                                         <button
                                             onClick={triggerUsdSell}
-                                            className="px-3 py-1.5 bg-loss/10 hover:bg-loss border border-loss/25 text-loss hover:text-abyss font-bold text-xs rounded-lg transition-all active:scale-95 cursor-pointer"
+                                            className="cursor-pointer rounded-pill border border-mist-gray px-4 py-1.5 text-body font-normal text-zinc-gray transition-colors hover:border-loss hover:text-loss"
                                         >
                                             Sell
                                         </button>
@@ -272,29 +279,29 @@ const WalletPage = () => {
                                     const currentStockValue = livePrice * quantity
 
                                     return (
-                                        <tr key={item.id} className="hover:bg-white/4 transition-colors">
+                                        <tr key={item.id} className="hover:bg-fog-gray transition-colors">
                                             <td className="py-4 px-6">
                                                 <div className="flex items-center space-x-4">
                                                     {companyLogos[symbolUpper] ? (
-                                                        <div className="w-10 h-10 rounded-xl bg-depth-2 border border-white/8 p-2 flex items-center justify-center shrink-0 shadow-sm">
+                                                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-icon border border-mist-gray bg-paper-white p-2">
                                                             {companyLogos[symbolUpper]()}
                                                         </div>
                                                     ) : (
-                                                        <div className="w-10 h-10 rounded-xl bg-pulse-dim/10 text-pulse-dim font-bold text-xs flex items-center justify-center border border-pulse-dim/20 font-mono shrink-0 shadow-sm">
+                                                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-icon border border-mist-gray bg-fog-gray font-mono text-caption font-bold text-carbon-black">
                                                             {symbolUpper}
                                                         </div>
                                                     )}
                                                     <div className="flex flex-col">
-                                                        <span className="text-foam font-bold">{item.companyName}</span>
-                                                        <span className="text-xs text-mist font-mono font-bold tracking-wide">{symbolUpper}</span>
+                                                        <span className="text-body font-normal text-carbon-black">{item.companyName}</span>
+                                                        <span className="font-mono text-caption font-normal tracking-wide text-zinc-gray">{symbolUpper}</span>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td className="py-4 px-6 text-right font-mono text-mist font-semibold">${livePrice.toFixed(2)}</td>
+                                            <td className="px-6 py-4 text-right font-mono text-body font-normal text-zinc-gray">${livePrice.toFixed(2)}</td>
                                             <td className="py-4 px-6 text-right">
                                                 <div className="flex flex-col items-end justify-center">
-                                                    <span className="text-foam font-mono font-bold">${currentStockValue.toFixed(2)}</span>
-                                                    <span className="text-xs text-mist font-mono mt-0.5">
+                                                    <span className="font-mono text-body font-normal text-carbon-black">${currentStockValue.toFixed(2)}</span>
+                                                    <span className="mt-0.5 font-mono text-caption font-normal text-zinc-gray">
                                                         {estimatedTotalValue > 0 ? ((currentStockValue / estimatedTotalValue) * 100).toFixed(1) : 0}%
                                                     </span>
                                                 </div>
@@ -302,7 +309,7 @@ const WalletPage = () => {
                                             <td className="py-4 px-6 text-center">
                                                 <button
                                                     onClick={() => triggerTableSell(item)}
-                                                    className="px-3 py-1.5 bg-loss/10 hover:bg-loss border border-loss/25 text-loss hover:text-abyss font-bold text-xs rounded-lg transition-all active:scale-95 cursor-pointer"
+                                                    className="cursor-pointer rounded-pill border border-mist-gray px-4 py-1.5 text-body font-normal text-zinc-gray transition-colors hover:border-loss hover:text-loss"
                                                 >
                                                     Sell
                                                 </button>

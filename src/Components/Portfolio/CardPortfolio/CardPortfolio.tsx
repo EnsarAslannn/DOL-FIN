@@ -28,20 +28,20 @@ const CardPortfolio = ({ portfolioValue, onPortfolioDelete, totalPortfolioInvest
   const barColor = isProfit ? "bg-gain" : "bg-loss"
 
   return (
-    <div className="group relative flex flex-col p-5 bg-depth rounded-2xl border border-white/8 transition-all duration-200 hover:border-pulse/25 hover:bg-depth-2/60">
-      <div className="absolute top-3 right-3 opacity-30 group-hover:opacity-100 transition-opacity cursor-pointer z-10 text-mist">
+    <div className="group relative flex flex-col rounded-card border border-mist-gray bg-paper-white p-card transition-colors duration-200 hover:border-ash-gray">
+      <div className="absolute right-3 top-3 z-10 cursor-pointer opacity-40 transition-opacity group-hover:opacity-100">
         <DeletePortfolio
           portfolioValue={portfolioValue.symbol}
           onPortfolioDelete={onPortfolioDelete}
         />
       </div>
 
-      <div className="flex items-center space-x-3 border-b border-white/8 pb-3 mb-4">
-        <div className="w-10 h-10 rounded-xl bg-depth-2 border border-white/8 p-2 flex items-center justify-center shrink-0">
+      <div className="mb-4 flex items-center space-x-3 border-b border-mist-gray pb-3">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-icon border border-mist-gray bg-paper-white p-2">
           {companyLogos[symbolUpper] ? (
             companyLogos[symbolUpper]()
           ) : (
-            <div className="font-bold text-pulse text-xs tracking-wide">
+            <div className="font-mono text-caption font-bold text-carbon-black">
               {symbolUpper.substring(0, 2)}
             </div>
           )}
@@ -49,63 +49,63 @@ const CardPortfolio = ({ portfolioValue, onPortfolioDelete, totalPortfolioInvest
         <div className="flex flex-col text-left">
           <Link
             to={`/company/${portfolioValue.symbol}/company-profile`}
-            className="text-sm font-bold text-foam hover:text-pulse transition-colors uppercase tracking-tight"
+            className="text-subheading font-normal uppercase text-carbon-black underline-offset-4 hover:underline"
           >
             {portfolioValue.symbol}
           </Link>
-          <span className="text-[10px] text-mist font-bold font-mono">
+          <span className="font-mono text-caption font-normal text-zinc-gray">
             {quantity} Shares
           </span>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-y-3 text-left mb-4">
+      <div className="mb-4 grid grid-cols-2 gap-y-3 text-left">
         <div className="flex flex-col">
-          <span className="text-[9px] text-mist font-bold uppercase tracking-wider">
+          <span className="font-mono text-caption font-normal uppercase tracking-[0.12em] text-zinc-gray">
             Invested
           </span>
-          <span className="text-xs font-bold text-foam/85 font-mono">
+          <span className="font-mono text-body font-normal text-carbon-black">
             ${totalCost.toFixed(2)}
           </span>
         </div>
         <div className="flex flex-col text-right">
-          <span className="text-[9px] text-mist font-bold uppercase tracking-wider">
+          <span className="font-mono text-caption font-normal uppercase tracking-[0.12em] text-zinc-gray">
             Current Value
           </span>
-          <span className="text-xs font-bold text-foam font-mono">
+          <span className="font-mono text-body font-normal text-carbon-black">
             ${currentTotalValue.toFixed(2)}
           </span>
         </div>
         <div className="flex flex-col">
-          <span className="text-[9px] text-mist font-bold uppercase tracking-wider">
+          <span className="font-mono text-caption font-normal uppercase tracking-[0.12em] text-zinc-gray">
             Avg. Cost / Live
           </span>
-          <span className="text-[10px] font-semibold text-mist font-mono">
+          <span className="font-mono text-body font-normal text-zinc-gray">
             ${avgCost.toFixed(2)} / ${currentPrice.toFixed(2)}
           </span>
         </div>
         <div className="flex flex-col text-right">
-          <span className="text-[9px] text-mist font-bold uppercase tracking-wider">
+          <span className="font-mono text-caption font-normal uppercase tracking-[0.12em] text-zinc-gray">
             Profit / Loss
           </span>
           <span
-            className={`text-xs font-bold font-mono ${isProfit ? "text-gain" : "text-loss"}`}
+            className={`font-mono text-body font-bold ${isProfit ? "text-gain" : "text-loss"}`}
           >
-            {isProfit ? "+" : ""}
+            {isProfit ? "▲ +" : "▼ "}
             {pnlAmount.toFixed(2)} ({isProfit ? "+" : ""}
             {pnlPercentage.toFixed(2)}%)
           </span>
         </div>
       </div>
 
-      <div className="w-full pt-3 border-t border-white/6 flex flex-col space-y-1">
-        <div className="flex items-center justify-between text-[9px] font-bold text-mist uppercase tracking-wider">
+      <div className="flex w-full flex-col space-y-1.5 border-t border-mist-gray pt-3">
+        <div className="flex items-center justify-between font-mono text-caption font-normal uppercase tracking-[0.12em] text-zinc-gray">
           <span>Portfolio Weight</span>
-          <span className="text-foam/85 font-mono">{weightString}</span>
+          <span className="text-carbon-black">{weightString}</span>
         </div>
-        <div className="w-full h-1 bg-white/8 rounded-full overflow-hidden">
+        <div className="h-1 w-full overflow-hidden rounded-pill bg-mist-gray">
           <div
-            className={`h-full ${barColor} rounded-full`}
+            className={`h-full ${barColor} rounded-pill`}
             style={{ width: weightString }}
           ></div>
         </div>

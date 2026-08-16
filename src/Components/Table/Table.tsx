@@ -17,13 +17,13 @@ const Table = <T extends { symbol?: string }>({ config, data }: Props<T>) => {
         return (
             <tr
                 key={rowKey}
-                className="hover:bg-white/4 transition-colors duration-100"
+                className="hover:bg-fog-gray transition-colors duration-100"
             >
                 {config.map((col, idx) => {
                     return (
                         <td
                             key={`cell-${rowIndex}-${idx}`}
-                            className="p-4 text-xs font-semibold text-foam font-mono whitespace-nowrap border-b border-white/6"
+                            className="whitespace-nowrap border-b border-mist-gray p-4 font-mono text-body font-normal text-carbon-black"
                         >
                             {col.render(company)}
                         </td>
@@ -36,7 +36,7 @@ const Table = <T extends { symbol?: string }>({ config, data }: Props<T>) => {
     const renderedHeaders = config.map((col, index) => {
         return (
             <th
-                className="p-4 text-left text-[10px] font-bold text-mist uppercase tracking-[0.16em] border-b border-white/10 font-mono"
+                className="border-b border-mist-gray p-4 text-left font-mono text-caption font-bold uppercase tracking-[0.16em] text-zinc-gray"
                 key={`header-${index}`}
             >
                 {col.label}
@@ -45,13 +45,13 @@ const Table = <T extends { symbol?: string }>({ config, data }: Props<T>) => {
     })
 
     return (
-        <div className="bg-depth rounded-2xl p-4 sm:p-6 border border-white/8 overflow-hidden">
+        <div className="overflow-hidden rounded-card border border-mist-gray bg-paper-white p-4 sm:p-6">
             <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-white/6 text-left font-sans">
-                    <thead className="bg-black/25">
+                <table className="min-w-full divide-y divide-mist-gray text-left font-sans">
+                    <thead className="bg-fog-gray">
                         <tr>{renderedHeaders}</tr>
                     </thead>
-                    <tbody className="divide-y divide-white/5">{renderedRows}</tbody>
+                    <tbody className="divide-y divide-mist-gray">{renderedRows}</tbody>
                 </table>
             </div>
         </div>

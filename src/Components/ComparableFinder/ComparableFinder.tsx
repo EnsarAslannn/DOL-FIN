@@ -46,7 +46,7 @@ const ComparableFinder = ({ ticker }: Props) => {
           return <CompFinderItem key={peerTicker} ticker={peerTicker} />
         })
       ) : (
-        <span className="text-xs font-semibold text-mist font-mono">
+        <span className="text-body font-normal text-zinc-gray font-mono">
           No peers found
         </span>
       )}

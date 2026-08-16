@@ -1,6 +1,7 @@
 import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useForm } from "react-hook-form"
+import { fieldClass } from "../../../Helpers/formStyles"
 
 type Props = {
   handleComment: (e: CommentFormInputs) => void
@@ -32,32 +33,32 @@ const StockCommentForm = ({ handleComment }: Props) => {
         <input
           type="text"
           id="title"
-          className="bg-black/50 border border-white/10 text-foam text-xs font-bold rounded-xl block w-full p-3.5 focus:outline-none focus:border-pulse/70 focus:shadow-[0_0_0_4px_rgba(255,87,26,0.12)] placeholder-mist/50 transition-all"
+          className={fieldClass}
           placeholder="Title"
           {...register("title")}
         />
         {errors.title && (
-          <p className="text-loss text-[11px] font-semibold mt-1 pl-2">
+          <p className="text-loss text-caption font-normal mt-1 pl-2">
             {errors.title.message}
           </p>
         )}
       </div>
 
       <div className="w-full text-left">
-        <div className="p-3.5 bg-black/50 rounded-xl border border-white/10 focus-within:border-pulse/70 focus-within:shadow-[0_0_0_4px_rgba(255,87,26,0.12)] transition-all">
+        <div className="rounded-card border border-mist-gray bg-paper-white p-3.5 transition-colors focus-within:border-sunrise-coral focus-within:ring-2 focus-within:ring-sunrise-coral/25">
           <label htmlFor="comment" className="sr-only">
             Your comment
           </label>
           <textarea
             id="comment"
             rows={4}
-            className="w-full text-xs font-medium bg-transparent text-foam border-0 focus:ring-0 focus:outline-none placeholder-mist/60 resize-none"
+            className="w-full text-xs font-normal bg-transparent text-carbon-black border-0 focus:ring-0 focus:outline-none placeholder:text-ash-gray resize-none"
             placeholder="Write a comment..."
             {...register("content")}
           ></textarea>
         </div>
         {errors.content && (
-          <p className="text-loss text-[11px] font-semibold mt-1 pl-2">
+          <p className="text-loss text-caption font-normal mt-1 pl-2">
             {errors.content.message}
           </p>
         )}
@@ -65,7 +66,7 @@ const StockCommentForm = ({ handleComment }: Props) => {
 
       <button
         type="submit"
-        className="glow-action py-3 px-6 text-[11px] font-bold uppercase tracking-[0.12em] text-white bg-gradient-to-r from-pulse to-[#ff8a3d] rounded-xl self-start transition-all duration-150 active:scale-95 cursor-pointer"
+        className="cursor-pointer self-start rounded-pill bg-sunrise-coral px-6 py-3 text-body font-bold tracking-[-0.009em] text-paper-white transition-opacity duration-150 hover:opacity-90"
       >
         Post comment
       </button>

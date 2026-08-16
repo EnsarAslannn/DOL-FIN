@@ -12,18 +12,20 @@ const DeletePortfolio = ({ onPortfolioDelete, portfolioValue }: Props) => {
         onSubmit={onPortfolioDelete}
         className="flex items-center justify-center"
       >
+        {/* Load-bearing: SearchPage reads this via form.elements[0].value. */}
         <input hidden={true} defaultValue={portfolioValue} />
         <button
           type="submit"
-          className="flex items-center justify-center w-6 h-6 text-xs font-bold text-mist bg-white/8 border border-white/8 rounded-full transition-all duration-200 hover:bg-loss/15 hover:text-loss hover:border-loss/40 active:scale-90 cursor-pointer"
+          className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-pill border border-mist-gray bg-paper-white text-zinc-gray transition-colors duration-200 hover:border-loss hover:text-loss"
           title="Remove from portfolio"
         >
           <svg
-            className="w-3 h-3"
+            className="h-3 w-3"
             fill="none"
             stroke="currentColor"
-            strokeWidth="3"
+            strokeWidth="2"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"

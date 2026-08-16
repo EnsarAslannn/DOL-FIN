@@ -2,8 +2,8 @@ import { realMarketNewsData } from "../../Components/Table/TestData"
 
 const MarketNews = () => {
   return (
-    <div className="w-full flex flex-col space-y-4 mt-4">
-      <h2 className="text-xl font-bold text-foam tracking-[-0.02em] font-display border-b border-white/8 pb-3 flex items-center gap-2 text-left">
+    <div className="mt-4 flex w-full flex-col space-y-4">
+      <h2 className="flex items-center gap-2 border-b border-mist-gray pb-3 text-left text-heading font-normal text-carbon-black">
         Latest Market Insights
       </h2>
       <div className="grid grid-cols-1 gap-3">
@@ -13,31 +13,31 @@ const MarketNews = () => {
             href={news.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex flex-col sm:flex-row sm:items-center justify-between p-5 bg-depth rounded-xl border border-white/8 hover:border-pulse/25 hover:bg-depth-2/60 transition-all duration-200 gap-3 text-left group block"
+            className="group flex flex-col justify-between gap-3 rounded-card border border-mist-gray bg-paper-white p-card text-left transition-colors duration-200 hover:border-ash-gray sm:flex-row sm:items-center"
           >
             <div className="flex flex-col space-y-2">
               <div className="flex items-center space-x-2">
                 <span
-                  className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md ${news.badgeColor}`}
+                  className={`rounded-smallcard px-2 py-0.5 font-mono text-caption font-normal uppercase tracking-[0.12em] ${news.badgeColor}`}
                 >
                   {news.category}
                 </span>
-                <span className="text-mist/70 text-xs">•</span>
-                <span className="text-xs text-mist font-medium">
+                <span className="text-body text-ash-gray">•</span>
+                <span className="text-body font-normal text-zinc-gray">
                   {news.source}
                 </span>
               </div>
-              <h4 className="font-semibold text-foam text-sm sm:text-base tracking-tight group-hover:text-pulse transition-colors">
+              <h4 className="text-subheading font-normal text-carbon-black underline-offset-4 group-hover:underline">
                 {news.title}
               </h4>
               {news.summary && (
-                <p className="text-xs text-mist leading-relaxed line-clamp-2 pt-0.5">
+                <p className="line-clamp-2 pt-0.5 text-body font-normal text-zinc-gray">
                   {news.summary}
                 </p>
               )}
             </div>
-            <div className="text-right shrink-0">
-              <span className="text-[10px] text-mist font-medium font-mono bg-white/5 px-2 py-1 rounded-md border border-white/6">
+            <div className="shrink-0 text-right">
+              <span className="font-mono text-caption font-normal text-zinc-gray">
                 {news.time}
               </span>
             </div>

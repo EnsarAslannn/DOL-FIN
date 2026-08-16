@@ -1,5 +1,4 @@
 import React, { type SyntheticEvent } from "react"
-import "./Card.css"
 import AddPortfolio from "../Portfolio/AddPortfolio/AddPortfolio"
 import { Link } from "react-router-dom"
 import { companyLogos } from "../../Components/Table/TestData"
@@ -30,87 +29,76 @@ const Card: React.FC<Props> = ({
   const symbolUpper = symbol.toUpperCase()
   const isPositive = price > 150
 
+  const statementLinks = [
+    { to: "company-profile", label: "Profile" },
+    { to: "income-statement", label: "Income" },
+    { to: "balance-sheet", label: "Balance Sheet" },
+    { to: "cashflow-statement", label: "Cash Flow" },
+  ]
+
   return (
     <div
-      className="flex flex-col md:flex-row items-center justify-between p-5 my-3 w-full bg-depth rounded-2xl border border-white/8 transition-all duration-200 hover:border-pulse/25 hover:bg-depth-2/40 group/card"
+      className="my-3 flex w-full flex-col items-center justify-between rounded-card border border-mist-gray bg-paper-white p-card transition-colors duration-200 hover:border-ash-gray md:flex-row"
       key={id}
       id={id}
     >
-      <div className="flex items-start space-x-4 w-full md:w-auto">
+      <div className="flex w-full items-start space-x-4 md:w-auto">
         {companyLogos[symbolUpper] ? (
-          <div className="relative flex items-center justify-center w-11 h-11 rounded-xl bg-depth-2 border border-white/10 p-2.5 shrink-0 mt-1 shadow-2xs">
+          <div className="mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-icon border border-mist-gray bg-paper-white p-2">
             {companyLogos[symbolUpper]()}
-            <span className="sonar-ring opacity-0 group-hover/card:opacity-100" />
           </div>
         ) : (
-          <div className="relative flex items-center justify-center w-11 h-11 rounded-xl bg-pulse/10 text-pulse font-bold text-base shrink-0 mt-1 border border-pulse/20">
+          <div className="mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-icon border border-mist-gray bg-fog-gray font-mono text-caption font-bold text-carbon-black">
             {symbolUpper}
-            <span className="sonar-ring opacity-0 group-hover/card:opacity-100" />
           </div>
         )}
 
-        <div className="flex flex-col text-left space-y-1.5">
-          <div className="relative flex items-center flex-wrap gap-2 group">
+        <div className="flex flex-col space-y-1.5 text-left">
+          <div className="relative flex flex-wrap items-center gap-2">
             <Link
               to={`/company/${symbolUpper}/company-profile`}
-              className="font-bold text-foam hover:text-pulse transition-colors tracking-tight text-base"
+              className="text-subheading font-normal text-carbon-black underline-offset-4 hover:underline"
             >
               {name}
             </Link>
-            <span className="px-2 py-0.5 bg-white/5 text-mist font-semibold text-xs rounded-md border border-white/8 font-mono tracking-wide">
+            <span className="rounded-smallcard border border-mist-gray bg-fog-gray px-2 py-0.5 font-mono text-caption font-normal text-zinc-gray">
               {symbolUpper}
             </span>
           </div>
 
-          <div className="flex items-center space-x-2 text-xs text-mist font-medium tracking-wide">
+          <div className="flex items-center space-x-2 text-body font-normal text-zinc-gray">
             <span>{industry}</span>
             <span>•</span>
-            <span className="font-mono text-[11px] text-mist/80">
+            <span className="font-mono">
               MCap: ${(marketCap / 1e9).toFixed(1)}B
             </span>
           </div>
 
-          <div className="flex items-center flex-wrap gap-2 pt-1">
-            <Link
-              to={`/company/${symbolUpper}/company-profile`}
-              className="text-[11px] font-bold text-mist bg-black/30 hover:bg-pulse/10 hover:text-pulse border border-white/8 hover:border-pulse/30 px-2.5 py-1 rounded-md transition-all duration-150 flex items-center gap-1"
-            >
-              📊 Profile
-            </Link>
-            <Link
-              to={`/company/${symbolUpper}/income-statement`}
-              className="text-[11px] font-bold text-mist bg-black/30 hover:bg-pulse/10 hover:text-pulse border border-white/8 hover:border-pulse/30 px-2.5 py-1 rounded-md transition-all duration-150 flex items-center gap-1"
-            >
-              📈 Income
-            </Link>
-            <Link
-              to={`/company/${symbolUpper}/balance-sheet`}
-              className="text-[11px] font-bold text-mist bg-black/30 hover:bg-pulse/10 hover:text-pulse border border-white/8 hover:border-pulse/30 px-2.5 py-1 rounded-md transition-all duration-150 flex items-center gap-1"
-            >
-              🧾 Balance Sheet
-            </Link>
-            <Link
-              to={`/company/${symbolUpper}/cashflow-statement`}
-              className="text-[11px] font-bold text-mist bg-black/30 hover:bg-pulse/10 hover:text-pulse border border-white/8 hover:border-pulse/30 px-2.5 py-1 rounded-md transition-all duration-150 flex items-center gap-1"
-            >
-              💸 Cash Flow
-            </Link>
+          <div className="flex flex-wrap items-center gap-2 pt-1">
+            {statementLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={`/company/${symbolUpper}/${link.to}`}
+                className="rounded-smallcard border border-mist-gray px-2.5 py-1 text-caption font-normal text-zinc-gray transition-colors duration-150 hover:border-ash-gray hover:text-carbon-black"
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
         </div>
       </div>
 
-      <div className="mt-5 md:mt-0 w-full md:w-auto flex items-center justify-between md:justify-end space-x-6 shrink-0">
-        <div className="flex flex-col text-right">
-          <span className="font-bold text-foam text-base tracking-tight font-mono">
+      <div className="mt-5 flex w-full shrink-0 items-center justify-between space-x-6 md:mt-0 md:w-auto md:justify-end">
+        <div className="flex flex-col items-end">
+          <span className="font-mono text-subheading font-normal text-carbon-black">
             ${price.toFixed(2)}
           </span>
           <span
-            className={`text-[10px] font-bold px-1.5 py-0.5 rounded text-center mt-0.5 min-w-[55px] font-mono ${isPositive
-                ? "bg-gain/10 text-gain"
-                : "bg-loss/10 text-loss"
-              }`}
+            className={`mt-0.5 font-mono text-body font-bold ${
+              isPositive ? "text-gain" : "text-loss"
+            }`}
           >
-            {isPositive ? "+1.45%" : "-0.85%"}
+            {isPositive ? "▲ +1.45%" : "▼ -0.85%"}
           </span>
         </div>
 

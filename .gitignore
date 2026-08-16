@@ -37,3 +37,11 @@ dist-ssr
 .env
 .env.*
 !.env.example
+
+# Unoptimized source art for the redesign. Kept locally as masters; only the
+# WebP derivatives that the app actually imports are tracked.
+src/assets/extra/1.jpg
+src/assets/extra/2.png
+src/assets/extra/3.png
+src/assets/extra/4.png
+src/assets/extra/5.png

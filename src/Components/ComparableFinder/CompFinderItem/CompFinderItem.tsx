@@ -9,7 +9,7 @@ const CompFinderItem = ({ ticker }: Props) => {
     <Link
       reloadDocument
       to={`/company/${ticker}/company-profile`}
-      className="px-4 py-1.5 text-xs font-bold text-mist bg-black/40 border border-white/10 rounded-lg transition-all duration-150 hover:bg-pulse/10 hover:text-pulse hover:border-pulse/40 hover:shadow-[0_0_14px_rgba(255,87,26,0.2)] font-mono tracking-wider flex items-center justify-center min-w-[65px] cursor-pointer"
+      className="flex min-w-[65px] cursor-pointer items-center justify-center rounded-pill border border-mist-gray bg-paper-white px-4 py-1.5 font-mono text-caption font-normal tracking-wider text-zinc-gray transition-colors duration-150 hover:border-ash-gray hover:text-carbon-black"
     >
       {ticker}
     </Link>
