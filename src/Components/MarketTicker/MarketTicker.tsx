@@ -5,9 +5,12 @@ const MarketTicker = () => {
   const doubleData = [...testMarketTrendsData, ...testMarketTrendsData]
 
   return (
-    <div className="relative flex w-full select-none items-center overflow-hidden border-y border-mist-gray bg-paper-white py-3 text-carbon-black">
-      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-paper-white to-transparent" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-paper-white to-transparent" />
+    // A deliberate full-bleed tape, not a hairline seam: no top border (it
+    // reads as an artifact against the dark hero it butts into), a single
+    // bottom rule, and enough vertical padding to carry its own weight.
+    <div className="relative flex w-full select-none items-center overflow-hidden border-b border-mist-gray bg-paper-white py-5 text-carbon-black">
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-32 bg-gradient-to-r from-paper-white to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-32 bg-gradient-to-l from-paper-white to-transparent" />
       <div className="animate-marquee gap-8">
         {doubleData.map((item, index) => (
           <div

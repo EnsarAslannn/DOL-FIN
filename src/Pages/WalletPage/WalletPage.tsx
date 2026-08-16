@@ -8,6 +8,7 @@ import { toast } from "react-toastify"
 import PurchasePortfolio from "../../Components/Portfolio/PurchasePortfolio/PurchasePortfolio"
 import marketTerrain from "../../assets/extra/capital-stack.webp"
 import { fieldClass } from "../../Helpers/formStyles"
+import { containerClass, navClearanceClass } from "../../Helpers/layout"
 
 const WalletPage = () => {
     const { user, updateWalletBalance } = useAuth()
@@ -151,7 +152,7 @@ const WalletPage = () => {
 
     return (
         <div className="w-full min-h-screen bg-paper-white font-sans pb-section text-carbon-black text-left">
-            <div className="w-full max-w-page mx-auto px-6 pt-28 flex flex-col space-y-8">
+            <div className={`flex flex-col space-y-8 ${navClearanceClass} ${containerClass}`}>
                 <div className="border-b border-mist-gray pb-5">
                     <h1 className="text-heading md:text-heading-lg font-normal text-carbon-black">Wallet Overview</h1>
                     <p className="mt-3 text-body-lg font-normal text-zinc-gray">Manage your funds and monitor estimated asset distribution.</p>

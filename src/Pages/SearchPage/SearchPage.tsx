@@ -10,6 +10,7 @@ import ListPortfolio from "../../Components/Portfolio/ListPortfolio/ListPortfoli
 import CardList from "../../Components/CardList/CardList"
 import type { PortfolioGet } from "../../Models/Portfolio"
 import type { StockSearchResult } from "../../Models/StockSearchResult"
+import { containerClass } from "../../Helpers/layout"
 import {
   portfolioAddAPI,
   portfolioSellAPI,
@@ -307,7 +308,7 @@ const SearchPage = () => {
 
   return (
     <div className="w-full min-h-screen bg-paper-white font-sans pb-section text-carbon-black">
-      <div className="w-full max-w-full mx-auto px-6 md:px-10 flex flex-col space-y-6">
+      <div className={`flex flex-col space-y-6 ${containerClass}`}>
         <div className="w-full pt-28">
           <Search
             onSearchSubmit={onSearchSubmit}

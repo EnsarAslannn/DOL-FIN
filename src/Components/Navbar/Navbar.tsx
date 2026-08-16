@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom"
 import logo from "../../assets/dolphin-ember.png"
 import { useAuth } from "../../Context/useAuth"
+import { containerClass } from "../../Helpers/layout"
 
 const Navbar = () => {
   const { user, logout } = useAuth()
@@ -16,8 +17,10 @@ const Navbar = () => {
     }`
 
   return (
-    <nav className="fixed inset-x-0 top-4 z-50 px-4 font-sans">
-      <div className="mx-auto w-full max-w-page">
+    <nav className="fixed inset-x-0 top-4 z-50 font-sans">
+      {/* Shares the page grid, so the pill's edges sit exactly above the
+          content column beneath it rather than 24px outside it. */}
+      <div className={containerClass}>
         <div className="flex h-14 items-center justify-between gap-6 rounded-nav bg-carbon-black px-[19px]">
           <div className="flex items-center gap-8">
             <Link to="/" className="flex shrink-0 items-center gap-2.5">

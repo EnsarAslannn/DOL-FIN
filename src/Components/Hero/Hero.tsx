@@ -11,6 +11,7 @@ import heroVideo from "../../assets/extra/HeroDOLFIN.mp4"
 import networkMesh from "../../assets/extra/market-skyline.webp"
 import atriumLight from "../../assets/extra/atrium-light.webp"
 import { usePrefersReducedMotion } from "../../Helpers/usePrefersReducedMotion"
+import { containerClass } from "../../Helpers/layout"
 
 const trustBadges = [
   "Simulated data",
@@ -78,7 +79,7 @@ const Chevron = ({ className = "" }: { className?: string }) => (
 
 /** Trust badge row — pairs with every primary CTA, per DESIGN.md. */
 const TrustBadges = () => (
-  <ul className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+  <ul className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
     {trustBadges.map((badge) => (
       <li
         key={badge}
@@ -195,7 +196,7 @@ const Hero = () => {
               </Link>
               <a
                 href="#how-it-works"
-                className="text-body font-normal tracking-[-0.005em] text-paper-white/80 underline-offset-[6px] transition-colors duration-200 hover:text-paper-white hover:underline"
+                className="inline-flex items-center py-3 text-body font-normal tracking-[-0.005em] text-paper-white/80 underline-offset-[6px] transition-colors duration-200 hover:text-paper-white hover:underline"
               >
                 How it works
               </a>
@@ -208,10 +209,10 @@ const Hero = () => {
 
       <MarketTicker />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-page flex-col px-6">
+      <div className={`relative z-10 flex flex-col ${containerClass}`}>
         {/* Movers */}
         <div className="pt-section">
-          <h2 className="mb-8 max-w-2xl text-heading md:text-heading-lg font-normal text-carbon-black">
+          <h2 className="mb-10 max-w-2xl text-heading md:text-heading-lg font-normal text-carbon-black">
             Where the tape is moving
           </h2>
 
@@ -284,7 +285,7 @@ const Hero = () => {
             src={atriumLight}
             alt=""
             aria-hidden="true"
-            className="mt-10 aspect-[21/9] w-full rounded-card object-cover"
+            className="mt-10 aspect-[3/1] w-full rounded-card object-cover"
           />
 
           <div className="mt-10 grid grid-cols-1 items-stretch gap-6 md:grid-cols-3">
@@ -370,7 +371,9 @@ const Hero = () => {
           aria-hidden="true"
           className="absolute inset-0 bg-carbon-black/75"
         />
-        <div className="relative z-10 mx-auto flex max-w-page flex-col items-center px-6 py-section text-center">
+        <div
+          className={`relative z-10 flex flex-col items-center py-section text-center ${containerClass}`}
+        >
           <span className="font-mono text-caption font-normal uppercase tracking-[0.16em] text-paper-white/75">
             Sandboxed by design
           </span>
@@ -393,7 +396,7 @@ const Hero = () => {
       </div>
 
       {/* FAQ — no boxes, no borders. Whitespace and type size do the work. */}
-      <div className="relative z-10 mx-auto w-full max-w-page px-6 pb-section pt-section">
+      <div className={`relative z-10 pb-section pt-section ${containerClass}`}>
         <h2 className="mb-10 text-heading md:text-heading-lg font-normal text-carbon-black">
           Frequently asked questions
         </h2>
@@ -428,7 +431,9 @@ const Hero = () => {
       </div>
 
       <footer className="w-full border-t border-mist-gray bg-fog-gray">
-        <div className="mx-auto w-full max-w-page px-6 py-8 text-center font-mono text-caption font-normal uppercase tracking-[0.14em] text-zinc-gray">
+        <div
+          className={`py-8 text-center font-mono text-caption font-normal uppercase tracking-[0.14em] text-zinc-gray ${containerClass}`}
+        >
           © 2026 DOL-FIN · Simulated data, run in a secure sandbox
         </div>
       </footer>
