@@ -15,7 +15,7 @@ const MarketTicker = () => {
         {doubleData.map((item, index) => (
           <div
             key={index}
-            className="mx-4 flex items-center space-x-2.5 font-sans text-caption"
+            className="mx-4 flex items-center space-x-3 font-sans text-caption"
           >
             <img
               src={item.logoUrl}
@@ -23,7 +23,7 @@ const MarketTicker = () => {
               className="h-4 w-4 rounded-smallcard object-contain"
             />
 
-            <span className="font-normal uppercase tracking-[0.04em] text-zinc-gray">
+            <span className="font-normal uppercase tracking-label-sm text-zinc-gray">
               {item.name}
             </span>
             <span className="font-mono font-normal text-carbon-black">

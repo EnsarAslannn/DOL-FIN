@@ -80,7 +80,7 @@ const Tile = ({ title, subTitle }: Props) => {
       )}
 
       <div className="z-10 flex flex-col space-y-2 text-left">
-        <h5 className="font-mono text-caption font-normal uppercase tracking-[0.16em] text-zinc-gray">
+        <h5 className="font-mono text-caption font-normal uppercase tracking-label-lg text-zinc-gray">
           {title}
         </h5>
         <span className="text-heading-sm font-normal text-carbon-black">

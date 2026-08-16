@@ -1,9 +1,20 @@
 @import "tailwindcss";
 
-@theme {
-  /* Superpower — Bioluminescent health command center. See DESIGN.md. */
+/* ============================================================================
+   Superpower — Bioluminescent health command center.
 
-  /* Colors */
+   Authoritative token set. Every rendered value in the app must trace back to
+   something in this file; components must not invent values.
+
+   Three deliberate deviations from the supplied token file, each recorded at
+   its definition below:
+     1. Tracking is implemented in `em`, not `px`  (see "Type scale")
+     2. The numeric `--spacing-N` ladder is not defined  (see "Spacing")
+     3. `--radius-full` keeps 9999px  (see "Radii")
+   ========================================================================= */
+
+@theme {
+  /* --- Colors ------------------------------------------------------------ */
   --color-sunrise-coral: #fc5f2b;
   --color-coral-glow: #ff8b64;
   --color-carbon-black: #18181b;
@@ -15,26 +26,47 @@
   --color-paper-white: #ffffff;
 
   /* Market direction. A functional exception to the dichromatic rule, kept
-     heavily desaturated (S27%/S30% against coral's S97%) so it reads as
-     data rather than decoration. Never the sole carrier of meaning — always
-     paired with a glyph and a sign. Both clear AA on Paper White (6.12:1,
-     6.34:1) and on Fog Gray (5.57:1, 5.77:1). */
+     heavily desaturated (S27%/S30% against coral's S97%) so it reads as data
+     rather than decoration. Never the sole carrier of meaning — always paired
+     with a glyph and a sign. Both clear AA on Paper White (6.12:1, 6.34:1)
+     and on Fog Gray (5.57:1, 5.77:1).
+
+     Absent from the supplied palette because that extraction came from a
+     health product with no directional financial data. */
   --color-gain: #3d6b55;
   --color-loss: #8e4c54;
 
-  /* Typography. NB International Pro is proprietary; Inter Tight is the
-     substitute named in DESIGN.md. One family carries everything. */
-  --font-sans: "Inter Tight", ui-sans-serif, system-ui, -apple-system,
-    BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
-    Consolas, monospace;
+  /* --- Typefaces --------------------------------------------------------- */
+  /* NB International Pro is proprietary and not licensed here, so it leads the
+     stack and Inter Tight carries the actual rendering. If the real face is
+     ever licensed and self-hosted, it activates with no code change. */
+  --font-sans: "NB International Pro", "Inter Tight", ui-sans-serif, system-ui,
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "NB International Mono Pro", "JetBrains Mono", ui-monospace,
+    SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  /* Type scale. Line-height compresses as size grows; tracking goes more
-     negative. DESIGN.md's table writes these in px, but its prose and CSS
-     block both mean em (-0.025em at 66px) — em is used here. */
+  /* Spec-named aliases, so `font-nb-international-pro` resolves. */
+  --font-nb-international-pro: var(--font-sans);
+  --font-nb-international-mono-pro: var(--font-mono);
+
+  /* --- Type scale -------------------------------------------------------- */
+  /* 13 sizes from DESIGN.md:28. Line-height compresses as size grows; tracking
+     goes more negative. Each step pairs its own line-height and letter-spacing
+     via the `--text-*--*` modifier form, so a single `text-body` class carries
+     all three properties and the scale cannot be half-applied.
+
+     DEVIATION 1 — the supplied file writes tracking in px (`-0.025px`), which
+     is one-fortieth of a pixel and would erase the system's signature. Both
+     other sources say em: the token JSON's own font description ("-0.025em at
+     66px down to -0.005em at small body") and DESIGN.md:30. Implemented in em. */
+
   --text-caption: 11px;
   --text-caption--line-height: 1.5;
   --text-caption--letter-spacing: -0.005em;
+
+  --text-label: 13px;
+  --text-label--line-height: 1.5;
+  --text-label--letter-spacing: -0.005em;
 
   --text-body: 15px;
   --text-body--line-height: 1.5;
@@ -52,40 +84,167 @@
   --text-heading-sm--line-height: 1.25;
   --text-heading-sm--letter-spacing: -0.012em;
 
+  --text-heading-md: 26px;
+  --text-heading-md--line-height: 1.25;
+  --text-heading-md--letter-spacing: -0.012em;
+
   --text-heading: 30px;
   --text-heading--line-height: 1.2;
   --text-heading--letter-spacing: -0.013em;
+
+  --text-heading-xl: 37px;
+  --text-heading-xl--line-height: 1.2;
+  --text-heading-xl--letter-spacing: -0.015em;
 
   --text-heading-lg: 45px;
   --text-heading-lg--line-height: 1.13;
   --text-heading-lg--letter-spacing: -0.015em;
 
+  --text-display-sm: 56px;
+  --text-display-sm--line-height: 1.06;
+  --text-display-sm--letter-spacing: -0.02em;
+
+  --text-display-md: 60px;
+  --text-display-md--line-height: 1.1;
+  --text-display-md--letter-spacing: -0.022em;
+
   --text-display: 66px;
   --text-display--line-height: 1;
   --text-display--letter-spacing: -0.025em;
 
-  /* Radii */
+  /* --- Line height / tracking, standalone -------------------------------- */
+  /* The scale above already applies these. These exist so the spec's named
+     values are reachable as `leading-*` / `tracking-*` when a step's default
+     has to be overridden deliberately. */
+  --leading-display: 1;
+  --leading-display-sm: 1.06;
+  --leading-display-md: 1.1;
+  --leading-heading-lg: 1.13;
+  --leading-heading: 1.2;
+  --leading-heading-sm: 1.25;
+  --leading-body-lg: 1.4;
+  --leading-body: 1.5;
+
+  --tracking-display: -0.025em;
+  --tracking-display-md: -0.022em;
+  --tracking-display-sm: -0.02em;
+  --tracking-heading-lg: -0.015em;
+  --tracking-heading: -0.013em;
+  --tracking-heading-sm: -0.012em;
+  --tracking-body-lg: -0.009em;
+  --tracking-body: -0.005em;
+
+  /* Positive tracking for uppercase mono labels — the system's "instrumented"
+     device. Not in the supplied file, which has no uppercase-label component,
+     but required by DESIGN.md's technical-label pattern. Three steps replace
+     34 hand-written arbitrary values. */
+  --tracking-label-sm: 0.12em;
+  --tracking-label: 0.14em;
+  --tracking-label-lg: 0.16em;
+
+  /* Component-role aliases. Both sit on the tracking ladder above; they exist
+     because two components specify tracking independently of their size step:
+     the pill CTA is -0.009em at both 15px and 17px (DESIGN.md:104), and the
+     wordmark is set tighter than its 17px step. */
+  --tracking-cta: -0.009em;
+  --tracking-wordmark: -0.02em;
+
+  /* --- Spacing ----------------------------------------------------------- */
+  /* DEVIATION 2 — the supplied `--spacing-4: 4px … --spacing-60: 60px` ladder
+     is intentionally NOT defined. Those are pixel values; Tailwind's numeric
+     spacing scale is an index multiplier (`p-4` = calc(--spacing * 4) = 16px).
+     Defining them would reinterpret 175 existing utilities — `pt-28` would
+     fall from 112px to 28px and the floating nav would overlap content on six
+     routes.
+
+     No expressiveness is lost: the base unit is already 4px, so the spec's
+     whole ladder is exact — 4px=`1`, 8px=`2`, 16px=`4`, 24px=`6`, 28px=`7`,
+     60px=`15`. Only the three off-grid layout values need their own tokens. */
+  --spacing-element: 11px;
+  --spacing-cta: 15px;
+  --spacing-card: 19px;
+  --spacing-section: 75px;
+
+  /* --- Layout ------------------------------------------------------------ */
+  --container-page: 1200px;
+
+  /* --- Radii ------------------------------------------------------------- */
+  /* Semantic names are what components use. */
   --radius-smallcard: 5px;
   --radius-icon: 7.5px;
   --radius-card: 15px;
   --radius-nav: 15px;
   --radius-pill: 9999px;
 
+  /* The spec's raw ladder, available for completeness.
+     DEVIATION 3 — `--radius-full` is deliberately left at Tailwind's 9999px
+     rather than the spec's 74.958px. `rounded-full` means "fully round" at all
+     20 of its call sites; the spec supplies `--radius-full-6: 9999px` for
+     exactly that meaning, so the 74.958px value is an extraction artifact. */
+  --radius-md: 5px;
+  --radius-lg: 7.4958px;
+  --radius-xl: 11.2437px;
+  --radius-xl-2: 14.9916px;
+  --radius-2xl: 22.4874px;
+  --radius-3xl: 29.9832px;
+  --radius-full-2: 100px;
+  --radius-full-3: 149.916px;
+  --radius-full-4: 999px;
+  --radius-full-5: 1440px;
+  --radius-full-6: 9999px;
+
+  /* --- Elevation --------------------------------------------------------- */
   /* The system's only shadow. Most surfaces carry none. */
   --shadow-subtle: rgba(0, 0, 0, 0.05) 0px 2px 2px 0px;
+}
 
-  /* Layout */
-  --container-page: 1200px;
-  --spacing-section: 75px;
-  --spacing-card: 19px;
-  --spacing-element: 11px;
-  --spacing-180: 32rem;
+/* ============================================================================
+   Non-utility tokens. These carry no Tailwind namespace, so they live here as
+   named references for component authors rather than generating classes.
+   ========================================================================= */
+:root {
+  /* Decorative wash. The one place a coral gradient is permitted — the
+     membership-card slot — per DESIGN.md's one-of-a-kind rule. */
+  --gradient-coral-glow: linear-gradient(
+    88deg,
+    rgb(252, 95, 43),
+    rgb(255, 139, 100) 90%,
+    rgb(255, 255, 255)
+  );
+
+  /* Surface levels, so component intent is greppable. */
+  --surface-page-canvas: var(--color-paper-white);
+  --surface-card-surface: var(--color-paper-white);
+  --surface-muted-surface: var(--color-fog-gray);
+  --surface-floating-nav: var(--color-carbon-black);
+
+  /* Only two weights exist in this system. */
+  --font-weight-regular: 400;
+  --font-weight-bold: 700;
+
+  /* Layout values, mirroring the @theme tokens above under the spec's names. */
+  --page-max-width: 1200px;
+  --section-gap: 75px;
+  --card-padding: 19px;
+  --element-gap: 11px;
+  --spacing-unit: 4px;
 }
 
 html,
 body {
-  background-color: var(--color-paper-white);
+  background-color: var(--surface-page-canvas);
   color: var(--color-carbon-black);
+}
+
+/* Anchor the inherited base to the body step. Without this, any element
+   without an explicit `text-*` class falls back to the browser's 16px, which
+   is not on the scale — the wordmark link was inheriting exactly that.
+   Set on body rather than html so Tailwind's rem-based spacing still keys
+   off the user's root font size. */
+body {
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
+  letter-spacing: var(--text-body--letter-spacing);
 }
 
 /* Financial figures must not reflow as digits change. */
@@ -115,7 +274,7 @@ body {
 
 *::-webkit-scrollbar-thumb {
   background-color: var(--color-mist-gray);
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   border: 3px solid transparent;
   background-clip: content-box;
 }

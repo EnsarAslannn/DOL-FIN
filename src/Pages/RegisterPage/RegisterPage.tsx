@@ -70,7 +70,7 @@ const RegisterPage = () => {
         />
 
         <div className="relative z-10 flex h-full flex-col justify-end p-14">
-          <span className="mb-5 font-mono text-caption font-normal uppercase tracking-[0.16em] text-paper-white/75">
+          <span className="mb-5 font-mono text-caption font-normal uppercase tracking-label-lg text-paper-white/75">
             Open a sandbox account
           </span>
           <h2 className="max-w-md text-heading md:text-heading-lg font-normal text-paper-white">
@@ -142,7 +142,7 @@ const RegisterPage = () => {
                   {...register("password")}
                 />
                 <div className="mt-3 rounded-card border border-mist-gray bg-fog-gray p-4">
-                  <p className="font-mono text-caption font-normal uppercase tracking-[0.14em] text-zinc-gray">
+                  <p className="font-mono text-caption font-normal uppercase tracking-label text-zinc-gray">
                     Password requirements
                   </p>
                   <ul className="mt-2 list-disc space-y-1 pl-4 text-body font-normal text-zinc-gray">

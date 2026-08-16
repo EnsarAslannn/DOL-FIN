@@ -125,10 +125,10 @@ const CompanyProfile = () => {
           </p>
         </div>
         <p className="text-body text-zinc-gray max-w-md leading-relaxed">
-          Financial data for <span className="font-bold font-mono text-carbon-black bg-fog-gray px-1.5 py-0.5 rounded border border-mist-gray">{ticker?.toUpperCase()}</span> is currently unavailable for this demo version.
+          Financial data for <span className="font-bold font-mono text-carbon-black bg-fog-gray px-2 py-1 rounded border border-mist-gray">{ticker?.toUpperCase()}</span> is currently unavailable for this demo version.
         </p>
         <div className="pt-2">
-          <p className="text-caption text-zinc-gray font-normal bg-fog-gray border border-mist-gray px-3 py-1.5 rounded-card font-mono">
+          <p className="text-caption text-zinc-gray font-normal bg-fog-gray border border-mist-gray px-3 py-2 rounded-card font-mono">
             Please audit premium corporate tiers: AAPAL, MSFT, NVDA, TSLA, GOOGL
           </p>
         </div>
@@ -147,7 +147,7 @@ const CompanyProfile = () => {
   return (
     <div className="w-full flex flex-col font-sans text-carbon-black">
       <div className="block w-full bg-paper-white rounded-card p-6 my-4 border border-mist-gray flex flex-col space-y-3">
-        <h3 className="text-caption font-bold text-carbon-black uppercase tracking-[0.16em] text-left font-mono">
+        <h3 className="text-caption font-bold text-carbon-black uppercase tracking-label-lg text-left font-mono">
           Company Description
         </h3>
         <p className="text-carbon-black text-body-lg font-normal leading-relaxed antialiased text-left">
@@ -158,16 +158,16 @@ const CompanyProfile = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-4 w-full">
         <div className="bg-paper-white rounded-card p-6 border border-mist-gray flex flex-col justify-start space-y-6">
           <div className="flex flex-col space-y-3">
-            <h3 className="text-caption font-bold text-carbon-black uppercase tracking-[0.16em] text-left font-mono">
+            <h3 className="text-caption font-bold text-carbon-black uppercase tracking-label-lg text-left font-mono">
               Similar Companies
             </h3>
-            <div className="flex flex-wrap items-center gap-2 pt-1 [&_button]:px-5 [&_button]:py-2.5 [&_button]:text-body">
+            <div className="flex flex-wrap items-center gap-2 pt-1 [&_button]:px-5 [&_button]:py-3 [&_button]:text-body">
               <ComparableFinder ticker={profile.symbol} />
             </div>
           </div>
           <div className="bg-fog-gray rounded-card p-5 border border-mist-gray text-left mt-auto w-full">
             <p className="text-body text-carbon-black leading-relaxed">
-              <strong className="text-carbon-black block mb-1.5 font-mono text-body uppercase tracking-wide">
+              <strong className="text-carbon-black block mb-2 font-mono text-body uppercase tracking-wide">
                 Industry Peers
               </strong>
               A curated list of publicly traded companies operating within the
@@ -178,16 +178,16 @@ const CompanyProfile = () => {
 
         <div className="bg-paper-white rounded-card p-6 border border-mist-gray flex flex-col justify-start space-y-6">
           <div className="flex flex-col space-y-3">
-            <h3 className="text-caption font-bold text-carbon-black uppercase tracking-[0.16em] text-left font-mono">
+            <h3 className="text-caption font-bold text-carbon-black uppercase tracking-label-lg text-left font-mono">
               10-K REPORT
             </h3>
-            <div className="flex flex-wrap items-center gap-2 pt-1 [&_a]:px-5 [&_a]:py-2.5 [&_a]:text-body">
+            <div className="flex flex-wrap items-center gap-2 pt-1 [&_a]:px-5 [&_a]:py-3 [&_a]:text-body">
               <TenKFinder ticker={profile.symbol} />
             </div>
           </div>
           <div className="bg-fog-gray rounded-card p-5 border border-mist-gray text-left mt-auto w-full min-h-[105px] flex flex-col justify-center">
             <p className="text-body text-carbon-black leading-relaxed">
-              <strong className="text-carbon-black block mb-1.5 font-mono text-body uppercase tracking-wide">
+              <strong className="text-carbon-black block mb-2 font-mono text-body uppercase tracking-wide">
                 What is a 10-K Report?
               </strong>
               A Form 10-K is a comprehensive annual regulatory report required by the SEC that provides an in-depth analysis of a company's financial performance and structural risk factors. Unlike marketing-oriented annual reports, it offers audited financial statements and detailed management insights to help investors make informed, high-fidelity valuation decisions.

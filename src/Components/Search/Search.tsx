@@ -1,4 +1,5 @@
 import { useState, type ChangeEvent, type SyntheticEvent } from "react"
+import { ctaCompactClass } from "../../Helpers/formStyles"
 
 interface Props {
   onSearchSubmit: (e: SyntheticEvent, overrideQuery?: string) => void
@@ -61,7 +62,7 @@ const Search: React.FC<Props> = ({
 
         <button
           type="submit"
-          className="absolute right-2 cursor-pointer rounded-pill bg-sunrise-coral px-6 py-2.5 text-body font-bold tracking-[-0.009em] text-paper-white transition-opacity duration-200 hover:opacity-90"
+          className={`absolute right-2 ${ctaCompactClass}`}
         >
           Search
         </button>
@@ -69,7 +70,7 @@ const Search: React.FC<Props> = ({
 
       {showSuggestions && (
         <div className="absolute left-2 right-2 z-50 mt-2 flex max-h-60 flex-col overflow-hidden rounded-card border border-mist-gray bg-paper-white text-left shadow-subtle">
-          <div className="border-b border-mist-gray px-4 py-2.5 font-mono text-caption font-normal uppercase tracking-[0.14em] text-zinc-gray">
+          <div className="border-b border-mist-gray px-4 py-3 font-mono text-caption font-normal uppercase tracking-label text-zinc-gray">
             Featured Demo Assets
           </div>
           {suggestions
@@ -78,7 +79,7 @@ const Search: React.FC<Props> = ({
               <div
                 key={symbol}
                 onMouseDown={() => handleSuggestionClick(symbol)}
-                className="cursor-pointer px-4 py-2.5 font-mono text-body font-normal text-carbon-black transition-colors duration-150 hover:bg-fog-gray"
+                className="cursor-pointer px-4 py-3 font-mono text-body font-normal text-carbon-black transition-colors duration-150 hover:bg-fog-gray"
               >
                 {symbol}
               </div>

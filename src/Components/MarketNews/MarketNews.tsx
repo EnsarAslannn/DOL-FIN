@@ -18,7 +18,7 @@ const MarketNews = () => {
             <div className="flex flex-col space-y-2">
               <div className="flex items-center space-x-2">
                 <span
-                  className={`rounded-smallcard px-2 py-0.5 font-mono text-caption font-normal uppercase tracking-[0.12em] ${news.badgeColor}`}
+                  className={`rounded-smallcard px-2 py-1 font-mono text-caption font-normal uppercase tracking-label-sm ${news.badgeColor}`}
                 >
                   {news.category}
                 </span>
@@ -31,7 +31,7 @@ const MarketNews = () => {
                 {news.title}
               </h4>
               {news.summary && (
-                <p className="line-clamp-2 pt-0.5 text-body font-normal text-zinc-gray">
+                <p className="line-clamp-2 pt-1 text-body font-normal text-zinc-gray">
                   {news.summary}
                 </p>
               )}

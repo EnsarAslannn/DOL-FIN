@@ -61,7 +61,7 @@ const CardPortfolio = ({ portfolioValue, onPortfolioDelete, totalPortfolioInvest
 
       <div className="mb-4 grid grid-cols-2 gap-y-3 text-left">
         <div className="flex flex-col">
-          <span className="font-mono text-caption font-normal uppercase tracking-[0.12em] text-zinc-gray">
+          <span className="font-mono text-caption font-normal uppercase tracking-label-sm text-zinc-gray">
             Invested
           </span>
           <span className="font-mono text-body font-normal text-carbon-black">
@@ -69,7 +69,7 @@ const CardPortfolio = ({ portfolioValue, onPortfolioDelete, totalPortfolioInvest
           </span>
         </div>
         <div className="flex flex-col text-right">
-          <span className="font-mono text-caption font-normal uppercase tracking-[0.12em] text-zinc-gray">
+          <span className="font-mono text-caption font-normal uppercase tracking-label-sm text-zinc-gray">
             Current Value
           </span>
           <span className="font-mono text-body font-normal text-carbon-black">
@@ -77,7 +77,7 @@ const CardPortfolio = ({ portfolioValue, onPortfolioDelete, totalPortfolioInvest
           </span>
         </div>
         <div className="flex flex-col">
-          <span className="font-mono text-caption font-normal uppercase tracking-[0.12em] text-zinc-gray">
+          <span className="font-mono text-caption font-normal uppercase tracking-label-sm text-zinc-gray">
             Avg. Cost / Live
           </span>
           <span className="font-mono text-body font-normal text-zinc-gray">
@@ -85,7 +85,7 @@ const CardPortfolio = ({ portfolioValue, onPortfolioDelete, totalPortfolioInvest
           </span>
         </div>
         <div className="flex flex-col text-right">
-          <span className="font-mono text-caption font-normal uppercase tracking-[0.12em] text-zinc-gray">
+          <span className="font-mono text-caption font-normal uppercase tracking-label-sm text-zinc-gray">
             Profit / Loss
           </span>
           <span
@@ -98,8 +98,8 @@ const CardPortfolio = ({ portfolioValue, onPortfolioDelete, totalPortfolioInvest
         </div>
       </div>
 
-      <div className="flex w-full flex-col space-y-1.5 border-t border-mist-gray pt-3">
-        <div className="flex items-center justify-between font-mono text-caption font-normal uppercase tracking-[0.12em] text-zinc-gray">
+      <div className="flex w-full flex-col space-y-2 border-t border-mist-gray pt-3">
+        <div className="flex items-center justify-between font-mono text-caption font-normal uppercase tracking-label-sm text-zinc-gray">
           <span>Portfolio Weight</span>
           <span className="text-carbon-black">{weightString}</span>
         </div>

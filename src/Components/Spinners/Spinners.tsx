@@ -21,7 +21,7 @@ const Spinners = ({ isLoading = true }: Props) => {
           <span className="sonar-ring" data-delay="2" />
           <span className="h-2.5 w-2.5 rounded-full bg-sunrise-coral" />
         </div>
-        <span className="font-mono text-caption font-normal uppercase tracking-[0.18em] text-zinc-gray">
+        <span className="font-mono text-caption font-normal uppercase tracking-label-lg text-zinc-gray">
           Reading the tape…
         </span>
       </div>

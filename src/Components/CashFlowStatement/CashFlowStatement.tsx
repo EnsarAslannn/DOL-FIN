@@ -94,10 +94,10 @@ const CashFlowStatement = () => {
           </p>
         </div>
         <p className="text-body text-zinc-gray max-w-md leading-relaxed">
-          Financial data for <span className="font-bold font-mono text-carbon-black bg-fog-gray px-1.5 py-0.5 rounded border border-mist-gray">{ticker?.toUpperCase()}</span> is currently unavailable for this demo version.
+          Financial data for <span className="font-bold font-mono text-carbon-black bg-fog-gray px-2 py-1 rounded border border-mist-gray">{ticker?.toUpperCase()}</span> is currently unavailable for this demo version.
         </p>
         <div className="pt-2">
-          <p className="text-caption text-zinc-gray font-normal bg-fog-gray border border-mist-gray px-3 py-1.5 rounded-card font-mono">
+          <p className="text-caption text-zinc-gray font-normal bg-fog-gray border border-mist-gray px-3 py-2 rounded-card font-mono">
             Please audit premium corporate tiers: AAPL, MSFT, NVDA, TSLA, GOOGL
           </p>
         </div>
@@ -144,7 +144,7 @@ const CashFlowStatement = () => {
               <span className="text-zinc-gray uppercase font-bold text-caption tracking-widest font-mono">Cash Conversion Cycle</span>
               <span className="font-normal text-heading text-carbon-black font-mono">{metrics.cycleFormatted}</span>
             </div>
-            <div className="w-full flex flex-col space-y-1.5 mt-3">
+            <div className="w-full flex flex-col space-y-2 mt-3">
               <div className="w-full h-1 bg-fog-gray rounded-full overflow-hidden">
                 <div className="h-full bg-fog-gray rounded-full" style={{ width: `${Math.min(Math.max((metrics.cycle / 90) * 100, 15), 100)}%` }}></div>
               </div>
@@ -157,7 +157,7 @@ const CashFlowStatement = () => {
               <span className="text-zinc-gray uppercase font-bold text-caption tracking-widest font-mono">Free Cash Flow Yield</span>
               <span className="font-normal text-heading text-carbon-black font-mono">{metrics.yieldFormatted}</span>
             </div>
-            <div className="w-full flex flex-col space-y-1.5 mt-3">
+            <div className="w-full flex flex-col space-y-2 mt-3">
               <div className="w-full h-1 bg-fog-gray rounded-full overflow-hidden">
                 <div className="h-full bg-ash-gray rounded-full" style={{ width: `${Math.min(Math.max(metrics.yieldValue, 5), 100)}%` }}></div>
               </div>
@@ -167,14 +167,14 @@ const CashFlowStatement = () => {
         </div>
 
         <div className="w-full bg-paper-white border border-mist-gray rounded-card p-5 shadow-xl flex flex-col space-y-3 text-left">
-          <div className="flex items-center justify-between border-b border-mist-gray pb-2.5">
+          <div className="flex items-center justify-between border-b border-mist-gray pb-3">
             <h4 className="text-body font-bold text-zinc-gray uppercase tracking-wider font-mono flex items-center gap-2">
               <svg className="w-4 h-4 text-zinc-gray" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               Cashflow Liquidity Performance Intelligence
             </h4>
-            <span className={`text-caption font-bold uppercase px-2 py-0.5 rounded font-mono ${metrics.status === "LIQUID" ? "bg-gain/10 text-gain" : "bg-fog-gray text-zinc-gray"
+            <span className={`text-caption font-bold uppercase px-2 py-1 rounded font-mono ${metrics.status === "LIQUID" ? "bg-gain/10 text-gain" : "bg-fog-gray text-zinc-gray"
               }`}>
               {metrics.status} SYSTEM
             </span>

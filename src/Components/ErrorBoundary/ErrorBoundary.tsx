@@ -1,4 +1,5 @@
 import { Component, type ErrorInfo, type ReactNode } from "react"
+import { ctaCompactClass } from "../../Helpers/formStyles"
 
 type Props = {
     children: ReactNode
@@ -31,7 +32,7 @@ class ErrorBoundary extends Component<Props, State> {
                         <button
                             type="button"
                             onClick={() => window.location.reload()}
-                            className="rounded-pill bg-sunrise-coral px-6 py-3 text-body font-bold tracking-[-0.009em] text-paper-white transition-opacity hover:opacity-90 cursor-pointer"
+                            className={ctaCompactClass}
                         >
                             Refresh Page
                         </button>

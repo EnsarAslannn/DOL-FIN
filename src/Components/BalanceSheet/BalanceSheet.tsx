@@ -118,13 +118,13 @@ const BalanceSheet = () => {
         </div>
         <p className="text-body text-zinc-gray max-w-md leading-relaxed">
           Financial data for{" "}
-          <span className="font-bold font-mono text-carbon-black bg-fog-gray px-1.5 py-0.5 rounded border border-mist-gray">
+          <span className="font-bold font-mono text-carbon-black bg-fog-gray px-2 py-1 rounded border border-mist-gray">
             {ticker?.toUpperCase()}
           </span>{" "}
           is currently unavailable for this demo version.
         </p>
         <div className="pt-2">
-          <p className="text-caption text-zinc-gray font-normal bg-fog-gray border border-mist-gray px-3 py-1.5 rounded-card font-mono">
+          <p className="text-caption text-zinc-gray font-normal bg-fog-gray border border-mist-gray px-3 py-2 rounded-card font-mono">
             Please audit premium corporate tiers: AAPL, MSFT, NVDA, TSLA, GOOGL
           </p>
         </div>
@@ -193,7 +193,7 @@ const BalanceSheet = () => {
                 {metrics.dteFormatted}
               </span>
             </div>
-            <div className="w-full flex flex-col space-y-1.5 mt-3">
+            <div className="w-full flex flex-col space-y-2 mt-3">
               <div className="w-full h-1 bg-fog-gray rounded-full overflow-hidden">
                 <div
                   className={`h-full rounded-full ${metrics.dte <= 1.5 ? "bg-gain" : metrics.dte <= 2.5 ? "bg-fog-gray" : "bg-loss"}`}
@@ -217,7 +217,7 @@ const BalanceSheet = () => {
                 {metrics.turnoverFormatted}
               </span>
             </div>
-            <div className="w-full flex flex-col space-y-1.5 mt-3">
+            <div className="w-full flex flex-col space-y-2 mt-3">
               <div className="w-full h-1 bg-fog-gray rounded-full overflow-hidden">
                 <div
                   className="h-full bg-ash-gray rounded-full"
@@ -234,7 +234,7 @@ const BalanceSheet = () => {
         </div>
 
         <div className="w-full bg-paper-white border border-mist-gray rounded-card p-5 shadow-xl flex flex-col space-y-3 text-left">
-          <div className="flex items-center justify-between border-b border-mist-gray pb-2.5">
+          <div className="flex items-center justify-between border-b border-mist-gray pb-3">
             <h4 className="text-body font-bold text-zinc-gray uppercase tracking-wider font-mono flex items-center gap-2">
               <svg
                 className="w-4 h-4 text-zinc-gray"
@@ -252,7 +252,7 @@ const BalanceSheet = () => {
               Balance Sheet Structural Intelligence
             </h4>
             <span
-              className={`text-caption font-bold uppercase px-2 py-0.5 rounded font-mono ${metrics.status === "STABLE"
+              className={`text-caption font-bold uppercase px-2 py-1 rounded font-mono ${metrics.status === "STABLE"
                   ? "bg-gain/10 text-gain"
                   : metrics.status === "LEVERAGED"
                     ? "bg-loss/10 text-loss"

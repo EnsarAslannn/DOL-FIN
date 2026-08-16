@@ -36,7 +36,7 @@ const Table = <T extends { symbol?: string }>({ config, data }: Props<T>) => {
     const renderedHeaders = config.map((col, index) => {
         return (
             <th
-                className="border-b border-mist-gray p-4 text-left font-mono text-caption font-bold uppercase tracking-[0.16em] text-zinc-gray"
+                className="border-b border-mist-gray p-4 text-left font-mono text-caption font-bold uppercase tracking-label-lg text-zinc-gray"
                 key={`header-${index}`}
             >
                 {col.label}

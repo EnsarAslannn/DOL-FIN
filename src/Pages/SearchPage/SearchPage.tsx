@@ -346,7 +346,7 @@ const SearchPage = () => {
 
             {portfolioValues && (
               <div className="w-full flex flex-col space-y-4 pt-2">
-                <h3 className="text-caption font-normal text-zinc-gray uppercase tracking-[0.16em] font-mono pl-1">
+                <h3 className="text-caption font-normal text-zinc-gray uppercase tracking-label-lg font-mono pl-1">
                   Portfolio Analytics
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
@@ -370,21 +370,21 @@ const SearchPage = () => {
                         <span className="text-xs font-bold text-carbon-black tracking-tight">
                           Net Worth Growth Timeline
                         </span>
-                        <span className="text-caption text-zinc-gray font-normal mt-0.5">
+                        <span className="text-caption text-zinc-gray font-normal mt-1">
                           Live historical context based on wallet & asset capitalization
                         </span>
                       </div>
-                      <span className="text-caption font-bold text-gain bg-gain/10 px-2 py-0.5 rounded border border-gain/20">
+                      <span className="text-caption font-bold text-gain bg-gain/10 px-2 py-1 rounded border border-gain/20">
                         All-Time High
                       </span>
                     </div>
 
                     <div className="w-full h-44 relative pt-4 flex items-end">
                       <div className="absolute inset-0 flex flex-col justify-between pointer-events-none border-l border-b border-mist-gray pb-6 pl-2">
-                        <div className="w-full border-t border-mist-gray text-caption font-bold font-mono text-zinc-gray pt-0.5 text-right">
+                        <div className="w-full border-t border-mist-gray text-caption font-bold font-mono text-zinc-gray pt-1 text-right">
                           ${maxVal.toFixed(0)}
                         </div>
-                        <div className="w-full border-t border-mist-gray text-caption font-bold font-mono text-zinc-gray pt-0.5 text-right">
+                        <div className="w-full border-t border-mist-gray text-caption font-bold font-mono text-zinc-gray pt-1 text-right">
                           ${((maxVal + minVal) / 2).toFixed(0)}
                         </div>
                         <div className="w-full text-caption font-bold font-mono text-zinc-gray text-right">
@@ -415,7 +415,7 @@ const SearchPage = () => {
 
                     <div className="grid grid-cols-6 text-center text-caption font-bold text-zinc-gray font-mono pl-8 pr-4">
                       {timelineData.map((t, idx) => (
-                        <div key={idx} className="flex flex-col space-y-0.5">
+                        <div key={idx} className="flex flex-col space-y-1">
                           <span>{t.date}</span>
                           <span className="text-zinc-gray text-caption font-normal">
                             ${t.val.toFixed(0)}
@@ -435,17 +435,17 @@ const SearchPage = () => {
                         <span className="text-xs font-bold text-carbon-black tracking-tight">
                           Portfolio Risk & Diversification Audit
                         </span>
-                        <span className="text-caption text-zinc-gray font-normal mt-0.5">
+                        <span className="text-caption text-zinc-gray font-normal mt-1">
                           Quantifying capital exposure and asset correlation metrics
                         </span>
                       </div>
-                      <span className={`text-caption font-bold bg-fog-gray px-2 py-0.5 rounded border ${portfolioValues && portfolioValues.length > 3 ? "text-gain border-gain/20" : "text-zinc-gray border-mist-gray"
+                      <span className={`text-caption font-bold bg-fog-gray px-2 py-1 rounded border ${portfolioValues && portfolioValues.length > 3 ? "text-gain border-gain/20" : "text-zinc-gray border-mist-gray"
                         }`}>
                         Active Strategy: {portfolioHealth}
                       </span>
                     </div>
                     <div className="bg-fog-gray p-5 rounded-card border border-mist-gray leading-relaxed">
-                      <p className="text-xs font-bold text-zinc-gray mb-1.5 uppercase tracking-wider font-mono">
+                      <p className="text-xs font-bold text-zinc-gray mb-2 uppercase tracking-wider font-mono">
                         Macroeconomic & Structural Risk Analysis:
                       </p>
                       <p className="text-sm text-carbon-black font-normal tracking-normal leading-6">
@@ -467,7 +467,7 @@ const SearchPage = () => {
                       </div>
                     </div>
 
-                    <div className="flex flex-col space-y-3.5 pt-1">
+                    <div className="flex flex-col space-y-4 pt-1">
                       <div className="flex flex-col space-y-1">
                         <div className="flex items-center justify-between text-caption font-bold text-zinc-gray font-mono">
                           <span>Technology & Semiconductors</span>

@@ -50,7 +50,7 @@ const LoginPage = () => {
         />
 
         <div className="relative z-10 flex h-full flex-col justify-end p-14">
-          <span className="mb-5 font-mono text-caption font-normal uppercase tracking-[0.16em] text-paper-white/75">
+          <span className="mb-5 font-mono text-caption font-normal uppercase tracking-label-lg text-paper-white/75">
             Market intelligence terminal
           </span>
           <h2 className="max-w-md text-heading md:text-heading-lg font-normal text-paper-white">

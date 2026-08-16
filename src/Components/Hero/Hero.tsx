@@ -12,6 +12,7 @@ import networkMesh from "../../assets/extra/market-skyline.webp"
 import atriumLight from "../../assets/extra/atrium-light.webp"
 import { usePrefersReducedMotion } from "../../Helpers/usePrefersReducedMotion"
 import { containerClass } from "../../Helpers/layout"
+import { ctaClass } from "../../Helpers/formStyles"
 
 const trustBadges = [
   "Simulated data",
@@ -166,7 +167,7 @@ const Hero = () => {
 
         <div className="relative z-10 flex flex-1 items-center justify-center px-6 pb-24 pt-36">
           <AnimatedGroup className="flex flex-col items-center text-center">
-            <span className="mb-8 inline-flex items-center gap-2.5 font-mono text-caption font-normal uppercase tracking-[0.16em] text-paper-white/85">
+            <span className="mb-8 inline-flex items-center gap-3 font-mono text-caption font-normal uppercase tracking-label-lg text-paper-white/85">
               <span className="relative flex h-2 w-2 text-paper-white">
                 <span className="sonar-ring" />
                 <span className="h-2 w-2 shrink-0 rounded-full bg-paper-white" />
@@ -189,14 +190,14 @@ const Hero = () => {
             <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
               <Link
                 to="/search"
-                className="inline-flex items-center gap-2 rounded-pill bg-sunrise-coral px-8 py-[15px] text-body-lg font-bold tracking-[-0.009em] text-paper-white transition-opacity duration-200 hover:opacity-90"
+                className={`inline-flex items-center gap-2 ${ctaClass}`}
               >
                 Launch Terminal
                 <Chevron className="h-4 w-4" />
               </Link>
               <a
                 href="#how-it-works"
-                className="inline-flex items-center py-3 text-body font-normal tracking-[-0.005em] text-paper-white/80 underline-offset-[6px] transition-colors duration-200 hover:text-paper-white hover:underline"
+                className="inline-flex items-center py-3 text-body font-normal text-paper-white/80 underline-offset-[6px] transition-colors duration-200 hover:text-paper-white hover:underline"
               >
                 How it works
               </a>
@@ -226,13 +227,13 @@ const Hero = () => {
                 className="rounded-card border border-mist-gray bg-paper-white p-card"
               >
                 <div className="mb-card flex items-center justify-between border-b border-mist-gray pb-3">
-                  <h3 className="flex items-center gap-2.5 text-subheading font-normal text-carbon-black">
+                  <h3 className="flex items-center gap-3 text-subheading font-normal text-carbon-black">
                     <span
                       className={`h-2 w-2 rounded-full ${panel.up ? "bg-gain" : "bg-loss"}`}
                     />
                     {panel.title}
                   </h3>
-                  <span className="font-mono text-caption font-normal uppercase tracking-[0.14em] text-zinc-gray">
+                  <span className="font-mono text-caption font-normal uppercase tracking-label text-zinc-gray">
                     {panel.meta}
                   </span>
                 </div>
@@ -329,7 +330,7 @@ const Hero = () => {
                 >
                   <div>
                     <div className="mb-4 flex items-center justify-between">
-                      <span className="rounded-smallcard border border-mist-gray bg-fog-gray px-2.5 py-1 font-mono text-caption font-normal uppercase tracking-[0.12em] text-zinc-gray">
+                      <span className="rounded-smallcard border border-mist-gray bg-fog-gray px-3 py-1 font-mono text-caption font-normal uppercase tracking-label-sm text-zinc-gray">
                         {news.category}
                       </span>
                       <span className="font-mono text-caption font-normal text-zinc-gray">
@@ -374,7 +375,7 @@ const Hero = () => {
         <div
           className={`relative z-10 flex flex-col items-center py-section text-center ${containerClass}`}
         >
-          <span className="font-mono text-caption font-normal uppercase tracking-[0.16em] text-paper-white/75">
+          <span className="font-mono text-caption font-normal uppercase tracking-label-lg text-paper-white/75">
             Sandboxed by design
           </span>
           <h2 className="mt-6 max-w-3xl text-heading md:text-heading-lg font-normal text-paper-white">
@@ -386,7 +387,7 @@ const Hero = () => {
           </p>
           <Link
             to="/register"
-            className="mt-10 inline-flex items-center gap-2 rounded-pill bg-sunrise-coral px-8 py-[15px] text-body-lg font-bold tracking-[-0.009em] text-paper-white transition-opacity duration-200 hover:opacity-90"
+            className={`mt-10 inline-flex items-center gap-2 ${ctaClass}`}
           >
             Create an account
             <Chevron className="h-4 w-4" />
@@ -412,7 +413,7 @@ const Hero = () => {
                 <span className="text-heading-sm md:text-heading font-normal text-carbon-black">
                   {faq.question}
                 </span>
-                <span className="shrink-0 whitespace-nowrap pt-2 text-[13px] font-normal text-zinc-gray underline-offset-4 hover:underline">
+                <span className="shrink-0 whitespace-nowrap pt-2 text-label font-normal text-zinc-gray underline-offset-4 hover:underline">
                   {openFaq === faq.id ? "Close" : "Read more"}
                 </span>
               </button>
@@ -432,7 +433,7 @@ const Hero = () => {
 
       <footer className="w-full border-t border-mist-gray bg-fog-gray">
         <div
-          className={`py-8 text-center font-mono text-caption font-normal uppercase tracking-[0.14em] text-zinc-gray ${containerClass}`}
+          className={`py-8 text-center font-mono text-caption font-normal uppercase tracking-label text-zinc-gray ${containerClass}`}
         >
           © 2026 DOL-FIN · Simulated data, run in a secure sandbox
         </div>

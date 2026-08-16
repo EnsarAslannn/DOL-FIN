@@ -64,10 +64,10 @@ const CompanyPage = () => {
               </p>
             </div>
             <p className="text-body text-zinc-gray max-w-md leading-relaxed">
-              Financial data for <span className="font-bold font-mono text-carbon-black bg-fog-gray px-1.5 py-0.5 rounded border border-mist-gray">{ticker?.toUpperCase()}</span> is currently unavailable for this demo version.
+              Financial data for <span className="font-bold font-mono text-carbon-black bg-fog-gray px-2 py-1 rounded border border-mist-gray">{ticker?.toUpperCase()}</span> is currently unavailable for this demo version.
             </p>
             <div className="pt-2">
-              <p className="text-caption text-zinc-gray font-normal bg-fog-gray border border-mist-gray px-3 py-1.5 rounded-card font-mono">
+              <p className="text-caption text-zinc-gray font-normal bg-fog-gray border border-mist-gray px-3 py-2 rounded-card font-mono">
                 Please audit premium corporate tiers: AAPL, MSFT, NVDA, TSLA, GOOGL
               </p>
             </div>

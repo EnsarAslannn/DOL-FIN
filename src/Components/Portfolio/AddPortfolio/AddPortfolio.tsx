@@ -1,4 +1,5 @@
 import { type SyntheticEvent } from "react"
+import { ctaCompactClass } from "../../../Helpers/formStyles"
 
 type Props = {
   onPortfolioCreate: (e: SyntheticEvent) => void
@@ -13,7 +14,7 @@ const AddPortfolio = ({ onPortfolioCreate, symbol }: Props) => {
         <input readOnly={true} hidden={true} value={symbol} />
         <button
           type="submit"
-          className="cursor-pointer rounded-pill bg-sunrise-coral px-6 py-2.5 text-body font-bold tracking-[-0.009em] text-paper-white transition-opacity duration-200 hover:opacity-90"
+          className={ctaCompactClass}
         >
           Add
         </button>

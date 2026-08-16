@@ -53,7 +53,7 @@ const Card: React.FC<Props> = ({
           </div>
         )}
 
-        <div className="flex flex-col space-y-1.5 text-left">
+        <div className="flex flex-col space-y-2 text-left">
           <div className="relative flex flex-wrap items-center gap-2">
             <Link
               to={`/company/${symbolUpper}/company-profile`}
@@ -61,7 +61,7 @@ const Card: React.FC<Props> = ({
             >
               {name}
             </Link>
-            <span className="rounded-smallcard border border-mist-gray bg-fog-gray px-2 py-0.5 font-mono text-caption font-normal text-zinc-gray">
+            <span className="rounded-smallcard border border-mist-gray bg-fog-gray px-2 py-1 font-mono text-caption font-normal text-zinc-gray">
               {symbolUpper}
             </span>
           </div>
@@ -79,7 +79,7 @@ const Card: React.FC<Props> = ({
               <Link
                 key={link.to}
                 to={`/company/${symbolUpper}/${link.to}`}
-                className="rounded-smallcard border border-mist-gray px-2.5 py-1 text-caption font-normal text-zinc-gray transition-colors duration-150 hover:border-ash-gray hover:text-carbon-black"
+                className="rounded-smallcard border border-mist-gray px-3 py-1 text-caption font-normal text-zinc-gray transition-colors duration-150 hover:border-ash-gray hover:text-carbon-black"
               >
                 {link.label}
               </Link>
@@ -94,7 +94,7 @@ const Card: React.FC<Props> = ({
             ${price.toFixed(2)}
           </span>
           <span
-            className={`mt-0.5 font-mono text-body font-bold ${
+            className={`mt-1 font-mono text-body font-bold ${
               isPositive ? "text-gain" : "text-loss"
             }`}
           >

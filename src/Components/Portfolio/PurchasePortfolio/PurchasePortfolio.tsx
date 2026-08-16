@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { portfolioDepositAPI } from "../../../Services/PortfolioService"
 import { useAuth } from "../../../Context/useAuth"
 import { toast } from "react-toastify"
-import { fieldClass, labelClass } from "../../../Helpers/formStyles"
+import { fieldClass, labelClass, ctaBaseClass, ctaDisabledClass, ctaFillClass } from "../../../Helpers/formStyles"
 
 interface PurchasePortfolioProps {
     isOpen: boolean
@@ -173,17 +173,17 @@ const PurchasePortfolio: React.FC<PurchasePortfolioProps> = ({
                 <div className="flex space-x-3">
                     <button
                         onClick={onClose}
-                        className="flex-1 cursor-pointer rounded-pill border border-mist-gray bg-paper-white px-6 py-[15px] text-body font-normal text-carbon-black transition-colors hover:border-ash-gray"
+                        className="flex-1 cursor-pointer rounded-pill border border-mist-gray bg-paper-white px-6 py-cta text-body font-normal text-carbon-black transition-colors hover:border-ash-gray"
                     >
                         Cancel
                     </button>
                     <button
                         onClick={handleConfirm}
                         disabled={quantity <= 0 || isInsufficientFunds || isInsufficientShares}
-                        className={`flex-1 rounded-pill px-6 py-[15px] text-body font-bold tracking-[-0.009em] transition-opacity ${
+                        className={`flex-1 px-6 py-cta text-body ${ctaBaseClass} ${
                             quantity <= 0 || isInsufficientFunds || isInsufficientShares
-                                ? "cursor-not-allowed border border-mist-gray bg-fog-gray text-ash-gray"
-                                : "cursor-pointer bg-sunrise-coral text-paper-white hover:opacity-90"
+                                ? ctaDisabledClass
+                                : ctaFillClass
                         }`}
                     >
                         {mode === "BUY" ? "Confirm Buy" : "Confirm Sell"}

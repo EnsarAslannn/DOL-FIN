@@ -1,7 +1,7 @@
 import * as Yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useForm } from "react-hook-form"
-import { fieldClass } from "../../../Helpers/formStyles"
+import { fieldClass, ctaCompactClass } from "../../../Helpers/formStyles"
 
 type Props = {
   handleComment: (e: CommentFormInputs) => void
@@ -45,7 +45,7 @@ const StockCommentForm = ({ handleComment }: Props) => {
       </div>
 
       <div className="w-full text-left">
-        <div className="rounded-card border border-mist-gray bg-paper-white p-3.5 transition-colors focus-within:border-sunrise-coral focus-within:ring-2 focus-within:ring-sunrise-coral/25">
+        <div className="rounded-card border border-mist-gray bg-paper-white p-4 transition-colors focus-within:border-sunrise-coral focus-within:ring-2 focus-within:ring-sunrise-coral/25">
           <label htmlFor="comment" className="sr-only">
             Your comment
           </label>
@@ -66,7 +66,7 @@ const StockCommentForm = ({ handleComment }: Props) => {
 
       <button
         type="submit"
-        className="cursor-pointer self-start rounded-pill bg-sunrise-coral px-6 py-3 text-body font-bold tracking-[-0.009em] text-paper-white transition-opacity duration-150 hover:opacity-90"
+        className={`self-start ${ctaCompactClass}`}
       >
         Post comment
       </button>

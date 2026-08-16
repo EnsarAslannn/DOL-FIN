@@ -7,7 +7,7 @@ import { companyLogos } from "../../Components/Table/TestData"
 import { toast } from "react-toastify"
 import PurchasePortfolio from "../../Components/Portfolio/PurchasePortfolio/PurchasePortfolio"
 import marketTerrain from "../../assets/extra/capital-stack.webp"
-import { fieldClass } from "../../Helpers/formStyles"
+import { fieldClass, ctaBaseClass, ctaDisabledClass, ctaFillClass } from "../../Helpers/formStyles"
 import { containerClass, navClearanceClass } from "../../Helpers/layout"
 
 const WalletPage = () => {
@@ -171,7 +171,7 @@ const WalletPage = () => {
                         <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-gradient-to-r from-carbon-black via-carbon-black/80 to-transparent" />
 
                         <div className="relative z-10">
-                            <span className="font-mono text-caption font-normal uppercase tracking-[0.16em] text-paper-white/75">Est. Total Value</span>
+                            <span className="font-mono text-caption font-normal uppercase tracking-label-lg text-paper-white/75">Est. Total Value</span>
                             <div className="mt-3 flex items-baseline space-x-2">
                                 <h2 className="font-mono text-heading-lg font-normal text-paper-white">${estimatedTotalValue.toFixed(2)}</h2>
                                 <span className="font-mono text-body font-normal text-paper-white/75">USD</span>
@@ -179,12 +179,12 @@ const WalletPage = () => {
                         </div>
                         <div className="relative z-10 mt-6 grid grid-cols-2 gap-4 border-t border-paper-white/20 pt-6">
                             <div className="flex flex-col">
-                                <span className="font-mono text-caption font-normal uppercase tracking-[0.14em] text-paper-white/75">Cash Balance (Wallet)</span>
-                                <span className="mt-1.5 font-mono text-subheading font-normal text-paper-white">${liveBalance.toFixed(2)}</span>
+                                <span className="font-mono text-caption font-normal uppercase tracking-label text-paper-white/75">Cash Balance (Wallet)</span>
+                                <span className="mt-2 font-mono text-subheading font-normal text-paper-white">${liveBalance.toFixed(2)}</span>
                             </div>
                             <div className="flex flex-col">
-                                <span className="font-mono text-caption font-normal uppercase tracking-[0.14em] text-paper-white/75">Stocks Value (Portfolio)</span>
-                                <span className="mt-1.5 font-mono text-subheading font-normal text-paper-white">${stocksValue.toFixed(2)}</span>
+                                <span className="font-mono text-caption font-normal uppercase tracking-label text-paper-white/75">Stocks Value (Portfolio)</span>
+                                <span className="mt-2 font-mono text-subheading font-normal text-paper-white">${stocksValue.toFixed(2)}</span>
                             </div>
                         </div>
                     </div>
@@ -206,15 +206,15 @@ const WalletPage = () => {
                                         onChange={(e) => setDepositAmount(e.target.value)}
                                         className={`${fieldClass} pl-8 pr-16 font-mono`}
                                     />
-                                    <span className="absolute right-4 rounded-smallcard border border-mist-gray bg-fog-gray px-2 py-0.5 font-mono text-caption font-normal text-zinc-gray">USD</span>
+                                    <span className="absolute right-4 rounded-smallcard border border-mist-gray bg-fog-gray px-2 py-1 font-mono text-caption font-normal text-zinc-gray">USD</span>
                                 </div>
                             </div>
                             <button
                                 type="submit"
                                 disabled={isSubmitting || !depositAmount}
-                                className={`w-full rounded-pill py-[15px] text-body font-bold tracking-[-0.009em] transition-opacity duration-200 ${isSubmitting || !depositAmount
-                                    ? "cursor-not-allowed border border-mist-gray bg-fog-gray text-ash-gray"
-                                    : "bg-sunrise-coral text-paper-white hover:opacity-90 cursor-pointer"
+                                className={`w-full py-cta text-body ${ctaBaseClass} ${isSubmitting || !depositAmount
+                                    ? ctaDisabledClass
+                                    : ctaFillClass
                                     }`}
                             >
                                 {isSubmitting ? "Processing..." : "Confirm Deposit"}
@@ -224,12 +224,12 @@ const WalletPage = () => {
                 </div>
                 <div className="bg-paper-white border border-mist-gray rounded-card overflow-hidden">
                     <div className="px-6 py-4 border-b border-mist-gray bg-fog-gray">
-                        <h3 className="font-mono text-caption font-bold uppercase tracking-[0.16em] text-zinc-gray">My Assets (Asset View)</h3>
+                        <h3 className="font-mono text-caption font-bold uppercase tracking-label-lg text-zinc-gray">My Assets (Asset View)</h3>
                     </div>
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse font-sans">
                             <thead>
-                                <tr className="border-b border-mist-gray font-mono text-caption font-bold uppercase tracking-[0.16em] text-zinc-gray">
+                                <tr className="border-b border-mist-gray font-mono text-caption font-bold uppercase tracking-label-lg text-zinc-gray">
                                     <th className="py-4 px-6">Asset Name</th>
                                     <th className="py-4 px-6 text-right">Market Price</th>
                                     <th className="py-4 px-6 text-right">Holdings Allocation</th>
@@ -259,7 +259,7 @@ const WalletPage = () => {
                                     <td className="px-6 py-4 text-right">
                                         <div className="flex flex-col items-end justify-center">
                                             <span className="font-mono text-body font-normal text-carbon-black">${liveBalance.toFixed(2)}</span>
-                                            <span className="mt-0.5 font-mono text-caption font-normal text-zinc-gray">
+                                            <span className="mt-1 font-mono text-caption font-normal text-zinc-gray">
                                                 {estimatedTotalValue > 0 ? ((liveBalance / estimatedTotalValue) * 100).toFixed(1) : 0}%
                                             </span>
                                         </div>
@@ -267,7 +267,7 @@ const WalletPage = () => {
                                     <td className="px-6 py-4 text-center">
                                         <button
                                             onClick={triggerUsdSell}
-                                            className="cursor-pointer rounded-pill border border-mist-gray px-4 py-1.5 text-body font-normal text-zinc-gray transition-colors hover:border-loss hover:text-loss"
+                                            className="cursor-pointer rounded-pill border border-mist-gray px-4 py-2 text-body font-normal text-zinc-gray transition-colors hover:border-loss hover:text-loss"
                                         >
                                             Sell
                                         </button>
@@ -302,7 +302,7 @@ const WalletPage = () => {
                                             <td className="py-4 px-6 text-right">
                                                 <div className="flex flex-col items-end justify-center">
                                                     <span className="font-mono text-body font-normal text-carbon-black">${currentStockValue.toFixed(2)}</span>
-                                                    <span className="mt-0.5 font-mono text-caption font-normal text-zinc-gray">
+                                                    <span className="mt-1 font-mono text-caption font-normal text-zinc-gray">
                                                         {estimatedTotalValue > 0 ? ((currentStockValue / estimatedTotalValue) * 100).toFixed(1) : 0}%
                                                     </span>
                                                 </div>
@@ -310,7 +310,7 @@ const WalletPage = () => {
                                             <td className="py-4 px-6 text-center">
                                                 <button
                                                     onClick={() => triggerTableSell(item)}
-                                                    className="cursor-pointer rounded-pill border border-mist-gray px-4 py-1.5 text-body font-normal text-zinc-gray transition-colors hover:border-loss hover:text-loss"
+                                                    className="cursor-pointer rounded-pill border border-mist-gray px-4 py-2 text-body font-normal text-zinc-gray transition-colors hover:border-loss hover:text-loss"
                                                 >
                                                     Sell
                                                 </button>
