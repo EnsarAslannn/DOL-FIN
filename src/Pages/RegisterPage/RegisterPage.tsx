@@ -83,19 +83,23 @@ const RegisterPage = () => {
         </div>
       </div>
 
-      <div className="flex flex-1 items-center justify-center px-6 pb-16 pt-28">
-        <div className="w-full sm:max-w-md">
-          <div className="rounded-card border border-mist-gray bg-paper-white p-8 sm:p-10">
-            <div className="mb-8 space-y-2">
-              <h1 className="text-heading font-normal text-carbon-black">
-                Create your account
-              </h1>
-              <p className="text-body font-normal text-zinc-gray">
-                Takes a minute. Your portfolio is private from the first tick.
-              </p>
-            </div>
+      {/* No card — matches LoginPage. The cinematic panel is the containing
+          edge; a border here would be a box inside a box. */}
+      <div className="flex flex-1 items-center justify-center px-6 pb-20 pt-28 sm:px-12">
+        <div className="w-full sm:max-w-[420px]">
+          <div className="mb-12">
+            <span className="block font-mono text-caption font-normal uppercase tracking-label-lg text-ash-gray">
+              Get started
+            </span>
+            <h1 className="mt-5 text-heading md:text-heading-lg font-normal text-carbon-black">
+              Create your account
+            </h1>
+            <p className="mt-5 text-body-lg font-normal text-zinc-gray">
+              Takes a minute. Your portfolio is private from the first tick.
+            </p>
+          </div>
 
-            <form className="space-y-6" onSubmit={handleSubmit(handleRegister)}>
+            <form className="space-y-8" onSubmit={handleSubmit(handleRegister)}>
               <div>
                 <label htmlFor="email" className={labelClass}>
                   Email
@@ -160,7 +164,7 @@ const RegisterPage = () => {
               <button type="submit" className={primaryButtonClass}>
                 Sign Up
               </button>
-              <p className="text-body font-normal text-zinc-gray">
+              <p className="border-t border-mist-gray pt-8 text-body font-normal text-zinc-gray">
                 Already have an account?{" "}
                 <Link
                   to="/login"
@@ -170,7 +174,6 @@ const RegisterPage = () => {
                 </Link>
               </p>
             </form>
-          </div>
         </div>
       </div>
     </section>

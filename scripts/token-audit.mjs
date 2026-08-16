@@ -1,4 +1,5 @@
 import { chromium } from "@playwright/test"
+const BASE = process.env.BASE_URL || "http://localhost:5173"
 
 // The token table, as the single source of truth for this audit.
 const SCALE = {
@@ -13,7 +14,7 @@ const b = await chromium.launch()
 const p = await b.newPage({ viewport:{width:1440,height:1000} })
 const bad=[]
 for (const route of ["/","/search","/wallet","/login"]) {
-  await p.goto("http://localhost:5174"+route,{waitUntil:"networkidle"})
+  await p.goto(BASE + route, { waitUntil: "networkidle" })
   await p.waitForTimeout(1500)
   const rows = await p.evaluate(() => {
     const out=[]

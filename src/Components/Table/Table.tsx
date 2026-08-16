@@ -23,7 +23,7 @@ const Table = <T extends { symbol?: string }>({ config, data }: Props<T>) => {
                     return (
                         <td
                             key={`cell-${rowIndex}-${idx}`}
-                            className="whitespace-nowrap border-b border-mist-gray p-4 font-mono text-body font-normal text-carbon-black"
+                            className="whitespace-nowrap border-b border-mist-gray px-4 py-4 font-mono text-body font-normal text-carbon-black first:pl-0 last:pr-0"
                         >
                             {col.render(company)}
                         </td>
@@ -36,7 +36,7 @@ const Table = <T extends { symbol?: string }>({ config, data }: Props<T>) => {
     const renderedHeaders = config.map((col, index) => {
         return (
             <th
-                className="border-b border-mist-gray p-4 text-left font-mono text-caption font-bold uppercase tracking-label-lg text-zinc-gray"
+                className="whitespace-nowrap border-b border-carbon-black px-4 pb-4 text-left font-mono text-caption font-bold uppercase tracking-label-lg text-carbon-black first:pl-0 last:pr-0"
                 key={`header-${index}`}
             >
                 {col.label}
@@ -45,15 +45,15 @@ const Table = <T extends { symbol?: string }>({ config, data }: Props<T>) => {
     })
 
     return (
-        <div className="overflow-hidden rounded-card border border-mist-gray bg-paper-white p-4 sm:p-6">
-            <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-mist-gray text-left font-sans">
-                    <thead className="bg-fog-gray">
-                        <tr>{renderedHeaders}</tr>
-                    </thead>
-                    <tbody className="divide-y divide-mist-gray">{renderedRows}</tbody>
-                </table>
-            </div>
+        // No card, no fill. A heavy rule under the header and hairlines between
+        // rows — the ledger reads as a ledger rather than as a widget in a box.
+        <div className="w-full overflow-x-auto">
+            <table className="min-w-full text-left font-sans">
+                <thead>
+                    <tr>{renderedHeaders}</tr>
+                </thead>
+                <tbody>{renderedRows}</tbody>
+            </table>
         </div>
     )
 }

@@ -5,6 +5,8 @@ import {
 } from "../../Components/Table/TestData"
 import MarketTicker from "../MarketTicker/MarketTicker"
 import AnimatedGroup from "../AnimatedGroup/AnimatedGroup"
+import SectionHeader from "../SectionHeader/SectionHeader"
+import SiteFooter from "../SiteFooter/SiteFooter"
 import { Link } from "react-router-dom"
 import heroStill from "../../assets/extra/hero-still.webp"
 import heroVideo from "../../assets/extra/HeroDOLFIN.mp4"
@@ -156,10 +158,7 @@ const Hero = () => {
         {/* Scrim. A flat base plus a vertical gradient that deepens at the
             top and bottom, so the floating nav and the CTA row keep their
             contrast against the brightest frames of the loop. */}
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-carbon-black/50"
-        />
+        <div aria-hidden="true" className="absolute inset-0 bg-carbon-black/50" />
         <div
           aria-hidden="true"
           className="absolute inset-0 bg-gradient-to-b from-carbon-black/75 via-carbon-black/30 to-carbon-black/85"
@@ -176,13 +175,13 @@ const Hero = () => {
             </span>
 
             {/* Weight 400 at display size is the system's signature. */}
-            <h1 className="mb-6 max-w-4xl text-heading-lg font-normal text-paper-white md:text-display">
+            <h1 className="mb-8 max-w-4xl text-heading-lg font-normal text-paper-white md:text-display">
               Find the signal
               <br />
               beneath the noise
             </h1>
 
-            <p className="mb-10 max-w-[480px] text-body-lg font-normal text-paper-white/85">
+            <p className="mb-12 max-w-[480px] text-body-lg font-normal text-paper-white/85">
               Track the tickers you care about, read what other investors are
               saying, and dive into the fundamentals underneath the price.
             </p>
@@ -211,114 +210,126 @@ const Hero = () => {
       <MarketTicker />
 
       <div className={`relative z-10 flex flex-col ${containerClass}`}>
-        {/* Movers */}
-        <div className="pt-section">
-          <h2 className="mb-10 max-w-2xl text-heading md:text-heading-lg font-normal text-carbon-black">
-            Where the tape is moving
-          </h2>
+        {/* Movers. Two instrument panels built from hairlines rather than
+            boxes: a heavy rule opens each column, light rules separate the
+            rows, and whitespace does the containing. */}
+        <section className="py-section">
+          <SectionHeader
+            eyebrow="Live tape"
+            title="Where the tape is moving"
+            lead="The sharpest moves across the tickers on the platform."
+          />
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div className="mt-16 grid grid-cols-1 gap-x-16 gap-y-14 md:grid-cols-2">
             {[
-              { title: "Top Volatility Gainers", meta: "Spot Live", rows: gainers, up: true },
-              { title: "Market Short Watch", meta: "Simulated", rows: losers, up: false },
+              {
+                title: "Top Volatility Gainers",
+                meta: "Spot Live",
+                rows: gainers,
+                up: true,
+              },
+              {
+                title: "Market Short Watch",
+                meta: "Simulated",
+                rows: losers,
+                up: false,
+              },
             ].map((panel) => (
-              <div
-                key={panel.title}
-                className="rounded-card border border-mist-gray bg-paper-white p-card"
-              >
-                <div className="mb-card flex items-center justify-between border-b border-mist-gray pb-3">
+              <div key={panel.title}>
+                <div className="flex items-baseline justify-between gap-4 border-t border-carbon-black pt-4">
                   <h3 className="flex items-center gap-3 text-subheading font-normal text-carbon-black">
                     <span
-                      className={`h-2 w-2 rounded-full ${panel.up ? "bg-gain" : "bg-loss"}`}
+                      aria-hidden="true"
+                      className={`h-2 w-2 shrink-0 rounded-full ${
+                        panel.up ? "bg-gain" : "bg-loss"
+                      }`}
                     />
                     {panel.title}
                   </h3>
-                  <span className="font-mono text-caption font-normal uppercase tracking-label text-zinc-gray">
+                  <span className="shrink-0 font-mono text-caption font-normal uppercase tracking-label text-ash-gray">
                     {panel.meta}
                   </span>
                 </div>
-                <div className="flex flex-col">
+
+                <ul className="mt-2 flex flex-col">
                   {panel.rows.map((item, idx) => (
-                    <div
+                    <li
                       key={idx}
-                      className="flex items-center justify-between border-b border-mist-gray py-3 last:border-0 last:pb-0"
+                      className="flex items-center justify-between gap-4 border-b border-mist-gray py-4"
                     >
-                      <div className="flex items-center gap-element">
+                      <div className="flex min-w-0 items-center gap-4">
                         <img
                           src={item.logoUrl}
                           alt=""
-                          className="h-7 w-7 rounded-icon object-contain"
+                          aria-hidden="true"
+                          className="h-6 w-6 shrink-0 object-contain"
                         />
-                        <span className="text-body font-normal text-carbon-black">
+                        <span className="truncate text-body font-normal text-carbon-black">
                           {item.name}
                         </span>
                       </div>
-                      <div className="flex items-center gap-4">
+                      <div className="flex shrink-0 items-baseline gap-6">
                         <span className="font-mono text-body font-normal text-zinc-gray">
                           {item.value}
                         </span>
                         <span
-                          className={`min-w-[72px] text-right font-mono text-body font-bold ${
+                          className={`min-w-[76px] text-right font-mono text-body font-bold ${
                             panel.up ? "text-gain" : "text-loss"
                           }`}
                         >
                           {panel.up ? "▲" : "▼"} {item.change}
                         </span>
                       </div>
-                    </div>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
             ))}
           </div>
-        </div>
+        </section>
 
-        {/* How it works */}
-        <div id="how-it-works" className="pt-section">
-          <h2 className="max-w-2xl text-heading md:text-heading-lg font-normal text-carbon-black">
-            How DOL-FIN works
-          </h2>
-          <p className="mt-4 max-w-[480px] text-body-lg font-normal text-zinc-gray">
-            Three stages between you and a synchronized portfolio.
-          </p>
-
-          <img
-            src={atriumLight}
-            alt=""
-            aria-hidden="true"
-            className="mt-10 aspect-[3/1] w-full rounded-card object-cover"
+        {/* How it works. Oversized mono numerals carry the sequence; the
+            boxes are gone entirely. */}
+        <section id="how-it-works" className="py-section">
+          <SectionHeader
+            eyebrow="Getting started"
+            title="How DOL-FIN works"
+            lead="Three stages between you and a synchronized portfolio."
           />
 
-          <div className="mt-10 grid grid-cols-1 items-stretch gap-6 md:grid-cols-3">
+          <div className="mt-16 grid grid-cols-1 gap-x-16 gap-y-14 md:grid-cols-3">
             {stages.map((stage) => (
-              <div
-                key={stage.label}
-                className="flex flex-col rounded-card border border-mist-gray bg-paper-white p-card"
-              >
-                <span className="flex h-9 w-9 items-center justify-center rounded-icon border border-mist-gray font-mono text-caption font-bold text-carbon-black">
+              <div key={stage.label} className="border-t border-carbon-black pt-6">
+                <span className="block font-mono text-heading-xl font-normal text-ash-gray">
                   {stage.label}
                 </span>
-                <h3 className="mt-5 text-subheading font-normal text-carbon-black">
+                <h3 className="mt-8 text-heading-sm font-normal text-carbon-black">
                   {stage.title}
                 </h3>
-                <p className="mt-2 text-body font-normal text-zinc-gray">
+                <p className="mt-4 text-body font-normal text-zinc-gray">
                   {stage.copy}
                 </p>
               </div>
             ))}
           </div>
-        </div>
 
-        {/* Market insights */}
-        <div className="pt-section">
-          <h2 className="max-w-2xl text-heading md:text-heading-lg font-normal text-carbon-black">
-            Latest market insights
-          </h2>
-          <p className="mt-4 max-w-[480px] text-body-lg font-normal text-zinc-gray">
-            What's moving across global equities right now.
-          </p>
+          <img
+            src={atriumLight}
+            alt=""
+            aria-hidden="true"
+            className="mt-20 aspect-[3/1] w-full rounded-card object-cover"
+          />
+        </section>
 
-          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
+        {/* Market insights. An editorial index, not a wall of cards. */}
+        <section className="py-section">
+          <SectionHeader
+            eyebrow="Newsroom"
+            title="Latest market insights"
+            lead="What's moving across global equities right now."
+          />
+
+          <div className="mt-16 grid grid-cols-1 gap-x-16 md:grid-cols-2">
             {realMarketNewsData &&
               realMarketNewsData.map((news, idx) => (
                 <a
@@ -326,68 +337,59 @@ const Hero = () => {
                   href={news.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex flex-col justify-between rounded-card border border-mist-gray bg-paper-white p-card text-left transition-colors duration-200 hover:border-ash-gray"
+                  className="group flex flex-col border-t border-mist-gray py-8 transition-colors duration-200 hover:border-carbon-black"
                 >
-                  <div>
-                    <div className="mb-4 flex items-center justify-between">
-                      <span className="rounded-smallcard border border-mist-gray bg-fog-gray px-3 py-1 font-mono text-caption font-normal uppercase tracking-label-sm text-zinc-gray">
-                        {news.category}
-                      </span>
-                      <span className="font-mono text-caption font-normal text-zinc-gray">
-                        {news.time}
-                      </span>
-                    </div>
-                    <h3 className="mb-2 text-subheading font-normal text-carbon-black">
-                      {news.title}
-                    </h3>
-                    <p className="line-clamp-2 text-body font-normal text-zinc-gray">
-                      {news.summary}
-                    </p>
-                  </div>
-                  <div className="mt-5 flex items-center justify-between border-t border-mist-gray pt-4 text-caption font-normal text-zinc-gray">
-                    <span>
-                      Source:{" "}
-                      <span className="text-carbon-black">{news.source}</span>
+                  <div className="flex items-baseline justify-between gap-4">
+                    <span className="font-mono text-caption font-normal uppercase tracking-label text-zinc-gray">
+                      {news.category}
                     </span>
-                    <span className="flex items-center gap-1 text-carbon-black underline-offset-4 group-hover:underline">
-                      Read article
-                      <Chevron />
+                    <span className="shrink-0 font-mono text-caption font-normal text-ash-gray">
+                      {news.time}
                     </span>
                   </div>
+
+                  <h3 className="mt-6 text-heading-sm font-normal text-carbon-black underline-offset-4 group-hover:underline">
+                    {news.title}
+                  </h3>
+                  <p className="mt-4 line-clamp-2 text-body font-normal text-zinc-gray">
+                    {news.summary}
+                  </p>
+
+                  <span className="mt-6 flex items-center gap-2 font-mono text-caption font-normal uppercase tracking-label-sm text-ash-gray">
+                    {news.source}
+                    <Chevron className="h-3 w-3 transition-transform duration-200 group-hover:translate-x-1" />
+                  </span>
                 </a>
               ))}
           </div>
-        </div>
+        </section>
       </div>
 
       {/* Sandbox CTA — the page's second cinematic dark moment. */}
-      <div className="relative mt-section w-full overflow-hidden">
+      <div className="relative w-full overflow-hidden">
         <img
           src={networkMesh}
           alt=""
           aria-hidden="true"
           className="absolute inset-0 h-full w-full object-cover"
         />
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-carbon-black/75"
-        />
+        <div aria-hidden="true" className="absolute inset-0 bg-carbon-black/75" />
         <div
           className={`relative z-10 flex flex-col items-center py-section text-center ${containerClass}`}
         >
           <span className="font-mono text-caption font-normal uppercase tracking-label-lg text-paper-white/75">
             Sandboxed by design
           </span>
-          <h2 className="mt-6 max-w-3xl text-heading md:text-heading-lg font-normal text-paper-white">
+          <h2 className="mt-8 max-w-[16ch] text-heading md:text-heading-lg lg:text-display-sm font-normal text-paper-white">
             Every position you take stays inside the vault
           </h2>
-          <p className="mt-5 max-w-[480px] text-body-lg font-normal text-paper-white/85">
+          <p className="mt-8 max-w-[480px] text-body-lg font-normal text-paper-white/85">
             Balances, trades, and comments are scoped to your account and run
             against simulated data. Nothing here touches a real brokerage.
           </p>
           <Link
             to="/register"
-            className={`mt-10 inline-flex items-center gap-2 ${ctaClass}`}
+            className={`mt-12 inline-flex items-center gap-2 ${ctaClass}`}
           >
             Create an account
             <Chevron className="h-4 w-4" />
@@ -396,24 +398,24 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* FAQ — no boxes, no borders. Whitespace and type size do the work. */}
-      <div className={`relative z-10 pb-section pt-section ${containerClass}`}>
-        <h2 className="mb-10 text-heading md:text-heading-lg font-normal text-carbon-black">
-          Frequently asked questions
-        </h2>
+      {/* FAQ — no boxes, no rules. Whitespace and type size do the work, and
+          the measure is capped so the ghost link stays beside its question
+          instead of drifting to the far edge of the grid. */}
+      <div className={`relative z-10 py-section ${containerClass}`}>
+        <SectionHeader eyebrow="Answers" title="Frequently asked questions" />
 
-        <div className="flex flex-col gap-element">
+        <div className="mt-16 flex max-w-[860px] flex-col gap-element">
           {faqs.map((faq) => (
             <div key={faq.id} className="w-full">
               <button
                 onClick={() => toggleFaq(faq.id)}
                 aria-expanded={openFaq === faq.id}
-                className="flex w-full cursor-pointer items-start justify-between gap-6 py-4 text-left"
+                className="flex w-full cursor-pointer items-start justify-between gap-8 py-4 text-left"
               >
                 <span className="text-heading-sm md:text-heading font-normal text-carbon-black">
                   {faq.question}
                 </span>
-                <span className="shrink-0 whitespace-nowrap pt-2 text-label font-normal text-zinc-gray underline-offset-4 hover:underline">
+                <span className="shrink-0 whitespace-nowrap pt-3 text-label font-normal text-zinc-gray underline-offset-4 hover:underline">
                   {openFaq === faq.id ? "Close" : "Read more"}
                 </span>
               </button>
@@ -422,7 +424,7 @@ const Hero = () => {
                   openFaq === faq.id ? "max-h-40" : "max-h-0"
                 }`}
               >
-                <p className="max-w-2xl pb-6 text-body-lg font-normal text-zinc-gray">
+                <p className="max-w-[62ch] pb-6 text-body-lg font-normal text-zinc-gray">
                   {faq.answer}
                 </p>
               </div>
@@ -431,13 +433,7 @@ const Hero = () => {
         </div>
       </div>
 
-      <footer className="w-full border-t border-mist-gray bg-fog-gray">
-        <div
-          className={`py-8 text-center font-mono text-caption font-normal uppercase tracking-label text-zinc-gray ${containerClass}`}
-        >
-          © 2026 DOL-FIN · Simulated data, run in a secure sandbox
-        </div>
-      </footer>
+      <SiteFooter />
     </section>
   )
 }

@@ -62,19 +62,24 @@ const LoginPage = () => {
         </div>
       </div>
 
-      <div className="flex flex-1 items-center justify-center px-6 pb-16 pt-28">
-        <div className="w-full sm:max-w-md">
-          <div className="rounded-card border border-mist-gray bg-paper-white p-8 sm:p-10">
-            <div className="mb-8 space-y-2">
-              <h1 className="text-heading font-normal text-carbon-black">
-                Sign in to your account
-              </h1>
-              <p className="text-body font-normal text-zinc-gray">
-                Pick up exactly where you left the tape.
-              </p>
-            </div>
+      {/* No card. The form sits directly on the canvas — the panel beside it
+          already provides the containing edge, so a border here would be a
+          box inside a box. */}
+      <div className="flex flex-1 items-center justify-center px-6 pb-20 pt-28 sm:px-12">
+        <div className="w-full sm:max-w-[420px]">
+          <div className="mb-12">
+            <span className="block font-mono text-caption font-normal uppercase tracking-label-lg text-ash-gray">
+              Welcome back
+            </span>
+            <h1 className="mt-5 text-heading md:text-heading-lg font-normal text-carbon-black">
+              Sign in to your account
+            </h1>
+            <p className="mt-5 text-body-lg font-normal text-zinc-gray">
+              Pick up exactly where you left the tape.
+            </p>
+          </div>
 
-            <form className="space-y-6" onSubmit={handleSubmit(handleLogin)}>
+            <form className="space-y-8" onSubmit={handleSubmit(handleLogin)}>
               <div>
                 <label htmlFor="username" className={labelClass}>
                   Username
@@ -112,7 +117,7 @@ const LoginPage = () => {
               <button type="submit" className={primaryButtonClass}>
                 Sign In
               </button>
-              <p className="text-body font-normal text-zinc-gray">
+              <p className="border-t border-mist-gray pt-8 text-body font-normal text-zinc-gray">
                 Don’t have an account yet?{" "}
                 <Link
                   to="/register"
@@ -122,7 +127,6 @@ const LoginPage = () => {
                 </Link>
               </p>
             </form>
-          </div>
         </div>
       </div>
     </section>
