@@ -64,7 +64,7 @@ const PurchasePortfolio: React.FC<PurchasePortfolioProps> = ({
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-onyx-canvas/60 px-4">
-            <div className="w-full max-w-md rounded-card border border-slate-border/45 bg-graphite-card p-card font-sans text-ivory-text shadow-subtle animate-fadeIn">
+            <div className="w-full max-w-md rounded-card bg-graphite-card ring-1 ring-inset ring-mist-border/6 p-card font-sans text-ivory-text shadow-subtle animate-fadeIn">
                 <div className="mb-6 flex items-center justify-between">
                     <h3 className="text-heading-sm font-normal text-ivory-text">
                         {mode === "BUY" ? "Buy" : "Sell"}{" "}
@@ -73,7 +73,7 @@ const PurchasePortfolio: React.FC<PurchasePortfolioProps> = ({
                     <button
                         onClick={onClose}
                         aria-label="Close"
-                        className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-pill border border-slate-border/45 text-ash-text transition-colors hover:border-slate-border hover:text-ivory-text"
+                        className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-pill ring-1 ring-inset ring-mist-border/8 text-ash-text transition-colors hover:ring-mist-border/20 hover:text-ivory-text"
                     >
                         <svg
                             className="h-3 w-3"
@@ -92,7 +92,7 @@ const PurchasePortfolio: React.FC<PurchasePortfolioProps> = ({
                     </button>
                 </div>
 
-                <div className="mb-6 space-y-2 rounded-card border border-slate-border/45 bg-obsidian-button p-4 text-body">
+                <div className="mb-6 space-y-2 rounded-card bg-obsidian-button p-4 text-body">
                     <div className="flex justify-between">
                         <span className="text-ash-text">Wallet Balance:</span>
                         <span className="font-mono text-ivory-text">
@@ -132,7 +132,7 @@ const PurchasePortfolio: React.FC<PurchasePortfolioProps> = ({
                     />
                 </div>
 
-                <div className="mb-6 flex items-center justify-between border-t border-slate-border/45 pt-4">
+                <div className="mb-6 flex items-center justify-between border-t border-mist-border/8 pt-4">
                     <span className="text-body font-normal text-ash-text">
                         {mode === "BUY" ? "Total Cost:" : "Total Revenue:"}
                     </span>
@@ -148,7 +148,7 @@ const PurchasePortfolio: React.FC<PurchasePortfolioProps> = ({
                 </div>
 
                 {isInsufficientFunds && (
-                    <div className="mb-4 flex flex-col items-center justify-center space-y-2 rounded-card border border-slate-border/45 bg-obsidian-button p-4">
+                    <div className="mb-4 flex flex-col items-center justify-center space-y-2 rounded-card bg-obsidian-button p-4">
                         <p className="text-center text-body font-normal text-loss">
                             Insufficient funds to complete this transaction.
                         </p>
@@ -163,7 +163,7 @@ const PurchasePortfolio: React.FC<PurchasePortfolioProps> = ({
                 )}
 
                 {isInsufficientShares && (
-                    <div className="mb-4 rounded-card border border-slate-border/45 bg-obsidian-button p-4">
+                    <div className="mb-4 rounded-card bg-obsidian-button p-4">
                         <p className="text-center text-body font-normal text-loss">
                             You cannot sell more shares than you currently own.
                         </p>
@@ -173,7 +173,7 @@ const PurchasePortfolio: React.FC<PurchasePortfolioProps> = ({
                 <div className="flex space-x-3">
                     <button
                         onClick={onClose}
-                        className="flex-1 cursor-pointer rounded-pill border border-slate-border/45 bg-graphite-card px-6 py-cta text-body font-normal text-ivory-text transition-colors hover:border-slate-border"
+                        className="flex-1 cursor-pointer rounded-pill ring-1 ring-inset ring-mist-border/8 bg-graphite-card px-6 py-cta text-body font-normal text-ivory-text transition-colors hover:ring-mist-border/20"
                     >
                         Cancel
                     </button>

@@ -1,8 +1,11 @@
+import { motion } from "framer-motion"
 import DeletePortfolio from "../DeletePortfolio/DeletePortfolio"
 import { Link } from "react-router-dom"
 import type { PortfolioGet } from "../../../Models/Portfolio"
 import type { SyntheticEvent } from "react"
 import { companyLogos } from "../../../Components/Table/TestData"
+import GlassLogo from "../../Dashboard/GlassLogo"
+import { reveal } from "../../../Helpers/motion"
 
 interface Props {
   portfolioValue: PortfolioGet
@@ -10,7 +13,19 @@ interface Props {
   totalPortfolioInvested: number
 }
 
-const CardPortfolio = ({ portfolioValue, onPortfolioDelete, totalPortfolioInvested }: Props) => {
+/**
+ * One holding.
+ *
+ * A Graphite card — one of the few surfaces that genuinely earns a fill,
+ * since a portfolio is a set of peers that has to read as discrete items. The
+ * internal rules are gone: the figure pairs are separated by space and by the
+ * mono/label contrast, not by borders.
+ */
+const CardPortfolio = ({
+  portfolioValue,
+  onPortfolioDelete,
+  totalPortfolioInvested,
+}: Props) => {
   const symbolUpper = portfolioValue.symbol.toUpperCase()
 
   const currentPrice = portfolioValue.purchase || 0
@@ -23,94 +38,103 @@ const CardPortfolio = ({ portfolioValue, onPortfolioDelete, totalPortfolioInvest
   const pnlPercentage = totalCost > 0 ? (pnlAmount / totalCost) * 100 : 0
   const isProfit = pnlAmount >= 0
 
-  const currentWeightPercent = totalPortfolioInvested > 0 ? (totalCost / totalPortfolioInvested) * 100 : 0
+  const currentWeightPercent =
+    totalPortfolioInvested > 0 ? (totalCost / totalPortfolioInvested) * 100 : 0
   const weightString = `${currentWeightPercent.toFixed(0)}%`
-  const barColor = isProfit ? "bg-gain" : "bg-loss"
+
+  const figures = [
+    { label: "Invested", value: `$${totalCost.toFixed(2)}`, tone: "text-ivory-text" },
+    {
+      label: "Current value",
+      value: `$${currentTotalValue.toFixed(2)}`,
+      tone: "text-ivory-text",
+      align: "text-right",
+    },
+    {
+      label: "Avg cost / live",
+      value: `$${avgCost.toFixed(2)} / $${currentPrice.toFixed(2)}`,
+      tone: "text-ash-text",
+    },
+  ]
 
   return (
-    <div className="group relative flex flex-col rounded-card border border-slate-border/45 bg-graphite-card p-card transition-colors duration-200 hover:border-slate-border">
-      <div className="absolute right-3 top-3 z-10 cursor-pointer opacity-40 transition-opacity group-hover:opacity-100">
+    <motion.div
+      variants={reveal}
+      className="group relative flex flex-col rounded-card bg-graphite-card p-5 ring-1 ring-inset ring-mist-border/6 transition-shadow duration-200 hover:ring-mist-border/16"
+    >
+      <div className="absolute right-3 top-3 z-10 cursor-pointer opacity-0 transition-opacity duration-200 focus-within:opacity-100 group-hover:opacity-100">
         <DeletePortfolio
           portfolioValue={portfolioValue.symbol}
           onPortfolioDelete={onPortfolioDelete}
         />
       </div>
 
-      <div className="mb-4 flex items-center space-x-3 border-b border-slate-border/45 pb-3">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-icon border border-slate-border/45 bg-graphite-card p-2">
+      <div className="flex items-center gap-3">
+        <GlassLogo className="h-11 w-11" padding="p-2.5">
           {companyLogos[symbolUpper] ? (
             companyLogos[symbolUpper]()
           ) : (
-            <div className="font-mono text-caption font-bold text-ivory-text">
+            <span className="font-mono text-caption font-bold text-ivory-text">
               {symbolUpper.substring(0, 2)}
-            </div>
+            </span>
           )}
-        </div>
+        </GlassLogo>
         <div className="flex flex-col text-left">
           <Link
             to={`/company/${portfolioValue.symbol}/company-profile`}
-            className="text-subheading font-normal uppercase text-ivory-text underline-offset-4 hover:underline"
+            className="text-subheading font-medium uppercase text-ivory-text underline-offset-4 hover:underline"
           >
             {portfolioValue.symbol}
           </Link>
           <span className="font-mono text-caption font-normal text-ash-text">
-            {quantity} Shares
+            {quantity} shares
           </span>
         </div>
       </div>
 
-      <div className="mb-4 grid grid-cols-2 gap-y-3 text-left">
-        <div className="flex flex-col">
-          <span className="font-mono text-caption font-normal uppercase tracking-label-sm text-ash-text">
-            Invested
-          </span>
-          <span className="font-mono text-body font-normal text-ivory-text">
-            ${totalCost.toFixed(2)}
-          </span>
-        </div>
+      <dl className="mt-6 grid grid-cols-2 gap-x-4 gap-y-4 text-left">
+        {figures.map((f) => (
+          <div key={f.label} className={`flex flex-col ${f.align ?? ""}`}>
+            <dt className="font-mono text-caption font-normal uppercase tracking-label-sm text-ash-text/70">
+              {f.label}
+            </dt>
+            <dd className={`mt-1 font-mono text-body font-normal ${f.tone}`}>
+              {f.value}
+            </dd>
+          </div>
+        ))}
+
         <div className="flex flex-col text-right">
-          <span className="font-mono text-caption font-normal uppercase tracking-label-sm text-ash-text">
-            Current Value
-          </span>
-          <span className="font-mono text-body font-normal text-ivory-text">
-            ${currentTotalValue.toFixed(2)}
-          </span>
-        </div>
-        <div className="flex flex-col">
-          <span className="font-mono text-caption font-normal uppercase tracking-label-sm text-ash-text">
-            Avg. Cost / Live
-          </span>
-          <span className="font-mono text-body font-normal text-ash-text">
-            ${avgCost.toFixed(2)} / ${currentPrice.toFixed(2)}
-          </span>
-        </div>
-        <div className="flex flex-col text-right">
-          <span className="font-mono text-caption font-normal uppercase tracking-label-sm text-ash-text">
-            Profit / Loss
-          </span>
-          <span
-            className={`font-mono text-body font-bold ${isProfit ? "text-gain" : "text-loss"}`}
+          <dt className="font-mono text-caption font-normal uppercase tracking-label-sm text-ash-text/70">
+            Profit / loss
+          </dt>
+          <dd
+            className={`mt-1 font-mono text-body font-bold ${
+              isProfit ? "text-gain" : "text-loss"
+            }`}
           >
             {isProfit ? "▲ +" : "▼ "}
             {pnlAmount.toFixed(2)} ({isProfit ? "+" : ""}
             {pnlPercentage.toFixed(2)}%)
-          </span>
+          </dd>
         </div>
-      </div>
+      </dl>
 
-      <div className="flex w-full flex-col space-y-2 border-t border-slate-border/45 pt-3">
-        <div className="flex items-center justify-between font-mono text-caption font-normal uppercase tracking-label-sm text-ash-text">
-          <span>Portfolio Weight</span>
+      <div className="mt-6 flex w-full flex-col gap-2">
+        <div className="flex items-center justify-between font-mono text-caption font-normal uppercase tracking-label-sm text-ash-text/70">
+          <span>Portfolio weight</span>
           <span className="text-ivory-text">{weightString}</span>
         </div>
-        <div className="h-1 w-full overflow-hidden rounded-pill bg-obsidian-button">
+        {/* The weight bar is Cobalt regardless of P&L: it measures allocation,
+            not direction, and colouring it green/red would imply otherwise. */}
+        <div className="h-1 w-full overflow-hidden rounded-pill bg-onyx-canvas">
           <div
-            className={`h-full ${barColor} rounded-pill`}
+            className="h-full rounded-pill bg-cobalt"
             style={{ width: weightString }}
-          ></div>
+          />
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
 

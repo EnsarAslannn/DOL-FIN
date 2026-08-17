@@ -3,7 +3,7 @@ import { realMarketNewsData } from "../../Components/Table/TestData"
 const MarketNews = () => {
   return (
     <div className="mt-4 flex w-full flex-col space-y-4">
-      <h2 className="flex items-center gap-2 border-b border-slate-border/45 pb-3 text-left text-heading font-normal text-ivory-text">
+      <h2 className="flex items-center gap-2 border-b border-mist-border/8 pb-3 text-left text-heading font-normal text-ivory-text">
         Latest Market Insights
       </h2>
       <div className="grid grid-cols-1 gap-3">
@@ -13,7 +13,7 @@ const MarketNews = () => {
             href={news.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex flex-col justify-between gap-3 rounded-card border border-slate-border/45 bg-graphite-card p-card text-left transition-colors duration-200 hover:border-slate-border sm:flex-row sm:items-center"
+            className="group flex flex-col justify-between gap-3 rounded-card bg-graphite-card ring-1 ring-inset ring-mist-border/6 p-card text-left transition-colors duration-200 hover:ring-mist-border/20 sm:flex-row sm:items-center"
           >
             <div className="flex flex-col space-y-2">
               <div className="flex items-center space-x-2">

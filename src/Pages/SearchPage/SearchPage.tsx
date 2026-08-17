@@ -10,7 +10,8 @@ import ListPortfolio from "../../Components/Portfolio/ListPortfolio/ListPortfoli
 import CardList from "../../Components/CardList/CardList"
 import type { PortfolioGet } from "../../Models/Portfolio"
 import type { StockSearchResult } from "../../Models/StockSearchResult"
-import { containerClass } from "../../Helpers/layout"
+import { contentClass } from "../../Helpers/layout"
+import { PanelHeader } from "../../Components/Dashboard/Panel"
 import {
   portfolioAddAPI,
   portfolioSellAPI,
@@ -307,9 +308,9 @@ const SearchPage = () => {
   const areaD = `${pathD} L ${points[points.length - 1].x} 150 L 0 150 Z`
 
   return (
-    <div className="w-full min-h-screen bg-onyx-canvas font-sans pb-section text-ivory-text">
-      <div className={`flex flex-col space-y-6 ${containerClass}`}>
-        <div className="w-full pt-28">
+    <div className="min-h-screen w-full bg-onyx-canvas pb-section font-sans text-ivory-text">
+      <div className={`flex flex-col gap-14 ${contentClass}`}>
+        <div className="w-full pt-32">
           <Search
             onSearchSubmit={onSearchSubmit}
             search={search}
@@ -317,27 +318,27 @@ const SearchPage = () => {
           />
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
-          <div className="lg:col-span-3 flex flex-col space-y-10">
-            <div className="flex flex-col space-y-4">
-              <h2 className="text-heading font-normal text-ivory-text border-b border-slate-border/45 pb-3">
-                Search Results
-              </h2>
-              {searchResult.length > 0 ? (
-                <div className="flex flex-col space-y-1">
-                  <CardList
-                    searchResults={searchResult}
-                    onPortfolioCreate={onPortfolioCreateTrigger}
-                  />
-                </div>
-              ) : (
-                <div className="py-16 text-center rounded-card border border-slate-border/45 bg-graphite-card">
-                  <span className="text-sm font-normal text-ash-text">
-                    Use the search bar above to find and add instruments to your portfolio.
-                  </span>
-                </div>
-              )}
-            </div>
+        <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-4 lg:gap-10">
+          <div className="flex flex-col gap-16 lg:col-span-3">
+            <section className="flex flex-col gap-6">
+              <PanelHeader
+                eyebrow="Results"
+                title="Search"
+                actions={
+                  searchResult.length > 0 ? (
+                    <span className="font-mono text-caption font-normal uppercase tracking-label-sm text-ash-text/70">
+                      {searchResult.length} match
+                      {searchResult.length === 1 ? "" : "es"}
+                    </span>
+                  ) : undefined
+                }
+              />
+              <CardList
+                searchResults={searchResult}
+                onPortfolioCreate={onPortfolioCreateTrigger}
+                hasSearched={Boolean(search.trim())}
+              />
+            </section>
 
             <ListPortfolio
               portfolioValues={portfolioValues!}
@@ -345,10 +346,8 @@ const SearchPage = () => {
             />
 
             {portfolioValues && (
-              <div className="w-full flex flex-col space-y-4 pt-2">
-                <h3 className="text-caption font-normal text-ash-text uppercase tracking-label-lg font-mono pl-1">
-                  Portfolio Analytics
-                </h3>
+              <div className="flex w-full flex-col gap-6">
+                <PanelHeader eyebrow="Analytics" title="Portfolio analytics" />
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
                   <button type="button" onClick={() => togglePanel("worth")} className="cursor-pointer text-left w-full">
                     <Tile title="Total Net Worth" subTitle={`$${estimatedTotalValue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} />
@@ -364,8 +363,8 @@ const SearchPage = () => {
                 <div
                   className={`transition-all duration-300 ease-in-out overflow-hidden ${activePanel === "worth" ? "max-h-[350px] opacity-100 mt-2" : "max-h-0 opacity-0 pointer-events-none"}`}
                 >
-                  <div className="w-full rounded-card border border-slate-border/45 bg-graphite-card p-6 flex flex-col space-y-4 text-left">
-                    <div className="flex items-center justify-between border-b border-slate-border/45 pb-3">
+                  <div className="w-full rounded-card bg-graphite-card ring-1 ring-inset ring-mist-border/6 p-6 flex flex-col space-y-4 text-left">
+                    <div className="flex items-center justify-between border-b border-mist-border/8 pb-3">
                       <div className="flex flex-col">
                         <span className="text-xs font-bold text-ivory-text tracking-tight">
                           Net Worth Growth Timeline
@@ -380,11 +379,11 @@ const SearchPage = () => {
                     </div>
 
                     <div className="w-full h-44 relative pt-4 flex items-end">
-                      <div className="absolute inset-0 flex flex-col justify-between pointer-events-none border-l border-b border-slate-border/45 pb-6 pl-2">
-                        <div className="w-full border-t border-slate-border/45 text-caption font-bold font-mono text-ash-text pt-1 text-right">
+                      <div className="absolute inset-0 flex flex-col justify-between pointer-events-none border-l border-b border-mist-border/8 pb-6 pl-2">
+                        <div className="w-full border-t border-mist-border/8 text-caption font-bold font-mono text-ash-text pt-1 text-right">
                           ${maxVal.toFixed(0)}
                         </div>
-                        <div className="w-full border-t border-slate-border/45 text-caption font-bold font-mono text-ash-text pt-1 text-right">
+                        <div className="w-full border-t border-mist-border/8 text-caption font-bold font-mono text-ash-text pt-1 text-right">
                           ${((maxVal + minVal) / 2).toFixed(0)}
                         </div>
                         <div className="w-full text-caption font-bold font-mono text-ash-text text-right">
@@ -395,8 +394,8 @@ const SearchPage = () => {
                       <svg viewBox="0 0 500 150" className="w-full h-full pr-4 pl-8 z-10 overflow-visible">
                         <defs>
                           <linearGradient id="chartGlow" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#3d6b55" stopOpacity="0.25" />
-                            <stop offset="100%" stopColor="#3d6b55" stopOpacity="0.0" />
+                            <stop offset="0%" stopColor="#4ec98a" stopOpacity="0.25" />
+                            <stop offset="100%" stopColor="#4ec98a" stopOpacity="0.0" />
                           </linearGradient>
                         </defs>
                         <path
@@ -429,8 +428,8 @@ const SearchPage = () => {
                 <div
                   className={`transition-all duration-300 ease-in-out overflow-hidden ${activePanel === "health" ? "max-h-[350px] opacity-100 mt-2" : "max-h-0 opacity-0 pointer-events-none"}`}
                 >
-                  <div className="w-full rounded-card border border-slate-border/45 bg-graphite-card p-6 flex flex-col space-y-4 text-left">
-                    <div className="flex items-center justify-between border-b border-slate-border/45 pb-3">
+                  <div className="w-full rounded-card bg-graphite-card ring-1 ring-inset ring-mist-border/6 p-6 flex flex-col space-y-4 text-left">
+                    <div className="flex items-center justify-between border-b border-mist-border/8 pb-3">
                       <div className="flex flex-col">
                         <span className="text-xs font-bold text-ivory-text tracking-tight">
                           Portfolio Risk & Diversification Audit
@@ -439,12 +438,12 @@ const SearchPage = () => {
                           Quantifying capital exposure and asset correlation metrics
                         </span>
                       </div>
-                      <span className={`text-caption font-bold bg-obsidian-button px-2 py-1 rounded border ${portfolioValues && portfolioValues.length > 3 ? "text-gain border-gain/20" : "text-ash-text border-slate-border/45"
+                      <span className={`text-caption font-bold bg-obsidian-button px-2 py-1 rounded border ${portfolioValues && portfolioValues.length > 3 ? "text-gain border-gain/20" : "text-ash-text border-mist-border/10"
                         }`}>
                         Active Strategy: {portfolioHealth}
                       </span>
                     </div>
-                    <div className="bg-obsidian-button p-5 rounded-card border border-slate-border/45 leading-relaxed">
+                    <div className="bg-obsidian-button p-5 rounded-card ring-1 ring-inset ring-mist-border/8 leading-relaxed">
                       <p className="text-xs font-bold text-ash-text mb-2 uppercase tracking-wider font-mono">
                         Macroeconomic & Structural Risk Analysis:
                       </p>
@@ -458,8 +457,8 @@ const SearchPage = () => {
                 <div
                   className={`transition-all duration-300 ease-in-out overflow-hidden ${activePanel === "sector" ? "max-h-[350px] opacity-100 mt-2" : "max-h-0 opacity-0 pointer-events-none"}`}
                 >
-                  <div className="w-full rounded-card border border-slate-border/45 bg-graphite-card p-6 flex flex-col space-y-5 text-left">
-                    <div className="flex items-center justify-between border-b border-slate-border/45 pb-3">
+                  <div className="w-full rounded-card bg-graphite-card ring-1 ring-inset ring-mist-border/6 p-6 flex flex-col space-y-5 text-left">
+                    <div className="flex items-center justify-between border-b border-mist-border/8 pb-3">
                       <div className="flex flex-col">
                         <span className="text-xs font-bold text-ivory-text tracking-tight">
                           Sector Allocation Layout

@@ -22,7 +22,7 @@ const columns = [
     heading: "Company",
     links: [
       { to: "/#how-it-works", label: "How it works" },
-      { to: "/#help", label: "Help centre" },
+      { to: "/#help", label: "Help Center" },
     ],
   },
 ]
@@ -32,7 +32,7 @@ const columns = [
  *
  * Footer Navy is a shade deeper than the section bands and drained of their
  * blue, which is what separates it from the two Onyx bands above without
- * reading as a fourth surface level. It follows the cream Help Centre, so
+ * reading as a fourth surface level. It follows the cream Help Center, so
  * the boundary above it is already a hard tonal break; the deeper navy is
  * what keeps it from being mistaken for another dark *section*.
  *

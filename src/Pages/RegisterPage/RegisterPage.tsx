@@ -145,7 +145,7 @@ const RegisterPage = () => {
                   className={fieldClass}
                   {...register("password")}
                 />
-                <div className="mt-3 rounded-card border border-slate-border/45 bg-obsidian-button p-4">
+                <div className="mt-3 rounded-card bg-obsidian-button p-4">
                   <p className="font-mono text-caption font-normal uppercase tracking-label text-ash-text">
                     Password requirements
                   </p>
@@ -164,7 +164,7 @@ const RegisterPage = () => {
               <button type="submit" className={primaryButtonClass}>
                 Sign Up
               </button>
-              <p className="border-t border-slate-border/45 pt-8 text-body font-normal text-ash-text">
+              <p className="border-t border-mist-border/8 pt-8 text-body font-normal text-ash-text">
                 Already have an account?{" "}
                 <Link
                   to="/login"

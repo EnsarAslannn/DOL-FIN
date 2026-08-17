@@ -50,7 +50,7 @@ const Search: React.FC<Props> = ({
           </svg>
         </div>
         <input
-          className="w-full rounded-pill border border-slate-border/45 bg-graphite-card py-4 pl-14 pr-32 text-body font-normal text-ivory-text outline-none transition-colors duration-200 placeholder:text-ash-text/70 focus:border-cobalt focus:ring-2 focus:ring-cobalt/25"
+          className="w-full rounded-pill ring-1 ring-inset ring-mist-border/8 bg-graphite-card py-4 pl-14 pr-32 text-body font-normal text-ivory-text outline-none transition-colors duration-200 placeholder:text-ash-text/70 focus:border-cobalt focus:ring-2 focus:ring-cobalt/25"
           id="search-input"
           placeholder="Search companies by ticker or name..."
           value={search}
@@ -69,8 +69,8 @@ const Search: React.FC<Props> = ({
       </form>
 
       {showSuggestions && (
-        <div className="absolute left-2 right-2 z-50 mt-2 flex max-h-60 flex-col overflow-hidden rounded-card border border-slate-border/45 bg-graphite-card text-left shadow-subtle">
-          <div className="border-b border-slate-border/45 px-4 py-3 font-mono text-caption font-normal uppercase tracking-label text-ash-text">
+        <div className="absolute left-2 right-2 z-50 mt-2 flex max-h-60 flex-col overflow-hidden rounded-card bg-graphite-card ring-1 ring-inset ring-mist-border/6 text-left shadow-subtle">
+          <div className="border-b border-mist-border/8 px-4 py-3 font-mono text-caption font-normal uppercase tracking-label text-ash-text">
             Featured Demo Assets
           </div>
           {suggestions

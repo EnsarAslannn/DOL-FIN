@@ -95,8 +95,8 @@ const BalanceSheet = () => {
 
   if (!allowedStocks.includes(ticker?.toUpperCase())) {
     return (
-      <div className="rounded-card border border-slate-border/45 bg-graphite-card w-full rounded-card p-8 flex flex-col items-center justify-center text-center min-h-[350px] space-y-4 my-4 animate-fadeIn">
-        <div className="flex h-16 w-16 items-center justify-center rounded-icon border border-slate-border/45 bg-obsidian-button">
+      <div className="rounded-card bg-graphite-card ring-1 ring-inset ring-mist-border/6 w-full rounded-card p-8 flex flex-col items-center justify-center text-center min-h-[350px] space-y-4 my-4 animate-fadeIn">
+        <div className="flex h-16 w-16 items-center justify-center rounded-icon bg-obsidian-button">
           <svg
                 className="h-6 w-6 text-ivory-text"
                 fill="none"
@@ -118,13 +118,13 @@ const BalanceSheet = () => {
         </div>
         <p className="text-body text-ash-text max-w-md leading-relaxed">
           Financial data for{" "}
-          <span className="font-bold font-mono text-ivory-text bg-obsidian-button px-2 py-1 rounded border border-slate-border/45">
+          <span className="font-bold font-mono text-ivory-text bg-obsidian-button px-2 py-1 rounded ring-1 ring-inset ring-mist-border/8">
             {ticker?.toUpperCase()}
           </span>{" "}
           is currently unavailable for this demo version.
         </p>
         <div className="pt-2">
-          <p className="text-caption text-ash-text font-normal bg-obsidian-button border border-slate-border/45 px-3 py-2 rounded-card font-mono">
+          <p className="text-caption text-ash-text font-normal bg-obsidian-button px-3 py-2 rounded-card font-mono">
             Please audit premium corporate tiers: AAPL, MSFT, NVDA, TSLA, GOOGL
           </p>
         </div>
@@ -184,7 +184,7 @@ const BalanceSheet = () => {
     return (
       <div className="w-full flex flex-col space-y-4 mt-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-          <div className="bg-graphite-card border border-slate-border/45 rounded-card p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
+          <div className="bg-graphite-card ring-1 ring-inset ring-mist-border/6 rounded-card p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
             <div className="flex flex-col space-y-1">
               <span className="text-ash-text uppercase font-bold text-caption tracking-widest font-mono">
                 Debt-to-Equity Ratio
@@ -208,7 +208,7 @@ const BalanceSheet = () => {
             </div>
           </div>
 
-          <div className="bg-graphite-card border border-slate-border/45 rounded-card p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
+          <div className="bg-graphite-card ring-1 ring-inset ring-mist-border/6 rounded-card p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
             <div className="flex flex-col space-y-1">
               <span className="text-ash-text uppercase font-bold text-caption tracking-widest font-mono">
                 Asset Turnover Ratio
@@ -233,8 +233,8 @@ const BalanceSheet = () => {
           </div>
         </div>
 
-        <div className="w-full bg-graphite-card border border-slate-border/45 rounded-card p-5 shadow-xl flex flex-col space-y-3 text-left">
-          <div className="flex items-center justify-between border-b border-slate-border/45 pb-3">
+        <div className="w-full bg-graphite-card ring-1 ring-inset ring-mist-border/6 rounded-card p-5 shadow-xl flex flex-col space-y-3 text-left">
+          <div className="flex items-center justify-between border-b border-mist-border/8 pb-3">
             <h4 className="text-body font-bold text-ash-text uppercase tracking-wider font-mono flex items-center gap-2">
               <svg
                 className="w-4 h-4 text-ash-text"
@@ -274,7 +274,7 @@ const BalanceSheet = () => {
     <>
       {balanceSheet ? (
         <div className="w-full flex flex-col">
-          <div className="block w-full bg-graphite-card shadow-xl rounded-card p-6 mb-6 border border-slate-border/45 flex flex-col space-y-3 text-left">
+          <div className="block w-full bg-graphite-card shadow-xl rounded-card p-6 mb-6 ring-1 ring-inset ring-mist-border/8 flex flex-col space-y-3 text-left">
             <h3 className="text-body-lg font-bold text-ivory-text uppercase tracking-wider font-mono">
               Understanding the Balance Sheet
             </h3>

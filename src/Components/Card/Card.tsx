@@ -1,8 +1,11 @@
 import React, { type SyntheticEvent } from "react"
+import { motion } from "framer-motion"
 import AddPortfolio from "../Portfolio/AddPortfolio/AddPortfolio"
 import { Link } from "react-router-dom"
 import { companyLogos } from "../../Components/Table/TestData"
+import GlassLogo from "../Dashboard/GlassLogo"
 import type { StockSearchResult } from "../../Models/StockSearchResult"
+import { reveal } from "../../Helpers/motion"
 
 interface Props {
   id: string
@@ -10,11 +13,18 @@ interface Props {
   onPortfolioCreate: (e: SyntheticEvent) => void
 }
 
-const Card: React.FC<Props> = ({
-  id,
-  searchResult,
-  onPortfolioCreate,
-}: Props) => {
+/**
+ * One search result.
+ *
+ * A row on the canvas rather than a bordered card: a hairline separates it
+ * from the next, and the only fill appears on hover. The company mark sits on
+ * the frosted glass plinth, which is the one piece of visual weight the row
+ * carries — everything else is type on the canvas.
+ *
+ * Entrance is driven by the parent list's stagger via the shared `reveal`
+ * variant, so results arrive in sequence as the response lands.
+ */
+const Card: React.FC<Props> = ({ id, searchResult, onPortfolioCreate }: Props) => {
   const symbol = searchResult.symbol || searchResult.Symbol || ""
   const name =
     searchResult.companyName ||
@@ -32,54 +42,59 @@ const Card: React.FC<Props> = ({
   const statementLinks = [
     { to: "company-profile", label: "Profile" },
     { to: "income-statement", label: "Income" },
-    { to: "balance-sheet", label: "Balance Sheet" },
-    { to: "cashflow-statement", label: "Cash Flow" },
+    { to: "balance-sheet", label: "Balance sheet" },
+    { to: "cashflow-statement", label: "Cash flow" },
   ]
 
   return (
-    <div
-      className="my-3 flex w-full flex-col items-center justify-between rounded-card border border-slate-border/45 bg-graphite-card p-card transition-colors duration-200 hover:border-slate-border md:flex-row"
+    <motion.div
+      variants={reveal}
+      className="group flex w-full flex-col justify-between gap-6 border-b border-mist-border/8 px-4 py-6 transition-colors duration-200 last:border-b-0 hover:bg-graphite-card/60 md:flex-row md:items-center md:px-6"
       key={id}
       id={id}
     >
-      <div className="flex w-full items-start space-x-4 md:w-auto">
-        {companyLogos[symbolUpper] ? (
-          <div className="mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-icon border border-slate-border/45 bg-graphite-card p-2">
-            {companyLogos[symbolUpper]()}
-          </div>
-        ) : (
-          <div className="mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-icon border border-slate-border/45 bg-obsidian-button font-mono text-caption font-bold text-ivory-text">
-            {symbolUpper}
-          </div>
-        )}
+      <div className="flex w-full items-start gap-5 md:w-auto">
+        <GlassLogo className="h-12 w-12" padding="p-2.5">
+          {companyLogos[symbolUpper] ? (
+            companyLogos[symbolUpper]()
+          ) : (
+            <span className="font-mono text-caption font-bold text-ivory-text">
+              {symbolUpper.slice(0, 4)}
+            </span>
+          )}
+        </GlassLogo>
 
-        <div className="flex flex-col space-y-2 text-left">
-          <div className="relative flex flex-wrap items-center gap-2">
+        <div className="flex min-w-0 flex-col gap-2 text-left">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
             <Link
               to={`/company/${symbolUpper}/company-profile`}
-              className="text-subheading font-normal text-ivory-text underline-offset-4 hover:underline"
+              className="text-subheading font-medium text-ivory-text underline-offset-4 hover:underline"
             >
               {name}
             </Link>
-            <span className="rounded-smallcard border border-slate-border/45 bg-obsidian-button px-2 py-1 font-mono text-caption font-normal text-ash-text">
+            <span className="font-mono text-caption font-normal uppercase tracking-label-sm text-ash-text/70">
               {symbolUpper}
             </span>
           </div>
 
-          <div className="flex items-center space-x-2 text-body font-normal text-ash-text">
+          <div className="flex flex-wrap items-center gap-x-2 text-body font-normal text-ash-text">
             <span>{industry}</span>
-            <span>•</span>
+            <span aria-hidden="true" className="text-ash-text/40">
+              ·
+            </span>
             <span className="font-mono">
-              MCap: ${(marketCap / 1e9).toFixed(1)}B
+              ${(marketCap / 1e9).toFixed(1)}B mkt cap
             </span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 pt-1">
+          {/* Ghost links, revealed on hover at desktop so a long result list
+              stays quiet until the row is being considered. */}
+          <div className="mt-1 flex flex-wrap items-center gap-x-5 gap-y-2 md:opacity-70 md:transition-opacity md:duration-200 md:group-hover:opacity-100">
             {statementLinks.map((link) => (
               <Link
                 key={link.to}
                 to={`/company/${symbolUpper}/${link.to}`}
-                className="rounded-smallcard border border-slate-border/45 px-3 py-1 text-caption font-normal text-ash-text transition-colors duration-150 hover:border-slate-border hover:text-ivory-text"
+                className="text-caption font-normal text-ash-text underline-offset-4 transition-colors duration-150 hover:text-ivory-text hover:underline"
               >
                 {link.label}
               </Link>
@@ -88,8 +103,8 @@ const Card: React.FC<Props> = ({
         </div>
       </div>
 
-      <div className="mt-5 flex w-full shrink-0 items-center justify-between space-x-6 md:mt-0 md:w-auto md:justify-end">
-        <div className="flex flex-col items-end">
+      <div className="flex w-full shrink-0 items-center justify-between gap-8 md:w-auto md:justify-end">
+        <div className="flex flex-col items-start md:items-end">
           <span className="font-mono text-subheading font-normal text-ivory-text">
             ${price.toFixed(2)}
           </span>
@@ -98,16 +113,13 @@ const Card: React.FC<Props> = ({
               isPositive ? "text-gain" : "text-loss"
             }`}
           >
-            {isPositive ? "▲ +1.45%" : "▼ -0.85%"}
+            {isPositive ? "▲ +1.45%" : "▼ −0.85%"}
           </span>
         </div>
 
-        <AddPortfolio
-          onPortfolioCreate={onPortfolioCreate}
-          symbol={symbolUpper}
-        />
+        <AddPortfolio onPortfolioCreate={onPortfolioCreate} symbol={symbolUpper} />
       </div>
-    </div>
+    </motion.div>
   )
 }
 

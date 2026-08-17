@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { companyLogos } from "../Table/TestData"
+import GlassLogo from "../Dashboard/GlassLogo"
 
 export interface TrendStock {
   name: string
@@ -23,8 +24,8 @@ const MarketTrends = ({ stocks }: MarketTrendsProps) => {
   }
 
   return (
-    <div className="w-full rounded-card border border-slate-border/45 bg-graphite-card p-card font-sans text-ivory-text">
-      <div className="mb-5 flex items-center justify-between border-b border-slate-border/45 pb-3">
+    <div className="w-full rounded-card bg-graphite-card ring-1 ring-inset ring-mist-border/6 p-card font-sans text-ivory-text">
+      <div className="mb-5 flex items-center justify-between border-b border-mist-border/8 pb-3">
         <h3 className="flex items-center gap-3 text-subheading font-normal text-ivory-text">
           <span className="relative flex h-2 w-2 text-ivory-text">
             <span className="sonar-ring" />
@@ -49,15 +50,15 @@ const MarketTrends = ({ stocks }: MarketTrendsProps) => {
               className="flex cursor-pointer items-center justify-between rounded-card p-3 transition-colors duration-150 hover:bg-obsidian-button"
             >
               <div className="flex min-w-0 flex-1 items-center space-x-3 text-left">
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-icon border border-slate-border/45 bg-graphite-card p-1">
+                <GlassLogo className="h-8 w-8" padding="p-1.5">
                   {companyLogos[symbolUpper] ? (
                     companyLogos[symbolUpper]()
                   ) : (
-                    <div className="flex h-full w-full items-center justify-center rounded-smallcard font-mono text-caption font-bold text-ivory-text">
+                    <span className="font-mono text-caption font-bold text-ivory-text">
                       {item.symbol.substring(0, 2).toUpperCase()}
-                    </div>
+                    </span>
                   )}
-                </div>
+                </GlassLogo>
                 <div className="flex min-w-0 flex-col">
                   <span className="truncate text-body font-normal text-ivory-text">
                     {item.name}

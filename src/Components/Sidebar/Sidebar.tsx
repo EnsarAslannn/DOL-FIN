@@ -22,10 +22,10 @@ const Sidebar = () => {
 
   return (
     // w-64 is mirrored by CompanyDashboard's md:ml-64 — change both together.
-    <nav className="absolute bottom-0 left-0 top-0 z-[9999] block w-64 -translate-x-full flex-row flex-nowrap border-r border-slate-border/45 bg-graphite-card px-4 pb-8 pt-28 text-left transition-all duration-300 ease-in-out md:z-10 md:translate-x-0">
+    <nav className="absolute bottom-0 left-0 top-0 z-[9999] block w-64 -translate-x-full flex-row flex-nowrap border-r border-mist-border/8 bg-graphite-card px-4 pb-8 pt-28 text-left transition-all duration-300 ease-in-out md:z-10 md:translate-x-0">
       <div className="mx-auto flex w-full min-h-full flex-col flex-nowrap items-center justify-start overflow-y-auto overflow-x-hidden px-0">
         <div className="relative z-40 mt-4 flex h-auto w-full flex-1 flex-col items-stretch">
-          <span className="mb-2 border-b border-slate-border/45 px-4 pb-3 font-mono text-caption font-normal uppercase tracking-label-lg text-ash-text">
+          <span className="mb-2 border-b border-mist-border/8 px-4 pb-3 font-mono text-caption font-normal uppercase tracking-label-lg text-ash-text">
             Instrument Panel
           </span>
           <div className="flex list-none flex-col space-y-1 md:min-w-full md:flex-col">

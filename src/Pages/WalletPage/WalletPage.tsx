@@ -8,7 +8,10 @@ import { toast } from "react-toastify"
 import PurchasePortfolio from "../../Components/Portfolio/PurchasePortfolio/PurchasePortfolio"
 import marketTerrain from "../../assets/extra/capital-stack.webp"
 import { fieldClass, ctaBaseClass, ctaDisabledClass, ctaFillClass } from "../../Helpers/formStyles"
-import { containerClass, navClearanceClass } from "../../Helpers/layout"
+import { contentClass, navClearanceClass } from "../../Helpers/layout"
+import GlassLogo from "../../Components/Dashboard/GlassLogo"
+import EmptyState from "../../Components/Dashboard/EmptyState"
+import { Link } from "react-router-dom"
 
 const WalletPage = () => {
     const { user, updateWalletBalance } = useAuth()
@@ -152,10 +155,11 @@ const WalletPage = () => {
 
     return (
         <div className="w-full min-h-screen bg-onyx-canvas font-sans pb-section text-ivory-text text-left">
-            <div className={`flex flex-col space-y-8 ${navClearanceClass} ${containerClass}`}>
-                <div className="border-b border-slate-border/45 pb-5">
-                    <h1 className="text-heading md:text-heading-lg font-normal text-ivory-text">Wallet Overview</h1>
-                    <p className="mt-3 text-body-lg font-normal text-ash-text">Manage your funds and monitor estimated asset distribution.</p>
+            <div className={`flex flex-col gap-10 ${navClearanceClass} ${contentClass}`}>
+                <div>
+                    <span className="block font-mono text-caption font-normal uppercase tracking-label-lg text-ash-text/70">Wallet</span>
+                    <h1 className="mt-3 text-heading font-medium text-ivory-text md:text-heading-lg">Wallet overview</h1>
+                    <p className="mt-3 max-w-[60ch] text-body-lg font-normal text-ash-text">Manage your funds and monitor estimated asset distribution.</p>
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* The page's single dark surface — a contained product crop
@@ -188,7 +192,7 @@ const WalletPage = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="flex flex-col justify-between rounded-card border border-slate-border/45 bg-graphite-card p-card">
+                    <div className="flex flex-col justify-between rounded-card bg-graphite-card ring-1 ring-inset ring-mist-border/6 p-card">
                         <div>
                             <h3 className="mb-2 text-subheading font-normal text-ivory-text">Deposit Cash</h3>
                             <p className="mb-4 text-body font-normal text-ash-text">Add instant simulator credits into your trading account.</p>
@@ -206,7 +210,7 @@ const WalletPage = () => {
                                         onChange={(e) => setDepositAmount(e.target.value)}
                                         className={`${fieldClass} pl-8 pr-16 font-mono`}
                                     />
-                                    <span className="absolute right-4 rounded-smallcard border border-slate-border/45 bg-obsidian-button px-2 py-1 font-mono text-caption font-normal text-ash-text">USD</span>
+                                    <span className="absolute right-4 rounded-smallcard bg-obsidian-button px-2 py-1 font-mono text-caption font-normal text-ash-text">USD</span>
                                 </div>
                             </div>
                             <button
@@ -222,33 +226,34 @@ const WalletPage = () => {
                         </form>
                     </div>
                 </div>
-                <div className="bg-graphite-card border border-slate-border/45 rounded-card overflow-hidden">
-                    <div className="px-6 py-4 border-b border-slate-border/45 bg-obsidian-button">
-                        <h3 className="font-mono text-caption font-bold uppercase tracking-label-lg text-ash-text">My Assets (Asset View)</h3>
+                <div className="bg-graphite-card ring-1 ring-inset ring-mist-border/6 rounded-card overflow-hidden">
+                    <div className="px-6 pb-2 pt-6">
+                        <span className="block font-mono text-caption font-normal uppercase tracking-label-lg text-ash-text/70">Holdings</span>
+                        <h3 className="mt-2 text-subheading font-medium text-ivory-text">My assets</h3>
                     </div>
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse font-sans">
                             <thead>
-                                <tr className="border-b border-slate-border/45 font-mono text-caption font-bold uppercase tracking-label-lg text-ash-text">
+                                <tr className="border-b border-mist-border/8 font-mono text-caption font-bold uppercase tracking-label-lg text-ash-text">
                                     <th className="py-4 px-6">Asset Name</th>
                                     <th className="py-4 px-6 text-right">Market Price</th>
                                     <th className="py-4 px-6 text-right">Holdings Allocation</th>
                                     <th className="py-4 px-6 text-center w-24">Action</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-slate-border/45 text-body font-normal">
+                            <tbody className="divide-y divide-mist-border/8 text-body font-normal">
                                 <tr className="hover:bg-obsidian-button transition-colors">
                                     <td className="px-6 py-4">
                                         <div className="flex items-center space-x-4">
-                                            {companyLogos["USD"] ? (
-                                                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-icon border border-slate-border/45 bg-graphite-card p-2">
-                                                    {companyLogos["USD"]()}
-                                                </div>
-                                            ) : (
-                                                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-icon border border-slate-border/45 bg-obsidian-button font-mono text-caption font-bold text-ivory-text">
-                                                    USD
-                                                </div>
-                                            )}
+                                            <GlassLogo className="h-10 w-10" padding="p-2">
+                                                {companyLogos["USD"] ? (
+                                                    companyLogos["USD"]()
+                                                ) : (
+                                                    <span className="font-mono text-caption font-bold text-ivory-text">
+                                                        USD
+                                                    </span>
+                                                )}
+                                            </GlassLogo>
                                             <div className="flex flex-col">
                                                 <span className="text-body font-normal text-ivory-text">United States Dollar</span>
                                                 <span className="font-mono text-caption font-normal tracking-wide text-ash-text">CASH</span>
@@ -267,7 +272,7 @@ const WalletPage = () => {
                                     <td className="px-6 py-4 text-center">
                                         <button
                                             onClick={triggerUsdSell}
-                                            className="cursor-pointer rounded-pill border border-slate-border/45 px-4 py-2 text-body font-normal text-ash-text transition-colors hover:border-loss hover:text-loss"
+                                            className="cursor-pointer rounded-pill ring-1 ring-inset ring-mist-border/8 px-4 py-2 text-body font-normal text-ash-text transition-colors hover:ring-loss/50 hover:text-loss"
                                         >
                                             Sell
                                         </button>
@@ -283,15 +288,15 @@ const WalletPage = () => {
                                         <tr key={item.id} className="hover:bg-obsidian-button transition-colors">
                                             <td className="py-4 px-6">
                                                 <div className="flex items-center space-x-4">
-                                                    {companyLogos[symbolUpper] ? (
-                                                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-icon border border-slate-border/45 bg-graphite-card p-2">
-                                                            {companyLogos[symbolUpper]()}
-                                                        </div>
-                                                    ) : (
-                                                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-icon border border-slate-border/45 bg-obsidian-button font-mono text-caption font-bold text-ivory-text">
-                                                            {symbolUpper}
-                                                        </div>
-                                                    )}
+                                                    <GlassLogo className="h-10 w-10" padding="p-2">
+                                                        {companyLogos[symbolUpper] ? (
+                                                            companyLogos[symbolUpper]()
+                                                        ) : (
+                                                            <span className="font-mono text-caption font-bold text-ivory-text">
+                                                                {symbolUpper.slice(0, 4)}
+                                                            </span>
+                                                        )}
+                                                    </GlassLogo>
                                                     <div className="flex flex-col">
                                                         <span className="text-body font-normal text-ivory-text">{item.companyName}</span>
                                                         <span className="font-mono text-caption font-normal tracking-wide text-ash-text">{symbolUpper}</span>
@@ -310,7 +315,7 @@ const WalletPage = () => {
                                             <td className="py-4 px-6 text-center">
                                                 <button
                                                     onClick={() => triggerTableSell(item)}
-                                                    className="cursor-pointer rounded-pill border border-slate-border/45 px-4 py-2 text-body font-normal text-ash-text transition-colors hover:border-loss hover:text-loss"
+                                                    className="cursor-pointer rounded-pill ring-1 ring-inset ring-mist-border/8 px-4 py-2 text-body font-normal text-ash-text transition-colors hover:ring-loss/50 hover:text-loss"
                                                 >
                                                     Sell
                                                 </button>
@@ -321,6 +326,24 @@ const WalletPage = () => {
                             </tbody>
                         </table>
                     </div>
+
+                    {/* Cash always occupies a row, so the table is never truly
+                        empty — the empty state belongs under it and speaks to
+                        the absence of *positions*, not of assets. */}
+                    {(!portfolioValues || portfolioValues.length === 0) && (
+                        <EmptyState
+                            variant="wallet"
+                            title="Cash only, for now"
+                            description="Your balance is sitting idle. Search for a ticker to put it to work and it will appear here beside your cash."
+                        >
+                            <Link
+                                to="/search"
+                                className={`inline-flex items-center px-6 py-3 text-body ${ctaBaseClass} ${ctaFillClass}`}
+                            >
+                                Find a company
+                            </Link>
+                        </EmptyState>
+                    )}
                 </div>
             </div>
             {selectedSellStock && (

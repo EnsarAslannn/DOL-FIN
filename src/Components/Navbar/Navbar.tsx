@@ -99,7 +99,7 @@ const Navbar = () => {
                 href="/#help"
                 className={`text-label font-normal underline-offset-[6px] transition-colors duration-300 ${mutedClass} hover:underline`}
               >
-                Help centre
+                Help Center
               </a>
               <Link to="/search" className={navLinkClass("/search")}>
                 Search

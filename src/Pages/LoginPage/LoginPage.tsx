@@ -117,7 +117,7 @@ const LoginPage = () => {
               <button type="submit" className={primaryButtonClass}>
                 Sign In
               </button>
-              <p className="border-t border-slate-border/45 pt-8 text-body font-normal text-ash-text">
+              <p className="border-t border-mist-border/8 pt-8 text-body font-normal text-ash-text">
                 Don’t have an account yet?{" "}
                 <Link
                   to="/register"

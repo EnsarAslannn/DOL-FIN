@@ -4,7 +4,7 @@ import type { CompanyProfile } from "../../company"
 import { getCompanyProfile } from "../../api"
 import Sidebar from "../../Components/Sidebar/Sidebar"
 import CompanyDashboard from "../../Components/CompanyDashboard/CompanyDashboard"
-import Tile from "../../Components/Tile/Tile"
+import ProfileHeader from "../../Components/Dashboard/ProfileHeader"
 import Spinners from "../../Components/Spinners/Spinners"
 import StockComment from "../../Components/StockComment/StockComment"
 import { formatLargeNonMonetaryNumber } from "../../Helpers/NumberFormatting"
@@ -42,8 +42,8 @@ const CompanyPage = () => {
       <div className="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden bg-onyx-canvas text-ivory-text min-h-screen">
         <Sidebar />
         <CompanyDashboard>
-          <div className="rounded-card border border-slate-border/45 bg-graphite-card w-full rounded-card p-8 flex flex-col items-center justify-center text-center min-h-[450px] space-y-4 my-4 animate-fadeIn">
-            <div className="flex h-16 w-16 items-center justify-center rounded-icon border border-slate-border/45 bg-obsidian-button">
+          <div className="rounded-card bg-graphite-card ring-1 ring-inset ring-mist-border/6 w-full rounded-card p-8 flex flex-col items-center justify-center text-center min-h-[450px] space-y-4 my-4 animate-fadeIn">
+            <div className="flex h-16 w-16 items-center justify-center rounded-icon bg-obsidian-button">
               <svg
                 className="h-6 w-6 text-ivory-text"
                 fill="none"
@@ -64,10 +64,10 @@ const CompanyPage = () => {
               </p>
             </div>
             <p className="text-body text-ash-text max-w-md leading-relaxed">
-              Financial data for <span className="font-bold font-mono text-ivory-text bg-obsidian-button px-2 py-1 rounded border border-slate-border/45">{ticker?.toUpperCase()}</span> is currently unavailable for this demo version.
+              Financial data for <span className="font-bold font-mono text-ivory-text bg-obsidian-button px-2 py-1 rounded ring-1 ring-inset ring-mist-border/8">{ticker?.toUpperCase()}</span> is currently unavailable for this demo version.
             </p>
             <div className="pt-2">
-              <p className="text-caption text-ash-text font-normal bg-obsidian-button border border-slate-border/45 px-3 py-2 rounded-card font-mono">
+              <p className="text-caption text-ash-text font-normal bg-obsidian-button px-3 py-2 rounded-card font-mono">
                 Please audit premium corporate tiers: AAPL, MSFT, NVDA, TSLA, GOOGL
               </p>
             </div>
@@ -92,26 +92,36 @@ const CompanyPage = () => {
           <Sidebar />
 
           <CompanyDashboard>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 w-full mb-6">
-              <Tile title="Company Name" subTitle={company.companyName} />
-              <Tile title="Price" subTitle={"$" + company.price.toFixed(2)} />
-              <Tile title="Sector" subTitle={company.sector} />
-              <Tile
-                title="Market Cap"
-                subTitle={renderMarketCap(company.mktCap)}
-              />
-            </div>
+            {/* The identity block is the layout's header, not the profile
+                tab's — every statement tab renders under the same one, so
+                the ticker you are reading never leaves the screen. */}
+            <ProfileHeader
+              symbol={company.symbol}
+              companyName={company.companyName}
+              sector={company.sector}
+              industry={company.industry}
+              exchange={company.exchangeShortName}
+              metrics={[
+                { label: "Price", value: "$" + company.price.toFixed(2) },
+                {
+                  label: "Change",
+                  value:
+                    (company.changes >= 0 ? "+" : "") +
+                    company.changes.toFixed(2),
+                  tone: company.changes >= 0 ? "gain" : "loss",
+                },
+                { label: "Market cap", value: renderMarketCap(company.mktCap) },
+                { label: "Beta", value: company.beta?.toFixed(2) ?? "—" },
+              ]}
+            />
 
-            <div className="w-full my-4">
+            <div className="w-full py-10">
               <Outlet context={ticker} />
             </div>
 
-            <div className="w-full mt-6 border-t border-slate-border/45 pt-6">
+            <div className="w-full border-t border-mist-border/8 pt-10">
               {localDbId !== null && (
-                <StockComment
-                  stockSymbol={ticker!}
-                  stockId={localDbId}
-                />
+                <StockComment stockSymbol={ticker!} stockId={localDbId} />
               )}
             </div>
           </CompanyDashboard>

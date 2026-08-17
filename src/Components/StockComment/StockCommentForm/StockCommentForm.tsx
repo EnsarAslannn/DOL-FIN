@@ -45,7 +45,7 @@ const StockCommentForm = ({ handleComment }: Props) => {
       </div>
 
       <div className="w-full text-left">
-        <div className="rounded-card border border-slate-border/45 bg-graphite-card p-4 transition-colors focus-within:border-cobalt focus-within:ring-2 focus-within:ring-cobalt/25">
+        <div className="rounded-card bg-graphite-card ring-1 ring-inset ring-mist-border/6 p-4 transition-colors focus-within:border-cobalt focus-within:ring-2 focus-within:ring-cobalt/25">
           <label htmlFor="comment" className="sr-only">
             Your comment
           </label>

@@ -15,7 +15,7 @@ const StockCommentList = ({ comments }: Props) => {
           )
         })
       ) : (
-        <div className="text-center py-8 bg-obsidian-button border border-dashed border-slate-border/45 rounded-card">
+        <div className="text-center py-8 bg-obsidian-button border border-dashed border-mist-border/12 rounded-card">
           <p className="text-body text-ash-text">No comments yet.</p>
         </div>
       )}

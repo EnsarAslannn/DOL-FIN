@@ -37,7 +37,7 @@ const faqs = [
 ]
 
 /**
- * Help centre, on the page's second light ground.
+ * Help Center, on the page's second light ground.
  *
  * A minimal accordion: one open at a time, a single plus-to-minus glyph
  * carrying the state, and no rules other than the hairline that separates
@@ -71,7 +71,7 @@ const HelpCenter = () => {
           <SectionHeader
             align="center"
             tone="light"
-            eyebrow="Help centre"
+            eyebrow="Help Center"
             title="Questions, answered"
             lead="The five things people ask before they create an account."
           />

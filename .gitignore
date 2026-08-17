@@ -46,8 +46,15 @@ src/assets/extra/3.png
 src/assets/extra/4.png
 src/assets/extra/5.png
 src/assets/extra/6.jpg
+src/assets/extra/glass-panel.png
+src/assets/extra/empty-wallet-3d.png
+src/assets/extra/empty-search-3d.png
+src/assets/extra/abstract-header-bg.png
 
-# Design reference recordings. Analysed frame-by-frame during the redesign and
-# kept locally; nothing imports them and they never belong in the bundle.
-src/assets/extra/*.mp4
-!src/assets/extra/HeroDOLFIN.mp4
+# Design reference recordings are kept out of the repo, but deliberately NOT
+# by a blanket `*.mp4` rule. An extension-wide ignore with an allowlist has to
+# be updated for every new video the app imports, and when someone forgets,
+# the asset is missing from the build with nothing in `git status` to show it
+# — the same silent-omission failure that nearly shipped a broken tablet
+# image. Unknown files default to tracked, so a stray recording turns up as
+# untracked noise instead: loud, and fixed in one line.
