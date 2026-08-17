@@ -95,27 +95,36 @@ const BalanceSheet = () => {
 
   if (!allowedStocks.includes(ticker?.toUpperCase())) {
     return (
-      <div className="glass-panel w-full rounded-2xl p-8 flex flex-col items-center justify-center text-center min-h-[350px] space-y-4 my-4 animate-fadeIn">
-        <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 text-2xl shadow-sm">
-          📊
+      <div className="rounded-card bg-graphite-card ring-1 ring-inset ring-mist-border/6 w-full rounded-card p-8 flex flex-col items-center justify-center text-center min-h-[350px] space-y-4 my-4 animate-fadeIn">
+        <div className="flex h-16 w-16 items-center justify-center rounded-icon bg-obsidian-button">
+          <svg
+                className="h-6 w-6 text-ivory-text"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 3v18h18M7 15l3.5-4 3 2.5L20 7" />
+              </svg>
         </div>
         <div className="flex flex-col space-y-1">
-          <h3 className="text-lg font-bold text-foam tracking-tight">
+          <h3 className="text-subheading font-normal text-ivory-text tracking-tight">
             Financial Data Unavailable
           </h3>
-          <p className="text-xs text-mist font-mono">
+          <p className="text-body text-ash-text font-mono">
             SCOPE_LIMITATION_WARNING // LIVE_DEMO_RESTRICITON
           </p>
         </div>
-        <p className="text-sm text-mist max-w-md leading-relaxed">
+        <p className="text-body text-ash-text max-w-md leading-relaxed">
           Financial data for{" "}
-          <span className="font-bold font-mono text-pulse bg-pulse/10 px-1.5 py-0.5 rounded border border-pulse/20">
+          <span className="font-bold font-mono text-ivory-text bg-obsidian-button px-2 py-1 rounded ring-1 ring-inset ring-mist-border/8">
             {ticker?.toUpperCase()}
           </span>{" "}
           is currently unavailable for this demo version.
         </p>
         <div className="pt-2">
-          <p className="text-[11px] text-mist font-medium bg-black/40 border border-white/8 px-3 py-1.5 rounded-xl font-mono">
+          <p className="text-caption text-ash-text font-normal bg-obsidian-button px-3 py-2 rounded-card font-mono">
             Please audit premium corporate tiers: AAPL, MSFT, NVDA, TSLA, GOOGL
           </p>
         </div>
@@ -175,60 +184,60 @@ const BalanceSheet = () => {
     return (
       <div className="w-full flex flex-col space-y-4 mt-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-          <div className="bg-depth border border-white/8 rounded-2xl p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
+          <div className="bg-graphite-card ring-1 ring-inset ring-mist-border/6 rounded-card p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
             <div className="flex flex-col space-y-1">
-              <span className="text-mist uppercase font-bold text-[10px] tracking-widest font-mono">
+              <span className="text-ash-text uppercase font-bold text-caption tracking-widest font-mono">
                 Debt-to-Equity Ratio
               </span>
-              <span className="font-bold text-2xl text-foam font-mono">
+              <span className="font-normal text-heading text-ivory-text font-mono">
                 {metrics.dteFormatted}
               </span>
             </div>
-            <div className="w-full flex flex-col space-y-1.5 mt-3">
-              <div className="w-full h-1 bg-depth-2 rounded-full overflow-hidden">
+            <div className="w-full flex flex-col space-y-2 mt-3">
+              <div className="w-full h-1 bg-obsidian-button rounded-full overflow-hidden">
                 <div
-                  className={`h-full rounded-full ${metrics.dte <= 1.5 ? "bg-gain" : metrics.dte <= 2.5 ? "bg-amber-500" : "bg-loss"}`}
+                  className={`h-full rounded-full ${metrics.dte <= 1.5 ? "bg-gain" : metrics.dte <= 2.5 ? "bg-obsidian-button" : "bg-loss"}`}
                   style={{
                     width: `${Math.min(Math.max((metrics.dte / 3) * 100, 10), 100)}%`,
                   }}
                 ></div>
               </div>
-              <span className="text-[10px] text-mist font-medium font-mono">
+              <span className="text-caption text-ash-text font-normal font-mono">
                 Total liabilities divided by total shareholder equity leverage
               </span>
             </div>
           </div>
 
-          <div className="bg-depth border border-white/8 rounded-2xl p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
+          <div className="bg-graphite-card ring-1 ring-inset ring-mist-border/6 rounded-card p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
             <div className="flex flex-col space-y-1">
-              <span className="text-mist uppercase font-bold text-[10px] tracking-widest font-mono">
+              <span className="text-ash-text uppercase font-bold text-caption tracking-widest font-mono">
                 Asset Turnover Ratio
               </span>
-              <span className="font-bold text-2xl text-foam font-mono">
+              <span className="font-normal text-heading text-ivory-text font-mono">
                 {metrics.turnoverFormatted}
               </span>
             </div>
-            <div className="w-full flex flex-col space-y-1.5 mt-3">
-              <div className="w-full h-1 bg-depth-2 rounded-full overflow-hidden">
+            <div className="w-full flex flex-col space-y-2 mt-3">
+              <div className="w-full h-1 bg-obsidian-button rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-pulse-dim rounded-full"
+                  className="h-full bg-slate-border rounded-full"
                   style={{
                     width: `${Math.min(Math.max(metrics.turnover * 80, 15), 100)}%`,
                   }}
                 ></div>
               </div>
-              <span className="text-[10px] text-mist font-medium font-mono">
+              <span className="text-caption text-ash-text font-normal font-mono">
                 Efficiency of company assets in generating top-line revenue
               </span>
             </div>
           </div>
         </div>
 
-        <div className="w-full bg-depth border border-white/8 rounded-2xl p-5 shadow-xl flex flex-col space-y-3 text-left">
-          <div className="flex items-center justify-between border-b border-white/6 pb-2.5">
-            <h4 className="text-xs font-bold text-mist uppercase tracking-wider font-mono flex items-center gap-2">
+        <div className="w-full bg-graphite-card ring-1 ring-inset ring-mist-border/6 rounded-card p-5 shadow-xl flex flex-col space-y-3 text-left">
+          <div className="flex items-center justify-between border-b border-mist-border/8 pb-3">
+            <h4 className="text-body font-bold text-ash-text uppercase tracking-wider font-mono flex items-center gap-2">
               <svg
-                className="w-4 h-4 text-pulse-dim"
+                className="w-4 h-4 text-ash-text"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2.5"
@@ -243,17 +252,17 @@ const BalanceSheet = () => {
               Balance Sheet Structural Intelligence
             </h4>
             <span
-              className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded font-mono ${metrics.status === "STABLE"
+              className={`text-caption font-bold uppercase px-2 py-1 rounded font-mono ${metrics.status === "STABLE"
                   ? "bg-gain/10 text-gain"
                   : metrics.status === "LEVERAGED"
                     ? "bg-loss/10 text-loss"
-                    : "bg-amber-500/10 text-amber-400"
+                    : "bg-obsidian-button text-ash-text"
                 }`}
             >
               {metrics.status} LAYOUT
             </span>
           </div>
-          <p className="text-sm text-foam/85 leading-relaxed font-sans font-normal">
+          <p className="text-body text-ivory-text leading-relaxed font-sans font-normal">
             {metrics.summaryText}
           </p>
         </div>
@@ -265,26 +274,26 @@ const BalanceSheet = () => {
     <>
       {balanceSheet ? (
         <div className="w-full flex flex-col">
-          <div className="block w-full bg-depth shadow-xl rounded-2xl p-6 mb-6 border border-white/8 flex flex-col space-y-3 text-left">
-            <h3 className="text-base font-bold text-pulse uppercase tracking-wider font-mono">
+          <div className="block w-full bg-graphite-card shadow-xl rounded-card p-6 mb-6 ring-1 ring-inset ring-mist-border/8 flex flex-col space-y-3 text-left">
+            <h3 className="text-body-lg font-bold text-ivory-text uppercase tracking-wider font-mono">
               Understanding the Balance Sheet
             </h3>
-            <p className="text-foam text-base font-normal leading-relaxed antialiased">
+            <p className="text-ivory-text text-body-lg font-normal leading-relaxed antialiased">
               A{" "}
-              <strong className="text-foam font-semibold">
+              <strong className="text-ivory-text font-normal">
                 Balance Sheet
               </strong>{" "}
               represents a financial snapshot of a company's structural health
               at a specific point in time. It explicitly details what the
               institution{" "}
-              <strong className="text-pulse-dim">owns (Assets)</strong>, what it{" "}
+              <strong className="text-ash-text">owns (Assets)</strong>, what it{" "}
               <strong className="text-loss">owes (Liabilities)</strong>, and
               the net capital invested by the{" "}
-              <strong className="text-amber-400">shareholders (Equity)</strong>{" "}
+              <strong className="text-ash-text">shareholders (Equity)</strong>{" "}
               based on the accounting core: Assets = Liabilities + Equity.
             </p>
-            <p className="text-foam/85 text-sm font-normal leading-relaxed antialiased pt-1">
-              <strong className="text-foam block mb-1 font-mono text-xs uppercase tracking-wide">
+            <p className="text-ivory-text text-body font-normal leading-relaxed antialiased pt-1">
+              <strong className="text-ivory-text block mb-1 font-mono text-body uppercase tracking-wide">
                 Why is it Critical?
               </strong>
               While the Income Statement demonstrates performance velocity, the

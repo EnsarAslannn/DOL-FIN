@@ -6,6 +6,9 @@ import RatioList from "../../Components/RatioList/RatioList"
 import Spinners from "../../Components/Spinners/Spinners"
 import ComparableFinder from "../../Components/ComparableFinder/ComparableFinder"
 import TenKFinder from "../../Components/TenKFinder/TenKFinder"
+import Panel, { PanelHeader } from "../../Components/Dashboard/Panel"
+import EmptyState from "../../Components/Dashboard/EmptyState"
+import { Link } from "react-router-dom"
 import {
   formatLargeNonMonetaryNumber,
   formatRatio,
@@ -103,93 +106,77 @@ const CompanyProfile = () => {
 
   if (!allowedStocks.includes(ticker?.toUpperCase())) {
     return (
-      <div className="glass-panel w-full rounded-2xl p-8 flex flex-col items-center justify-center text-center min-h-[350px] space-y-4 my-4 animate-fadeIn">
-        <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 text-2xl shadow-sm">
-          📊
+      <EmptyState
+        variant="search"
+        title="No financial data for this ticker"
+        description={`The sandbox carries full statements for five companies. ${ticker?.toUpperCase()} is not one of them yet.`}
+      >
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          {allowedStocks.map((allowed) => (
+            <Link
+              key={allowed}
+              to={`/company/${allowed}/company-profile`}
+              className="rounded-pill bg-obsidian-button px-4 py-2 font-mono text-caption font-normal uppercase tracking-label-sm text-ash-text transition-colors duration-200 hover:bg-cobalt hover:text-pure-white"
+            >
+              {allowed}
+            </Link>
+          ))}
         </div>
-        <div className="flex flex-col space-y-1">
-          <h3 className="text-lg font-bold text-foam tracking-tight">
-            Financial Data Unavailable
-          </h3>
-          <p className="text-xs text-mist font-mono">
-            SCOPE_LIMITATION_WARNING // LIVE_DEMO_RESTRICITON
-          </p>
-        </div>
-        <p className="text-sm text-mist max-w-md leading-relaxed">
-          Financial data for <span className="font-bold font-mono text-pulse bg-pulse/10 px-1.5 py-0.5 rounded border border-pulse/20">{ticker?.toUpperCase()}</span> is currently unavailable for this demo version.
-        </p>
-        <div className="pt-2">
-          <p className="text-[11px] text-mist font-medium bg-black/40 border border-white/8 px-3 py-1.5 rounded-xl font-mono">
-            Please audit premium corporate tiers: AAPAL, MSFT, NVDA, TSLA, GOOGL
-          </p>
-        </div>
-      </div>
+      </EmptyState>
     )
   }
 
   if (!profile || !companyData) {
-    return (
-      <div className="w-full flex items-center justify-center py-12">
-        <Spinners />
-      </div>
-    )
+    return <Spinners variant="inline" label="Loading company profile" />
   }
 
   return (
-    <div className="w-full flex flex-col font-sans text-foam">
-      <div className="block w-full bg-depth rounded-2xl p-6 my-4 border border-white/8 flex flex-col space-y-3">
-        <h3 className="text-[11px] font-bold text-pulse uppercase tracking-[0.16em] text-left font-mono">
-          Company Description
-        </h3>
-        <p className="text-foam text-base font-normal leading-relaxed antialiased text-left">
+    <div className="flex w-full flex-col gap-14 font-sans text-ivory-text">
+      {/* No identity block here — CompanyPage renders one above the outlet,
+          shared by every statement tab. Repeating it would show the ticker
+          twice on this tab and only this tab. */}
+
+      {/* Description sits straight on the canvas. It is one block of prose and
+          a fill around it would only add a frame to read past. */}
+      <Panel className="max-w-[78ch]">
+        <PanelHeader eyebrow="Overview" title="What the company does" />
+        <p className="mt-6 text-body-lg font-normal leading-relaxed text-ash-text">
           {profile.description}
         </p>
+      </Panel>
+
+      <div className="grid w-full grid-cols-1 gap-10 lg:grid-cols-2">
+        <Panel>
+          <PanelHeader
+            eyebrow="Peers"
+            title="Similar companies"
+            lead="Publicly traded companies in the same sector and industry."
+          />
+          <div className="mt-6 flex flex-wrap items-center gap-2">
+            <ComparableFinder ticker={profile.symbol} />
+          </div>
+        </Panel>
+
+        <Panel>
+          <PanelHeader
+            eyebrow="Filings"
+            title="10-K reports"
+            lead="The SEC's audited annual report — financial statements and the risk factors management had to disclose."
+          />
+          <div className="mt-6 flex flex-wrap items-center gap-2">
+            <TenKFinder ticker={profile.symbol} />
+          </div>
+        </Panel>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-4 w-full">
-        <div className="bg-depth rounded-2xl p-6 border border-white/8 flex flex-col justify-start space-y-6">
-          <div className="flex flex-col space-y-3">
-            <h3 className="text-[11px] font-bold text-pulse uppercase tracking-[0.16em] text-left font-mono">
-              Similar Companies
-            </h3>
-            <div className="flex flex-wrap items-center gap-2 pt-1 [&_button]:px-5 [&_button]:py-2.5 [&_button]:text-sm">
-              <ComparableFinder ticker={profile.symbol} />
-            </div>
-          </div>
-          <div className="bg-black/35 rounded-xl p-5 border border-white/8 text-left mt-auto w-full">
-            <p className="text-sm text-foam/85 leading-relaxed">
-              <strong className="text-foam block mb-1.5 font-mono text-xs uppercase tracking-wide">
-                Industry Peers
-              </strong>
-              A curated list of publicly traded companies operating within the
-              same sector and industry.
-            </p>
-          </div>
-        </div>
-
-        <div className="bg-depth rounded-2xl p-6 border border-white/8 flex flex-col justify-start space-y-6">
-          <div className="flex flex-col space-y-3">
-            <h3 className="text-[11px] font-bold text-pulse uppercase tracking-[0.16em] text-left font-mono">
-              10-K REPORT
-            </h3>
-            <div className="flex flex-wrap items-center gap-2 pt-1 [&_a]:px-5 [&_a]:py-2.5 [&_a]:text-sm">
-              <TenKFinder ticker={profile.symbol} />
-            </div>
-          </div>
-          <div className="bg-black/35 rounded-xl p-5 border border-white/8 text-left mt-auto w-full min-h-[105px] flex flex-col justify-center">
-            <p className="text-sm text-foam/85 leading-relaxed">
-              <strong className="text-foam block mb-1.5 font-mono text-xs uppercase tracking-wide">
-                What is a 10-K Report?
-              </strong>
-              A Form 10-K is a comprehensive annual regulatory report required by the SEC that provides an in-depth analysis of a company's financial performance and structural risk factors. Unlike marketing-oriented annual reports, it offers audited financial statements and detailed management insights to help investors make informed, high-fidelity valuation decisions.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div className="w-full mt-4">
+      <Panel>
+        <PanelHeader
+          eyebrow="Key metrics"
+          title="Trailing twelve months"
+          className="mb-6"
+        />
         <RatioList data={companyData} config={tableConfig} />
-      </div>
+      </Panel>
     </div>
   )
 }

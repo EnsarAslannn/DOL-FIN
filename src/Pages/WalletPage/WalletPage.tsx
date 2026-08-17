@@ -6,7 +6,12 @@ import type { PortfolioGet } from "../../Models/Portfolio"
 import { companyLogos } from "../../Components/Table/TestData"
 import { toast } from "react-toastify"
 import PurchasePortfolio from "../../Components/Portfolio/PurchasePortfolio/PurchasePortfolio"
-import marketTerrain from "../../assets/generated/market-terrain.jpg"
+import marketTerrain from "../../assets/extra/capital-stack.webp"
+import { fieldClass, ctaBaseClass, ctaDisabledClass, ctaFillClass } from "../../Helpers/formStyles"
+import { contentClass, navClearanceClass } from "../../Helpers/layout"
+import GlassLogo from "../../Components/Dashboard/GlassLogo"
+import EmptyState from "../../Components/Dashboard/EmptyState"
+import { Link } from "react-router-dom"
 
 const WalletPage = () => {
     const { user, updateWalletBalance } = useAuth()
@@ -149,50 +154,53 @@ const WalletPage = () => {
     const estimatedTotalValue = liveBalance + stocksValue
 
     return (
-        <div className="w-full min-h-screen bg-abyss font-sans pb-16 text-foam text-left">
-            <div className="w-full max-w-6xl mx-auto px-6 pt-10 flex flex-col space-y-8">
-                <div className="border-b border-white/8 pb-5">
-                    <h1 className="text-3xl font-bold tracking-[-0.02em] text-foam font-display">Wallet Overview</h1>
-                    <p className="text-xs text-mist mt-1.5">Manage your funds and monitor estimated asset distribution.</p>
+        <div className="w-full min-h-screen bg-onyx-canvas font-sans pb-section text-ivory-text text-left">
+            <div className={`flex flex-col gap-10 ${navClearanceClass} ${contentClass}`}>
+                <div>
+                    <span className="block font-mono text-caption font-normal uppercase tracking-label-lg text-ash-text/70">Wallet</span>
+                    <h1 className="mt-3 text-heading font-medium text-ivory-text md:text-heading-lg">Wallet overview</h1>
+                    <p className="mt-3 max-w-[60ch] text-body-lg font-normal text-ash-text">Manage your funds and monitor estimated asset distribution.</p>
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div className="lg:col-span-2 glass-panel-hot rounded-2xl p-7 flex flex-col justify-between relative overflow-hidden min-h-[220px]">
-                        {}
+                    {/* The page's single dark surface — a contained product crop
+                        under a scrim, giving the spec's dark/light contrast. */}
+                    <div className="lg:col-span-2 relative flex min-h-[220px] flex-col justify-between overflow-hidden rounded-card bg-graphite-card p-7">
                         <img
                             src={marketTerrain}
                             alt=""
                             aria-hidden="true"
-                            className="absolute inset-0 w-full h-full object-cover opacity-30 pointer-events-none"
+                            className="pointer-events-none absolute inset-0 h-full w-full object-cover"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-r from-abyss via-abyss/80 to-abyss/30 pointer-events-none"></div>
+                        <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-onyx-canvas/70" />
+                        <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-gradient-to-r from-onyx-canvas via-onyx-canvas/80 to-transparent" />
 
                         <div className="relative z-10">
-                            <span className="text-[10px] font-bold text-mist uppercase tracking-[0.16em] font-mono">Est. Total Value</span>
-                            <div className="flex items-baseline space-x-2 mt-3">
-                                <h2 className="text-5xl font-mono font-bold text-foam tracking-[-0.03em]">${estimatedTotalValue.toFixed(2)}</h2>
-                                <span className="text-sm font-bold text-mist font-mono">USD</span>
+                            <span className="font-mono text-caption font-normal uppercase tracking-label-lg text-ivory-text/75">Est. Total Value</span>
+                            <div className="mt-3 flex items-baseline space-x-2">
+                                <h2 className="font-mono text-heading-lg font-normal text-ivory-text">${estimatedTotalValue.toFixed(2)}</h2>
+                                <span className="font-mono text-body font-normal text-ivory-text/75">USD</span>
                             </div>
                         </div>
-                        <div className="relative z-10 grid grid-cols-2 gap-4 pt-6 mt-6 border-t border-white/8">
+                        <div className="relative z-10 mt-6 grid grid-cols-2 gap-4 border-t border-mist-border/20 pt-6">
                             <div className="flex flex-col">
-                                <span className="text-[10px] font-bold text-mist uppercase tracking-[0.14em]">Cash Balance (Wallet)</span>
-                                <span className="text-lg font-mono font-bold text-pulse mt-1.5">${liveBalance.toFixed(2)}</span>
+                                <span className="font-mono text-caption font-normal uppercase tracking-label text-ivory-text/75">Cash Balance (Wallet)</span>
+                                <span className="mt-2 font-mono text-subheading font-normal text-ivory-text">${liveBalance.toFixed(2)}</span>
                             </div>
                             <div className="flex flex-col">
-                                <span className="text-[10px] font-bold text-mist uppercase tracking-[0.14em]">Stocks Value (Portfolio)</span>
-                                <span className="text-lg font-mono font-bold text-pulse-dim mt-1.5">${stocksValue.toFixed(2)}</span>
+                                <span className="font-mono text-caption font-normal uppercase tracking-label text-ivory-text/75">Stocks Value (Portfolio)</span>
+                                <span className="mt-2 font-mono text-subheading font-normal text-ivory-text">${stocksValue.toFixed(2)}</span>
                             </div>
                         </div>
                     </div>
-                    <div className="bg-depth border border-white/8 rounded-2xl p-6 flex flex-col justify-between">
+                    <div className="flex flex-col justify-between rounded-card bg-graphite-card ring-1 ring-inset ring-mist-border/6 p-card">
                         <div>
-                            <h3 className="text-sm font-bold text-foam tracking-[0.1em] uppercase mb-1.5 font-display">Deposit Cash</h3>
-                            <p className="text-[11px] text-mist mb-4 leading-relaxed">Add instant simulator credits into your trading account.</p>
+                            <h3 className="mb-2 text-subheading font-normal text-ivory-text">Deposit Cash</h3>
+                            <p className="mb-4 text-body font-normal text-ash-text">Add instant simulator credits into your trading account.</p>
                         </div>
                         <form onSubmit={handleDepositSubmit} className="flex flex-col space-y-4 w-full">
                             <div>
                                 <div className="relative flex items-center">
-                                    <span className="absolute left-4 font-mono text-sm font-bold text-mist">$</span>
+                                    <span className="absolute left-4 font-mono text-body font-normal text-ash-text">$</span>
                                     <input
                                         type="number"
                                         min="0.01"
@@ -200,17 +208,17 @@ const WalletPage = () => {
                                         placeholder="0.00"
                                         value={depositAmount}
                                         onChange={(e) => setDepositAmount(e.target.value)}
-                                        className="w-full pl-8 pr-16 py-3 bg-black/50 border border-white/10 focus:border-pulse/70 rounded-xl focus:outline-none focus:shadow-[0_0_0_4px_rgba(255,87,26,0.12)] text-foam font-bold text-lg font-mono transition-all"
+                                        className={`${fieldClass} pl-8 pr-16 font-mono`}
                                     />
-                                    <span className="absolute right-4 font-sans text-xs font-bold text-pulse bg-pulse/10 px-2 py-0.5 rounded border border-pulse/20">USD</span>
+                                    <span className="absolute right-4 rounded-smallcard bg-obsidian-button px-2 py-1 font-mono text-caption font-normal text-ash-text">USD</span>
                                 </div>
                             </div>
                             <button
                                 type="submit"
                                 disabled={isSubmitting || !depositAmount}
-                                className={`w-full py-3.5 rounded-xl font-bold text-xs uppercase tracking-[0.12em] transition-all duration-200 ${isSubmitting || !depositAmount
-                                    ? "bg-depth-2 text-mist/60 cursor-not-allowed border border-white/6"
-                                    : "glow-action bg-gradient-to-r from-pulse to-[#ff8a3d] text-white active:scale-[0.97] cursor-pointer"
+                                className={`w-full py-cta text-body ${ctaBaseClass} ${isSubmitting || !depositAmount
+                                    ? ctaDisabledClass
+                                    : ctaFillClass
                                     }`}
                             >
                                 {isSubmitting ? "Processing..." : "Confirm Deposit"}
@@ -218,48 +226,53 @@ const WalletPage = () => {
                         </form>
                     </div>
                 </div>
-                <div className="bg-depth border border-white/8 rounded-2xl overflow-hidden">
-                    <div className="px-6 py-4 border-b border-white/8 bg-black/25">
-                        <h3 className="text-[11px] font-bold text-mist uppercase tracking-[0.16em] font-mono">My Assets (Asset View)</h3>
+                <div className="bg-graphite-card ring-1 ring-inset ring-mist-border/6 rounded-card overflow-hidden">
+                    <div className="px-6 pb-2 pt-6">
+                        <span className="block font-mono text-caption font-normal uppercase tracking-label-lg text-ash-text/70">Holdings</span>
+                        <h3 className="mt-2 text-subheading font-medium text-ivory-text">My assets</h3>
                     </div>
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse font-sans">
                             <thead>
-                                <tr className="border-b border-white/6 text-[11px] font-bold text-mist uppercase tracking-wider font-mono">
+                                <tr className="border-b border-mist-border/8 font-mono text-caption font-bold uppercase tracking-label-lg text-ash-text">
                                     <th className="py-4 px-6">Asset Name</th>
                                     <th className="py-4 px-6 text-right">Market Price</th>
                                     <th className="py-4 px-6 text-right">Holdings Allocation</th>
                                     <th className="py-4 px-6 text-center w-24">Action</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-white/6 text-sm font-medium">
-                                <tr className="hover:bg-white/4 transition-colors">
-                                    <td className="py-4 px-6 flex items-center space-x-4">
-                                        {companyLogos["USD"] ? (
-                                            <div className="w-10 h-10 rounded-xl bg-depth-2 border border-white/8 p-2 flex items-center justify-center shrink-0 shadow-sm">
-                                                {companyLogos["USD"]()}
+                            <tbody className="divide-y divide-mist-border/8 text-body font-normal">
+                                <tr className="hover:bg-obsidian-button transition-colors">
+                                    <td className="px-6 py-4">
+                                        <div className="flex items-center space-x-4">
+                                            <GlassLogo className="h-10 w-10" padding="p-2">
+                                                {companyLogos["USD"] ? (
+                                                    companyLogos["USD"]()
+                                                ) : (
+                                                    <span className="font-mono text-caption font-bold text-ivory-text">
+                                                        USD
+                                                    </span>
+                                                )}
+                                            </GlassLogo>
+                                            <div className="flex flex-col">
+                                                <span className="text-body font-normal text-ivory-text">United States Dollar</span>
+                                                <span className="font-mono text-caption font-normal tracking-wide text-ash-text">CASH</span>
                                             </div>
-                                        ) : (
-                                            <div className="w-10 h-10 rounded-xl bg-pulse/10 text-pulse font-bold text-xs flex items-center justify-center border border-pulse/20 font-mono shadow-sm">
-                                                USD
-                                            </div>
-                                        )}
-                                        <div className="flex flex-col">
-                                            <span className="text-foam font-bold">United States Dollar</span>
-                                            <span className="text-xs text-mist font-mono font-bold tracking-wide">CASH</span>
                                         </div>
                                     </td>
-                                    <td className="py-4 px-6 text-right font-mono text-mist font-semibold">$1.00</td>
-                                    <td className="py-4 px-6 text-right flex flex-col items-end justify-center">
-                                        <span className="text-foam font-mono font-bold">${liveBalance.toFixed(2)}</span>
-                                        <span className="text-xs text-mist font-mono mt-0.5">
-                                            {estimatedTotalValue > 0 ? ((liveBalance / estimatedTotalValue) * 100).toFixed(1) : 0}%
-                                        </span>
+                                    <td className="px-6 py-4 text-right font-mono text-body font-normal text-ash-text">$1.00</td>
+                                    <td className="px-6 py-4 text-right">
+                                        <div className="flex flex-col items-end justify-center">
+                                            <span className="font-mono text-body font-normal text-ivory-text">${liveBalance.toFixed(2)}</span>
+                                            <span className="mt-1 font-mono text-caption font-normal text-ash-text">
+                                                {estimatedTotalValue > 0 ? ((liveBalance / estimatedTotalValue) * 100).toFixed(1) : 0}%
+                                            </span>
+                                        </div>
                                     </td>
-                                    <td className="py-4 px-6 text-center">
+                                    <td className="px-6 py-4 text-center">
                                         <button
                                             onClick={triggerUsdSell}
-                                            className="px-3 py-1.5 bg-loss/10 hover:bg-loss border border-loss/25 text-loss hover:text-abyss font-bold text-xs rounded-lg transition-all active:scale-95 cursor-pointer"
+                                            className="cursor-pointer rounded-pill ring-1 ring-inset ring-mist-border/8 px-4 py-2 text-body font-normal text-ash-text transition-colors hover:ring-loss/50 hover:text-loss"
                                         >
                                             Sell
                                         </button>
@@ -272,29 +285,29 @@ const WalletPage = () => {
                                     const currentStockValue = livePrice * quantity
 
                                     return (
-                                        <tr key={item.id} className="hover:bg-white/4 transition-colors">
+                                        <tr key={item.id} className="hover:bg-obsidian-button transition-colors">
                                             <td className="py-4 px-6">
                                                 <div className="flex items-center space-x-4">
-                                                    {companyLogos[symbolUpper] ? (
-                                                        <div className="w-10 h-10 rounded-xl bg-depth-2 border border-white/8 p-2 flex items-center justify-center shrink-0 shadow-sm">
-                                                            {companyLogos[symbolUpper]()}
-                                                        </div>
-                                                    ) : (
-                                                        <div className="w-10 h-10 rounded-xl bg-pulse-dim/10 text-pulse-dim font-bold text-xs flex items-center justify-center border border-pulse-dim/20 font-mono shrink-0 shadow-sm">
-                                                            {symbolUpper}
-                                                        </div>
-                                                    )}
+                                                    <GlassLogo className="h-10 w-10" padding="p-2">
+                                                        {companyLogos[symbolUpper] ? (
+                                                            companyLogos[symbolUpper]()
+                                                        ) : (
+                                                            <span className="font-mono text-caption font-bold text-ivory-text">
+                                                                {symbolUpper.slice(0, 4)}
+                                                            </span>
+                                                        )}
+                                                    </GlassLogo>
                                                     <div className="flex flex-col">
-                                                        <span className="text-foam font-bold">{item.companyName}</span>
-                                                        <span className="text-xs text-mist font-mono font-bold tracking-wide">{symbolUpper}</span>
+                                                        <span className="text-body font-normal text-ivory-text">{item.companyName}</span>
+                                                        <span className="font-mono text-caption font-normal tracking-wide text-ash-text">{symbolUpper}</span>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td className="py-4 px-6 text-right font-mono text-mist font-semibold">${livePrice.toFixed(2)}</td>
+                                            <td className="px-6 py-4 text-right font-mono text-body font-normal text-ash-text">${livePrice.toFixed(2)}</td>
                                             <td className="py-4 px-6 text-right">
                                                 <div className="flex flex-col items-end justify-center">
-                                                    <span className="text-foam font-mono font-bold">${currentStockValue.toFixed(2)}</span>
-                                                    <span className="text-xs text-mist font-mono mt-0.5">
+                                                    <span className="font-mono text-body font-normal text-ivory-text">${currentStockValue.toFixed(2)}</span>
+                                                    <span className="mt-1 font-mono text-caption font-normal text-ash-text">
                                                         {estimatedTotalValue > 0 ? ((currentStockValue / estimatedTotalValue) * 100).toFixed(1) : 0}%
                                                     </span>
                                                 </div>
@@ -302,7 +315,7 @@ const WalletPage = () => {
                                             <td className="py-4 px-6 text-center">
                                                 <button
                                                     onClick={() => triggerTableSell(item)}
-                                                    className="px-3 py-1.5 bg-loss/10 hover:bg-loss border border-loss/25 text-loss hover:text-abyss font-bold text-xs rounded-lg transition-all active:scale-95 cursor-pointer"
+                                                    className="cursor-pointer rounded-pill ring-1 ring-inset ring-mist-border/8 px-4 py-2 text-body font-normal text-ash-text transition-colors hover:ring-loss/50 hover:text-loss"
                                                 >
                                                     Sell
                                                 </button>
@@ -313,6 +326,24 @@ const WalletPage = () => {
                             </tbody>
                         </table>
                     </div>
+
+                    {/* Cash always occupies a row, so the table is never truly
+                        empty — the empty state belongs under it and speaks to
+                        the absence of *positions*, not of assets. */}
+                    {(!portfolioValues || portfolioValues.length === 0) && (
+                        <EmptyState
+                            variant="wallet"
+                            title="Cash only, for now"
+                            description="Your balance is sitting idle. Search for a ticker to put it to work and it will appear here beside your cash."
+                        >
+                            <Link
+                                to="/search"
+                                className={`inline-flex items-center px-6 py-3 text-body ${ctaBaseClass} ${ctaFillClass}`}
+                            >
+                                Find a company
+                            </Link>
+                        </EmptyState>
+                    )}
                 </div>
             </div>
             {selectedSellStock && (

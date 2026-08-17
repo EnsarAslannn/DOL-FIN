@@ -18,7 +18,7 @@ const RegisterPage = lazy(() => import("../Pages/RegisterPage/RegisterPage"))
 const WalletPage = lazy(() => import("../Pages/WalletPage/WalletPage"))
 
 const PageFallback = () => (
-    <div className="w-full min-h-screen bg-abyss flex items-center justify-center">
+    <div className="w-full min-h-screen bg-onyx-canvas flex items-center justify-center">
         <Spinners />
     </div>
 )

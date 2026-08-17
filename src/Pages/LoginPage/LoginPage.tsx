@@ -3,7 +3,13 @@ import { useAuth } from "../../Context/useAuth"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useForm } from "react-hook-form"
 import { Link } from "react-router-dom"
-import authSkyline from "../../assets/generated/auth-skyline.jpg"
+import authSkyline from "../../assets/extra/auth-office.webp"
+import {
+  fieldClass,
+  labelClass,
+  errorClass,
+  primaryButtonClass,
+} from "../../Helpers/formStyles"
 
 type LoginFormsInputs = {
   userName: string
@@ -27,113 +33,100 @@ const LoginPage = () => {
     loginUser(form.userName, form.password)
   }
 
-  const fieldClass =
-    "bg-black/50 border border-white/10 text-foam sm:text-sm rounded-xl focus:border-pulse/70 focus:shadow-[0_0_0_4px_rgba(255,87,26,0.12)] block w-full p-3 outline-none placeholder-mist/50 transition-all"
-
   return (
-    <section className="bg-abyss min-h-[calc(100vh-5rem)] font-sans flex items-stretch">
-      {}
-      <div className="hidden lg:block relative w-1/2 xl:w-[55%] overflow-hidden border-r border-white/8">
+    <section className="flex min-h-screen items-stretch bg-onyx-canvas font-sans">
+      {/* Full-bleed cinematic panel. The nav pill floats over it. */}
+      <div className="relative hidden w-1/2 overflow-hidden lg:block xl:w-[55%]">
         <img
           src={authSkyline}
           alt=""
           aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-abyss/60 via-transparent to-abyss" />
-        <div className="absolute inset-0 bg-gradient-to-t from-abyss via-transparent to-abyss/50" />
+        <div aria-hidden="true" className="absolute inset-0 bg-onyx-canvas/55" />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-t from-onyx-canvas/85 via-onyx-canvas/25 to-onyx-canvas/70"
+        />
 
-        <div className="relative z-10 h-full flex flex-col justify-end p-14">
-          <span className="text-[10px] font-bold text-pulse uppercase tracking-[0.16em] font-mono mb-4">
+        <div className="relative z-10 flex h-full flex-col justify-end p-14">
+          <span className="mb-5 font-mono text-caption font-normal uppercase tracking-label-lg text-ivory-text/75">
             Market intelligence terminal
           </span>
-          <h2 className="text-4xl font-bold text-foam font-display tracking-[-0.02em] leading-tight max-w-md">
-            The whole tape,
-            <br />
-            <span className="text-pulse glow-text">one signal at a time.</span>
+          <h2 className="max-w-md text-heading md:text-heading-lg font-normal text-ivory-text">
+            The whole tape, one signal at a time.
           </h2>
-          <p className="text-sm text-mist mt-4 max-w-sm leading-relaxed">
+          <p className="mt-5 max-w-sm text-body-lg font-normal text-ivory-text/85">
             Your portfolio, filings, and commentary — behind a single sign-in.
           </p>
         </div>
       </div>
 
-      <div className="flex-1 flex items-center justify-center px-6 py-16">
-        <div className="w-full sm:max-w-md">
-          <div className="glass-panel-hot rounded-2xl">
-            <div className="p-7 sm:p-9 space-y-6">
-              <div className="space-y-1.5">
-                <h1 className="text-2xl font-bold leading-tight tracking-[-0.02em] text-foam font-display">
-                  Sign in to your account
-                </h1>
-                <p className="text-xs text-mist">
-                  Pick up exactly where you left the tape.
-                </p>
-              </div>
-
-              <form className="space-y-5" onSubmit={handleSubmit(handleLogin)}>
-                <div>
-                  <label
-                    htmlFor="username"
-                    className="block mb-2 text-[11px] font-bold uppercase tracking-[0.12em] text-mist"
-                  >
-                    Username
-                  </label>
-                  <input
-                    type="text"
-                    id="username"
-                    className={fieldClass}
-                    placeholder="Username"
-                    {...register("userName")}
-                  />
-                  {errors.userName ? (
-                    <p className="text-loss text-xs font-semibold mt-1.5">
-                      {errors.userName.message}
-                    </p>
-                  ) : (
-                    ""
-                  )}
-                </div>
-                <div>
-                  <label
-                    htmlFor="password"
-                    className="block mb-2 text-[11px] font-bold uppercase tracking-[0.12em] text-mist"
-                  >
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    id="password"
-                    placeholder="••••••••"
-                    className={fieldClass}
-                    {...register("password")}
-                  />
-                  {errors.password ? (
-                    <p className="text-loss text-xs font-semibold mt-1.5">
-                      {errors.password.message}
-                    </p>
-                  ) : (
-                    ""
-                  )}
-                </div>
-                <button
-                  type="submit"
-                  className="glow-action w-full text-white bg-gradient-to-r from-pulse to-[#ff8a3d] font-bold uppercase tracking-[0.12em] rounded-xl text-xs px-5 py-3.5 text-center transition-all active:scale-[0.98] cursor-pointer"
-                >
-                  Sign In
-                </button>
-                <p className="text-sm font-light text-mist">
-                  Don’t have an account yet?{" "}
-                  <Link
-                    to="/register"
-                    className="font-semibold text-pulse hover:underline cursor-pointer"
-                  >
-                    Sign up
-                  </Link>
-                </p>
-              </form>
-            </div>
+      {/* No card. The form sits directly on the canvas — the panel beside it
+          already provides the containing edge, so a border here would be a
+          box inside a box. */}
+      <div className="flex flex-1 items-center justify-center px-6 pb-20 pt-28 sm:px-12">
+        <div className="w-full sm:max-w-[420px]">
+          <div className="mb-12">
+            <span className="block font-mono text-caption font-normal uppercase tracking-label-lg text-ash-text/70">
+              Welcome back
+            </span>
+            <h1 className="mt-5 text-heading md:text-heading-lg font-normal text-ivory-text">
+              Sign in to your account
+            </h1>
+            <p className="mt-5 text-body-lg font-normal text-ash-text">
+              Pick up exactly where you left the tape.
+            </p>
           </div>
+
+            <form className="space-y-8" onSubmit={handleSubmit(handleLogin)}>
+              <div>
+                <label htmlFor="username" className={labelClass}>
+                  Username
+                </label>
+                <input
+                  type="text"
+                  id="username"
+                  className={fieldClass}
+                  placeholder="Username"
+                  {...register("userName")}
+                />
+                {errors.userName ? (
+                  <p className={errorClass}>{errors.userName.message}</p>
+                ) : (
+                  ""
+                )}
+              </div>
+              <div>
+                <label htmlFor="password" className={labelClass}>
+                  Password
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  placeholder="••••••••"
+                  className={fieldClass}
+                  {...register("password")}
+                />
+                {errors.password ? (
+                  <p className={errorClass}>{errors.password.message}</p>
+                ) : (
+                  ""
+                )}
+              </div>
+              <button type="submit" className={primaryButtonClass}>
+                Sign In
+              </button>
+              <p className="border-t border-mist-border/8 pt-8 text-body font-normal text-ash-text">
+                Don’t have an account yet?{" "}
+                <Link
+                  to="/register"
+                  className="cursor-pointer text-ivory-text underline underline-offset-4"
+                >
+                  Sign up
+                </Link>
+              </p>
+            </form>
         </div>
       </div>
     </section>

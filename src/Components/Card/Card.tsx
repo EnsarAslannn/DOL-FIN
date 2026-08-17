@@ -1,9 +1,11 @@
 import React, { type SyntheticEvent } from "react"
-import "./Card.css"
+import { motion } from "framer-motion"
 import AddPortfolio from "../Portfolio/AddPortfolio/AddPortfolio"
 import { Link } from "react-router-dom"
 import { companyLogos } from "../../Components/Table/TestData"
+import GlassLogo from "../Dashboard/GlassLogo"
 import type { StockSearchResult } from "../../Models/StockSearchResult"
+import { reveal } from "../../Helpers/motion"
 
 interface Props {
   id: string
@@ -11,11 +13,18 @@ interface Props {
   onPortfolioCreate: (e: SyntheticEvent) => void
 }
 
-const Card: React.FC<Props> = ({
-  id,
-  searchResult,
-  onPortfolioCreate,
-}: Props) => {
+/**
+ * One search result.
+ *
+ * A row on the canvas rather than a bordered card: a hairline separates it
+ * from the next, and the only fill appears on hover. The company mark sits on
+ * the frosted glass plinth, which is the one piece of visual weight the row
+ * carries — everything else is type on the canvas.
+ *
+ * Entrance is driven by the parent list's stagger via the shared `reveal`
+ * variant, so results arrive in sequence as the response lands.
+ */
+const Card: React.FC<Props> = ({ id, searchResult, onPortfolioCreate }: Props) => {
   const symbol = searchResult.symbol || searchResult.Symbol || ""
   const name =
     searchResult.companyName ||
@@ -30,96 +39,87 @@ const Card: React.FC<Props> = ({
   const symbolUpper = symbol.toUpperCase()
   const isPositive = price > 150
 
+  const statementLinks = [
+    { to: "company-profile", label: "Profile" },
+    { to: "income-statement", label: "Income" },
+    { to: "balance-sheet", label: "Balance sheet" },
+    { to: "cashflow-statement", label: "Cash flow" },
+  ]
+
   return (
-    <div
-      className="flex flex-col md:flex-row items-center justify-between p-5 my-3 w-full bg-depth rounded-2xl border border-white/8 transition-all duration-200 hover:border-pulse/25 hover:bg-depth-2/40 group/card"
+    <motion.div
+      variants={reveal}
+      className="group flex w-full flex-col justify-between gap-6 border-b border-mist-border/8 px-4 py-6 transition-colors duration-200 last:border-b-0 hover:bg-graphite-card/60 md:flex-row md:items-center md:px-6"
       key={id}
       id={id}
     >
-      <div className="flex items-start space-x-4 w-full md:w-auto">
-        {companyLogos[symbolUpper] ? (
-          <div className="relative flex items-center justify-center w-11 h-11 rounded-xl bg-depth-2 border border-white/10 p-2.5 shrink-0 mt-1 shadow-2xs">
-            {companyLogos[symbolUpper]()}
-            <span className="sonar-ring opacity-0 group-hover/card:opacity-100" />
-          </div>
-        ) : (
-          <div className="relative flex items-center justify-center w-11 h-11 rounded-xl bg-pulse/10 text-pulse font-bold text-base shrink-0 mt-1 border border-pulse/20">
-            {symbolUpper}
-            <span className="sonar-ring opacity-0 group-hover/card:opacity-100" />
-          </div>
-        )}
+      <div className="flex w-full items-start gap-5 md:w-auto">
+        <GlassLogo className="h-12 w-12" padding="p-2.5">
+          {companyLogos[symbolUpper] ? (
+            companyLogos[symbolUpper]()
+          ) : (
+            <span className="font-mono text-caption font-bold text-ivory-text">
+              {symbolUpper.slice(0, 4)}
+            </span>
+          )}
+        </GlassLogo>
 
-        <div className="flex flex-col text-left space-y-1.5">
-          <div className="relative flex items-center flex-wrap gap-2 group">
+        <div className="flex min-w-0 flex-col gap-2 text-left">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
             <Link
               to={`/company/${symbolUpper}/company-profile`}
-              className="font-bold text-foam hover:text-pulse transition-colors tracking-tight text-base"
+              className="text-subheading font-medium text-ivory-text underline-offset-4 hover:underline"
             >
               {name}
             </Link>
-            <span className="px-2 py-0.5 bg-white/5 text-mist font-semibold text-xs rounded-md border border-white/8 font-mono tracking-wide">
+            <span className="font-mono text-caption font-normal uppercase tracking-label-sm text-ash-text/70">
               {symbolUpper}
             </span>
           </div>
 
-          <div className="flex items-center space-x-2 text-xs text-mist font-medium tracking-wide">
+          <div className="flex flex-wrap items-center gap-x-2 text-body font-normal text-ash-text">
             <span>{industry}</span>
-            <span>•</span>
-            <span className="font-mono text-[11px] text-mist/80">
-              MCap: ${(marketCap / 1e9).toFixed(1)}B
+            <span aria-hidden="true" className="text-ash-text/40">
+              ·
+            </span>
+            <span className="font-mono">
+              ${(marketCap / 1e9).toFixed(1)}B mkt cap
             </span>
           </div>
 
-          <div className="flex items-center flex-wrap gap-2 pt-1">
-            <Link
-              to={`/company/${symbolUpper}/company-profile`}
-              className="text-[11px] font-bold text-mist bg-black/30 hover:bg-pulse/10 hover:text-pulse border border-white/8 hover:border-pulse/30 px-2.5 py-1 rounded-md transition-all duration-150 flex items-center gap-1"
-            >
-              📊 Profile
-            </Link>
-            <Link
-              to={`/company/${symbolUpper}/income-statement`}
-              className="text-[11px] font-bold text-mist bg-black/30 hover:bg-pulse/10 hover:text-pulse border border-white/8 hover:border-pulse/30 px-2.5 py-1 rounded-md transition-all duration-150 flex items-center gap-1"
-            >
-              📈 Income
-            </Link>
-            <Link
-              to={`/company/${symbolUpper}/balance-sheet`}
-              className="text-[11px] font-bold text-mist bg-black/30 hover:bg-pulse/10 hover:text-pulse border border-white/8 hover:border-pulse/30 px-2.5 py-1 rounded-md transition-all duration-150 flex items-center gap-1"
-            >
-              🧾 Balance Sheet
-            </Link>
-            <Link
-              to={`/company/${symbolUpper}/cashflow-statement`}
-              className="text-[11px] font-bold text-mist bg-black/30 hover:bg-pulse/10 hover:text-pulse border border-white/8 hover:border-pulse/30 px-2.5 py-1 rounded-md transition-all duration-150 flex items-center gap-1"
-            >
-              💸 Cash Flow
-            </Link>
+          {/* Ghost links, revealed on hover at desktop so a long result list
+              stays quiet until the row is being considered. */}
+          <div className="mt-1 flex flex-wrap items-center gap-x-5 gap-y-2 md:opacity-70 md:transition-opacity md:duration-200 md:group-hover:opacity-100">
+            {statementLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={`/company/${symbolUpper}/${link.to}`}
+                className="text-caption font-normal text-ash-text underline-offset-4 transition-colors duration-150 hover:text-ivory-text hover:underline"
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
         </div>
       </div>
 
-      <div className="mt-5 md:mt-0 w-full md:w-auto flex items-center justify-between md:justify-end space-x-6 shrink-0">
-        <div className="flex flex-col text-right">
-          <span className="font-bold text-foam text-base tracking-tight font-mono">
+      <div className="flex w-full shrink-0 items-center justify-between gap-8 md:w-auto md:justify-end">
+        <div className="flex flex-col items-start md:items-end">
+          <span className="font-mono text-subheading font-normal text-ivory-text">
             ${price.toFixed(2)}
           </span>
           <span
-            className={`text-[10px] font-bold px-1.5 py-0.5 rounded text-center mt-0.5 min-w-[55px] font-mono ${isPositive
-                ? "bg-gain/10 text-gain"
-                : "bg-loss/10 text-loss"
-              }`}
+            className={`mt-1 font-mono text-body font-bold ${
+              isPositive ? "text-gain" : "text-loss"
+            }`}
           >
-            {isPositive ? "+1.45%" : "-0.85%"}
+            {isPositive ? "▲ +1.45%" : "▼ −0.85%"}
           </span>
         </div>
 
-        <AddPortfolio
-          onPortfolioCreate={onPortfolioCreate}
-          symbol={symbolUpper}
-        />
+        <AddPortfolio onPortfolioCreate={onPortfolioCreate} symbol={symbolUpper} />
       </div>
-    </div>
+    </motion.div>
   )
 }
 

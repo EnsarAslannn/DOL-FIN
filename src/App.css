@@ -1,29 +1,15 @@
-@keyframes marquee {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-50%); }
-}
-
-.animate-marquee {
-  display: inline-flex;
-  white-space: nowrap;
-  animation: marquee 25s linear infinite;
-}
-
-.animate-marquee:hover {
-  animation-play-state: paused;
-}
-
-
 @keyframes sonar-ping {
   0% { transform: scale(0.35); opacity: 0.55; }
   100% { transform: scale(2.4); opacity: 0; }
 }
 
+/* Inherits `color`, so the same ring reads coral on light surfaces and
+   white over a dark scrim. */
 .sonar-ring {
   position: absolute;
   inset: 0;
   border-radius: 9999px;
-  border: 1px solid var(--color-pulse);
+  border: 1px solid currentColor;
   opacity: 0;
   animation: sonar-ping 3s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
@@ -31,102 +17,6 @@
 .sonar-ring[data-delay="1"] { animation-delay: 1s; }
 .sonar-ring[data-delay="2"] { animation-delay: 2s; }
 
-
-
-.glass-panel {
-  background:
-    linear-gradient(160deg, rgba(255, 255, 255, 0.045) 0%, rgba(255, 255, 255, 0) 45%),
-    rgba(28, 27, 27, 0.62);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-}
-
-
-.glass-panel-hot {
-  position: relative;
-  background:
-    linear-gradient(160deg, rgba(255, 87, 26, 0.07) 0%, rgba(255, 255, 255, 0) 55%),
-    rgba(28, 27, 27, 0.66);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid transparent;
-  background-origin: border-box;
-  box-shadow:
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.06),
-    0 0 40px -12px rgba(255, 87, 26, 0.28);
-}
-
-.glass-panel-hot::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(
-    145deg,
-    rgba(255, 255, 255, 0.22) 0%,
-    rgba(255, 255, 255, 0.04) 40%,
-    rgba(255, 87, 26, 0.38) 100%
-  );
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
-
-
-.glow-text {
-  text-shadow: 0 0 24px rgba(255, 87, 26, 0.35);
-}
-
-
-.glow-action {
-  box-shadow:
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.28),
-    0 0 24px -6px rgba(255, 87, 26, 0.55);
-}
-
-.glow-action:hover {
-  box-shadow:
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.32),
-    0 0 34px -4px rgba(255, 87, 26, 0.7);
-}
-
-
-.vortex-bg {
-  background:
-    radial-gradient(circle at 50% 22%, rgba(255, 87, 26, 0.16) 0%, rgba(14, 14, 14, 0) 58%),
-    radial-gradient(circle at 12% 78%, rgba(255, 181, 158, 0.06) 0%, rgba(14, 14, 14, 0) 45%);
-}
-
-
-.grid-veil {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
-  background-size: 64px 64px;
-  mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 20%, transparent 75%);
-  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 20%, transparent 75%);
-}
-
-
-.art-layer {
-  object-fit: cover;
-  opacity: 0.55;
-  mix-blend-mode: screen;
-}
-
-@keyframes drift-glow {
-  0% { opacity: 0.55; transform: scale(0.98); }
-  100% { opacity: 0.95; transform: scale(1.04); }
-}
-
-.animate-drift {
-  animation: drift-glow 9s infinite alternate ease-in-out;
-}
 
 @keyframes fade-in {
   from { opacity: 0; transform: translateY(10px); }
@@ -138,65 +28,7 @@
 }
 
 
-@property --shiny-angle {
-  syntax: "<angle>";
-  initial-value: 0deg;
-  inherits: false;
-}
-
-@property --shiny-percent {
-  syntax: "<percentage>";
-  initial-value: 6%;
-  inherits: false;
-}
-
-button {
-  position: relative;
-}
-
-button::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: conic-gradient(
-    from var(--shiny-angle),
-    transparent,
-    var(--color-pulse) var(--shiny-percent),
-    var(--color-foam) calc(var(--shiny-percent) * 2),
-    var(--color-pulse) calc(var(--shiny-percent) * 3),
-    transparent calc(var(--shiny-percent) * 4)
-  );
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0.7;
-  pointer-events: none;
-  animation: shiny-spin 3.2s linear infinite;
-  transition: opacity 300ms ease, --shiny-percent 400ms ease;
-}
-
-button:hover::before,
-button:focus-visible::before {
-  opacity: 1;
-  --shiny-percent: 16%;
-}
-
-button:disabled::before {
-  animation-play-state: paused;
-  opacity: 0.2;
-}
-
-@keyframes shiny-spin {
-  to {
-    --shiny-angle: 360deg;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .animate-marquee,
-  .animate-drift,
   .animate-fadeIn {
     animation: none;
   }
@@ -204,9 +36,5 @@ button:disabled::before {
   .sonar-ring {
     animation: none;
     opacity: 0.18;
-  }
-
-  button::before {
-    animation: none;
   }
 }

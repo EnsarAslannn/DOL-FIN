@@ -1,4 +1,5 @@
 import { Component, type ErrorInfo, type ReactNode } from "react"
+import { ctaCompactClass } from "../../Helpers/formStyles"
 
 type Props = {
     children: ReactNode
@@ -22,16 +23,16 @@ class ErrorBoundary extends Component<Props, State> {
     render() {
         if (this.state.hasError) {
             return (
-                <div className="w-full min-h-screen bg-abyss font-sans flex items-center justify-center px-6">
-                    <div className="max-w-md w-full bg-depth border border-white/8 rounded-2xl shadow-xl p-8 text-center flex flex-col items-center space-y-4">
-                        <h1 className="text-xl font-bold text-foam">Something went wrong</h1>
-                        <p className="text-sm text-mist">
+                <div className="w-full min-h-screen bg-onyx-canvas font-sans flex items-center justify-center px-6">
+                    <div className="max-w-md w-full bg-graphite-card ring-1 ring-inset ring-mist-border/6 rounded-card p-card text-center flex flex-col items-center space-y-4">
+                        <h1 className="text-heading-sm font-normal text-ivory-text">Something went wrong</h1>
+                        <p className="text-body font-normal text-ash-text">
                             An unexpected error occurred while rendering this page. Please refresh to continue.
                         </p>
                         <button
                             type="button"
                             onClick={() => window.location.reload()}
-                            className="px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider bg-pulse hover:bg-pulse-dim text-abyss shadow-lg shadow-pulse/10 transition-all active:scale-[0.97]"
+                            className={ctaCompactClass}
                         >
                             Refresh Page
                         </button>

@@ -6,6 +6,12 @@ import {
   FaMoneyBillWave,
 } from "react-icons/fa"
 
+const links = [
+  { to: "company-profile", label: "Company Profile", Icon: FaBuilding },
+  { to: "income-statement", label: "Income Statement", Icon: FaTable },
+  { to: "balance-sheet", label: "Balance Sheet", Icon: FaBalanceScale },
+  { to: "cashflow-statement", label: "Cashflow Statement", Icon: FaMoneyBillWave },
+]
 
 const Sidebar = () => {
   const location = useLocation()
@@ -15,60 +21,33 @@ const Sidebar = () => {
   }
 
   return (
-    <nav className="block py-8 px-4 top-0 bottom-0 w-64 bg-black/40 backdrop-blur-xl border-r border-white/8 left-0 absolute flex-row flex-nowrap md:z-10 z-9999 transition-all duration-300 ease-in-out transform md:translate-x-0 -translate-x-full text-left">
-      <button className="md:hidden flex items-center justify-center cursor-pointer text-mist w-6 h-10 bg-depth rounded-r border border-white/12 absolute top-1/2 -right-6 focus:outline-none z-9998">
-        <i className="fas fa-ellipsis-v"></i>
-      </button>
-
-      <div className="flex-col min-h-full px-0 flex flex-nowrap items-center justify-start w-full mx-auto overflow-y-auto overflow-x-hidden">
-        <div className="flex flex-col items-stretch opacity-100 relative mt-4 h-auto z-40 flex-1 w-full">
-          <span className="px-4 pb-3 mb-2 text-[10px] font-bold text-mist/80 uppercase tracking-[0.18em] border-b border-white/8 font-mono">
+    // w-64 is mirrored by CompanyDashboard's md:ml-64 — change both together.
+    <nav className="absolute bottom-0 left-0 top-0 z-[9999] block w-64 -translate-x-full flex-row flex-nowrap border-r border-mist-border/8 bg-graphite-card px-4 pb-8 pt-28 text-left transition-all duration-300 ease-in-out md:z-10 md:translate-x-0">
+      <div className="mx-auto flex w-full min-h-full flex-col flex-nowrap items-center justify-start overflow-y-auto overflow-x-hidden px-0">
+        <div className="relative z-40 mt-4 flex h-auto w-full flex-1 flex-col items-stretch">
+          <span className="mb-2 border-b border-mist-border/8 px-4 pb-3 font-mono text-caption font-normal uppercase tracking-label-lg text-ash-text">
             Instrument Panel
           </span>
-          <div className="md:flex-col md:min-w-full flex flex-col list-none space-y-2">
-            <Link
-              to="company-profile"
-              className={`flex items-center text-sm font-semibold py-3.5 px-4 no-underline rounded-xl transition-all duration-200 tracking-wide relative group ${isActive("company-profile")
-                  ? "bg-pulse/10 text-pulse border-l-[3px] border-pulse pl-3 shadow-[inset_0_0_24px_-8px_rgba(255,87,26,0.5)]"
-                  : "text-mist hover:text-foam hover:bg-white/5"
+          <div className="flex list-none flex-col space-y-1 md:min-w-full md:flex-col">
+            {links.map(({ to, label, Icon }) => (
+              <Link
+                key={to}
+                to={to}
+                className={`group relative flex items-center rounded-card py-3 text-body font-normal no-underline transition-colors duration-200 ${
+                  isActive(to)
+                    // pl-[13px] is 16px minus the 3px active rule, so the label
+                    // stays on the same vertical line as the inactive items.
+                    ? "border-l-[3px] border-cobalt bg-obsidian-button pl-[13px] pr-4 text-ivory-text"
+                    : "px-4 text-ash-text hover:bg-obsidian-button hover:text-ivory-text"
                 }`}
-            >
-              <FaBuilding size={18} className="shrink-0" />
-              <span className="ml-3 font-sans">Company Profile</span>
-            </Link>
-
-            <Link
-              to="income-statement"
-              className={`flex items-center text-sm font-semibold py-3.5 px-4 no-underline rounded-xl transition-all duration-200 tracking-wide relative group ${isActive("income-statement")
-                  ? "bg-pulse/10 text-pulse border-l-[3px] border-pulse pl-3 shadow-[inset_0_0_24px_-8px_rgba(255,87,26,0.5)]"
-                  : "text-mist hover:text-foam hover:bg-white/5"
-                }`}
-            >
-              <FaTable size={18} className="shrink-0" />
-              <span className="ml-3 font-sans">Income Statement</span>
-            </Link>
-
-            <Link
-              to="balance-sheet"
-              className={`flex items-center text-sm font-semibold py-3.5 px-4 no-underline rounded-xl transition-all duration-200 tracking-wide relative group ${isActive("balance-sheet")
-                  ? "bg-pulse/10 text-pulse border-l-[3px] border-pulse pl-3 shadow-[inset_0_0_24px_-8px_rgba(255,87,26,0.5)]"
-                  : "text-mist hover:text-foam hover:bg-white/5"
-                }`}
-            >
-              <FaBalanceScale size={18} className="shrink-0" />
-              <span className="ml-3 font-sans">Balance Sheet</span>
-            </Link>
-
-            <Link
-              to="cashflow-statement"
-              className={`flex items-center text-sm font-semibold py-3.5 px-4 no-underline rounded-xl transition-all duration-200 tracking-wide relative group ${isActive("cashflow-statement")
-                  ? "bg-pulse/10 text-pulse border-l-[3px] border-pulse pl-3 shadow-[inset_0_0_24px_-8px_rgba(255,87,26,0.5)]"
-                  : "text-mist hover:text-foam hover:bg-white/5"
-                }`}
-            >
-              <FaMoneyBillWave size={18} className="shrink-0" />
-              <span className="ml-3 font-sans">Cashflow Statement</span>
-            </Link>
+              >
+                <Icon
+                  size={16}
+                  className={`shrink-0 ${isActive(to) ? "text-cobalt" : "text-ash-text/70"}`}
+                />
+                <span className="ml-3 font-sans">{label}</span>
+              </Link>
+            ))}
           </div>
         </div>
       </div>

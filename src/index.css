@@ -1,60 +1,317 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap");
-
 @import "tailwindcss";
 
+/* ============================================================================
+   DOL-FIN — Onyx Canvas.
+
+   Authoritative token set. Every rendered value in the app must trace back to
+   something in this file; components must not invent values.
+
+   The system is dark by default: Onyx Canvas is the page ground everywhere,
+   Cobalt is the only saturated colour, and the whole foreground ladder is a
+   single neutral run from Ivory down to Slate.
+
+   Three deliberate deviations from the supplied token file, each recorded at
+   its definition below:
+     1. Tracking is implemented in `em`, not `px`  (see "Type scale")
+     2. The numeric `--spacing-N` ladder is not defined  (see "Spacing")
+     3. `--radius-full` keeps 9999px  (see "Radii")
+   ========================================================================= */
 
 @theme {
-  --screen-sm: 480px;
-  --screen-md: 768px;
-  --screen-lg: 1020px;
-  --screen-xl: 1440px;
+  /* --- Colors ------------------------------------------------------------ */
+  /* Brand. The one saturated hue in the system. Reserved for filled buttons,
+     selected states and focused conversion moments — never for body copy:
+     Cobalt on Onyx is 3.78:1, which clears AA for UI components and large
+     text but not for a paragraph. */
+  --color-cobalt: #5266eb;
 
-  
-  --color-abyss: #0e0e0e;
-  --color-depth: #1c1b1b;
-  --color-depth-2: #2a2a2a;
-  --color-ridge: #5c4037;
+  /* Surfaces, darkest to lightest. Each step is one elevation above the last:
+     canvas → card → interactive fill. */
+  --color-onyx-canvas: #171721;
+  --color-graphite-card: #1e1e2a;
+  --color-obsidian-button: #272735;
 
-  
-  --color-pulse: #ff571a;
-  --color-pulse-dim: #ffb59e;
+  /* Structure and foreground, darkest to lightest.
+     Slate  — medium-weight dividers and structural borders (3.64:1 on Onyx,
+              clears the 3:1 required of a non-text boundary).
+     Ash    — muted body copy, helper text, secondary labels (10.16:1).
+     Mist   — light hairlines and ghost-button outlines. Deliberately bright,
+              so it is used through an opacity modifier, never at full weight.
+     Ivory  — primary text, headings and icons; the dominant foreground
+              (15.25:1 on Onyx, 13.78:1 on Graphite).
+     White  — text and icons on a Cobalt fill only, where Ivory would fall to
+              4.04:1 and White holds 4.71:1. */
+  --color-slate-border: #70707d;
+  --color-ash-text: #c3c3cc;
+  --color-mist-border: #e2e3ed;
+  --color-ivory-text: #ededf3;
+  --color-pure-white: #ffffff;
 
-  
-  --color-gain: #5fe3a6;
-  --color-loss: #ff5d73;
-  --color-orchid: #d1bcff;
+  /* --- The light band ----------------------------------------------------
+     The page alternates dark and light grounds. Cream Canvas is the light
+     one: a warm off-white that breaks the run of Onyx without introducing a
+     second hue to compete with Cobalt.
 
-  --color-foam: #e5e2e1;
-  --color-mist: #ad897e;
+     Its foreground ladder inverts rather than duplicating — Onyx Canvas is
+     the ink on Cream (14.20:1), which is what keeps the two bands reading as
+     one system rather than two themes bolted together. Ink Muted is the only
+     genuinely new value the light band needs: Slate on Cream is 3.90:1 and
+     misses AA for body copy, where Ink Muted holds 5.44:1. */
+  --color-cream-canvas: #ece5d8;
+  --color-ink-muted: #55555f;
 
-  --font-sans: "Inter", sans-serif;
-  --font-display: "Montserrat", sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  /* The page's floor. A weathered Onyx — deeper and drained of the blue, so
+     the footer separates from the two Onyx section bands above it without
+     colliding with Graphite Card in the other direction. */
+  --color-footer-navy: #14141b;
 
-  --spacing-180: 32rem;
+  /* Market direction. A functional exception to the single-hue rule, and the
+     only place another hue is allowed. Retuned upward for a dark ground —
+     the previous values were mixed for white paper and went muddy on Onyx.
+     Both clear AAA against the canvas (8.50:1 and 6.27:1) and stay clear of
+     Cobalt in hue, so a rising line never reads as a selected state. Never
+     the sole carrier of meaning — always paired with a glyph and a sign. */
+  --color-gain: #4ec98a;
+  --color-loss: #f2707f;
+
+  /* --- Typefaces --------------------------------------------------------- */
+  /* NB International Pro is proprietary and not licensed here, so it leads the
+     stack and Inter Tight carries the actual rendering. If the real face is
+     ever licensed and self-hosted, it activates with no code change. */
+  --font-sans: "NB International Pro", "Inter Tight", ui-sans-serif, system-ui,
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "NB International Mono Pro", "JetBrains Mono", ui-monospace,
+    SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Spec-named aliases, so `font-nb-international-pro` resolves. */
+  --font-nb-international-pro: var(--font-sans);
+  --font-nb-international-mono-pro: var(--font-mono);
+
+  /* --- Type scale -------------------------------------------------------- */
+  /* 13 sizes from DESIGN.md:28. Line-height compresses as size grows; tracking
+     goes more negative. Each step pairs its own line-height and letter-spacing
+     via the `--text-*--*` modifier form, so a single `text-body` class carries
+     all three properties and the scale cannot be half-applied.
+
+     DEVIATION 1 — the supplied file writes tracking in px (`-0.025px`), which
+     is one-fortieth of a pixel and would erase the system's signature. Both
+     other sources say em: the token JSON's own font description ("-0.025em at
+     66px down to -0.005em at small body") and DESIGN.md:30. Implemented in em. */
+
+  --text-caption: 11px;
+  --text-caption--line-height: 1.5;
+  --text-caption--letter-spacing: -0.005em;
+
+  --text-label: 13px;
+  --text-label--line-height: 1.5;
+  --text-label--letter-spacing: -0.005em;
+
+  --text-body: 15px;
+  --text-body--line-height: 1.5;
+  --text-body--letter-spacing: -0.005em;
+
+  --text-body-lg: 17px;
+  --text-body-lg--line-height: 1.4;
+  --text-body-lg--letter-spacing: -0.009em;
+
+  --text-subheading: 19px;
+  --text-subheading--line-height: 1.4;
+  --text-subheading--letter-spacing: -0.009em;
+
+  --text-heading-sm: 22px;
+  --text-heading-sm--line-height: 1.25;
+  --text-heading-sm--letter-spacing: -0.012em;
+
+  --text-heading-md: 26px;
+  --text-heading-md--line-height: 1.25;
+  --text-heading-md--letter-spacing: -0.012em;
+
+  --text-heading: 30px;
+  --text-heading--line-height: 1.2;
+  --text-heading--letter-spacing: -0.013em;
+
+  --text-heading-xl: 37px;
+  --text-heading-xl--line-height: 1.2;
+  --text-heading-xl--letter-spacing: -0.015em;
+
+  --text-heading-lg: 45px;
+  --text-heading-lg--line-height: 1.13;
+  --text-heading-lg--letter-spacing: -0.015em;
+
+  --text-display-sm: 56px;
+  --text-display-sm--line-height: 1.06;
+  --text-display-sm--letter-spacing: -0.02em;
+
+  --text-display-md: 60px;
+  --text-display-md--line-height: 1.1;
+  --text-display-md--letter-spacing: -0.022em;
+
+  --text-display: 66px;
+  --text-display--line-height: 1;
+  --text-display--letter-spacing: -0.025em;
+
+  /* --- Line height / tracking, standalone -------------------------------- */
+  /* The scale above already applies these. These exist so the spec's named
+     values are reachable as `leading-*` / `tracking-*` when a step's default
+     has to be overridden deliberately. */
+  --leading-display: 1;
+  --leading-display-sm: 1.06;
+  --leading-display-md: 1.1;
+  --leading-heading-lg: 1.13;
+  --leading-heading: 1.2;
+  --leading-heading-sm: 1.25;
+  --leading-body-lg: 1.4;
+  --leading-body: 1.5;
+
+  --tracking-display: -0.025em;
+  --tracking-display-md: -0.022em;
+  --tracking-display-sm: -0.02em;
+  --tracking-heading-lg: -0.015em;
+  --tracking-heading: -0.013em;
+  --tracking-heading-sm: -0.012em;
+  --tracking-body-lg: -0.009em;
+  --tracking-body: -0.005em;
+
+  /* Positive tracking for uppercase mono labels — the system's "instrumented"
+     device. Not in the supplied file, which has no uppercase-label component,
+     but required by DESIGN.md's technical-label pattern. Three steps replace
+     34 hand-written arbitrary values. */
+  --tracking-label-sm: 0.12em;
+  --tracking-label: 0.14em;
+  --tracking-label-lg: 0.16em;
+
+  /* Component-role aliases. Both sit on the tracking ladder above; they exist
+     because two components specify tracking independently of their size step:
+     the pill CTA is -0.009em at both 15px and 17px (DESIGN.md:104), and the
+     wordmark is set tighter than its 17px step. */
+  --tracking-cta: -0.009em;
+  --tracking-wordmark: -0.02em;
+
+  /* --- Spacing ----------------------------------------------------------- */
+  /* DEVIATION 2 — the supplied `--spacing-4: 4px … --spacing-60: 60px` ladder
+     is intentionally NOT defined. Those are pixel values; Tailwind's numeric
+     spacing scale is an index multiplier (`p-4` = calc(--spacing * 4) = 16px).
+     Defining them would reinterpret 175 existing utilities — `pt-28` would
+     fall from 112px to 28px and the floating nav would overlap content on six
+     routes.
+
+     No expressiveness is lost: the base unit is already 4px, so the spec's
+     whole ladder is exact — 4px=`1`, 8px=`2`, 16px=`4`, 24px=`6`, 28px=`7`,
+     60px=`15`. Only the three off-grid layout values need their own tokens. */
+  --spacing-element: 11px;
+  --spacing-cta: 15px;
+  --spacing-card: 19px;
+  --spacing-section: 75px;
+
+  /* --- Layout ------------------------------------------------------------ */
+  --container-page: 1200px;
+  /* The cinematic blocks — hero, tablet feature, CTA — run wider than the
+     reading column so their imagery reaches past the text grid. */
+  --container-wide: 1440px;
+
+  /* --- Radii ------------------------------------------------------------- */
+  /* Semantic names are what components use. */
+  --radius-smallcard: 5px;
+  --radius-icon: 7.5px;
+  --radius-card: 15px;
+  --radius-nav: 15px;
+  --radius-pill: 9999px;
+  /* Full-bleed cinematic blocks sit inset from the viewport edge with a
+     visibly larger corner than a card, so the canvas reads as a mat around
+     them rather than as a gap. */
+  --radius-block: 28px;
+
+  /* The spec's raw ladder, available for completeness.
+     DEVIATION 3 — `--radius-full` is deliberately left at Tailwind's 9999px
+     rather than the spec's 74.958px. `rounded-full` means "fully round" at all
+     20 of its call sites; the spec supplies `--radius-full-6: 9999px` for
+     exactly that meaning, so the 74.958px value is an extraction artifact. */
+  --radius-md: 5px;
+  --radius-lg: 7.4958px;
+  --radius-xl: 11.2437px;
+  --radius-xl-2: 14.9916px;
+  --radius-2xl: 22.4874px;
+  --radius-3xl: 29.9832px;
+  --radius-full-2: 100px;
+  --radius-full-3: 149.916px;
+  --radius-full-4: 999px;
+  --radius-full-5: 1440px;
+  --radius-full-6: 9999px;
+
+  /* --- Elevation --------------------------------------------------------- */
+  /* The system's only shadow. Most surfaces carry none. */
+  --shadow-subtle: rgba(0, 0, 0, 0.05) 0px 2px 2px 0px;
+}
+
+/* ============================================================================
+   Non-utility tokens. These carry no Tailwind namespace, so they live here as
+   named references for component authors rather than generating classes.
+   ========================================================================= */
+:root {
+  color-scheme: dark;
+
+  /* Decorative wash. The one place a Cobalt gradient is permitted — the
+     wallet balance card — per DESIGN.md's one-of-a-kind rule. */
+  --gradient-cobalt-glow: linear-gradient(
+    88deg,
+    rgb(82, 102, 235),
+    rgb(39, 39, 53) 90%
+  );
+
+  /* Surface levels, so component intent is greppable. */
+  --surface-page-canvas: var(--color-onyx-canvas);
+  --surface-card-surface: var(--color-graphite-card);
+  --surface-muted-surface: var(--color-obsidian-button);
+  --surface-floating-nav: var(--color-graphite-card);
+
+  /* Four weights. 500 carries display headings — at 60px+ a 400 grotesque
+     goes weedy on a dark ground, where the same weight held up on paper. */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Layout values, mirroring the @theme tokens above under the spec's names. */
+  --page-max-width: 1200px;
+  --section-gap: 75px;
+  --card-padding: 19px;
+  --element-gap: 11px;
+  --spacing-unit: 4px;
 }
 
 html,
 body {
-  background-color: var(--color-abyss);
-  color: var(--color-foam);
+  background-color: var(--surface-page-canvas);
+  color: var(--color-ivory-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+/* Anchor the inherited base to the body step. Without this, any element
+   without an explicit `text-*` class falls back to the browser's 16px, which
+   is not on the scale — the wordmark link was inheriting exactly that.
+   Set on body rather than html so Tailwind's rem-based spacing still keys
+   off the user's root font size. */
+body {
+  font-size: var(--text-body);
+  line-height: var(--text-body--line-height);
+  letter-spacing: var(--text-body--letter-spacing);
+}
 
+/* Financial figures must not reflow as digits change. */
 .font-mono {
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum";
 }
 
 ::selection {
-  background-color: var(--color-pulse);
-  color: #ffffff;
+  background-color: var(--color-cobalt);
+  color: var(--color-pure-white);
 }
-
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--color-depth-2) transparent;
+  scrollbar-color: var(--color-obsidian-button) transparent;
 }
 
 *::-webkit-scrollbar {
@@ -67,13 +324,13 @@ body {
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: var(--color-depth-2);
-  border-radius: 9999px;
+  background-color: var(--color-obsidian-button);
+  border-radius: var(--radius-pill);
   border: 3px solid transparent;
   background-clip: content-box;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background-color: var(--color-ridge);
+  background-color: var(--color-slate-border);
   background-clip: content-box;
 }
