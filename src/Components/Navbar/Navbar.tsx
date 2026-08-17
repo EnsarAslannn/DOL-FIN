@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react"
+import { useEffect, useId, useRef, useState } from "react"
 import { Link, useLocation } from "react-router-dom"
 import logo from "../../assets/dolphin.png"
 import { useAuth } from "../../Context/useAuth"
 import { contentClass } from "../../Helpers/layout"
 import { ctaBaseClass } from "../../Helpers/formStyles"
 import { useSectionTone } from "../../Helpers/useSectionTone"
+import MobileMenu from "./MobileMenu"
+import MenuIcon from "./MenuIcon"
 
 /**
  * Adaptive navigation bar.
@@ -15,23 +17,31 @@ import { useSectionTone } from "../../Helpers/useSectionTone"
  *
  * It re-tones itself against that band. Sections declare their own ground via
  * `data-nav-tone`, and everything here — link colour, wordmark, hairline,
- * fill and the CTA pill — flips together on that one signal. Over a dark band
- * the CTA is a white pill with dark text; over cream it inverts to an Onyx
- * pill with light text, which is what keeps it the most prominent thing in
- * the bar in both directions.
+ * fill, the CTA pill and the mobile sheet — flips together on that one
+ * signal. Over a dark band the CTA is a white pill with dark text; over cream
+ * it inverts to an Onyx pill with light text, which is what keeps it the most
+ * prominent thing in the bar in both directions.
  *
- * Above the fold the bar stays transparent and lets the hero video through.
+ * Above the fold the bar stays transparent and lets the hero video through —
+ * except while the mobile sheet is open, where it needs its own fill so the
+ * sheet has something to hang from.
  */
 const SCROLL_THRESHOLD = 24
 
 /** Sampled inside the bar, so the flip lands as the boundary crosses it. */
 const PROBE_Y = 32
 
+/** Routes that only exist for a signed-in account. */
+const authedLinks = [{ to: "/wallet", label: "Wallet" }]
+
 const Navbar = () => {
   const { user, logout } = useAuth()
   const location = useLocation()
   const [isScrolled, setIsScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   const tone = useSectionTone(PROBE_Y)
+  const menuId = useId()
+  const triggerRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > SCROLL_THRESHOLD)
@@ -41,13 +51,21 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
+  /* A sheet that survives navigation would cover the page it just opened, so
+     every row closes it on activation. Done here rather than in an effect
+     watching the location: a hash link to a section on the current page does
+     not change `pathname`, and closing on the click is the cause rather than
+     a reaction to it. */
+  const closeMenu = () => setMenuOpen(false)
+
   const isLight = tone === "light"
 
-  const shellClass = !isScrolled
-    ? "border-transparent bg-transparent"
-    : isLight
-      ? "border-onyx-canvas/10 bg-cream-canvas/85 backdrop-blur-md"
-      : "border-mist-border/10 bg-onyx-canvas/85 backdrop-blur-md"
+  const shellClass =
+    !isScrolled && !menuOpen
+      ? "border-transparent bg-transparent"
+      : isLight
+        ? "border-onyx-canvas/10 bg-cream-canvas/85 backdrop-blur-md"
+        : "border-mist-border/10 bg-onyx-canvas/85 backdrop-blur-md"
 
   const wordmarkClass = isLight ? "text-onyx-canvas" : "text-ivory-text"
   const mutedClass = isLight ? "text-ink-muted" : "text-ash-text"
@@ -57,7 +75,7 @@ const Navbar = () => {
     `text-label font-normal underline-offset-[6px] transition-colors duration-300 ${
       location.pathname.startsWith(path)
         ? `${strongClass} underline`
-        : `${mutedClass} hover:${isLight ? "text-onyx-canvas" : "text-ivory-text"} hover:underline`
+        : `${mutedClass} hover:underline`
     }`
 
   /* The CTA inverts rather than staying Cobalt. Against cream, a Cobalt pill
@@ -66,6 +84,19 @@ const Navbar = () => {
   const ctaToneClass = isLight
     ? "bg-onyx-canvas text-ivory-text hover:bg-footer-navy"
     : "bg-ivory-text text-onyx-canvas hover:bg-pure-white"
+
+  /* Sheet rows are a size up from the bar's own links and full-width, so each
+     one clears the 44px minimum touch target with room around it. */
+  const sheetRowClass = `flex items-center justify-between rounded-card px-4 py-3.5 text-body-lg font-normal transition-colors duration-200 ${
+    isLight
+      ? "text-onyx-canvas hover:bg-onyx-canvas/6"
+      : "text-ivory-text hover:bg-mist-border/8"
+  }`
+
+  const sectionLinks = [
+    { href: "/#how-it-works", label: "How it works" },
+    { href: "/#help", label: "Help Center" },
+  ]
 
   return (
     <nav
@@ -89,30 +120,32 @@ const Navbar = () => {
             </Link>
 
             <div className="hidden items-center gap-7 md:flex">
-              <a
-                href="/#how-it-works"
-                className={`text-label font-normal underline-offset-[6px] transition-colors duration-300 ${mutedClass} hover:underline`}
-              >
-                How it works
-              </a>
-              <a
-                href="/#help"
-                className={`text-label font-normal underline-offset-[6px] transition-colors duration-300 ${mutedClass} hover:underline`}
-              >
-                Help Center
-              </a>
+              {sectionLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className={`text-label font-normal underline-offset-[6px] transition-colors duration-300 hover:underline ${mutedClass}`}
+                >
+                  {link.label}
+                </a>
+              ))}
               <Link to="/search" className={navLinkClass("/search")}>
                 Search
               </Link>
-              {user && (
-                <Link to="/wallet" className={navLinkClass("/wallet")}>
-                  Wallet
-                </Link>
-              )}
+              {user &&
+                authedLinks.map((link) => (
+                  <Link
+                    key={link.to}
+                    to={link.to}
+                    className={navLinkClass(link.to)}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 sm:gap-4">
             {user ? (
               <>
                 <div
@@ -133,7 +166,7 @@ const Navbar = () => {
                 </div>
                 <button
                   onClick={logout}
-                  className={`cursor-pointer text-label font-normal underline-offset-[6px] transition-colors duration-300 hover:underline ${mutedClass}`}
+                  className={`hidden cursor-pointer text-label font-normal underline-offset-[6px] transition-colors duration-300 hover:underline md:inline ${mutedClass}`}
                 >
                   Logout
                 </button>
@@ -148,15 +181,90 @@ const Navbar = () => {
                 </Link>
                 <Link
                   to="/register"
-                  className={`cursor-pointer px-6 py-2 text-center text-body ${ctaBaseClass} ${ctaToneClass}`}
+                  className={`cursor-pointer px-5 py-2 text-center text-body sm:px-6 ${ctaBaseClass} ${ctaToneClass}`}
                 >
                   Create account
                 </Link>
               </>
             )}
+
+            <button
+              ref={triggerRef}
+              type="button"
+              onClick={() => setMenuOpen((v) => !v)}
+              aria-expanded={menuOpen}
+              aria-controls={menuId}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              className={`-mr-2 flex h-11 w-11 cursor-pointer items-center justify-center rounded-card transition-colors duration-200 md:hidden ${
+                isLight
+                  ? "text-onyx-canvas hover:bg-onyx-canvas/8"
+                  : "text-ivory-text hover:bg-mist-border/10"
+              }`}
+            >
+              <MenuIcon open={menuOpen} />
+            </button>
           </div>
         </div>
       </div>
+
+      <MobileMenu
+        id={menuId}
+        open={menuOpen}
+        onClose={closeMenu}
+        isLight={isLight}
+        triggerRef={triggerRef}
+      >
+        {sectionLinks.map((link) => (
+          <a key={link.href} href={link.href} onClick={closeMenu} className={sheetRowClass}>
+            {link.label}
+          </a>
+        ))}
+        <Link to="/search" onClick={closeMenu} className={sheetRowClass}>
+          Search
+        </Link>
+        {user &&
+          authedLinks.map((link) => (
+            <Link key={link.to} to={link.to} onClick={closeMenu} className={sheetRowClass}>
+              {link.label}
+            </Link>
+          ))}
+
+        <span
+          aria-hidden="true"
+          className={`my-3 h-px w-full ${
+            isLight ? "bg-onyx-canvas/10" : "bg-mist-border/10"
+          }`}
+        />
+
+        {user ? (
+          <>
+            <div
+              className={`flex items-baseline justify-between px-4 py-2 ${mutedClass}`}
+            >
+              <span className="text-caption font-normal uppercase tracking-label-sm">
+                {user.userName}
+              </span>
+              <span className={`font-mono text-body ${strongClass}`}>
+                ${user.walletBalance?.toFixed(2) ?? "0.00"}
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                closeMenu()
+                logout()
+              }}
+              className={`cursor-pointer text-left ${sheetRowClass}`}
+            >
+              Logout
+            </button>
+          </>
+        ) : (
+          <Link to="/login" onClick={closeMenu} className={sheetRowClass}>
+            Log in
+          </Link>
+        )}
+      </MobileMenu>
     </nav>
   )
 }
