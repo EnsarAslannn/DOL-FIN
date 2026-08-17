@@ -1,10 +1,14 @@
 @import "tailwindcss";
 
 /* ============================================================================
-   Superpower — Bioluminescent health command center.
+   DOL-FIN — Onyx Canvas.
 
    Authoritative token set. Every rendered value in the app must trace back to
    something in this file; components must not invent values.
+
+   The system is dark by default: Onyx Canvas is the page ground everywhere,
+   Cobalt is the only saturated colour, and the whole foreground ladder is a
+   single neutral run from Ivory down to Slate.
 
    Three deliberate deviations from the supplied token file, each recorded at
    its definition below:
@@ -15,26 +19,60 @@
 
 @theme {
   /* --- Colors ------------------------------------------------------------ */
-  --color-sunrise-coral: #fc5f2b;
-  --color-coral-glow: #ff8b64;
-  --color-carbon-black: #18181b;
-  --color-pure-black: #000000;
-  --color-zinc-gray: #71717a;
-  --color-ash-gray: #a1a1aa;
-  --color-mist-gray: #e4e4e7;
-  --color-fog-gray: #f4f4f5;
-  --color-paper-white: #ffffff;
+  /* Brand. The one saturated hue in the system. Reserved for filled buttons,
+     selected states and focused conversion moments — never for body copy:
+     Cobalt on Onyx is 3.78:1, which clears AA for UI components and large
+     text but not for a paragraph. */
+  --color-cobalt: #5266eb;
 
-  /* Market direction. A functional exception to the dichromatic rule, kept
-     heavily desaturated (S27%/S30% against coral's S97%) so it reads as data
-     rather than decoration. Never the sole carrier of meaning — always paired
-     with a glyph and a sign. Both clear AA on Paper White (6.12:1, 6.34:1)
-     and on Fog Gray (5.57:1, 5.77:1).
+  /* Surfaces, darkest to lightest. Each step is one elevation above the last:
+     canvas → card → interactive fill. */
+  --color-onyx-canvas: #171721;
+  --color-graphite-card: #1e1e2a;
+  --color-obsidian-button: #272735;
 
-     Absent from the supplied palette because that extraction came from a
-     health product with no directional financial data. */
-  --color-gain: #3d6b55;
-  --color-loss: #8e4c54;
+  /* Structure and foreground, darkest to lightest.
+     Slate  — medium-weight dividers and structural borders (3.64:1 on Onyx,
+              clears the 3:1 required of a non-text boundary).
+     Ash    — muted body copy, helper text, secondary labels (10.16:1).
+     Mist   — light hairlines and ghost-button outlines. Deliberately bright,
+              so it is used through an opacity modifier, never at full weight.
+     Ivory  — primary text, headings and icons; the dominant foreground
+              (15.25:1 on Onyx, 13.78:1 on Graphite).
+     White  — text and icons on a Cobalt fill only, where Ivory would fall to
+              4.04:1 and White holds 4.71:1. */
+  --color-slate-border: #70707d;
+  --color-ash-text: #c3c3cc;
+  --color-mist-border: #e2e3ed;
+  --color-ivory-text: #ededf3;
+  --color-pure-white: #ffffff;
+
+  /* --- The light band ----------------------------------------------------
+     The page alternates dark and light grounds. Cream Canvas is the light
+     one: a warm off-white that breaks the run of Onyx without introducing a
+     second hue to compete with Cobalt.
+
+     Its foreground ladder inverts rather than duplicating — Onyx Canvas is
+     the ink on Cream (14.20:1), which is what keeps the two bands reading as
+     one system rather than two themes bolted together. Ink Muted is the only
+     genuinely new value the light band needs: Slate on Cream is 3.90:1 and
+     misses AA for body copy, where Ink Muted holds 5.44:1. */
+  --color-cream-canvas: #ece5d8;
+  --color-ink-muted: #55555f;
+
+  /* The page's floor. A weathered Onyx — deeper and drained of the blue, so
+     the footer separates from the two Onyx section bands above it without
+     colliding with Graphite Card in the other direction. */
+  --color-footer-navy: #14141b;
+
+  /* Market direction. A functional exception to the single-hue rule, and the
+     only place another hue is allowed. Retuned upward for a dark ground —
+     the previous values were mixed for white paper and went muddy on Onyx.
+     Both clear AAA against the canvas (8.50:1 and 6.27:1) and stay clear of
+     Cobalt in hue, so a rising line never reads as a selected state. Never
+     the sole carrier of meaning — always paired with a glyph and a sign. */
+  --color-gain: #4ec98a;
+  --color-loss: #f2707f;
 
   /* --- Typefaces --------------------------------------------------------- */
   /* NB International Pro is proprietary and not licensed here, so it leads the
@@ -167,6 +205,9 @@
 
   /* --- Layout ------------------------------------------------------------ */
   --container-page: 1200px;
+  /* The cinematic blocks — hero, tablet feature, CTA — run wider than the
+     reading column so their imagery reaches past the text grid. */
+  --container-wide: 1440px;
 
   /* --- Radii ------------------------------------------------------------- */
   /* Semantic names are what components use. */
@@ -175,6 +216,10 @@
   --radius-card: 15px;
   --radius-nav: 15px;
   --radius-pill: 9999px;
+  /* Full-bleed cinematic blocks sit inset from the viewport edge with a
+     visibly larger corner than a card, so the canvas reads as a mat around
+     them rather than as a gap. */
+  --radius-block: 28px;
 
   /* The spec's raw ladder, available for completeness.
      DEVIATION 3 — `--radius-full` is deliberately left at Tailwind's 9999px
@@ -203,23 +248,27 @@
    named references for component authors rather than generating classes.
    ========================================================================= */
 :root {
-  /* Decorative wash. The one place a coral gradient is permitted — the
-     membership-card slot — per DESIGN.md's one-of-a-kind rule. */
-  --gradient-coral-glow: linear-gradient(
+  color-scheme: dark;
+
+  /* Decorative wash. The one place a Cobalt gradient is permitted — the
+     wallet balance card — per DESIGN.md's one-of-a-kind rule. */
+  --gradient-cobalt-glow: linear-gradient(
     88deg,
-    rgb(252, 95, 43),
-    rgb(255, 139, 100) 90%,
-    rgb(255, 255, 255)
+    rgb(82, 102, 235),
+    rgb(39, 39, 53) 90%
   );
 
   /* Surface levels, so component intent is greppable. */
-  --surface-page-canvas: var(--color-paper-white);
-  --surface-card-surface: var(--color-paper-white);
-  --surface-muted-surface: var(--color-fog-gray);
-  --surface-floating-nav: var(--color-carbon-black);
+  --surface-page-canvas: var(--color-onyx-canvas);
+  --surface-card-surface: var(--color-graphite-card);
+  --surface-muted-surface: var(--color-obsidian-button);
+  --surface-floating-nav: var(--color-graphite-card);
 
-  /* Only two weights exist in this system. */
+  /* Four weights. 500 carries display headings — at 60px+ a 400 grotesque
+     goes weedy on a dark ground, where the same weight held up on paper. */
   --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
   --font-weight-bold: 700;
 
   /* Layout values, mirroring the @theme tokens above under the spec's names. */
@@ -233,7 +282,9 @@
 html,
 body {
   background-color: var(--surface-page-canvas);
-  color: var(--color-carbon-black);
+  color: var(--color-ivory-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Anchor the inherited base to the body step. Without this, any element
@@ -254,13 +305,13 @@ body {
 }
 
 ::selection {
-  background-color: var(--color-sunrise-coral);
-  color: var(--color-paper-white);
+  background-color: var(--color-cobalt);
+  color: var(--color-pure-white);
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--color-mist-gray) transparent;
+  scrollbar-color: var(--color-obsidian-button) transparent;
 }
 
 *::-webkit-scrollbar {
@@ -273,13 +324,13 @@ body {
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: var(--color-mist-gray);
+  background-color: var(--color-obsidian-button);
   border-radius: var(--radius-pill);
   border: 3px solid transparent;
   background-clip: content-box;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background-color: var(--color-ash-gray);
+  background-color: var(--color-slate-border);
   background-clip: content-box;
 }

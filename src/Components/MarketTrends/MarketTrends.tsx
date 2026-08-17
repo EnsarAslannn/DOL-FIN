@@ -23,16 +23,16 @@ const MarketTrends = ({ stocks }: MarketTrendsProps) => {
   }
 
   return (
-    <div className="w-full rounded-card border border-mist-gray bg-paper-white p-card font-sans text-carbon-black">
-      <div className="mb-5 flex items-center justify-between border-b border-mist-gray pb-3">
-        <h3 className="flex items-center gap-3 text-subheading font-normal text-carbon-black">
-          <span className="relative flex h-2 w-2 text-carbon-black">
+    <div className="w-full rounded-card border border-slate-border/45 bg-graphite-card p-card font-sans text-ivory-text">
+      <div className="mb-5 flex items-center justify-between border-b border-slate-border/45 pb-3">
+        <h3 className="flex items-center gap-3 text-subheading font-normal text-ivory-text">
+          <span className="relative flex h-2 w-2 text-ivory-text">
             <span className="sonar-ring" />
-            <span className="h-2 w-2 shrink-0 rounded-full bg-carbon-black" />
+            <span className="h-2 w-2 shrink-0 rounded-full bg-graphite-card" />
           </span>
           Market Trends
         </h3>
-        <span className="font-mono text-caption font-normal uppercase tracking-label text-zinc-gray">
+        <span className="font-mono text-caption font-normal uppercase tracking-label text-ash-text">
           Live Equities
         </span>
       </div>
@@ -46,30 +46,30 @@ const MarketTrends = ({ stocks }: MarketTrendsProps) => {
             <div
               key={index}
               onClick={() => handleTrendClick(item.symbol)}
-              className="flex cursor-pointer items-center justify-between rounded-card p-3 transition-colors duration-150 hover:bg-fog-gray"
+              className="flex cursor-pointer items-center justify-between rounded-card p-3 transition-colors duration-150 hover:bg-obsidian-button"
             >
               <div className="flex min-w-0 flex-1 items-center space-x-3 text-left">
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-icon border border-mist-gray bg-paper-white p-1">
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-icon border border-slate-border/45 bg-graphite-card p-1">
                   {companyLogos[symbolUpper] ? (
                     companyLogos[symbolUpper]()
                   ) : (
-                    <div className="flex h-full w-full items-center justify-center rounded-smallcard font-mono text-caption font-bold text-carbon-black">
+                    <div className="flex h-full w-full items-center justify-center rounded-smallcard font-mono text-caption font-bold text-ivory-text">
                       {item.symbol.substring(0, 2).toUpperCase()}
                     </div>
                   )}
                 </div>
                 <div className="flex min-w-0 flex-col">
-                  <span className="truncate text-body font-normal text-carbon-black">
+                  <span className="truncate text-body font-normal text-ivory-text">
                     {item.name}
                   </span>
-                  <span className="font-mono text-caption font-normal uppercase tracking-label-sm text-zinc-gray">
+                  <span className="font-mono text-caption font-normal uppercase tracking-label-sm text-ash-text">
                     {symbolUpper}
                   </span>
                 </div>
               </div>
 
               <div className="flex shrink-0 flex-col items-end space-y-1 pl-3 text-right">
-                <span className="whitespace-nowrap font-mono text-body font-normal text-carbon-black">
+                <span className="whitespace-nowrap font-mono text-body font-normal text-ivory-text">
                   ${item.price.toFixed(2)}
                 </span>
                 <span

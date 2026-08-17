@@ -45,14 +45,14 @@ const StockCommentForm = ({ handleComment }: Props) => {
       </div>
 
       <div className="w-full text-left">
-        <div className="rounded-card border border-mist-gray bg-paper-white p-4 transition-colors focus-within:border-sunrise-coral focus-within:ring-2 focus-within:ring-sunrise-coral/25">
+        <div className="rounded-card border border-slate-border/45 bg-graphite-card p-4 transition-colors focus-within:border-cobalt focus-within:ring-2 focus-within:ring-cobalt/25">
           <label htmlFor="comment" className="sr-only">
             Your comment
           </label>
           <textarea
             id="comment"
             rows={4}
-            className="w-full text-xs font-normal bg-transparent text-carbon-black border-0 focus:ring-0 focus:outline-none placeholder:text-ash-gray resize-none"
+            className="w-full text-xs font-normal bg-transparent text-ivory-text border-0 focus:ring-0 focus:outline-none placeholder:text-ash-text/70 resize-none"
             placeholder="Write a comment..."
             {...register("content")}
           ></textarea>

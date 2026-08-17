@@ -3197,7 +3197,7 @@ export const realMarketNewsData = [
     time: "2 hours ago",
     url: "https://www.bloomberg.com/markets",
     category: "Macroeconomics",
-    badgeColor: "border border-mist-gray bg-fog-gray text-zinc-gray",
+    badgeColor: "border border-slate-border/45 bg-obsidian-button text-ash-text",
   },
   {
     title: "NVIDIA Outpaces Expectations with Next-Gen Blackwell Architecture Surge",
@@ -3206,7 +3206,7 @@ export const realMarketNewsData = [
     time: "4 hours ago",
     url: "https://www.reuters.com/technology",
     category: "NVIDIA",
-    badgeColor: "border border-mist-gray bg-fog-gray text-zinc-gray",
+    badgeColor: "border border-slate-border/45 bg-obsidian-button text-ash-text",
   },
   {
     title: "Apple Intelligence Features Drive iPhone Supercycle Forecasts for Q3",
@@ -3215,7 +3215,7 @@ export const realMarketNewsData = [
     time: "5 hours ago",
     url: "https://finance.yahoo.com/quote/AAPL",
     category: "APPLE",
-    badgeColor: "border border-mist-gray bg-fog-gray text-zinc-gray",
+    badgeColor: "border border-slate-border/45 bg-obsidian-button text-ash-text",
   },
   {
     title: "Google Enhances Gemini Core Integration Across Workspace and Cloud Ecosystems",
@@ -3224,7 +3224,7 @@ export const realMarketNewsData = [
     time: "18 hours ago",
     url: "https://finance.yahoo.com/quote/GOOGL",
     category: "GOOGLE",
-    badgeColor: "border border-mist-gray bg-fog-gray text-zinc-gray",
+    badgeColor: "border border-slate-border/45 bg-obsidian-button text-ash-text",
   },
   {
     title: "Tesla Full Self-Driving (FSD) v12.5 Rollout Receives Regulatory Optimism",
@@ -3233,7 +3233,7 @@ export const realMarketNewsData = [
     time: "1 day ago",
     url: "https://www.cnbc.com/tesla-motors",
     category: "TESLA",
-    badgeColor: "border border-mist-gray bg-fog-gray text-zinc-gray",
+    badgeColor: "border border-slate-border/45 bg-obsidian-button text-ash-text",
   },
   {
     title: "Microsoft Azure Cloud Revenue Accelerates via Strategic OpenAI Scale-Up",
@@ -3242,7 +3242,7 @@ export const realMarketNewsData = [
     time: "2 days ago",
     url: "https://finance.yahoo.com/quote/MSFT",
     category: "MICROSOFT",
-    badgeColor: "border border-mist-gray bg-fog-gray text-zinc-gray",
+    badgeColor: "border border-slate-border/45 bg-obsidian-button text-ash-text",
   }
 ]
 

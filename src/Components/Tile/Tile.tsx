@@ -66,12 +66,12 @@ const Tile = ({ title, subTitle }: Props) => {
   const variant = VARIANTS.find((v) => v.titles.includes(title))
 
   return (
-    <div className="group relative flex min-h-[115px] w-full items-center justify-between overflow-hidden rounded-card border border-mist-gray bg-paper-white p-card transition-colors duration-200 hover:border-ash-gray">
+    <div className="group relative flex min-h-[115px] w-full items-center justify-between overflow-hidden rounded-card border border-slate-border/45 bg-graphite-card p-card transition-colors duration-200 hover:border-slate-border">
       {variant && (
         <div className="absolute bottom-2 right-14 hidden h-8 w-20 sm:block">
           <svg
             viewBox="0 0 100 40"
-            className="h-full w-full fill-none stroke-mist-gray stroke-2"
+            className="h-full w-full fill-none stroke-slate-border/50 stroke-2"
             aria-hidden="true"
           >
             <path d={variant.spark} />
@@ -80,18 +80,18 @@ const Tile = ({ title, subTitle }: Props) => {
       )}
 
       <div className="z-10 flex flex-col space-y-2 text-left">
-        <h5 className="font-mono text-caption font-normal uppercase tracking-label-lg text-zinc-gray">
+        <h5 className="font-mono text-caption font-normal uppercase tracking-label-lg text-ash-text">
           {title}
         </h5>
-        <span className="text-heading-sm font-normal text-carbon-black">
+        <span className="text-heading-sm font-normal text-ivory-text">
           {subTitle}
         </span>
       </div>
 
       {variant && (
-        <div className="z-10 flex shrink-0 items-center justify-center rounded-icon border border-mist-gray bg-paper-white p-3">
+        <div className="z-10 flex shrink-0 items-center justify-center rounded-icon border border-slate-border/45 bg-graphite-card p-3">
           <svg
-            className="h-5 w-5 text-carbon-black"
+            className="h-5 w-5 text-ivory-text"
             fill="none"
             stroke="currentColor"
             strokeWidth="1.5"

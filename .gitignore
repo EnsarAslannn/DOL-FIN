@@ -45,3 +45,9 @@ src/assets/extra/2.png
 src/assets/extra/3.png
 src/assets/extra/4.png
 src/assets/extra/5.png
+src/assets/extra/6.jpg
+
+# Design reference recordings. Analysed frame-by-frame during the redesign and
+# kept locally; nothing imports them and they never belong in the bundle.
+src/assets/extra/*.mp4
+!src/assets/extra/HeroDOLFIN.mp4

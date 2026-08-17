@@ -39,13 +39,13 @@ const CompanyPage = () => {
 
   if (!allowedStocks.includes(ticker?.toUpperCase() || "")) {
     return (
-      <div className="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden bg-paper-white text-carbon-black min-h-screen">
+      <div className="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden bg-onyx-canvas text-ivory-text min-h-screen">
         <Sidebar />
         <CompanyDashboard>
-          <div className="rounded-card border border-mist-gray bg-paper-white w-full rounded-card p-8 flex flex-col items-center justify-center text-center min-h-[450px] space-y-4 my-4 animate-fadeIn">
-            <div className="flex h-16 w-16 items-center justify-center rounded-icon border border-mist-gray bg-fog-gray">
+          <div className="rounded-card border border-slate-border/45 bg-graphite-card w-full rounded-card p-8 flex flex-col items-center justify-center text-center min-h-[450px] space-y-4 my-4 animate-fadeIn">
+            <div className="flex h-16 w-16 items-center justify-center rounded-icon border border-slate-border/45 bg-obsidian-button">
               <svg
-                className="h-6 w-6 text-carbon-black"
+                className="h-6 w-6 text-ivory-text"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="1.5"
@@ -56,18 +56,18 @@ const CompanyPage = () => {
               </svg>
             </div>
             <div className="flex flex-col space-y-1">
-              <h3 className="text-subheading font-normal text-carbon-black tracking-tight">
+              <h3 className="text-subheading font-normal text-ivory-text tracking-tight">
                 Financial Data Unavailable
               </h3>
-              <p className="text-body text-zinc-gray font-mono">
+              <p className="text-body text-ash-text font-mono">
                 SCOPE_LIMITATION_WARNING // LIVE_DEMO_RESTRICITON
               </p>
             </div>
-            <p className="text-body text-zinc-gray max-w-md leading-relaxed">
-              Financial data for <span className="font-bold font-mono text-carbon-black bg-fog-gray px-2 py-1 rounded border border-mist-gray">{ticker?.toUpperCase()}</span> is currently unavailable for this demo version.
+            <p className="text-body text-ash-text max-w-md leading-relaxed">
+              Financial data for <span className="font-bold font-mono text-ivory-text bg-obsidian-button px-2 py-1 rounded border border-slate-border/45">{ticker?.toUpperCase()}</span> is currently unavailable for this demo version.
             </p>
             <div className="pt-2">
-              <p className="text-caption text-zinc-gray font-normal bg-fog-gray border border-mist-gray px-3 py-2 rounded-card font-mono">
+              <p className="text-caption text-ash-text font-normal bg-obsidian-button border border-slate-border/45 px-3 py-2 rounded-card font-mono">
                 Please audit premium corporate tiers: AAPL, MSFT, NVDA, TSLA, GOOGL
               </p>
             </div>
@@ -88,7 +88,7 @@ const CompanyPage = () => {
   return (
     <>
       {company ? (
-        <div className="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden bg-paper-white text-carbon-black min-h-screen">
+        <div className="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden bg-onyx-canvas text-ivory-text min-h-screen">
           <Sidebar />
 
           <CompanyDashboard>
@@ -106,7 +106,7 @@ const CompanyPage = () => {
               <Outlet context={ticker} />
             </div>
 
-            <div className="w-full mt-6 border-t border-mist-gray pt-6">
+            <div className="w-full mt-6 border-t border-slate-border/45 pt-6">
               {localDbId !== null && (
                 <StockComment
                   stockSymbol={ticker!}
@@ -117,7 +117,7 @@ const CompanyPage = () => {
           </CompanyDashboard>
         </div>
       ) : (
-        <div className="w-full min-h-screen bg-paper-white flex items-center justify-center">
+        <div className="w-full min-h-screen bg-onyx-canvas flex items-center justify-center">
           <Spinners />
         </div>
       )}

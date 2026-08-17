@@ -63,17 +63,17 @@ const PurchasePortfolio: React.FC<PurchasePortfolioProps> = ({
     }
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-carbon-black/60 px-4">
-            <div className="w-full max-w-md rounded-card border border-mist-gray bg-paper-white p-card font-sans text-carbon-black shadow-subtle animate-fadeIn">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-onyx-canvas/60 px-4">
+            <div className="w-full max-w-md rounded-card border border-slate-border/45 bg-graphite-card p-card font-sans text-ivory-text shadow-subtle animate-fadeIn">
                 <div className="mb-6 flex items-center justify-between">
-                    <h3 className="text-heading-sm font-normal text-carbon-black">
+                    <h3 className="text-heading-sm font-normal text-ivory-text">
                         {mode === "BUY" ? "Buy" : "Sell"}{" "}
                         <span className="font-mono">{stockSymbol}</span>
                     </h3>
                     <button
                         onClick={onClose}
                         aria-label="Close"
-                        className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-pill border border-mist-gray text-zinc-gray transition-colors hover:border-ash-gray hover:text-carbon-black"
+                        className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-pill border border-slate-border/45 text-ash-text transition-colors hover:border-slate-border hover:text-ivory-text"
                     >
                         <svg
                             className="h-3 w-3"
@@ -92,24 +92,24 @@ const PurchasePortfolio: React.FC<PurchasePortfolioProps> = ({
                     </button>
                 </div>
 
-                <div className="mb-6 space-y-2 rounded-card border border-mist-gray bg-fog-gray p-4 text-body">
+                <div className="mb-6 space-y-2 rounded-card border border-slate-border/45 bg-obsidian-button p-4 text-body">
                     <div className="flex justify-between">
-                        <span className="text-zinc-gray">Wallet Balance:</span>
-                        <span className="font-mono text-carbon-black">
+                        <span className="text-ash-text">Wallet Balance:</span>
+                        <span className="font-mono text-ivory-text">
                             ${walletBalance.toFixed(2)}
                         </span>
                     </div>
                     {mode === "SELL" && (
                         <div className="flex justify-between">
-                            <span className="text-zinc-gray">Available Shares:</span>
-                            <span className="font-mono text-carbon-black">
+                            <span className="text-ash-text">Available Shares:</span>
+                            <span className="font-mono text-ivory-text">
                                 {maxOwnedQuantity} Units
                             </span>
                         </div>
                     )}
                     <div className="flex justify-between">
-                        <span className="text-zinc-gray">Market Price:</span>
-                        <span className="font-mono text-carbon-black">
+                        <span className="text-ash-text">Market Price:</span>
+                        <span className="font-mono text-ivory-text">
                             ${stockPrice.toFixed(2)}
                         </span>
                     </div>
@@ -132,15 +132,15 @@ const PurchasePortfolio: React.FC<PurchasePortfolioProps> = ({
                     />
                 </div>
 
-                <div className="mb-6 flex items-center justify-between border-t border-mist-gray pt-4">
-                    <span className="text-body font-normal text-zinc-gray">
+                <div className="mb-6 flex items-center justify-between border-t border-slate-border/45 pt-4">
+                    <span className="text-body font-normal text-ash-text">
                         {mode === "BUY" ? "Total Cost:" : "Total Revenue:"}
                     </span>
                     <span
                         className={`font-mono text-heading-sm font-normal ${
                             isInsufficientFunds || isInsufficientShares
                                 ? "text-loss"
-                                : "text-carbon-black"
+                                : "text-ivory-text"
                         }`}
                     >
                         ${totalValue.toFixed(2)}
@@ -148,14 +148,14 @@ const PurchasePortfolio: React.FC<PurchasePortfolioProps> = ({
                 </div>
 
                 {isInsufficientFunds && (
-                    <div className="mb-4 flex flex-col items-center justify-center space-y-2 rounded-card border border-mist-gray bg-fog-gray p-4">
+                    <div className="mb-4 flex flex-col items-center justify-center space-y-2 rounded-card border border-slate-border/45 bg-obsidian-button p-4">
                         <p className="text-center text-body font-normal text-loss">
                             Insufficient funds to complete this transaction.
                         </p>
                         <button
                             onClick={handleQuickDeposit}
                             disabled={isDepositing}
-                            className="cursor-pointer text-body font-normal text-carbon-black underline underline-offset-4 transition-opacity hover:opacity-70"
+                            className="cursor-pointer text-body font-normal text-ivory-text underline underline-offset-4 transition-opacity hover:opacity-70"
                         >
                             {isDepositing ? "Depositing..." : "Instant Deposit $5,000"}
                         </button>
@@ -163,7 +163,7 @@ const PurchasePortfolio: React.FC<PurchasePortfolioProps> = ({
                 )}
 
                 {isInsufficientShares && (
-                    <div className="mb-4 rounded-card border border-mist-gray bg-fog-gray p-4">
+                    <div className="mb-4 rounded-card border border-slate-border/45 bg-obsidian-button p-4">
                         <p className="text-center text-body font-normal text-loss">
                             You cannot sell more shares than you currently own.
                         </p>
@@ -173,7 +173,7 @@ const PurchasePortfolio: React.FC<PurchasePortfolioProps> = ({
                 <div className="flex space-x-3">
                     <button
                         onClick={onClose}
-                        className="flex-1 cursor-pointer rounded-pill border border-mist-gray bg-paper-white px-6 py-cta text-body font-normal text-carbon-black transition-colors hover:border-ash-gray"
+                        className="flex-1 cursor-pointer rounded-pill border border-slate-border/45 bg-graphite-card px-6 py-cta text-body font-normal text-ivory-text transition-colors hover:border-slate-border"
                     >
                         Cancel
                     </button>

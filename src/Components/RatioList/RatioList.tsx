@@ -17,12 +17,12 @@ const RatioList = <T,>({ config, data }: Props<T>) => {
       <li key={id} className="py-3 sm:py-4">
         <div className="flex items-center space-x-4">
           <div className="flex-1 min-w-0 text-left">
-            <p className="text-body font-bold text-carbon-black truncate">{row.label}</p>
-            <p className="text-body text-zinc-gray truncate">
+            <p className="text-body font-bold text-ivory-text truncate">{row.label}</p>
+            <p className="text-body text-ash-text truncate">
               {row.subTitle && row.subTitle}
             </p>
           </div>
-          <div className="inline-flex items-center text-body font-bold text-zinc-gray font-mono">
+          <div className="inline-flex items-center text-body font-bold text-ash-text font-mono">
             {row.render(data)}
           </div>
         </div>
@@ -31,8 +31,8 @@ const RatioList = <T,>({ config, data }: Props<T>) => {
   })
 
   return (
-    <div className="bg-paper-white border border-mist-gray rounded-card p-4 sm:p-6 h-full">
-      <ul className="divide-y divide-mist-gray">{renderedRows}</ul>
+    <div className="bg-graphite-card border border-slate-border/45 rounded-card p-4 sm:p-6 h-full">
+      <ul className="divide-y divide-slate-border/45">{renderedRows}</ul>
     </div>
   )
 }

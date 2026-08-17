@@ -8,17 +8,20 @@ export default {
       // effect on the build. It exists only so editor tooling sees the same
       // DESIGN.md values. Keep it in sync by hand, or delete it.
       colors: {
-        "sunrise-coral": "#fc5f2b",
-        "coral-glow": "#ff8b64",
-        "carbon-black": "#18181b",
-        "pure-black": "#000000",
-        "zinc-gray": "#71717a",
-        "ash-gray": "#a1a1aa",
-        "mist-gray": "#e4e4e7",
-        "fog-gray": "#f4f4f5",
-        "paper-white": "#ffffff",
-        gain: "#3d6b55",
-        loss: "#8e4c54",
+        cobalt: "#5266eb",
+        "onyx-canvas": "#171721",
+        "graphite-card": "#1e1e2a",
+        "obsidian-button": "#272735",
+        "slate-border": "#70707d",
+        "ash-text": "#c3c3cc",
+        "mist-border": "#e2e3ed",
+        "ivory-text": "#ededf3",
+        "pure-white": "#ffffff",
+        "cream-canvas": "#ece5d8",
+        "ink-muted": "#55555f",
+        "footer-navy": "#14141b",
+        gain: "#4ec98a",
+        loss: "#f2707f",
       },
       fontFamily: {
         sans: ["Inter Tight", "sans-serif"],
@@ -40,6 +43,7 @@ export default {
         icon: "7.5px",
         card: "15px",
         nav: "15px",
+        block: "28px",
         pill: "9999px",
       },
       boxShadow: {
@@ -47,6 +51,7 @@ export default {
       },
       maxWidth: {
         page: "1200px",
+        wide: "1440px",
       },
       spacing: {
         section: "75px",

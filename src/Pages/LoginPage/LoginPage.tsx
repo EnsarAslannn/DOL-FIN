@@ -34,7 +34,7 @@ const LoginPage = () => {
   }
 
   return (
-    <section className="flex min-h-screen items-stretch bg-paper-white font-sans">
+    <section className="flex min-h-screen items-stretch bg-onyx-canvas font-sans">
       {/* Full-bleed cinematic panel. The nav pill floats over it. */}
       <div className="relative hidden w-1/2 overflow-hidden lg:block xl:w-[55%]">
         <img
@@ -43,20 +43,20 @@ const LoginPage = () => {
           aria-hidden="true"
           className="absolute inset-0 h-full w-full object-cover"
         />
-        <div aria-hidden="true" className="absolute inset-0 bg-carbon-black/55" />
+        <div aria-hidden="true" className="absolute inset-0 bg-onyx-canvas/55" />
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-gradient-to-t from-carbon-black/85 via-carbon-black/25 to-carbon-black/70"
+          className="absolute inset-0 bg-gradient-to-t from-onyx-canvas/85 via-onyx-canvas/25 to-onyx-canvas/70"
         />
 
         <div className="relative z-10 flex h-full flex-col justify-end p-14">
-          <span className="mb-5 font-mono text-caption font-normal uppercase tracking-label-lg text-paper-white/75">
+          <span className="mb-5 font-mono text-caption font-normal uppercase tracking-label-lg text-ivory-text/75">
             Market intelligence terminal
           </span>
-          <h2 className="max-w-md text-heading md:text-heading-lg font-normal text-paper-white">
+          <h2 className="max-w-md text-heading md:text-heading-lg font-normal text-ivory-text">
             The whole tape, one signal at a time.
           </h2>
-          <p className="mt-5 max-w-sm text-body-lg font-normal text-paper-white/85">
+          <p className="mt-5 max-w-sm text-body-lg font-normal text-ivory-text/85">
             Your portfolio, filings, and commentary — behind a single sign-in.
           </p>
         </div>
@@ -68,13 +68,13 @@ const LoginPage = () => {
       <div className="flex flex-1 items-center justify-center px-6 pb-20 pt-28 sm:px-12">
         <div className="w-full sm:max-w-[420px]">
           <div className="mb-12">
-            <span className="block font-mono text-caption font-normal uppercase tracking-label-lg text-ash-gray">
+            <span className="block font-mono text-caption font-normal uppercase tracking-label-lg text-ash-text/70">
               Welcome back
             </span>
-            <h1 className="mt-5 text-heading md:text-heading-lg font-normal text-carbon-black">
+            <h1 className="mt-5 text-heading md:text-heading-lg font-normal text-ivory-text">
               Sign in to your account
             </h1>
-            <p className="mt-5 text-body-lg font-normal text-zinc-gray">
+            <p className="mt-5 text-body-lg font-normal text-ash-text">
               Pick up exactly where you left the tape.
             </p>
           </div>
@@ -117,11 +117,11 @@ const LoginPage = () => {
               <button type="submit" className={primaryButtonClass}>
                 Sign In
               </button>
-              <p className="border-t border-mist-gray pt-8 text-body font-normal text-zinc-gray">
+              <p className="border-t border-slate-border/45 pt-8 text-body font-normal text-ash-text">
                 Don’t have an account yet?{" "}
                 <Link
                   to="/register"
-                  className="cursor-pointer text-carbon-black underline underline-offset-4"
+                  className="cursor-pointer text-ivory-text underline underline-offset-4"
                 >
                   Sign up
                 </Link>

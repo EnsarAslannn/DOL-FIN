@@ -127,10 +127,10 @@ const IncomeStatement = () => {
 
   if (!allowedStocks.includes(ticker?.toUpperCase())) {
     return (
-      <div className="rounded-card border border-mist-gray bg-paper-white w-full rounded-card p-8 flex flex-col items-center justify-center text-center min-h-[350px] space-y-4 my-4 animate-fadeIn">
-        <div className="flex h-16 w-16 items-center justify-center rounded-icon border border-mist-gray bg-fog-gray">
+      <div className="rounded-card border border-slate-border/45 bg-graphite-card w-full rounded-card p-8 flex flex-col items-center justify-center text-center min-h-[350px] space-y-4 my-4 animate-fadeIn">
+        <div className="flex h-16 w-16 items-center justify-center rounded-icon border border-slate-border/45 bg-obsidian-button">
           <svg
-                className="h-6 w-6 text-carbon-black"
+                className="h-6 w-6 text-ivory-text"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="1.5"
@@ -141,18 +141,18 @@ const IncomeStatement = () => {
               </svg>
         </div>
         <div className="flex flex-col space-y-1">
-          <h3 className="text-subheading font-normal text-carbon-black tracking-tight">
+          <h3 className="text-subheading font-normal text-ivory-text tracking-tight">
             Financial Data Unavailable
           </h3>
-          <p className="text-body text-zinc-gray font-mono">
+          <p className="text-body text-ash-text font-mono">
             SCOPE_LIMITATION_WARNING // LIVE_DEMO_RESTRICITON
           </p>
         </div>
-        <p className="text-body text-zinc-gray max-w-md leading-relaxed">
-          Financial data for <span className="font-bold font-mono text-carbon-black bg-fog-gray px-2 py-1 rounded border border-mist-gray">{ticker?.toUpperCase()}</span> is currently unavailable for this demo version.
+        <p className="text-body text-ash-text max-w-md leading-relaxed">
+          Financial data for <span className="font-bold font-mono text-ivory-text bg-obsidian-button px-2 py-1 rounded border border-slate-border/45">{ticker?.toUpperCase()}</span> is currently unavailable for this demo version.
         </p>
         <div className="pt-2">
-          <p className="text-caption text-zinc-gray font-normal bg-fog-gray border border-mist-gray px-3 py-2 rounded-card font-mono">
+          <p className="text-caption text-ash-text font-normal bg-obsidian-button border border-slate-border/45 px-3 py-2 rounded-card font-mono">
             Please audit premium corporate tiers: AAPL, MSFT, NVDA, TSLA, GOOGL
           </p>
         </div>
@@ -215,36 +215,36 @@ const IncomeStatement = () => {
     return (
       <div className="w-full flex flex-col space-y-4 mt-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-          <div className="bg-paper-white border border-mist-gray rounded-card p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
+          <div className="bg-graphite-card border border-slate-border/45 rounded-card p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
             <div className="flex flex-col space-y-1">
-              <span className="text-zinc-gray uppercase font-bold text-caption tracking-widest font-mono">
+              <span className="text-ash-text uppercase font-bold text-caption tracking-widest font-mono">
                 Net Profit Margin
               </span>
 
-              <span className="font-normal text-heading text-carbon-black font-mono">
+              <span className="font-normal text-heading text-ivory-text font-mono">
                 {metrics.marginFormatted}
               </span>
             </div>
 
             <div className="w-full flex flex-col space-y-2 mt-3">
-              <div className="w-full h-1 bg-fog-gray rounded-full overflow-hidden">
+              <div className="w-full h-1 bg-obsidian-button rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-ash-gray rounded-full"
+                  className="h-full bg-slate-border rounded-full"
                   style={{
                     width: `${Math.min(Math.max(metrics.margin, 5), 100)}%`,
                   }}
                 ></div>
               </div>
 
-              <span className="text-caption text-zinc-gray font-normal font-mono">
+              <span className="text-caption text-ash-text font-normal font-mono">
                 Net conversion efficiency of capital deployment
               </span>
             </div>
           </div>
 
-          <div className="bg-paper-white border border-mist-gray rounded-card p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
+          <div className="bg-graphite-card border border-slate-border/45 rounded-card p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
             <div className="flex flex-col space-y-1">
-              <span className="text-zinc-gray uppercase font-bold text-caption tracking-widest font-mono">
+              <span className="text-ash-text uppercase font-bold text-caption tracking-widest font-mono">
                 Revenue Growth (YoY)
               </span>
 
@@ -256,7 +256,7 @@ const IncomeStatement = () => {
             </div>
 
             <div className="w-full flex flex-col space-y-2 mt-3">
-              <div className="w-full h-1 bg-fog-gray rounded-full overflow-hidden">
+              <div className="w-full h-1 bg-obsidian-button rounded-full overflow-hidden">
                 <div
                   className={`h-full rounded-full ${metrics.growth >= 0 ? "bg-gain" : "bg-loss"}`}
                   style={{
@@ -265,18 +265,18 @@ const IncomeStatement = () => {
                 ></div>
               </div>
 
-              <span className="text-caption text-zinc-gray font-normal font-mono">
+              <span className="text-caption text-ash-text font-normal font-mono">
                 Top-line macroeconomic scalability expansion metric
               </span>
             </div>
           </div>
         </div>
 
-        <div className="w-full bg-paper-white border border-mist-gray rounded-card p-5 shadow-xl flex flex-col space-y-3 text-left">
-          <div className="flex items-center justify-between border-b border-mist-gray pb-3">
-            <h4 className="text-body font-bold text-zinc-gray uppercase tracking-wider font-mono flex items-center gap-2">
+        <div className="w-full bg-graphite-card border border-slate-border/45 rounded-card p-5 shadow-xl flex flex-col space-y-3 text-left">
+          <div className="flex items-center justify-between border-b border-slate-border/45 pb-3">
+            <h4 className="text-body font-bold text-ash-text uppercase tracking-wider font-mono flex items-center gap-2">
               <svg
-                className="w-4 h-4 text-carbon-black"
+                className="w-4 h-4 text-ivory-text"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2.5"
@@ -296,14 +296,14 @@ const IncomeStatement = () => {
                 ? "bg-gain/10 text-gain"
                 : metrics.status === "WEAK"
                   ? "bg-loss/10 text-loss"
-                  : "bg-fog-gray text-zinc-gray"
+                  : "bg-obsidian-button text-ash-text"
                 }`}
             >
               {metrics.status} OUTLOOK
             </span>
           </div>
 
-          <p className="text-body text-carbon-black leading-relaxed font-sans font-normal">
+          <p className="text-body text-ivory-text leading-relaxed font-sans font-normal">
             {metrics.summaryText}
           </p>
         </div>
@@ -315,30 +315,30 @@ const IncomeStatement = () => {
     <>
       {incomeStatement ? (
         <div className="w-full flex flex-col">
-          <div className="block w-full bg-paper-white shadow-xl rounded-card p-6 mb-6 border border-mist-gray flex flex-col space-y-3 text-left">
-            <h3 className="text-body-lg font-bold text-carbon-black uppercase tracking-wider font-mono">
+          <div className="block w-full bg-graphite-card shadow-xl rounded-card p-6 mb-6 border border-slate-border/45 flex flex-col space-y-3 text-left">
+            <h3 className="text-body-lg font-bold text-ivory-text uppercase tracking-wider font-mono">
               Understanding the Income Statement
             </h3>
 
-            <p className="text-carbon-black text-body-lg font-normal leading-relaxed antialiased">
+            <p className="text-ivory-text text-body-lg font-normal leading-relaxed antialiased">
               An{" "}
-              <strong className="text-carbon-black font-normal">
+              <strong className="text-ivory-text font-normal">
                 Income Statement
               </strong>{" "}
               (Profit and Loss Statement) maps out a corporate institution's
               core financial velocity over a sequential reporting period. It
               tracks how total{" "}
-              <strong className="text-carbon-black">Revenue (Top-Line)</strong>{" "}
+              <strong className="text-ivory-text">Revenue (Top-Line)</strong>{" "}
               transitions down into operational expenses, tax components, and
               finally yields the net consolidated{" "}
-              <strong className="text-zinc-gray">
+              <strong className="text-ash-text">
                 Profit or Loss (Bottom-Line)
               </strong>
               .
             </p>
 
-            <p className="text-carbon-black text-body font-normal leading-relaxed antialiased pt-1">
-              <strong className="text-carbon-black block mb-1 font-mono text-body uppercase tracking-wide">
+            <p className="text-ivory-text text-body font-normal leading-relaxed antialiased pt-1">
+              <strong className="text-ivory-text block mb-1 font-mono text-body uppercase tracking-wide">
                 Why is it Critical?
               </strong>
               While the Balance Sheet records asset and liability weight levels,

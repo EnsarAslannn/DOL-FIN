@@ -38,17 +38,17 @@ const Card: React.FC<Props> = ({
 
   return (
     <div
-      className="my-3 flex w-full flex-col items-center justify-between rounded-card border border-mist-gray bg-paper-white p-card transition-colors duration-200 hover:border-ash-gray md:flex-row"
+      className="my-3 flex w-full flex-col items-center justify-between rounded-card border border-slate-border/45 bg-graphite-card p-card transition-colors duration-200 hover:border-slate-border md:flex-row"
       key={id}
       id={id}
     >
       <div className="flex w-full items-start space-x-4 md:w-auto">
         {companyLogos[symbolUpper] ? (
-          <div className="mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-icon border border-mist-gray bg-paper-white p-2">
+          <div className="mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-icon border border-slate-border/45 bg-graphite-card p-2">
             {companyLogos[symbolUpper]()}
           </div>
         ) : (
-          <div className="mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-icon border border-mist-gray bg-fog-gray font-mono text-caption font-bold text-carbon-black">
+          <div className="mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-icon border border-slate-border/45 bg-obsidian-button font-mono text-caption font-bold text-ivory-text">
             {symbolUpper}
           </div>
         )}
@@ -57,16 +57,16 @@ const Card: React.FC<Props> = ({
           <div className="relative flex flex-wrap items-center gap-2">
             <Link
               to={`/company/${symbolUpper}/company-profile`}
-              className="text-subheading font-normal text-carbon-black underline-offset-4 hover:underline"
+              className="text-subheading font-normal text-ivory-text underline-offset-4 hover:underline"
             >
               {name}
             </Link>
-            <span className="rounded-smallcard border border-mist-gray bg-fog-gray px-2 py-1 font-mono text-caption font-normal text-zinc-gray">
+            <span className="rounded-smallcard border border-slate-border/45 bg-obsidian-button px-2 py-1 font-mono text-caption font-normal text-ash-text">
               {symbolUpper}
             </span>
           </div>
 
-          <div className="flex items-center space-x-2 text-body font-normal text-zinc-gray">
+          <div className="flex items-center space-x-2 text-body font-normal text-ash-text">
             <span>{industry}</span>
             <span>•</span>
             <span className="font-mono">
@@ -79,7 +79,7 @@ const Card: React.FC<Props> = ({
               <Link
                 key={link.to}
                 to={`/company/${symbolUpper}/${link.to}`}
-                className="rounded-smallcard border border-mist-gray px-3 py-1 text-caption font-normal text-zinc-gray transition-colors duration-150 hover:border-ash-gray hover:text-carbon-black"
+                className="rounded-smallcard border border-slate-border/45 px-3 py-1 text-caption font-normal text-ash-text transition-colors duration-150 hover:border-slate-border hover:text-ivory-text"
               >
                 {link.label}
               </Link>
@@ -90,7 +90,7 @@ const Card: React.FC<Props> = ({
 
       <div className="mt-5 flex w-full shrink-0 items-center justify-between space-x-6 md:mt-0 md:w-auto md:justify-end">
         <div className="flex flex-col items-end">
-          <span className="font-mono text-subheading font-normal text-carbon-black">
+          <span className="font-mono text-subheading font-normal text-ivory-text">
             ${price.toFixed(2)}
           </span>
           <span

@@ -54,7 +54,7 @@ const RegisterPage = () => {
   }
 
   return (
-    <section className="flex min-h-screen items-stretch bg-paper-white font-sans">
+    <section className="flex min-h-screen items-stretch bg-onyx-canvas font-sans">
       {/* Full-bleed cinematic panel. The nav pill floats over it. */}
       <div className="relative hidden w-1/2 overflow-hidden lg:block xl:w-[55%]">
         <img
@@ -63,20 +63,20 @@ const RegisterPage = () => {
           aria-hidden="true"
           className="absolute inset-0 h-full w-full object-cover"
         />
-        <div aria-hidden="true" className="absolute inset-0 bg-carbon-black/55" />
+        <div aria-hidden="true" className="absolute inset-0 bg-onyx-canvas/55" />
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-gradient-to-t from-carbon-black/85 via-carbon-black/25 to-carbon-black/70"
+          className="absolute inset-0 bg-gradient-to-t from-onyx-canvas/85 via-onyx-canvas/25 to-onyx-canvas/70"
         />
 
         <div className="relative z-10 flex h-full flex-col justify-end p-14">
-          <span className="mb-5 font-mono text-caption font-normal uppercase tracking-label-lg text-paper-white/75">
+          <span className="mb-5 font-mono text-caption font-normal uppercase tracking-label-lg text-ivory-text/75">
             Open a sandbox account
           </span>
-          <h2 className="max-w-md text-heading md:text-heading-lg font-normal text-paper-white">
+          <h2 className="max-w-md text-heading md:text-heading-lg font-normal text-ivory-text">
             Be wrong here, so you're right out there.
           </h2>
-          <p className="mt-5 max-w-sm text-body-lg font-normal text-paper-white/85">
+          <p className="mt-5 max-w-sm text-body-lg font-normal text-ivory-text/85">
             Simulated capital, real fundamentals. Nothing you do touches a
             brokerage.
           </p>
@@ -88,13 +88,13 @@ const RegisterPage = () => {
       <div className="flex flex-1 items-center justify-center px-6 pb-20 pt-28 sm:px-12">
         <div className="w-full sm:max-w-[420px]">
           <div className="mb-12">
-            <span className="block font-mono text-caption font-normal uppercase tracking-label-lg text-ash-gray">
+            <span className="block font-mono text-caption font-normal uppercase tracking-label-lg text-ash-text/70">
               Get started
             </span>
-            <h1 className="mt-5 text-heading md:text-heading-lg font-normal text-carbon-black">
+            <h1 className="mt-5 text-heading md:text-heading-lg font-normal text-ivory-text">
               Create your account
             </h1>
-            <p className="mt-5 text-body-lg font-normal text-zinc-gray">
+            <p className="mt-5 text-body-lg font-normal text-ash-text">
               Takes a minute. Your portfolio is private from the first tick.
             </p>
           </div>
@@ -145,11 +145,11 @@ const RegisterPage = () => {
                   className={fieldClass}
                   {...register("password")}
                 />
-                <div className="mt-3 rounded-card border border-mist-gray bg-fog-gray p-4">
-                  <p className="font-mono text-caption font-normal uppercase tracking-label text-zinc-gray">
+                <div className="mt-3 rounded-card border border-slate-border/45 bg-obsidian-button p-4">
+                  <p className="font-mono text-caption font-normal uppercase tracking-label text-ash-text">
                     Password requirements
                   </p>
-                  <ul className="mt-2 list-disc space-y-1 pl-4 text-body font-normal text-zinc-gray">
+                  <ul className="mt-2 list-disc space-y-1 pl-4 text-body font-normal text-ash-text">
                     {passwordRules.map((rule) => (
                       <li key={rule}>{rule}</li>
                     ))}
@@ -164,11 +164,11 @@ const RegisterPage = () => {
               <button type="submit" className={primaryButtonClass}>
                 Sign Up
               </button>
-              <p className="border-t border-mist-gray pt-8 text-body font-normal text-zinc-gray">
+              <p className="border-t border-slate-border/45 pt-8 text-body font-normal text-ash-text">
                 Already have an account?{" "}
                 <Link
                   to="/login"
-                  className="cursor-pointer text-carbon-black underline underline-offset-4"
+                  className="cursor-pointer text-ivory-text underline underline-offset-4"
                 >
                   Login here
                 </Link>
