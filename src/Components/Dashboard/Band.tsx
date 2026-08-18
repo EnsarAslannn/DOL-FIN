@@ -41,7 +41,13 @@ const Band = ({ tone, children, className = "", bare = false, id }: Props) => (
     id={id}
     data-band={tone}
     {...{ [TONE_ATTR]: tone === "cream" ? "light" : "dark" }}
-    className={`w-full bg-band-canvas ${className}`}
+    /* `text-band-ink` is load-bearing, not decoration. `body` sets Ivory as
+       the inherited colour for the whole app, so any text inside a cream band
+       that does not name its own colour would render Ivory on Cream — 1.07:1,
+       which is to say invisible. Anchoring the inherited colour per band means
+       the failure mode of forgetting a text class is "slightly wrong weight"
+       rather than "blank section". */
+    className={`w-full bg-band-canvas text-band-ink ${className}`}
   >
     {bare ? children : <div className={terminalClass}>{children}</div>}
   </section>

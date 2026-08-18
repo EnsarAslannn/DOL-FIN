@@ -16,11 +16,9 @@ import {
   portfolioAddAPI,
   portfolioSellAPI,
   portfolioGetAPI,
-  marketTrendsAPI,
 } from "../../Services/PortfolioService"
 import { toast } from "react-toastify"
 import Tile from "../../Components/Tile/Tile"
-import MarketTrends, { type TrendStock } from "../../Components/MarketTrends/MarketTrends"
 import MarketTicker from "../../Components/MarketTicker/MarketTicker"
 import StockComment from "../../Components/StockComment/StockComment"
 import { useAuth } from "../../Context/useAuth"
@@ -34,7 +32,6 @@ const SearchPage = () => {
   const [serverError, setServerError] = useState<string>("")
   const [portfolioValues, setPortfolioValues] = useState<PortfolioGet[] | null>([])
   const [activePanel, setActivePanel] = useState<"worth" | "health" | "sector" | null>(null)
-  const [trendStocks, setTrendStocks] = useState<TrendStock[]>([])
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [modalMode, setModalMode] = useState<"BUY" | "SELL">("BUY")
@@ -57,53 +54,9 @@ const SearchPage = () => {
       })
   }, [])
 
-  const getTrends = useCallback(() => {
-    marketTrendsAPI()
-      .then((res) => {
-
-        const trendStocksMap: { [key: string]: number } = {
-          MSFT: 1.20, AAPL: 0.45, TSLA: -2.15, GOOGL: 0.85, NVDA: 3.40,
-          AMZN: -0.25, META: 1.95, NFLX: 2.10, AMD: -1.05, DIS: 0.65,
-          "BRK.B": 0.15, VISA: 0.35, JPM: -0.45, JNJ: 0.20, WMT: -0.10
-        }
-
-        const targetSymbols = [
-          "MSFT", "AAPL", "TSLA", "GOOGL", "NVDA",
-          "AMZN", "META", "NFLX", "AMD", "DIS",
-          "BRK.B", "VISA", "JPM", "JNJ", "WMT"
-        ]
-
-        const apiStocksMap: { [key: string]: StockSearchResult } = {}
-        if (res?.data && Array.isArray(res.data)) {
-          res.data.forEach((stock: StockSearchResult) => {
-            if (stock && stock.symbol) {
-              apiStocksMap[stock.symbol.toUpperCase().trim()] = stock
-            }
-          })
-        }
-
-        const formattedTrends: TrendStock[] = targetSymbols.map((sym) => {
-          const apiStock = apiStocksMap[sym]
-
-          return {
-            symbol: sym,
-            name: apiStock ? apiStock.companyName ?? `${sym} Corporation` : `${sym} Corporation`,
-            price: apiStock ? apiStock.purchase ?? 0.00 : 0.00,
-            changePercent: trendStocksMap[sym] !== undefined ? trendStocksMap[sym] : 0.00
-          }
-        })
-
-        setTrendStocks(formattedTrends)
-      })
-      .catch((e) => {
-        console.error("Market Trends Error:", e)
-      })
-  }, [])
-
   useEffect(() => {
     if (user) {
       getPortfolio()
-      getTrends()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.userName])
@@ -321,46 +274,52 @@ const SearchPage = () => {
           the same ground as the tape above it and the boundary underneath
           reads as the answer starting. */}
       <Band tone="dark" className="pb-16 pt-12">
-        <Search
-          onSearchSubmit={onSearchSubmit}
-          search={search}
-          handleSearchChange={handleSearchChange}
-        />
+        <div className="flex flex-col gap-9">
+          <div>
+            <span className="block font-mono text-caption font-normal uppercase tracking-label-lg text-band-subtle">
+              Search
+            </span>
+            <h1 className="mt-3 text-heading font-medium text-band-ink md:text-heading-lg">
+              Find a company
+            </h1>
+            <p className="mt-3 max-w-[60ch] text-body-lg font-normal text-band-muted">
+              Look up any listed ticker to read its fundamentals, then add it to
+              your portfolio.
+            </p>
+          </div>
+
+          <Search
+            onSearchSubmit={onSearchSubmit}
+            search={search}
+            handleSearchChange={handleSearchChange}
+          />
+        </div>
       </Band>
 
-      {/* Cream — what came back, and the live rail beside it. The light
-          ground is the page's break: results are the one thing here you read
-          rather than monitor, and they get the ground that suits reading. */}
+      {/* Cream — what came back. One column across the full terminal
+          width now the live rail is gone: results are the only thing this
+          band carries, and splitting the grid for a single occupant left the
+          rows in the middle third of the screen. */}
       <Band tone="cream" className="py-section">
-        <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-10 xl:grid-cols-[minmax(0,1fr)_380px] xl:gap-14">
-          <div className="flex min-w-0 flex-col gap-16">
-            <section className="flex flex-col gap-6">
-              <PanelHeader
-                eyebrow="Results"
-                title="Search"
-                actions={
-                  searchResult.length > 0 ? (
-                    <span className="font-mono text-caption font-normal uppercase tracking-label-sm text-band-subtle">
-                      {searchResult.length} match
-                      {searchResult.length === 1 ? "" : "es"}
-                    </span>
-                  ) : undefined
-                }
-              />
-              <CardList
-                searchResults={searchResult}
-                onPortfolioCreate={onPortfolioCreateTrigger}
-                hasSearched={Boolean(search.trim())}
-              />
-            </section>
-          </div>
-
-          {/* Clears the fixed navbar plus the tape beneath it, so a sticky
-              rail parks below both rather than sliding under them. */}
-          <div className="w-full lg:sticky lg:top-32">
-            <MarketTrends stocks={trendStocks} />
-          </div>
-        </div>
+        <section className="flex flex-col gap-8">
+          <PanelHeader
+            eyebrow="Results"
+            title="Matching companies"
+            actions={
+              searchResult.length > 0 ? (
+                <span className="font-mono text-caption font-normal uppercase tracking-label-sm text-band-subtle">
+                  {searchResult.length} match
+                  {searchResult.length === 1 ? "" : "es"}
+                </span>
+              ) : undefined
+            }
+          />
+          <CardList
+            searchResults={searchResult}
+            onPortfolioCreate={onPortfolioCreateTrigger}
+            hasSearched={Boolean(search.trim())}
+          />
+        </section>
       </Band>
 
       {/* Onyx — what you own and what people are saying about it. Both are
