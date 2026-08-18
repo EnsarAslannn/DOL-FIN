@@ -1,7 +1,7 @@
 import React, { type SyntheticEvent } from "react"
 import { motion } from "framer-motion"
 import Card from "../Card/Card"
-import EmptyState from "../Dashboard/EmptyState"
+import SearchEmptyState from "../Dashboard/SearchEmptyState"
 import { usePrefersReducedMotion } from "../../Helpers/usePrefersReducedMotion"
 import { revealGroup } from "../../Helpers/motion"
 import type { StockSearchResult } from "../../Models/StockSearchResult"
@@ -33,17 +33,12 @@ const CardList: React.FC<Props> = ({
 
   if (searchResults.length === 0) {
     return hasSearched ? (
-      <EmptyState
-        variant="search"
+      <SearchEmptyState
         title="Nothing matched that search"
         description="Check the spelling, or try a ticker instead of a company name — try AAPL, TSLA or MSFT."
       />
     ) : (
-      <EmptyState
-        variant="search"
-        title="Search for a company to begin"
-        description="Look up any listed ticker to read its fundamentals and add it to your portfolio."
-      />
+      <SearchEmptyState />
     )
   }
 
