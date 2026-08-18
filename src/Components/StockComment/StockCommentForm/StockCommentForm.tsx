@@ -164,7 +164,7 @@ const StockCommentForm = ({
           )}
           <span
             aria-hidden="true"
-            className="shrink-0 font-mono text-caption font-normal text-ash-text/70"
+            className="shrink-0 font-mono text-caption font-normal text-band-subtle"
           >
             {remaining}
           </span>

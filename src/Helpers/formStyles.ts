@@ -10,18 +10,18 @@
  * so the four copies of this recipe stay in sync.
  */
 export const fieldClass =
-  "block w-full rounded-card border border-slate-border/45 bg-obsidian-button px-4 py-3 text-body font-normal text-ivory-text outline-none transition-colors duration-200 placeholder:text-ash-text/60 focus:border-cobalt focus:ring-2 focus:ring-cobalt/35"
+  "block w-full rounded-card border border-band-line/30 bg-band-raised px-4 py-3 text-body font-normal text-band-ink outline-none transition-colors duration-200 placeholder:text-band-subtle focus:border-cobalt focus:ring-2 focus:ring-cobalt/35"
 
 /** Field label: mono micro-copy, the system's "technical label" role. */
 export const labelClass =
-  "mb-2 block font-mono text-caption font-normal uppercase tracking-label text-ash-text"
+  "mb-2 block font-mono text-caption font-normal uppercase tracking-label text-band-muted"
 
 /**
  * Inline validation message, shown directly beneath its field. Kept at body
  * size rather than the 11px caption role — an error is content the user has
  * to read, not metadata.
  */
-export const errorClass = "mt-2 text-body font-normal text-loss"
+export const errorClass = "mt-2 text-body font-normal text-band-loss"
 
 /**
  * Primary pill CTA — Cobalt fill, Pure White text at 15–17px, 9999px radius,
@@ -50,11 +50,11 @@ export const ctaFillClass =
  * primary without competing — the brief's "subtle interactive surface".
  */
 export const ctaGhostClass =
-  "cursor-pointer border border-mist-border/25 bg-obsidian-button/80 text-ivory-text backdrop-blur-sm hover:border-mist-border/50 hover:bg-obsidian-button"
+  "cursor-pointer border border-band-line/25 bg-band-raised/80 text-band-ink backdrop-blur-sm hover:border-band-line/50 hover:bg-band-raised"
 
 /** Disabled CTA drops to the muted surface — never a faded Cobalt. */
 export const ctaDisabledClass =
-  "cursor-not-allowed border border-slate-border/45 bg-obsidian-button text-ash-text/70"
+  "cursor-not-allowed border border-band-line/30 bg-band-raised text-band-subtle"
 
 /** Full-size CTA: 17px text at the spec's 15×32px padding. */
 export const ctaClass = `${ctaBaseClass} ${ctaFillClass} px-8 py-cta text-body-lg`

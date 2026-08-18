@@ -8,6 +8,7 @@ import StockCommentForm, {
 import StockCommentList from "../StockCommentList/StockCommentList"
 import DataLoader from "../Dashboard/DataLoader"
 import { PanelHeader } from "../Dashboard/Panel"
+import Reveal from "../Dashboard/Reveal"
 import { toStockOption, postableStocks, type StockOption } from "./stockOptions"
 import type { CommentGet } from "../../Models/Comment"
 import type { StockSearchResult } from "../../Models/StockSearchResult"
@@ -153,17 +154,20 @@ const StockComment = () => {
 
   return (
     <section className="flex w-full flex-col gap-8">
-      <PanelHeader
-        eyebrow="Discussion"
-        title="What traders are saying"
-        lead={
-          activeSymbol
-            ? `Showing ${visible.length} comment${visible.length === 1 ? "" : "s"} on ${activeSymbol}.`
-            : "Notes posted against any ticker on the platform. Filter by company, or add your own below."
-        }
-      />
+      <Reveal>
+        <PanelHeader
+          eyebrow="Discussion"
+          title="What traders are saying"
+          lead={
+            activeSymbol
+              ? `Showing ${visible.length} comment${visible.length === 1 ? "" : "s"} on ${activeSymbol}.`
+              : "Notes posted against any ticker on the platform. Filter by company, or add your own below."
+          }
+        />
+      </Reveal>
 
       {chips.length > 0 && (
+        <Reveal>
         <div
           role="group"
           aria-label="Filter comments by stock"
@@ -189,6 +193,7 @@ const StockComment = () => {
             </button>
           ))}
         </div>
+        </Reveal>
       )}
 
       <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-5 lg:gap-8">
@@ -200,7 +205,7 @@ const StockComment = () => {
           )}
         </div>
 
-        <div className="rounded-card bg-band-surface p-6 ring-1 ring-inset ring-band-line/6 lg:col-span-2">
+        <Reveal className="rounded-card bg-band-surface p-6 ring-1 ring-inset ring-band-line/6 lg:col-span-2">
           <h3 className="text-subheading font-medium text-band-ink">
             Add a comment
           </h3>
@@ -215,7 +220,7 @@ const StockComment = () => {
             submitting={posting}
             handleComment={handleComment}
           />
-        </div>
+        </Reveal>
       </div>
     </section>
   )

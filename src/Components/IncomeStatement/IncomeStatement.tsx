@@ -1,3 +1,4 @@
+import Reveal from "../Dashboard/Reveal"
 import Band from "../Dashboard/Band"
 import { isDemoTicker } from "../../Helpers/demoStocks"
 import { useEffect, useState } from "react"
@@ -214,7 +215,9 @@ const IncomeStatement = () => {
     const metrics = calculateMetrics(data)
 
     return (
-      <div className="w-full flex flex-col space-y-4 mt-6">
+      /* The metric cards and the read-out below them arrive together as
+         one block, on the same curve as every other section. */
+      <Reveal className="w-full flex flex-col space-y-4 mt-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
           <div className="bg-band-surface ring-1 ring-inset ring-band-line/6 rounded-card p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
             <div className="flex flex-col space-y-1">
@@ -308,7 +311,7 @@ const IncomeStatement = () => {
             {metrics.summaryText}
           </p>
         </div>
-      </div>
+      </Reveal>
     )
   }
 

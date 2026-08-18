@@ -11,6 +11,7 @@ import CardList from "../../Components/CardList/CardList"
 import type { PortfolioGet } from "../../Models/Portfolio"
 import type { StockSearchResult } from "../../Models/StockSearchResult"
 import Band from "../../Components/Dashboard/Band"
+import Reveal, { RevealGroup, RevealItem } from "../../Components/Dashboard/Reveal"
 import { PanelHeader } from "../../Components/Dashboard/Panel"
 import {
   portfolioAddAPI,
@@ -274,7 +275,7 @@ const SearchPage = () => {
           the same ground as the tape above it and the boundary underneath
           reads as the answer starting. */}
       <Band tone="dark" className="pb-16 pt-12">
-        <div className="flex flex-col gap-9">
+        <Reveal className="flex flex-col gap-9">
           <div>
             <span className="block font-mono text-caption font-normal uppercase tracking-label-lg text-band-subtle">
               Search
@@ -293,7 +294,7 @@ const SearchPage = () => {
             search={search}
             handleSearchChange={handleSearchChange}
           />
-        </div>
+        </Reveal>
       </Band>
 
       {/* Cream — what came back. One column across the full terminal
@@ -302,18 +303,20 @@ const SearchPage = () => {
           rows in the middle third of the screen. */}
       <Band tone="cream" className="py-section">
         <section className="flex flex-col gap-8">
-          <PanelHeader
-            eyebrow="Results"
-            title="Matching companies"
-            actions={
-              searchResult.length > 0 ? (
-                <span className="font-mono text-caption font-normal uppercase tracking-label-sm text-band-subtle">
-                  {searchResult.length} match
-                  {searchResult.length === 1 ? "" : "es"}
-                </span>
-              ) : undefined
-            }
-          />
+          <Reveal>
+            <PanelHeader
+              eyebrow="Results"
+              title="Matching companies"
+              actions={
+                searchResult.length > 0 ? (
+                  <span className="font-mono text-caption font-normal uppercase tracking-label-sm text-band-subtle">
+                    {searchResult.length} match
+                    {searchResult.length === 1 ? "" : "es"}
+                  </span>
+                ) : undefined
+              }
+            />
+          </Reveal>
           <CardList
             searchResults={searchResult}
             onPortfolioCreate={onPortfolioCreateTrigger}
@@ -322,9 +325,9 @@ const SearchPage = () => {
         </section>
       </Band>
 
-      {/* Onyx — what you own and what people are saying about it. Both are
-          things you come back to rather than read once, so they return to
-          the dark ground the rest of the product uses. */}
+      {/* Onyx — what you own. A position you come back to rather than read
+          once, so it returns to the dark ground the rest of the product
+          uses. */}
       <Band tone="dark" className="py-section">
         <div className="flex w-full flex-col gap-16">
             <ListPortfolio
@@ -334,18 +337,26 @@ const SearchPage = () => {
 
             {portfolioValues && (
               <div className="flex w-full flex-col gap-6">
-                <PanelHeader eyebrow="Analytics" title="Portfolio analytics" />
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+                <Reveal>
+                  <PanelHeader eyebrow="Analytics" title="Portfolio analytics" />
+                </Reveal>
+                <RevealGroup className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+                  <RevealItem>
                   <button type="button" onClick={() => togglePanel("worth")} className="cursor-pointer text-left w-full">
                     <Tile title="Total Net Worth" subTitle={`$${estimatedTotalValue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} />
                   </button>
+                  </RevealItem>
+                  <RevealItem>
                   <button type="button" onClick={() => togglePanel("health")} className="cursor-pointer text-left w-full">
                     <Tile title="Portfolio Health" subTitle={portfolioHealth} />
                   </button>
+                  </RevealItem>
+                  <RevealItem>
                   <button type="button" onClick={() => togglePanel("sector")} className="cursor-pointer text-left w-full">
                     <Tile title="Primary Sector" subTitle={sectorData.primarySector} />
                   </button>
-                </div>
+                  </RevealItem>
+                </RevealGroup>
 
                 <div
                   className={`transition-all duration-300 ease-in-out overflow-hidden ${activePanel === "worth" ? "max-h-[350px] opacity-100 mt-2" : "max-h-0 opacity-0 pointer-events-none"}`}
@@ -485,16 +496,20 @@ const SearchPage = () => {
               </div>
             )}
 
-          <div className="w-full border-t border-band-line/8 pt-4">
-            <StockComment />
-          </div>
-
           {serverError && (
             <div className="rounded-card border border-band-loss/30 bg-band-loss/10 p-4 text-center font-normal text-band-loss">
               {serverError}
             </div>
           )}
         </div>
+      </Band>
+
+      {/* Cream — the discussion. Prose written by people, which is reading
+          rather than monitoring, so it takes the same light ground the
+          results do. It also closes the page on the alternation the band
+          system exists for: Onyx, Cream, Onyx, Cream. */}
+      <Band tone="cream" className="py-section">
+        <StockComment />
       </Band>
 
 

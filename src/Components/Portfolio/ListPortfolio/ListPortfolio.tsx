@@ -3,6 +3,7 @@ import { motion } from "framer-motion"
 import CardPortfolio from "../CardPortfolio/CardPortfolio"
 import EmptyState from "../../Dashboard/EmptyState"
 import { PanelHeader } from "../../Dashboard/Panel"
+import Reveal from "../../Dashboard/Reveal"
 import { usePrefersReducedMotion } from "../../../Helpers/usePrefersReducedMotion"
 import { revealGroup, revealProps } from "../../../Helpers/motion"
 import type { PortfolioGet } from "../../../Models/Portfolio"
@@ -24,15 +25,19 @@ const ListPortfolio = ({ portfolioValues, onPortfolioDelete }: Props) => {
 
   return (
     <div className="flex flex-col gap-8">
-      <PanelHeader
-        eyebrow="Holdings"
-        title="My portfolio"
-        lead={
-          holdings.length > 0
-            ? `${holdings.length} position${holdings.length === 1 ? "" : "s"} · $${totalPortfolioInvested.toFixed(2)} invested`
-            : undefined
-        }
-      />
+      {/* The card grid below already arrived on scroll while this heading
+          was there from the start, so the section half-appeared. */}
+      <Reveal>
+        <PanelHeader
+          eyebrow="Holdings"
+          title="My portfolio"
+          lead={
+            holdings.length > 0
+              ? `${holdings.length} position${holdings.length === 1 ? "" : "s"} · ${totalPortfolioInvested.toFixed(2)} invested`
+              : undefined
+          }
+        />
+      </Reveal>
 
       {holdings.length > 0 ? (
         <motion.div
