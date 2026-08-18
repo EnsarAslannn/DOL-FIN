@@ -1,3 +1,4 @@
+import { isDemoTicker } from "../../Helpers/demoStocks"
 import { useEffect, useState } from "react"
 import type { CompanyIncomeStatement } from "../../company"
 import { useOutletContext } from "react-router-dom"
@@ -123,9 +124,8 @@ const IncomeStatement = () => {
     incomeStatementFetch()
   }, [ticker])
 
-  const allowedStocks = ["AAPL", "MSFT", "NVDA", "TSLA", "GOOGL"]
 
-  if (!allowedStocks.includes(ticker?.toUpperCase())) {
+  if (!isDemoTicker(ticker)) {
     return (
       <div className="rounded-card bg-graphite-card ring-1 ring-inset ring-mist-border/6 w-full rounded-card p-8 flex flex-col items-center justify-center text-center min-h-[350px] space-y-4 my-4 animate-fadeIn">
         <div className="flex h-16 w-16 items-center justify-center rounded-icon bg-obsidian-button">

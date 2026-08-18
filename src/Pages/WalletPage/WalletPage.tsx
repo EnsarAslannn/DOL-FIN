@@ -8,7 +8,8 @@ import { toast } from "react-toastify"
 import PurchasePortfolio from "../../Components/Portfolio/PurchasePortfolio/PurchasePortfolio"
 import marketTerrain from "../../assets/extra/capital-stack.webp"
 import { fieldClass, ctaBaseClass, ctaDisabledClass, ctaFillClass } from "../../Helpers/formStyles"
-import { contentClass, navClearanceClass } from "../../Helpers/layout"
+import { terminalClass } from "../../Helpers/layout"
+import MarketTicker from "../../Components/MarketTicker/MarketTicker"
 import GlassLogo from "../../Components/Dashboard/GlassLogo"
 import EmptyState from "../../Components/Dashboard/EmptyState"
 import { Link } from "react-router-dom"
@@ -155,7 +156,13 @@ const WalletPage = () => {
 
     return (
         <div className="w-full min-h-screen bg-onyx-canvas font-sans pb-section text-ivory-text text-left">
-            <div className={`flex flex-col gap-10 ${navClearanceClass} ${contentClass}`}>
+                {/* Same tape, same position as the search page: the two
+                authenticated pages open identically. */}
+            <div className="w-full pt-16">
+                <MarketTicker />
+            </div>
+
+            <div className={`flex flex-col gap-10 pt-12 ${terminalClass}`}>
                 <div>
                     <span className="block font-mono text-caption font-normal uppercase tracking-label-lg text-ash-text/70">Wallet</span>
                     <h1 className="mt-3 text-heading font-medium text-ivory-text md:text-heading-lg">Wallet overview</h1>
@@ -327,24 +334,31 @@ const WalletPage = () => {
                         </table>
                     </div>
 
-                    {/* Cash always occupies a row, so the table is never truly
-                        empty — the empty state belongs under it and speaks to
-                        the absence of *positions*, not of assets. */}
-                    {(!portfolioValues || portfolioValues.length === 0) && (
-                        <EmptyState
-                            variant="wallet"
-                            title="Cash only, for now"
-                            description="Your balance is sitting idle. Search for a ticker to put it to work and it will appear here beside your cash."
-                        >
-                            <Link
-                                to="/search"
-                                className={`inline-flex items-center px-6 py-3 text-body ${ctaBaseClass} ${ctaFillClass}`}
-                            >
-                                Find a company
-                            </Link>
-                        </EmptyState>
-                    )}
                 </div>
+
+                {/* Cash always occupies a row, so the holdings table is never
+                    truly empty — this speaks to the absence of *positions*,
+                    not of assets.
+
+                    Deliberately outside the Graphite panel. Inside it the
+                    render sat on an elevated surface with a table pressing
+                    down on it and the panel's own edges cropping the halo;
+                    on the Onyx canvas it has the full width of the page and
+                    reads as an illustration rather than as a table footer. */}
+                {(!portfolioValues || portfolioValues.length === 0) && (
+                    <EmptyState
+                        variant="wallet"
+                        title="Cash only, for now"
+                        description="Your balance is sitting idle. Search for a ticker to put it to work and it will appear here beside your cash."
+                    >
+                        <Link
+                            to="/search"
+                            className={`inline-flex items-center px-6 py-3 text-body ${ctaBaseClass} ${ctaFillClass}`}
+                        >
+                            Find a company
+                        </Link>
+                    </EmptyState>
+                )}
             </div>
             {selectedSellStock && (
                 <PurchasePortfolio

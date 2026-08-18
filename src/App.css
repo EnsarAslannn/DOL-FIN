@@ -28,6 +28,20 @@
 }
 
 
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* The track holds two identical copies of the tape, so -50% lands the second
+   copy exactly where the first started and the loop is seamless. 60s over
+   that distance is slow enough to read a ticker in passing without the strip
+   competing with the page for attention. */
+.animate-marquee {
+  animation: marquee 60s linear infinite;
+}
+
+
 @media (prefers-reduced-motion: reduce) {
   .animate-fadeIn {
     animation: none;
@@ -36,5 +50,14 @@
   .sonar-ring {
     animation: none;
     opacity: 0.18;
+  }
+}
+
+/* A tape that never stops is exactly the vestibular trigger the reduced-motion
+   query exists for. Held at its start position, where both copies are in
+   frame and the strip still reads as a market feed. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
   }
 }

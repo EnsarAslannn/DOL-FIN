@@ -1,3 +1,4 @@
+import { isDemoTicker } from "../../Helpers/demoStocks"
 import { useEffect, useState } from "react"
 import { useParams, Outlet } from "react-router"
 import type { CompanyProfile } from "../../company"
@@ -6,38 +7,24 @@ import Sidebar from "../../Components/Sidebar/Sidebar"
 import CompanyDashboard from "../../Components/CompanyDashboard/CompanyDashboard"
 import ProfileHeader from "../../Components/Dashboard/ProfileHeader"
 import Spinners from "../../Components/Spinners/Spinners"
-import StockComment from "../../Components/StockComment/StockComment"
 import { formatLargeNonMonetaryNumber } from "../../Helpers/NumberFormatting"
-import { searchStocksBySymbolAPI } from "../../Services/StockService"
 
-const allowedStocks = ["AAPL", "MSFT", "NVDA", "TSLA", "GOOGL"]
 
 const CompanyPage = () => {
   const { ticker } = useParams()
   const [company, setCompany] = useState<CompanyProfile>()
-  const [localDbId, setLocalDbId] = useState<number | null>(null)
 
   useEffect(() => {
-    if (!allowedStocks.includes(ticker?.toUpperCase() || "")) return
+    if (!isDemoTicker(ticker)) return
 
     const getProfileInit = async () => {
       const result = await getCompanyProfile(ticker!)
       setCompany(result?.data[0])
-
-      try {
-        const dbResult = await searchStocksBySymbolAPI(ticker?.toUpperCase() ?? "")
-        if (dbResult && dbResult.data && dbResult.data.length > 0) {
-          const matchedStock = dbResult.data[0]
-          setLocalDbId(matchedStock.id || matchedStock.Id || null)
-        }
-      } catch (err) {
-        console.error("Failed to fetch stock ID from local database:", err)
-      }
     }
     getProfileInit()
   }, [ticker])
 
-  if (!allowedStocks.includes(ticker?.toUpperCase() || "")) {
+  if (!isDemoTicker(ticker)) {
     return (
       <div className="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden bg-onyx-canvas text-ivory-text min-h-screen">
         <Sidebar />
@@ -119,11 +106,6 @@ const CompanyPage = () => {
               <Outlet context={ticker} />
             </div>
 
-            <div className="w-full border-t border-mist-border/8 pt-10">
-              {localDbId !== null && (
-                <StockComment stockSymbol={ticker!} stockId={localDbId} />
-              )}
-            </div>
           </CompanyDashboard>
         </div>
       ) : (

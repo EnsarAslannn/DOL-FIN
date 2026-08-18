@@ -1,3 +1,4 @@
+import { DEMO_TICKERS } from "../../Helpers/demoStocks"
 import { useState, type ChangeEvent, type SyntheticEvent } from "react"
 import { ctaCompactClass } from "../../Helpers/formStyles"
 
@@ -13,7 +14,7 @@ const Search: React.FC<Props> = ({
   handleSearchChange,
 }: Props) => {
   const [showSuggestions, setShowSuggestions] = useState(false)
-  const suggestions = ["AAPL", "MSFT", "NVDA", "TSLA", "GOOGL"]
+  const suggestions = DEMO_TICKERS
 
   const handleSuggestionClick = (symbol: string) => {
     const customEvent = {
@@ -28,7 +29,13 @@ const Search: React.FC<Props> = ({
   }
 
   return (
-    <section className="relative mx-auto mb-2 mt-6 w-full max-w-2xl px-2 font-sans">
+    /* Left-aligned on the content grid rather than centred in the page.
+       Floating a 672px field in the middle of a 1760px terminal was the
+       single loudest source of the "everything is crammed into the centre"
+       read: it shared no edge with the results, the holdings or the section
+       headings below it. Anchored left it starts on the same rule as every
+       other block on the page. */
+    <section className="relative mb-2 mt-6 w-full max-w-3xl px-2 font-sans">
       <form
         className="relative flex w-full items-center"
         onSubmit={onSearchSubmit}
@@ -69,7 +76,7 @@ const Search: React.FC<Props> = ({
       </form>
 
       {showSuggestions && (
-        <div className="absolute left-2 right-2 z-50 mt-2 flex max-h-60 flex-col overflow-hidden rounded-card bg-graphite-card ring-1 ring-inset ring-mist-border/6 text-left shadow-subtle">
+        <div className="absolute left-2 right-2 z-50 mt-2 flex max-h-80 flex-col overflow-y-auto rounded-card bg-graphite-card ring-1 ring-inset ring-mist-border/6 text-left shadow-subtle">
           <div className="border-b border-mist-border/8 px-4 py-3 font-mono text-caption font-normal uppercase tracking-label text-ash-text">
             Featured Demo Assets
           </div>

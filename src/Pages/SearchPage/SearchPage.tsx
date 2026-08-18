@@ -10,7 +10,7 @@ import ListPortfolio from "../../Components/Portfolio/ListPortfolio/ListPortfoli
 import CardList from "../../Components/CardList/CardList"
 import type { PortfolioGet } from "../../Models/Portfolio"
 import type { StockSearchResult } from "../../Models/StockSearchResult"
-import { contentClass } from "../../Helpers/layout"
+import { terminalClass } from "../../Helpers/layout"
 import { PanelHeader } from "../../Components/Dashboard/Panel"
 import {
   portfolioAddAPI,
@@ -21,7 +21,8 @@ import {
 import { toast } from "react-toastify"
 import Tile from "../../Components/Tile/Tile"
 import MarketTrends, { type TrendStock } from "../../Components/MarketTrends/MarketTrends"
-import MarketNews from "../../Components/MarketNews/MarketNews"
+import MarketTicker from "../../Components/MarketTicker/MarketTicker"
+import StockComment from "../../Components/StockComment/StockComment"
 import { useAuth } from "../../Context/useAuth"
 import { searchStocksBySymbolAPI, searchStocksByCompanyNameAPI } from "../../Services/StockService"
 import PurchasePortfolio from "../../Components/Portfolio/PurchasePortfolio/PurchasePortfolio"
@@ -309,8 +310,15 @@ const SearchPage = () => {
 
   return (
     <div className="min-h-screen w-full bg-onyx-canvas pb-section font-sans text-ivory-text">
-      <div className={`flex flex-col gap-14 ${contentClass}`}>
-        <div className="w-full pt-32">
+      {/* The tape sits directly under the fixed navbar and runs the full
+          viewport width, so the page opens on the market rather than on a
+          gap. pt-16 is the bar's own height — the strip butts against it. */}
+      <div className="w-full pt-16">
+        <MarketTicker />
+      </div>
+
+      <div className={`flex flex-col gap-14 ${terminalClass}`}>
+        <div className="w-full pt-12">
           <Search
             onSearchSubmit={onSearchSubmit}
             search={search}
@@ -318,8 +326,8 @@ const SearchPage = () => {
           />
         </div>
 
-        <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-4 lg:gap-10">
-          <div className="flex flex-col gap-16 lg:col-span-3">
+        <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-10 xl:grid-cols-[minmax(0,1fr)_380px] xl:gap-14">
+          <div className="flex min-w-0 flex-col gap-16">
             <section className="flex flex-col gap-6">
               <PanelHeader
                 eyebrow="Results"
@@ -498,12 +506,17 @@ const SearchPage = () => {
               </div>
             )}
 
-            <MarketNews />
           </div>
 
-          <div className="w-full lg:sticky lg:top-6">
+          {/* Clears the fixed navbar plus the tape beneath it, so a sticky
+              rail parks below both rather than sliding under them. */}
+          <div className="w-full lg:sticky lg:top-32">
             <MarketTrends stocks={trendStocks} />
           </div>
+        </div>
+
+        <div className="w-full border-t border-mist-border/8 pt-14">
+          <StockComment />
         </div>
 
         {serverError && (

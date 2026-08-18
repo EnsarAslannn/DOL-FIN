@@ -208,6 +208,13 @@
   /* The cinematic blocks — hero, tablet feature, CTA — run wider than the
      reading column so their imagery reaches past the text grid. */
   --container-wide: 1440px;
+  /* The authenticated dashboard reads as a terminal, not an article: search
+     results, a holdings grid and a live rail are meant to be scanned side by
+     side. At 1440 the three-column grid collapsed to roughly 900px of usable
+     width on a 1920 display and left a third of the screen empty on each
+     side. This is the widest measure in the system and the only one that is
+     not a reading column. */
+  --container-terminal: 1760px;
 
   /* --- Radii ------------------------------------------------------------- */
   /* Semantic names are what components use. */
