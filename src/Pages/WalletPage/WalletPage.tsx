@@ -8,7 +8,7 @@ import { toast } from "react-toastify"
 import PurchasePortfolio from "../../Components/Portfolio/PurchasePortfolio/PurchasePortfolio"
 import marketTerrain from "../../assets/extra/capital-stack.webp"
 import { fieldClass, ctaBaseClass, ctaDisabledClass, ctaFillClass } from "../../Helpers/formStyles"
-import { terminalClass } from "../../Helpers/layout"
+import Band from "../../Components/Dashboard/Band"
 import MarketTicker from "../../Components/MarketTicker/MarketTicker"
 import GlassLogo from "../../Components/Dashboard/GlassLogo"
 import EmptyState from "../../Components/Dashboard/EmptyState"
@@ -155,23 +155,27 @@ const WalletPage = () => {
     const estimatedTotalValue = liveBalance + stocksValue
 
     return (
-        <div className="w-full min-h-screen bg-onyx-canvas font-sans pb-section text-ivory-text text-left">
-                {/* Same tape, same position as the search page: the two
+        <div className="w-full min-h-screen bg-onyx-canvas font-sans text-left">
+            {/* Same tape, same position as the search page: the two
                 authenticated pages open identically. */}
             <div className="w-full pt-16">
                 <MarketTicker />
             </div>
 
-            <div className={`flex flex-col gap-10 pt-12 ${terminalClass}`}>
+            {/* Onyx — what the account is worth and how to add to it. The
+                balance is the page's headline figure and it keeps the dark
+                ground the banner crop was built against. */}
+            <Band tone="dark" className="pb-section pt-12">
+                <div className="flex flex-col gap-10">
                 <div>
-                    <span className="block font-mono text-caption font-normal uppercase tracking-label-lg text-ash-text/70">Wallet</span>
-                    <h1 className="mt-3 text-heading font-medium text-ivory-text md:text-heading-lg">Wallet overview</h1>
-                    <p className="mt-3 max-w-[60ch] text-body-lg font-normal text-ash-text">Manage your funds and monitor estimated asset distribution.</p>
+                    <span className="block font-mono text-caption font-normal uppercase tracking-label-lg text-band-subtle">Wallet</span>
+                    <h1 className="mt-3 text-heading font-medium text-band-ink md:text-heading-lg">Wallet overview</h1>
+                    <p className="mt-3 max-w-[60ch] text-body-lg font-normal text-band-muted">Manage your funds and monitor estimated asset distribution.</p>
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* The page's single dark surface — a contained product crop
                         under a scrim, giving the spec's dark/light contrast. */}
-                    <div className="lg:col-span-2 relative flex min-h-[220px] flex-col justify-between overflow-hidden rounded-card bg-graphite-card p-7">
+                    <div className="lg:col-span-2 relative flex min-h-[220px] flex-col justify-between overflow-hidden rounded-card bg-band-surface p-7">
                         <img
                             src={marketTerrain}
                             alt=""
@@ -182,32 +186,32 @@ const WalletPage = () => {
                         <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-gradient-to-r from-onyx-canvas via-onyx-canvas/80 to-transparent" />
 
                         <div className="relative z-10">
-                            <span className="font-mono text-caption font-normal uppercase tracking-label-lg text-ivory-text/75">Est. Total Value</span>
+                            <span className="font-mono text-caption font-normal uppercase tracking-label-lg text-band-ink/75">Est. Total Value</span>
                             <div className="mt-3 flex items-baseline space-x-2">
-                                <h2 className="font-mono text-heading-lg font-normal text-ivory-text">${estimatedTotalValue.toFixed(2)}</h2>
-                                <span className="font-mono text-body font-normal text-ivory-text/75">USD</span>
+                                <h2 className="font-mono text-heading-lg font-normal text-band-ink">${estimatedTotalValue.toFixed(2)}</h2>
+                                <span className="font-mono text-body font-normal text-band-ink/75">USD</span>
                             </div>
                         </div>
-                        <div className="relative z-10 mt-6 grid grid-cols-2 gap-4 border-t border-mist-border/20 pt-6">
+                        <div className="relative z-10 mt-6 grid grid-cols-2 gap-4 border-t border-band-line/20 pt-6">
                             <div className="flex flex-col">
-                                <span className="font-mono text-caption font-normal uppercase tracking-label text-ivory-text/75">Cash Balance (Wallet)</span>
-                                <span className="mt-2 font-mono text-subheading font-normal text-ivory-text">${liveBalance.toFixed(2)}</span>
+                                <span className="font-mono text-caption font-normal uppercase tracking-label text-band-ink/75">Cash Balance (Wallet)</span>
+                                <span className="mt-2 font-mono text-subheading font-normal text-band-ink">${liveBalance.toFixed(2)}</span>
                             </div>
                             <div className="flex flex-col">
-                                <span className="font-mono text-caption font-normal uppercase tracking-label text-ivory-text/75">Stocks Value (Portfolio)</span>
-                                <span className="mt-2 font-mono text-subheading font-normal text-ivory-text">${stocksValue.toFixed(2)}</span>
+                                <span className="font-mono text-caption font-normal uppercase tracking-label text-band-ink/75">Stocks Value (Portfolio)</span>
+                                <span className="mt-2 font-mono text-subheading font-normal text-band-ink">${stocksValue.toFixed(2)}</span>
                             </div>
                         </div>
                     </div>
-                    <div className="flex flex-col justify-between rounded-card bg-graphite-card ring-1 ring-inset ring-mist-border/6 p-card">
+                    <div className="flex flex-col justify-between rounded-card bg-band-surface ring-1 ring-inset ring-band-line/6 p-card">
                         <div>
-                            <h3 className="mb-2 text-subheading font-normal text-ivory-text">Deposit Cash</h3>
-                            <p className="mb-4 text-body font-normal text-ash-text">Add instant simulator credits into your trading account.</p>
+                            <h3 className="mb-2 text-subheading font-normal text-band-ink">Deposit Cash</h3>
+                            <p className="mb-4 text-body font-normal text-band-muted">Add instant simulator credits into your trading account.</p>
                         </div>
                         <form onSubmit={handleDepositSubmit} className="flex flex-col space-y-4 w-full">
                             <div>
                                 <div className="relative flex items-center">
-                                    <span className="absolute left-4 font-mono text-body font-normal text-ash-text">$</span>
+                                    <span className="absolute left-4 font-mono text-body font-normal text-band-muted">$</span>
                                     <input
                                         type="number"
                                         min="0.01"
@@ -217,7 +221,7 @@ const WalletPage = () => {
                                         onChange={(e) => setDepositAmount(e.target.value)}
                                         className={`${fieldClass} pl-8 pr-16 font-mono`}
                                     />
-                                    <span className="absolute right-4 rounded-smallcard bg-obsidian-button px-2 py-1 font-mono text-caption font-normal text-ash-text">USD</span>
+                                    <span className="absolute right-4 rounded-smallcard bg-band-raised px-2 py-1 font-mono text-caption font-normal text-band-muted">USD</span>
                                 </div>
                             </div>
                             <button
@@ -233,45 +237,52 @@ const WalletPage = () => {
                         </form>
                     </div>
                 </div>
-                <div className="bg-graphite-card ring-1 ring-inset ring-mist-border/6 rounded-card overflow-hidden">
+                </div>
+            </Band>
+
+            {/* Cream — the ledger. A holdings table is the one thing on this
+                page you read line by line rather than glance at, and it gets
+                the light ground for the same reason a statement does. */}
+            <Band tone="cream" className="py-section">
+                <div className="bg-band-surface ring-1 ring-inset ring-band-line/6 rounded-card overflow-hidden">
                     <div className="px-6 pb-2 pt-6">
-                        <span className="block font-mono text-caption font-normal uppercase tracking-label-lg text-ash-text/70">Holdings</span>
-                        <h3 className="mt-2 text-subheading font-medium text-ivory-text">My assets</h3>
+                        <span className="block font-mono text-caption font-normal uppercase tracking-label-lg text-band-subtle">Holdings</span>
+                        <h3 className="mt-2 text-subheading font-medium text-band-ink">My assets</h3>
                     </div>
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse font-sans">
                             <thead>
-                                <tr className="border-b border-mist-border/8 font-mono text-caption font-bold uppercase tracking-label-lg text-ash-text">
+                                <tr className="border-b border-band-line/8 font-mono text-caption font-bold uppercase tracking-label-lg text-band-muted">
                                     <th className="py-4 px-6">Asset Name</th>
                                     <th className="py-4 px-6 text-right">Market Price</th>
                                     <th className="py-4 px-6 text-right">Holdings Allocation</th>
                                     <th className="py-4 px-6 text-center w-24">Action</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-mist-border/8 text-body font-normal">
-                                <tr className="hover:bg-obsidian-button transition-colors">
+                            <tbody className="divide-y divide-band-line/8 text-body font-normal">
+                                <tr className="hover:bg-band-raised transition-colors">
                                     <td className="px-6 py-4">
                                         <div className="flex items-center space-x-4">
                                             <GlassLogo className="h-10 w-10" padding="p-2">
                                                 {companyLogos["USD"] ? (
                                                     companyLogos["USD"]()
                                                 ) : (
-                                                    <span className="font-mono text-caption font-bold text-ivory-text">
+                                                    <span className="font-mono text-caption font-bold text-band-ink">
                                                         USD
                                                     </span>
                                                 )}
                                             </GlassLogo>
                                             <div className="flex flex-col">
-                                                <span className="text-body font-normal text-ivory-text">United States Dollar</span>
-                                                <span className="font-mono text-caption font-normal tracking-wide text-ash-text">CASH</span>
+                                                <span className="text-body font-normal text-band-ink">United States Dollar</span>
+                                                <span className="font-mono text-caption font-normal tracking-wide text-band-muted">CASH</span>
                                             </div>
                                         </div>
                                     </td>
-                                    <td className="px-6 py-4 text-right font-mono text-body font-normal text-ash-text">$1.00</td>
+                                    <td className="px-6 py-4 text-right font-mono text-body font-normal text-band-muted">$1.00</td>
                                     <td className="px-6 py-4 text-right">
                                         <div className="flex flex-col items-end justify-center">
-                                            <span className="font-mono text-body font-normal text-ivory-text">${liveBalance.toFixed(2)}</span>
-                                            <span className="mt-1 font-mono text-caption font-normal text-ash-text">
+                                            <span className="font-mono text-body font-normal text-band-ink">${liveBalance.toFixed(2)}</span>
+                                            <span className="mt-1 font-mono text-caption font-normal text-band-muted">
                                                 {estimatedTotalValue > 0 ? ((liveBalance / estimatedTotalValue) * 100).toFixed(1) : 0}%
                                             </span>
                                         </div>
@@ -279,7 +290,7 @@ const WalletPage = () => {
                                     <td className="px-6 py-4 text-center">
                                         <button
                                             onClick={triggerUsdSell}
-                                            className="cursor-pointer rounded-pill ring-1 ring-inset ring-mist-border/8 px-4 py-2 text-body font-normal text-ash-text transition-colors hover:ring-loss/50 hover:text-loss"
+                                            className="cursor-pointer rounded-pill ring-1 ring-inset ring-band-line/8 px-4 py-2 text-body font-normal text-band-muted transition-colors hover:ring-band-loss/50 hover:text-band-loss"
                                         >
                                             Sell
                                         </button>
@@ -292,29 +303,29 @@ const WalletPage = () => {
                                     const currentStockValue = livePrice * quantity
 
                                     return (
-                                        <tr key={item.id} className="hover:bg-obsidian-button transition-colors">
+                                        <tr key={item.id} className="hover:bg-band-raised transition-colors">
                                             <td className="py-4 px-6">
                                                 <div className="flex items-center space-x-4">
                                                     <GlassLogo className="h-10 w-10" padding="p-2">
                                                         {companyLogos[symbolUpper] ? (
                                                             companyLogos[symbolUpper]()
                                                         ) : (
-                                                            <span className="font-mono text-caption font-bold text-ivory-text">
+                                                            <span className="font-mono text-caption font-bold text-band-ink">
                                                                 {symbolUpper.slice(0, 4)}
                                                             </span>
                                                         )}
                                                     </GlassLogo>
                                                     <div className="flex flex-col">
-                                                        <span className="text-body font-normal text-ivory-text">{item.companyName}</span>
-                                                        <span className="font-mono text-caption font-normal tracking-wide text-ash-text">{symbolUpper}</span>
+                                                        <span className="text-body font-normal text-band-ink">{item.companyName}</span>
+                                                        <span className="font-mono text-caption font-normal tracking-wide text-band-muted">{symbolUpper}</span>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td className="px-6 py-4 text-right font-mono text-body font-normal text-ash-text">${livePrice.toFixed(2)}</td>
+                                            <td className="px-6 py-4 text-right font-mono text-body font-normal text-band-muted">${livePrice.toFixed(2)}</td>
                                             <td className="py-4 px-6 text-right">
                                                 <div className="flex flex-col items-end justify-center">
-                                                    <span className="font-mono text-body font-normal text-ivory-text">${currentStockValue.toFixed(2)}</span>
-                                                    <span className="mt-1 font-mono text-caption font-normal text-ash-text">
+                                                    <span className="font-mono text-body font-normal text-band-ink">${currentStockValue.toFixed(2)}</span>
+                                                    <span className="mt-1 font-mono text-caption font-normal text-band-muted">
                                                         {estimatedTotalValue > 0 ? ((currentStockValue / estimatedTotalValue) * 100).toFixed(1) : 0}%
                                                     </span>
                                                 </div>
@@ -322,7 +333,7 @@ const WalletPage = () => {
                                             <td className="py-4 px-6 text-center">
                                                 <button
                                                     onClick={() => triggerTableSell(item)}
-                                                    className="cursor-pointer rounded-pill ring-1 ring-inset ring-mist-border/8 px-4 py-2 text-body font-normal text-ash-text transition-colors hover:ring-loss/50 hover:text-loss"
+                                                    className="cursor-pointer rounded-pill ring-1 ring-inset ring-band-line/8 px-4 py-2 text-body font-normal text-band-muted transition-colors hover:ring-band-loss/50 hover:text-band-loss"
                                                 >
                                                     Sell
                                                 </button>
@@ -359,7 +370,8 @@ const WalletPage = () => {
                         </Link>
                     </EmptyState>
                 )}
-            </div>
+            </Band>
+
             {selectedSellStock && (
                 <PurchasePortfolio
                     isOpen={isSellModalOpen}

@@ -34,7 +34,7 @@ export const Panel = ({
 
   const skin =
     surface === "raised"
-      ? "rounded-card bg-graphite-card ring-1 ring-inset ring-mist-border/6"
+      ? "rounded-card bg-band-surface ring-1 ring-inset ring-band-line/6"
       : ""
 
   return (
@@ -77,15 +77,15 @@ export const PanelHeader = ({
   >
     <div>
       {eyebrow && (
-        <span className="block font-mono text-caption font-normal uppercase tracking-label-lg text-ash-text/70">
+        <span className="block font-mono text-caption font-normal uppercase tracking-label-lg text-band-subtle">
           {eyebrow}
         </span>
       )}
-      <h2 className="mt-3 text-heading-sm font-medium text-ivory-text md:text-heading">
+      <h2 className="mt-3 text-heading-sm font-medium text-band-ink md:text-heading">
         {title}
       </h2>
       {lead && (
-        <p className="mt-3 max-w-[60ch] text-body font-normal text-ash-text">
+        <p className="mt-3 max-w-[60ch] text-body font-normal text-band-muted">
           {lead}
         </p>
       )}

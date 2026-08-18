@@ -74,6 +74,35 @@
   --color-gain: #4ec98a;
   --color-loss: #f2707f;
 
+  /* --- Band-relative roles ----------------------------------------------
+     The dashboard alternates Onyx and Cream bands the way the landing page
+     does, so a component can no longer know its own foreground at author
+     time: the same table renders on Onyx under one heading and on Cream
+     under the next.
+
+     These eight resolve through a second variable that each band sets on
+     itself, so `text-band-ink` means Ivory inside a dark band and Onyx
+     inside a cream one, decided at use site rather than by a prop threaded
+     down through every component.
+
+     Defaults are the dark values, set on :root below. That is what makes
+     migrating a component to these tokens a no-op everywhere it already
+     lives -- only entering a cream band changes anything. */
+  --color-band-canvas: #171721;
+  --color-band-surface: #1e1e2a;
+  --color-band-raised: #272735;
+  --color-band-ink: #ededf3;
+  --color-band-muted: #c3c3cc;
+  /* Quiet labels -- eyebrows, column headers, sub-captions. A separate role
+     rather than `band-muted` at 60-70% opacity, because that modifier is
+     what fails on cream: Ash at 70% over Onyx still clears 7:1, while Ink
+     Muted at 70% over Cream lands at 3.13:1. Contrast this low cannot be
+     produced by thinning one colour in both directions. */
+  --color-band-subtle: #9a9aa6;
+  --color-band-line: #e2e3ed;
+  --color-band-gain: #4ec98a;
+  --color-band-loss: #f2707f;
+
   /* --- Typefaces --------------------------------------------------------- */
   /* NB International Pro is proprietary and not licensed here, so it leads the
      stack and Inter Tight carries the actual rendering. If the real face is
@@ -254,6 +283,67 @@
    Non-utility tokens. These carry no Tailwind namespace, so they live here as
    named references for component authors rather than generating classes.
    ========================================================================= */
+/* ============================================================================
+   Band grounds.
+
+   Every alternating section declares `data-band`, and everything inside it
+   resolves its foreground from these. Dark is also the :root default, so any
+   component using band roles outside a band renders exactly as it did before.
+   ========================================================================= */
+:root {
+  /* Dark defaults, for anything rendering outside a band. */
+  --band-glass-opacity: 0.55;
+  --band-glass-blend: screen;
+}
+
+[data-band="dark"] {
+  --color-band-canvas: var(--color-onyx-canvas);
+  --color-band-surface: var(--color-graphite-card);
+  --color-band-raised: var(--color-obsidian-button);
+  --color-band-ink: var(--color-ivory-text);
+  --color-band-muted: var(--color-ash-text);
+  --color-band-subtle: #9a9aa6;
+  --color-band-line: var(--color-mist-border);
+  --color-band-gain: var(--color-gain);
+  --color-band-loss: var(--color-loss);
+
+  /* The glass plinth behind a company mark is a render on pure black,
+     composited with `screen`. That only works over a dark ground. */
+  --band-glass-opacity: 0.55;
+  --band-glass-blend: screen;
+}
+
+[data-band="cream"] {
+  --color-band-canvas: var(--color-cream-canvas);
+
+  /* Surfaces lift with white on cream rather than with a darker fill --
+     the same one-step-brighter logic the Graphite cards use on Onyx,
+     inverted. `--band-raised` is cream pulled toward its own shadow, for
+     the chips and quiet fills that sit on top of a white card. */
+  --color-band-surface: var(--color-pure-white);
+  --color-band-raised: #ded5c4;
+
+  --color-band-ink: var(--color-onyx-canvas);
+  --color-band-muted: var(--color-ink-muted);
+  --color-band-subtle: #5f5f6a;
+
+  /* Hairlines invert too: light-on-dark becomes dark-on-light, so the same
+     `/10` opacity modifier reads as a faint rule in either band. */
+  --color-band-line: var(--color-onyx-canvas);
+
+  /* The dark-band gain and loss are tuned for Onyx and collapse on cream --
+     #4ec98a measures 1.67:1 there, which is not a colour, it is a stain.
+     These clear AA against both cream (4.77:1, 4.92:1) and the white cards
+     sitting on it (5.97:1, 6.16:1). */
+  --color-band-gain: #137243;
+  --color-band-loss: #b52d3e;
+
+  /* Screening a black-ground render onto cream blows it to white, so the
+     plinth is dropped entirely and the tile keeps its surface and hairline. */
+  --band-glass-opacity: 0;
+  --band-glass-blend: normal;
+}
+
 :root {
   color-scheme: dark;
 
@@ -340,4 +430,22 @@ body {
 *::-webkit-scrollbar-thumb:hover {
   background-color: var(--color-slate-border);
   background-clip: content-box;
+}
+
+/* ----------------------------------------------------------------------------
+   The loading loop is an mp4 rendered on a near-black ground. It sits
+   invisibly on Onyx and reads as a dark rectangle on Cream, and no mask fixes
+   that — so on light bands the static pulse takes over. DataLoader renders
+   both; only one is ever displayed.
+   ------------------------------------------------------------------------- */
+[data-loader="pulse"] {
+  display: none;
+}
+
+[data-band="cream"] [data-loader="pulse"] {
+  display: block;
+}
+
+[data-band="cream"] [data-loader="loop"] {
+  display: none;
 }

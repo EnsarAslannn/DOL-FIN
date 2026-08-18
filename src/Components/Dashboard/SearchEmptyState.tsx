@@ -42,7 +42,15 @@ const SearchEmptyState = ({
     <motion.div
       variants={reveal}
       {...revealProps(prefersReducedMotion)}
-      className="relative w-full overflow-hidden rounded-card bg-graphite-card ring-1 ring-inset ring-mist-border/6"
+      /* The card carries its own dark ground rather than inheriting the
+         band's. Its artwork is a 3D render whose backdrop was keyed against
+         Onyx, and the key is not perfect — the leftover contact shadow is
+         invisible on a dark surface and reads as a grey smudge on a white
+         one. Declaring `data-band` here keeps the render in the environment
+         it was prepared for, and a dark feature card on a cream band is the
+         same move the wallet balance panel already makes. */
+      data-band="dark"
+      className="relative w-full overflow-hidden rounded-card bg-band-surface ring-1 ring-inset ring-band-line/6"
     >
       <div
         aria-hidden="true"
@@ -55,7 +63,7 @@ const SearchEmptyState = ({
           middle of the card. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-graphite-card from-45% via-graphite-card/80 to-transparent"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-band-surface from-45% via-band-surface/80 to-transparent"
       />
 
       {/* Proportional rather than a fixed measure. A `ch` cap tuned for the
@@ -63,8 +71,8 @@ const SearchEmptyState = ({
           where there was room to spare; a percentage keeps the copy clear of
           the artwork at every card width instead of at one of them. */}
       <div className="relative max-w-[34ch] px-7 py-12 sm:max-w-[54%] sm:px-10 sm:py-16 lg:max-w-[50%] lg:px-12 lg:py-20">
-        <h3 className="text-heading-sm font-medium text-ivory-text">{title}</h3>
-        <p className="mt-4 text-body font-normal leading-relaxed text-ash-text">
+        <h3 className="text-heading-sm font-medium text-band-ink">{title}</h3>
+        <p className="mt-4 text-body font-normal leading-relaxed text-band-muted">
           {description}
         </p>
       </div>

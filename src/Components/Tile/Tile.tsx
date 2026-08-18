@@ -66,7 +66,7 @@ const Tile = ({ title, subTitle }: Props) => {
   const variant = VARIANTS.find((v) => v.titles.includes(title))
 
   return (
-    <div className="group relative flex min-h-[115px] w-full items-center justify-between overflow-hidden rounded-card bg-graphite-card ring-1 ring-inset ring-mist-border/6 p-card transition-colors duration-200 hover:ring-mist-border/20">
+    <div className="group relative flex min-h-[115px] w-full items-center justify-between overflow-hidden rounded-card bg-band-surface ring-1 ring-inset ring-band-line/6 p-card transition-colors duration-200 hover:ring-band-line/20">
       {variant && (
         <div className="absolute bottom-2 right-14 hidden h-8 w-20 sm:block">
           <svg
@@ -80,18 +80,18 @@ const Tile = ({ title, subTitle }: Props) => {
       )}
 
       <div className="z-10 flex flex-col space-y-2 text-left">
-        <h5 className="font-mono text-caption font-normal uppercase tracking-label-lg text-ash-text">
+        <h5 className="font-mono text-caption font-normal uppercase tracking-label-lg text-band-muted">
           {title}
         </h5>
-        <span className="text-heading-sm font-normal text-ivory-text">
+        <span className="text-heading-sm font-normal text-band-ink">
           {subTitle}
         </span>
       </div>
 
       {variant && (
-        <div className="z-10 flex shrink-0 items-center justify-center rounded-icon ring-1 ring-inset ring-mist-border/8 bg-graphite-card p-3">
+        <div className="z-10 flex shrink-0 items-center justify-center rounded-icon ring-1 ring-inset ring-band-line/8 bg-band-surface p-3">
           <svg
-            className="h-5 w-5 text-ivory-text"
+            className="h-5 w-5 text-band-ink"
             fill="none"
             stroke="currentColor"
             strokeWidth="1.5"

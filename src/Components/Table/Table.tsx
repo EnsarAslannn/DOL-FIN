@@ -39,15 +39,15 @@ const Table = <T extends { symbol?: string }>({ config, data }: Props<T>) => {
       <motion.tr
         key={rowKey}
         variants={reveal}
-        className="group transition-colors duration-150 hover:bg-graphite-card/70"
+        className="group transition-colors duration-150 hover:bg-band-surface/70"
       >
         {config.map((col, idx) => (
           <td
             key={`cell-${rowIndex}-${idx}`}
             className={`whitespace-nowrap px-4 py-3.5 first:rounded-l-smallcard first:pl-4 last:rounded-r-smallcard last:pr-4 ${
               idx === 0
-                ? "font-sans text-body font-normal text-ash-text group-hover:text-ivory-text"
-                : "text-right font-mono text-body font-normal text-ivory-text"
+                ? "font-sans text-body font-normal text-band-muted group-hover:text-band-ink"
+                : "text-right font-mono text-body font-normal text-band-ink"
             }`}
           >
             {col.render(company)}
@@ -61,7 +61,7 @@ const Table = <T extends { symbol?: string }>({ config, data }: Props<T>) => {
     <th
       /* The rule lives on the cells, not the row: with `border-separate` a
          `<tr>` border is not painted at all. */
-      className={`whitespace-nowrap border-b border-mist-border/10 px-4 pb-3 font-mono text-caption font-normal uppercase tracking-label text-ash-text/70 first:pl-4 last:pr-4 ${
+      className={`whitespace-nowrap border-b border-band-line/10 px-4 pb-3 font-mono text-caption font-normal uppercase tracking-label text-band-subtle first:pl-4 last:pr-4 ${
         index === 0 ? "text-left" : "text-right"
       }`}
       key={`header-${index}`}

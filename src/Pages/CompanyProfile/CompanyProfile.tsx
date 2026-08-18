@@ -7,6 +7,7 @@ import Spinners from "../../Components/Spinners/Spinners"
 import ComparableFinder from "../../Components/ComparableFinder/ComparableFinder"
 import TenKFinder from "../../Components/TenKFinder/TenKFinder"
 import Panel, { PanelHeader } from "../../Components/Dashboard/Panel"
+import Band from "../../Components/Dashboard/Band"
 import EmptyState from "../../Components/Dashboard/EmptyState"
 import { Link } from "react-router-dom"
 import {
@@ -106,6 +107,7 @@ const CompanyProfile = () => {
 
   if (!allowedStocks.includes(ticker?.toUpperCase())) {
     return (
+      <Band tone="dark" className="py-section">
       <EmptyState
         variant="search"
         title="No financial data for this ticker"
@@ -116,22 +118,31 @@ const CompanyProfile = () => {
             <Link
               key={allowed}
               to={`/company/${allowed}/company-profile`}
-              className="rounded-pill bg-obsidian-button px-4 py-2 font-mono text-caption font-normal uppercase tracking-label-sm text-ash-text transition-colors duration-200 hover:bg-cobalt hover:text-pure-white"
+              className="rounded-pill bg-band-raised px-4 py-2 font-mono text-caption font-normal uppercase tracking-label-sm text-band-muted transition-colors duration-200 hover:bg-cobalt hover:text-pure-white"
             >
               {allowed}
             </Link>
           ))}
         </div>
       </EmptyState>
+      </Band>
     )
   }
 
   if (!profile || !companyData) {
-    return <Spinners variant="inline" label="Loading company profile" />
+    return (
+      <Band tone="dark" className="py-section">
+        <Spinners variant="inline" label="Loading company profile" />
+      </Band>
+    )
   }
 
   return (
-    <div className="flex w-full flex-col gap-14 font-sans text-ivory-text">
+    <>
+      {/* Cream — the prose and the figures. Both are read rather than
+          watched, which is what the light ground is for. */}
+      <Band tone="cream" className="py-section">
+        <div className="flex w-full flex-col gap-14 font-sans text-band-ink">
       {/* No identity block here — CompanyPage renders one above the outlet,
           shared by every statement tab. Repeating it would show the ticker
           twice on this tab and only this tab. */}
@@ -140,11 +151,27 @@ const CompanyProfile = () => {
           a fill around it would only add a frame to read past. */}
       <Panel className="max-w-[78ch]">
         <PanelHeader eyebrow="Overview" title="What the company does" />
-        <p className="mt-6 text-body-lg font-normal leading-relaxed text-ash-text">
+        <p className="mt-6 text-body-lg font-normal leading-relaxed text-band-muted">
           {profile.description}
         </p>
       </Panel>
 
+      <Panel>
+        <PanelHeader
+          eyebrow="Key metrics"
+          title="Trailing twelve months"
+          className="mb-6"
+        />
+        <RatioList data={companyData} config={tableConfig} />
+      </Panel>
+        </div>
+      </Band>
+
+      {/* Onyx — where else to look. Peers and filings point away from this
+          company, so they close the page on the darker ground rather than
+          competing with its own numbers. */}
+      <Band tone="dark" className="py-section">
+        <div className="flex w-full flex-col gap-14 font-sans text-band-ink">
       <div className="grid w-full grid-cols-1 gap-10 lg:grid-cols-2">
         <Panel>
           <PanelHeader
@@ -168,16 +195,9 @@ const CompanyProfile = () => {
           </div>
         </Panel>
       </div>
-
-      <Panel>
-        <PanelHeader
-          eyebrow="Key metrics"
-          title="Trailing twelve months"
-          className="mb-6"
-        />
-        <RatioList data={companyData} config={tableConfig} />
-      </Panel>
-    </div>
+        </div>
+      </Band>
+    </>
   )
 }
 

@@ -96,13 +96,13 @@ const EmptyState = ({ variant, title, description, children }: Props) => {
 
       <motion.h3
         variants={reveal}
-        className={`text-subheading font-medium text-ash-text ${src ? "mt-10" : ""}`}
+        className={`text-subheading font-medium text-band-muted ${src ? "mt-10" : ""}`}
       >
         {title}
       </motion.h3>
       <motion.p
         variants={reveal}
-        className="mt-3 text-body font-normal leading-relaxed text-ash-text/75"
+        className="mt-3 text-body font-normal leading-relaxed text-band-subtle"
       >
         {description}
       </motion.p>

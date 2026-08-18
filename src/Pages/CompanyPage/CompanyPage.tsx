@@ -7,6 +7,7 @@ import Sidebar from "../../Components/Sidebar/Sidebar"
 import CompanyDashboard from "../../Components/CompanyDashboard/CompanyDashboard"
 import ProfileHeader from "../../Components/Dashboard/ProfileHeader"
 import Spinners from "../../Components/Spinners/Spinners"
+import Band from "../../Components/Dashboard/Band"
 import { formatLargeNonMonetaryNumber } from "../../Helpers/NumberFormatting"
 
 
@@ -26,13 +27,14 @@ const CompanyPage = () => {
 
   if (!isDemoTicker(ticker)) {
     return (
-      <div className="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden bg-onyx-canvas text-ivory-text min-h-screen">
+      <div className="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden bg-onyx-canvas text-band-ink min-h-screen">
         <Sidebar />
         <CompanyDashboard>
-          <div className="rounded-card bg-graphite-card ring-1 ring-inset ring-mist-border/6 w-full rounded-card p-8 flex flex-col items-center justify-center text-center min-h-[450px] space-y-4 my-4 animate-fadeIn">
-            <div className="flex h-16 w-16 items-center justify-center rounded-icon bg-obsidian-button">
+          <Band tone="dark" className="py-section">
+          <div className="rounded-card bg-band-surface ring-1 ring-inset ring-band-line/6 w-full rounded-card p-8 flex flex-col items-center justify-center text-center min-h-[450px] space-y-4 my-4 animate-fadeIn">
+            <div className="flex h-16 w-16 items-center justify-center rounded-icon bg-band-raised">
               <svg
-                className="h-6 w-6 text-ivory-text"
+                className="h-6 w-6 text-band-ink"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="1.5"
@@ -43,22 +45,23 @@ const CompanyPage = () => {
               </svg>
             </div>
             <div className="flex flex-col space-y-1">
-              <h3 className="text-subheading font-normal text-ivory-text tracking-tight">
+              <h3 className="text-subheading font-normal text-band-ink tracking-tight">
                 Financial Data Unavailable
               </h3>
-              <p className="text-body text-ash-text font-mono">
+              <p className="text-body text-band-muted font-mono">
                 SCOPE_LIMITATION_WARNING // LIVE_DEMO_RESTRICITON
               </p>
             </div>
-            <p className="text-body text-ash-text max-w-md leading-relaxed">
-              Financial data for <span className="font-bold font-mono text-ivory-text bg-obsidian-button px-2 py-1 rounded ring-1 ring-inset ring-mist-border/8">{ticker?.toUpperCase()}</span> is currently unavailable for this demo version.
+            <p className="text-body text-band-muted max-w-md leading-relaxed">
+              Financial data for <span className="font-bold font-mono text-band-ink bg-band-raised px-2 py-1 rounded ring-1 ring-inset ring-band-line/8">{ticker?.toUpperCase()}</span> is currently unavailable for this demo version.
             </p>
             <div className="pt-2">
-              <p className="text-caption text-ash-text font-normal bg-obsidian-button px-3 py-2 rounded-card font-mono">
+              <p className="text-caption text-band-muted font-normal bg-band-raised px-3 py-2 rounded-card font-mono">
                 Please audit premium corporate tiers: AAPL, MSFT, NVDA, TSLA, GOOGL
               </p>
             </div>
           </div>
+          </Band>
         </CompanyDashboard>
       </div>
     )
@@ -75,13 +78,14 @@ const CompanyPage = () => {
   return (
     <>
       {company ? (
-        <div className="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden bg-onyx-canvas text-ivory-text min-h-screen">
+        <div className="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden bg-onyx-canvas text-band-ink min-h-screen">
           <Sidebar />
 
           <CompanyDashboard>
             {/* The identity block is the layout's header, not the profile
                 tab's — every statement tab renders under the same one, so
                 the ticker you are reading never leaves the screen. */}
+            <Band tone="dark" className="pb-section pt-10">
             <ProfileHeader
               symbol={company.symbol}
               companyName={company.companyName}
@@ -102,9 +106,12 @@ const CompanyPage = () => {
               ]}
             />
 
-            <div className="w-full py-10">
-              <Outlet context={ticker} />
-            </div>
+            </Band>
+
+            {/* No wrapper and no padding: each statement tab and the profile
+                declare their own bands, so the grounds meet the header's on a
+                hard line rather than through a gap of page canvas. */}
+            <Outlet context={ticker} />
 
           </CompanyDashboard>
         </div>

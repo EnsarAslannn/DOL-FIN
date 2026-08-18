@@ -49,7 +49,7 @@ const Card: React.FC<Props> = ({ id, searchResult, onPortfolioCreate }: Props) =
   return (
     <motion.div
       variants={reveal}
-      className="group flex w-full flex-col justify-between gap-6 border-b border-mist-border/8 px-4 py-6 transition-colors duration-200 last:border-b-0 hover:bg-graphite-card/60 md:flex-row md:items-center md:px-6"
+      className="group flex w-full flex-col justify-between gap-6 border-b border-band-line/8 px-4 py-6 transition-colors duration-200 last:border-b-0 hover:bg-band-surface/60 md:flex-row md:items-center md:px-6"
       key={id}
       id={id}
     >
@@ -58,7 +58,7 @@ const Card: React.FC<Props> = ({ id, searchResult, onPortfolioCreate }: Props) =
           {companyLogos[symbolUpper] ? (
             companyLogos[symbolUpper]()
           ) : (
-            <span className="font-mono text-caption font-bold text-ivory-text">
+            <span className="font-mono text-caption font-bold text-band-ink">
               {symbolUpper.slice(0, 4)}
             </span>
           )}
@@ -68,18 +68,18 @@ const Card: React.FC<Props> = ({ id, searchResult, onPortfolioCreate }: Props) =
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
             <Link
               to={`/company/${symbolUpper}/company-profile`}
-              className="text-subheading font-medium text-ivory-text underline-offset-4 hover:underline"
+              className="text-subheading font-medium text-band-ink underline-offset-4 hover:underline"
             >
               {name}
             </Link>
-            <span className="font-mono text-caption font-normal uppercase tracking-label-sm text-ash-text/70">
+            <span className="font-mono text-caption font-normal uppercase tracking-label-sm text-band-subtle">
               {symbolUpper}
             </span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-x-2 text-body font-normal text-ash-text">
+          <div className="flex flex-wrap items-center gap-x-2 text-body font-normal text-band-muted">
             <span>{industry}</span>
-            <span aria-hidden="true" className="text-ash-text/40">
+            <span aria-hidden="true" className="text-band-subtle">
               ·
             </span>
             <span className="font-mono">
@@ -94,7 +94,7 @@ const Card: React.FC<Props> = ({ id, searchResult, onPortfolioCreate }: Props) =
               <Link
                 key={link.to}
                 to={`/company/${symbolUpper}/${link.to}`}
-                className="text-caption font-normal text-ash-text underline-offset-4 transition-colors duration-150 hover:text-ivory-text hover:underline"
+                className="text-caption font-normal text-band-muted underline-offset-4 transition-colors duration-150 hover:text-band-ink hover:underline"
               >
                 {link.label}
               </Link>
@@ -105,12 +105,12 @@ const Card: React.FC<Props> = ({ id, searchResult, onPortfolioCreate }: Props) =
 
       <div className="flex w-full shrink-0 items-center justify-between gap-8 md:w-auto md:justify-end">
         <div className="flex flex-col items-start md:items-end">
-          <span className="font-mono text-subheading font-normal text-ivory-text">
+          <span className="font-mono text-subheading font-normal text-band-ink">
             ${price.toFixed(2)}
           </span>
           <span
             className={`mt-1 font-mono text-body font-bold ${
-              isPositive ? "text-gain" : "text-loss"
+              isPositive ? "text-band-gain" : "text-band-loss"
             }`}
           >
             {isPositive ? "▲ +1.45%" : "▼ −0.85%"}

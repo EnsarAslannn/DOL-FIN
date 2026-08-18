@@ -16,8 +16,8 @@ const StockCommentList = ({ comments, symbolById }: Props) => {
 
   if (!comments || comments.length === 0) {
     return (
-      <div className="rounded-card px-6 py-14 text-center ring-1 ring-inset ring-mist-border/6">
-        <p className="text-body font-normal text-ash-text">
+      <div className="rounded-card px-6 py-14 text-center ring-1 ring-inset ring-band-line/6">
+        <p className="text-body font-normal text-band-muted">
           Nothing posted here yet. Be the first to write one.
         </p>
       </div>

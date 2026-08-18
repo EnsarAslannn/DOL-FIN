@@ -10,7 +10,7 @@ import ListPortfolio from "../../Components/Portfolio/ListPortfolio/ListPortfoli
 import CardList from "../../Components/CardList/CardList"
 import type { PortfolioGet } from "../../Models/Portfolio"
 import type { StockSearchResult } from "../../Models/StockSearchResult"
-import { terminalClass } from "../../Helpers/layout"
+import Band from "../../Components/Dashboard/Band"
 import { PanelHeader } from "../../Components/Dashboard/Panel"
 import {
   portfolioAddAPI,
@@ -309,7 +309,7 @@ const SearchPage = () => {
   const areaD = `${pathD} L ${points[points.length - 1].x} 150 L 0 150 Z`
 
   return (
-    <div className="min-h-screen w-full bg-onyx-canvas pb-section font-sans text-ivory-text">
+    <div className="min-h-screen w-full bg-onyx-canvas font-sans">
       {/* The tape sits directly under the fixed navbar and runs the full
           viewport width, so the page opens on the market rather than on a
           gap. pt-16 is the bar's own height — the strip butts against it. */}
@@ -317,15 +317,21 @@ const SearchPage = () => {
         <MarketTicker />
       </div>
 
-      <div className={`flex flex-col gap-14 ${terminalClass}`}>
-        <div className="w-full pt-12">
-          <Search
-            onSearchSubmit={onSearchSubmit}
-            search={search}
-            handleSearchChange={handleSearchChange}
-          />
-        </div>
+      {/* Onyx — the query itself. Its own band, so the search field sits on
+          the same ground as the tape above it and the boundary underneath
+          reads as the answer starting. */}
+      <Band tone="dark" className="pb-16 pt-12">
+        <Search
+          onSearchSubmit={onSearchSubmit}
+          search={search}
+          handleSearchChange={handleSearchChange}
+        />
+      </Band>
 
+      {/* Cream — what came back, and the live rail beside it. The light
+          ground is the page's break: results are the one thing here you read
+          rather than monitor, and they get the ground that suits reading. */}
+      <Band tone="cream" className="py-section">
         <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-10 xl:grid-cols-[minmax(0,1fr)_380px] xl:gap-14">
           <div className="flex min-w-0 flex-col gap-16">
             <section className="flex flex-col gap-6">
@@ -334,7 +340,7 @@ const SearchPage = () => {
                 title="Search"
                 actions={
                   searchResult.length > 0 ? (
-                    <span className="font-mono text-caption font-normal uppercase tracking-label-sm text-ash-text/70">
+                    <span className="font-mono text-caption font-normal uppercase tracking-label-sm text-band-subtle">
                       {searchResult.length} match
                       {searchResult.length === 1 ? "" : "es"}
                     </span>
@@ -347,7 +353,21 @@ const SearchPage = () => {
                 hasSearched={Boolean(search.trim())}
               />
             </section>
+          </div>
 
+          {/* Clears the fixed navbar plus the tape beneath it, so a sticky
+              rail parks below both rather than sliding under them. */}
+          <div className="w-full lg:sticky lg:top-32">
+            <MarketTrends stocks={trendStocks} />
+          </div>
+        </div>
+      </Band>
+
+      {/* Onyx — what you own and what people are saying about it. Both are
+          things you come back to rather than read once, so they return to
+          the dark ground the rest of the product uses. */}
+      <Band tone="dark" className="py-section">
+        <div className="flex w-full flex-col gap-16">
             <ListPortfolio
               portfolioValues={portfolioValues!}
               onPortfolioDelete={onPortfolioDelete}
@@ -371,30 +391,30 @@ const SearchPage = () => {
                 <div
                   className={`transition-all duration-300 ease-in-out overflow-hidden ${activePanel === "worth" ? "max-h-[350px] opacity-100 mt-2" : "max-h-0 opacity-0 pointer-events-none"}`}
                 >
-                  <div className="w-full rounded-card bg-graphite-card ring-1 ring-inset ring-mist-border/6 p-6 flex flex-col space-y-4 text-left">
-                    <div className="flex items-center justify-between border-b border-mist-border/8 pb-3">
+                  <div className="w-full rounded-card bg-band-surface ring-1 ring-inset ring-band-line/6 p-6 flex flex-col space-y-4 text-left">
+                    <div className="flex items-center justify-between border-b border-band-line/8 pb-3">
                       <div className="flex flex-col">
-                        <span className="text-xs font-bold text-ivory-text tracking-tight">
+                        <span className="text-xs font-bold text-band-ink tracking-tight">
                           Net Worth Growth Timeline
                         </span>
-                        <span className="text-caption text-ash-text font-normal mt-1">
+                        <span className="text-caption text-band-muted font-normal mt-1">
                           Live historical context based on wallet & asset capitalization
                         </span>
                       </div>
-                      <span className="text-caption font-bold text-gain bg-gain/10 px-2 py-1 rounded border border-gain/20">
+                      <span className="text-caption font-bold text-band-gain bg-band-gain/10 px-2 py-1 rounded border border-band-gain/20">
                         All-Time High
                       </span>
                     </div>
 
                     <div className="w-full h-44 relative pt-4 flex items-end">
-                      <div className="absolute inset-0 flex flex-col justify-between pointer-events-none border-l border-b border-mist-border/8 pb-6 pl-2">
-                        <div className="w-full border-t border-mist-border/8 text-caption font-bold font-mono text-ash-text pt-1 text-right">
+                      <div className="absolute inset-0 flex flex-col justify-between pointer-events-none border-l border-b border-band-line/8 pb-6 pl-2">
+                        <div className="w-full border-t border-band-line/8 text-caption font-bold font-mono text-band-muted pt-1 text-right">
                           ${maxVal.toFixed(0)}
                         </div>
-                        <div className="w-full border-t border-mist-border/8 text-caption font-bold font-mono text-ash-text pt-1 text-right">
+                        <div className="w-full border-t border-band-line/8 text-caption font-bold font-mono text-band-muted pt-1 text-right">
                           ${((maxVal + minVal) / 2).toFixed(0)}
                         </div>
-                        <div className="w-full text-caption font-bold font-mono text-ash-text text-right">
+                        <div className="w-full text-caption font-bold font-mono text-band-muted text-right">
                           ${minVal.toFixed(0)}
                         </div>
                       </div>
@@ -408,23 +428,23 @@ const SearchPage = () => {
                         </defs>
                         <path
                           d={pathD}
-                          className="stroke-gain stroke-2 fill-none "
+                          className="stroke-band-gain stroke-2 fill-none "
                         />
                         <path
                           d={areaD}
                           fill="url(#chartGlow)"
                         />
                         {points.map((p, i) => (
-                          <circle key={i} cx={p.x} cy={p.y} r={i === points.length - 1 ? "4" : "2"} className="fill-gain" />
+                          <circle key={i} cx={p.x} cy={p.y} r={i === points.length - 1 ? "4" : "2"} className="fill-band-gain" />
                         ))}
                       </svg>
                     </div>
 
-                    <div className="grid grid-cols-6 text-center text-caption font-bold text-ash-text font-mono pl-8 pr-4">
+                    <div className="grid grid-cols-6 text-center text-caption font-bold text-band-muted font-mono pl-8 pr-4">
                       {timelineData.map((t, idx) => (
                         <div key={idx} className="flex flex-col space-y-1">
                           <span>{t.date}</span>
-                          <span className="text-ash-text text-caption font-normal">
+                          <span className="text-band-muted text-caption font-normal">
                             ${t.val.toFixed(0)}
                           </span>
                         </div>
@@ -436,26 +456,26 @@ const SearchPage = () => {
                 <div
                   className={`transition-all duration-300 ease-in-out overflow-hidden ${activePanel === "health" ? "max-h-[350px] opacity-100 mt-2" : "max-h-0 opacity-0 pointer-events-none"}`}
                 >
-                  <div className="w-full rounded-card bg-graphite-card ring-1 ring-inset ring-mist-border/6 p-6 flex flex-col space-y-4 text-left">
-                    <div className="flex items-center justify-between border-b border-mist-border/8 pb-3">
+                  <div className="w-full rounded-card bg-band-surface ring-1 ring-inset ring-band-line/6 p-6 flex flex-col space-y-4 text-left">
+                    <div className="flex items-center justify-between border-b border-band-line/8 pb-3">
                       <div className="flex flex-col">
-                        <span className="text-xs font-bold text-ivory-text tracking-tight">
+                        <span className="text-xs font-bold text-band-ink tracking-tight">
                           Portfolio Risk & Diversification Audit
                         </span>
-                        <span className="text-caption text-ash-text font-normal mt-1">
+                        <span className="text-caption text-band-muted font-normal mt-1">
                           Quantifying capital exposure and asset correlation metrics
                         </span>
                       </div>
-                      <span className={`text-caption font-bold bg-obsidian-button px-2 py-1 rounded border ${portfolioValues && portfolioValues.length > 3 ? "text-gain border-gain/20" : "text-ash-text border-mist-border/10"
+                      <span className={`text-caption font-bold bg-band-raised px-2 py-1 rounded border ${portfolioValues && portfolioValues.length > 3 ? "text-band-gain border-band-gain/20" : "text-band-muted border-band-line/10"
                         }`}>
                         Active Strategy: {portfolioHealth}
                       </span>
                     </div>
-                    <div className="bg-obsidian-button p-5 rounded-card ring-1 ring-inset ring-mist-border/8 leading-relaxed">
-                      <p className="text-xs font-bold text-ash-text mb-2 uppercase tracking-wider font-mono">
+                    <div className="bg-band-raised p-5 rounded-card ring-1 ring-inset ring-band-line/8 leading-relaxed">
+                      <p className="text-xs font-bold text-band-muted mb-2 uppercase tracking-wider font-mono">
                         Macroeconomic & Structural Risk Analysis:
                       </p>
-                      <p className="text-sm text-ivory-text font-normal tracking-normal leading-6">
+                      <p className="text-sm text-band-ink font-normal tracking-normal leading-6">
                         {healthDetails.description}
                       </p>
                     </div>
@@ -465,10 +485,10 @@ const SearchPage = () => {
                 <div
                   className={`transition-all duration-300 ease-in-out overflow-hidden ${activePanel === "sector" ? "max-h-[350px] opacity-100 mt-2" : "max-h-0 opacity-0 pointer-events-none"}`}
                 >
-                  <div className="w-full rounded-card bg-graphite-card ring-1 ring-inset ring-mist-border/6 p-6 flex flex-col space-y-5 text-left">
-                    <div className="flex items-center justify-between border-b border-mist-border/8 pb-3">
+                  <div className="w-full rounded-card bg-band-surface ring-1 ring-inset ring-band-line/6 p-6 flex flex-col space-y-5 text-left">
+                    <div className="flex items-center justify-between border-b border-band-line/8 pb-3">
                       <div className="flex flex-col">
-                        <span className="text-xs font-bold text-ivory-text tracking-tight">
+                        <span className="text-xs font-bold text-band-ink tracking-tight">
                           Sector Allocation Layout
                         </span>
                       </div>
@@ -476,24 +496,24 @@ const SearchPage = () => {
 
                     <div className="flex flex-col space-y-4 pt-1">
                       <div className="flex flex-col space-y-1">
-                        <div className="flex items-center justify-between text-caption font-bold text-ash-text font-mono">
+                        <div className="flex items-center justify-between text-caption font-bold text-band-muted font-mono">
                           <span>Technology & Semiconductors</span>
                           <span>{sectorData.techPercent}.00%</span>
                         </div>
-                        <div className="w-full h-1.5 bg-obsidian-button rounded-full overflow-hidden">
+                        <div className="w-full h-1.5 bg-band-raised rounded-full overflow-hidden">
                           <div
-                            className="h-full bg-graphite-card rounded-full"
+                            className="h-full bg-band-surface rounded-full"
                             style={{ width: `${sectorData.techPercent}%` }}
                           ></div>
                         </div>
                       </div>
 
                       <div className="flex flex-col space-y-1">
-                        <div className="flex items-center justify-between text-caption font-bold text-ash-text font-mono">
+                        <div className="flex items-center justify-between text-caption font-bold text-band-muted font-mono">
                           <span>Other Sectors ({sectorData.primarySector})</span>
                           <span>{sectorData.otherPercent}.00%</span>
                         </div>
-                        <div className="w-full h-1.5 bg-obsidian-button rounded-full overflow-hidden">
+                        <div className="w-full h-1.5 bg-band-raised rounded-full overflow-hidden">
                           <div
                             className="h-full bg-slate-border rounded-full"
                             style={{ width: `${sectorData.otherPercent}%` }}
@@ -506,25 +526,18 @@ const SearchPage = () => {
               </div>
             )}
 
+          <div className="w-full border-t border-band-line/8 pt-4">
+            <StockComment />
           </div>
 
-          {/* Clears the fixed navbar plus the tape beneath it, so a sticky
-              rail parks below both rather than sliding under them. */}
-          <div className="w-full lg:sticky lg:top-32">
-            <MarketTrends stocks={trendStocks} />
-          </div>
+          {serverError && (
+            <div className="rounded-card border border-band-loss/30 bg-band-loss/10 p-4 text-center font-normal text-band-loss">
+              {serverError}
+            </div>
+          )}
         </div>
+      </Band>
 
-        <div className="w-full border-t border-mist-border/8 pt-14">
-          <StockComment />
-        </div>
-
-        {serverError && (
-          <div className="text-center text-loss font-normal my-4 bg-loss/10 p-4 rounded-card border border-loss/30">
-            {serverError}
-          </div>
-        )}
-      </div>
 
       {selectedStock && (
         <PurchasePortfolio

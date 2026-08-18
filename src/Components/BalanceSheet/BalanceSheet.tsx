@@ -1,3 +1,4 @@
+import Band from "../Dashboard/Band"
 import { isDemoTicker } from "../../Helpers/demoStocks"
 import { useEffect, useState } from "react"
 import { useOutletContext } from "react-router-dom"
@@ -95,10 +96,10 @@ const BalanceSheet = () => {
 
   if (!isDemoTicker(ticker)) {
     return (
-      <div className="rounded-card bg-graphite-card ring-1 ring-inset ring-mist-border/6 w-full rounded-card p-8 flex flex-col items-center justify-center text-center min-h-[350px] space-y-4 my-4 animate-fadeIn">
-        <div className="flex h-16 w-16 items-center justify-center rounded-icon bg-obsidian-button">
+      <div className="rounded-card bg-band-surface ring-1 ring-inset ring-band-line/6 w-full rounded-card p-8 flex flex-col items-center justify-center text-center min-h-[350px] space-y-4 my-4 animate-fadeIn">
+        <div className="flex h-16 w-16 items-center justify-center rounded-icon bg-band-raised">
           <svg
-                className="h-6 w-6 text-ivory-text"
+                className="h-6 w-6 text-band-ink"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="1.5"
@@ -109,22 +110,22 @@ const BalanceSheet = () => {
               </svg>
         </div>
         <div className="flex flex-col space-y-1">
-          <h3 className="text-subheading font-normal text-ivory-text tracking-tight">
+          <h3 className="text-subheading font-normal text-band-ink tracking-tight">
             Financial Data Unavailable
           </h3>
-          <p className="text-body text-ash-text font-mono">
+          <p className="text-body text-band-muted font-mono">
             SCOPE_LIMITATION_WARNING // LIVE_DEMO_RESTRICITON
           </p>
         </div>
-        <p className="text-body text-ash-text max-w-md leading-relaxed">
+        <p className="text-body text-band-muted max-w-md leading-relaxed">
           Financial data for{" "}
-          <span className="font-bold font-mono text-ivory-text bg-obsidian-button px-2 py-1 rounded ring-1 ring-inset ring-mist-border/8">
+          <span className="font-bold font-mono text-band-ink bg-band-raised px-2 py-1 rounded ring-1 ring-inset ring-band-line/8">
             {ticker?.toUpperCase()}
           </span>{" "}
           is currently unavailable for this demo version.
         </p>
         <div className="pt-2">
-          <p className="text-caption text-ash-text font-normal bg-obsidian-button px-3 py-2 rounded-card font-mono">
+          <p className="text-caption text-band-muted font-normal bg-band-raised px-3 py-2 rounded-card font-mono">
             Please audit premium corporate tiers: AAPL, MSFT, NVDA, TSLA, GOOGL
           </p>
         </div>
@@ -184,41 +185,41 @@ const BalanceSheet = () => {
     return (
       <div className="w-full flex flex-col space-y-4 mt-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-          <div className="bg-graphite-card ring-1 ring-inset ring-mist-border/6 rounded-card p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
+          <div className="bg-band-surface ring-1 ring-inset ring-band-line/6 rounded-card p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
             <div className="flex flex-col space-y-1">
-              <span className="text-ash-text uppercase font-bold text-caption tracking-widest font-mono">
+              <span className="text-band-muted uppercase font-bold text-caption tracking-widest font-mono">
                 Debt-to-Equity Ratio
               </span>
-              <span className="font-normal text-heading text-ivory-text font-mono">
+              <span className="font-normal text-heading text-band-ink font-mono">
                 {metrics.dteFormatted}
               </span>
             </div>
             <div className="w-full flex flex-col space-y-2 mt-3">
-              <div className="w-full h-1 bg-obsidian-button rounded-full overflow-hidden">
+              <div className="w-full h-1 bg-band-raised rounded-full overflow-hidden">
                 <div
-                  className={`h-full rounded-full ${metrics.dte <= 1.5 ? "bg-gain" : metrics.dte <= 2.5 ? "bg-obsidian-button" : "bg-loss"}`}
+                  className={`h-full rounded-full ${metrics.dte <= 1.5 ? "bg-band-gain" : metrics.dte <= 2.5 ? "bg-band-raised" : "bg-band-loss"}`}
                   style={{
                     width: `${Math.min(Math.max((metrics.dte / 3) * 100, 10), 100)}%`,
                   }}
                 ></div>
               </div>
-              <span className="text-caption text-ash-text font-normal font-mono">
+              <span className="text-caption text-band-muted font-normal font-mono">
                 Total liabilities divided by total shareholder equity leverage
               </span>
             </div>
           </div>
 
-          <div className="bg-graphite-card ring-1 ring-inset ring-mist-border/6 rounded-card p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
+          <div className="bg-band-surface ring-1 ring-inset ring-band-line/6 rounded-card p-5 shadow-xl flex flex-col text-left justify-between min-h-[115px]">
             <div className="flex flex-col space-y-1">
-              <span className="text-ash-text uppercase font-bold text-caption tracking-widest font-mono">
+              <span className="text-band-muted uppercase font-bold text-caption tracking-widest font-mono">
                 Asset Turnover Ratio
               </span>
-              <span className="font-normal text-heading text-ivory-text font-mono">
+              <span className="font-normal text-heading text-band-ink font-mono">
                 {metrics.turnoverFormatted}
               </span>
             </div>
             <div className="w-full flex flex-col space-y-2 mt-3">
-              <div className="w-full h-1 bg-obsidian-button rounded-full overflow-hidden">
+              <div className="w-full h-1 bg-band-raised rounded-full overflow-hidden">
                 <div
                   className="h-full bg-slate-border rounded-full"
                   style={{
@@ -226,18 +227,18 @@ const BalanceSheet = () => {
                   }}
                 ></div>
               </div>
-              <span className="text-caption text-ash-text font-normal font-mono">
+              <span className="text-caption text-band-muted font-normal font-mono">
                 Efficiency of company assets in generating top-line revenue
               </span>
             </div>
           </div>
         </div>
 
-        <div className="w-full bg-graphite-card ring-1 ring-inset ring-mist-border/6 rounded-card p-5 shadow-xl flex flex-col space-y-3 text-left">
-          <div className="flex items-center justify-between border-b border-mist-border/8 pb-3">
-            <h4 className="text-body font-bold text-ash-text uppercase tracking-wider font-mono flex items-center gap-2">
+        <div className="w-full bg-band-surface ring-1 ring-inset ring-band-line/6 rounded-card p-5 shadow-xl flex flex-col space-y-3 text-left">
+          <div className="flex items-center justify-between border-b border-band-line/8 pb-3">
+            <h4 className="text-body font-bold text-band-muted uppercase tracking-wider font-mono flex items-center gap-2">
               <svg
-                className="w-4 h-4 text-ash-text"
+                className="w-4 h-4 text-band-muted"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2.5"
@@ -253,16 +254,16 @@ const BalanceSheet = () => {
             </h4>
             <span
               className={`text-caption font-bold uppercase px-2 py-1 rounded font-mono ${metrics.status === "STABLE"
-                  ? "bg-gain/10 text-gain"
+                  ? "bg-band-gain/10 text-band-gain"
                   : metrics.status === "LEVERAGED"
-                    ? "bg-loss/10 text-loss"
-                    : "bg-obsidian-button text-ash-text"
+                    ? "bg-band-loss/10 text-band-loss"
+                    : "bg-band-raised text-band-muted"
                 }`}
             >
               {metrics.status} LAYOUT
             </span>
           </div>
-          <p className="text-body text-ivory-text leading-relaxed font-sans font-normal">
+          <p className="text-body text-band-ink leading-relaxed font-sans font-normal">
             {metrics.summaryText}
           </p>
         </div>
@@ -271,29 +272,29 @@ const BalanceSheet = () => {
   }
 
   return (
-    <>
+    <Band tone="cream" className="py-section">
       {balanceSheet ? (
         <div className="w-full flex flex-col">
-          <div className="block w-full bg-graphite-card shadow-xl rounded-card p-6 mb-6 ring-1 ring-inset ring-mist-border/8 flex flex-col space-y-3 text-left">
-            <h3 className="text-body-lg font-bold text-ivory-text uppercase tracking-wider font-mono">
+          <div className="block w-full bg-band-surface shadow-xl rounded-card p-6 mb-6 ring-1 ring-inset ring-band-line/8 flex flex-col space-y-3 text-left">
+            <h3 className="text-body-lg font-bold text-band-ink uppercase tracking-wider font-mono">
               Understanding the Balance Sheet
             </h3>
-            <p className="text-ivory-text text-body-lg font-normal leading-relaxed antialiased">
+            <p className="text-band-ink text-body-lg font-normal leading-relaxed antialiased">
               A{" "}
-              <strong className="text-ivory-text font-normal">
+              <strong className="text-band-ink font-normal">
                 Balance Sheet
               </strong>{" "}
               represents a financial snapshot of a company's structural health
               at a specific point in time. It explicitly details what the
               institution{" "}
-              <strong className="text-ash-text">owns (Assets)</strong>, what it{" "}
-              <strong className="text-loss">owes (Liabilities)</strong>, and
+              <strong className="text-band-muted">owns (Assets)</strong>, what it{" "}
+              <strong className="text-band-loss">owes (Liabilities)</strong>, and
               the net capital invested by the{" "}
-              <strong className="text-ash-text">shareholders (Equity)</strong>{" "}
+              <strong className="text-band-muted">shareholders (Equity)</strong>{" "}
               based on the accounting core: Assets = Liabilities + Equity.
             </p>
-            <p className="text-ivory-text text-body font-normal leading-relaxed antialiased pt-1">
-              <strong className="text-ivory-text block mb-1 font-mono text-body uppercase tracking-wide">
+            <p className="text-band-ink text-body font-normal leading-relaxed antialiased pt-1">
+              <strong className="text-band-ink block mb-1 font-mono text-body uppercase tracking-wide">
                 Why is it Critical?
               </strong>
               While the Income Statement demonstrates performance velocity, the
@@ -310,7 +311,7 @@ const BalanceSheet = () => {
       ) : (
         <Spinners />
       )}
-    </>
+    </Band>
   )
 }
 

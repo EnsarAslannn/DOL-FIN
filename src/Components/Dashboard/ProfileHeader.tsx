@@ -90,7 +90,7 @@ const ProfileHeader = ({
               <span className="text-ivory-text">{symbolUpper}</span>
               {context.map((item) => (
                 <span key={item} className="flex items-center gap-2">
-                  <span aria-hidden="true" className="text-ash-text/40">
+                  <span aria-hidden="true" className="text-ash-text/70">
                     ·
                   </span>
                   {item}

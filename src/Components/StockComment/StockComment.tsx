@@ -148,7 +148,7 @@ const StockComment = () => {
     `cursor-pointer whitespace-nowrap rounded-pill px-4 py-2 font-mono text-caption font-normal uppercase tracking-label transition-colors duration-200 ${
       isActive
         ? "bg-cobalt text-pure-white"
-        : "bg-obsidian-button text-ash-text hover:text-ivory-text"
+        : "bg-band-raised text-band-muted hover:text-band-ink"
     }`
 
   return (
@@ -200,11 +200,11 @@ const StockComment = () => {
           )}
         </div>
 
-        <div className="rounded-card bg-graphite-card p-6 ring-1 ring-inset ring-mist-border/6 lg:col-span-2">
-          <h3 className="text-subheading font-medium text-ivory-text">
+        <div className="rounded-card bg-band-surface p-6 ring-1 ring-inset ring-band-line/6 lg:col-span-2">
+          <h3 className="text-subheading font-medium text-band-ink">
             Add a comment
           </h3>
-          <p className="mt-2 text-body font-normal text-ash-text">
+          <p className="mt-2 text-body font-normal text-band-muted">
             Pick the company you are writing about, then say your piece.
           </p>
           <StockCommentForm
