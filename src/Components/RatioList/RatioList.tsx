@@ -26,7 +26,7 @@ const RatioList = <T,>({ config, data }: Props<T>) => {
   const prefersReducedMotion = usePrefersReducedMotion()
 
   return (
-    <div className="h-full rounded-card bg-graphite-card p-5 ring-1 ring-inset ring-mist-border/6 sm:p-6">
+    <div className="h-full rounded-card bg-band-surface p-5 ring-1 ring-inset ring-band-line/6 sm:p-6">
       <motion.ul
         variants={revealGroup}
         {...revealProps(prefersReducedMotion)}
@@ -39,16 +39,16 @@ const RatioList = <T,>({ config, data }: Props<T>) => {
             className="flex items-baseline justify-between gap-6 py-3"
           >
             <div className="min-w-0 text-left">
-              <p className="truncate text-body font-normal text-ash-text">
+              <p className="truncate text-body font-normal text-band-muted">
                 {row.label}
               </p>
               {row.subTitle && (
-                <p className="truncate text-caption font-normal text-ash-text/60">
+                <p className="truncate text-caption font-normal text-band-subtle">
                   {row.subTitle}
                 </p>
               )}
             </div>
-            <div className="shrink-0 font-mono text-body font-normal text-ivory-text">
+            <div className="shrink-0 font-mono text-body font-normal text-band-ink">
               {row.render(data)}
             </div>
           </motion.li>

@@ -1,25 +1,52 @@
+import { motion } from "framer-motion"
 import type { CommentGet } from "../../Models/Comment"
+import type { StockOption } from "../StockComment/stockOptions"
 import StockCommentListItem from "../StockCommentListItem/StockCommentListItem"
+import { usePrefersReducedMotion } from "../../Helpers/usePrefersReducedMotion"
+import { revealGroup } from "../../Helpers/motion"
 
 type Props = {
   comments: CommentGet[]
+  /** Resolves a comment's `stockId` into the ticker its row displays. */
+  symbolById: Map<number, StockOption>
 }
 
-const StockCommentList = ({ comments }: Props) => {
+const StockCommentList = ({ comments, symbolById }: Props) => {
+  const prefersReducedMotion = usePrefersReducedMotion()
+
+  if (!comments || comments.length === 0) {
+    return (
+      <div className="rounded-card px-6 py-14 text-center ring-1 ring-inset ring-band-line/6">
+        <p className="text-body font-normal text-band-muted">
+          Nothing posted here yet. Be the first to write one.
+        </p>
+      </div>
+    )
+  }
+
   return (
-    <div className="flex flex-col space-y-4 w-full">
-      {comments && comments.length > 0 ? (
-        comments.map((comment, index) => {
-          return (
-            <StockCommentListItem key={comment.id || index} comment={comment} />
-          )
-        })
-      ) : (
-        <div className="text-center py-8 bg-obsidian-button border border-dashed border-mist-border/12 rounded-card">
-          <p className="text-body text-ash-text">No comments yet.</p>
-        </div>
-      )}
-    </div>
+    <motion.div
+      /* Re-keyed on the filtered length so switching tickers replays the
+         cascade rather than swapping the rows in place. */
+      key={comments.length}
+      variants={revealGroup}
+      {...(prefersReducedMotion
+        ? {}
+        : { initial: "hidden" as const, animate: "visible" as const })}
+      className="flex w-full flex-col gap-3"
+    >
+      {comments.map((comment, index) => (
+        <StockCommentListItem
+          key={comment.id || index}
+          comment={comment}
+          stock={
+            comment.stockId !== undefined && comment.stockId !== null
+              ? symbolById.get(comment.stockId)
+              : undefined
+          }
+        />
+      ))}
+    </motion.div>
   )
 }
 

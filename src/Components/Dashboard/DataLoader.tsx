@@ -45,7 +45,19 @@ const DataLoader = ({ label = "Reading the tape", variant = "inline" }: Props) =
           className="h-1 w-40 animate-pulse rounded-pill bg-cobalt/60"
         />
       ) : (
+        <>
+        {/* The loop is a video on a near-black ground, so on a cream band it
+            would read as a dark rectangle no mask can rescue. Both are
+            rendered and the band picks one in CSS — cheaper than threading
+            the band's tone back up into React, and it stays correct if a
+            loader is ever moved between grounds. */}
+        <span
+          data-loader="pulse"
+          aria-hidden="true"
+          className="h-1 w-40 animate-pulse rounded-pill bg-cobalt/60"
+        />
         <video
+          data-loader="loop"
           className="h-24 w-full max-w-[320px] object-cover"
           style={{
             maskImage:
@@ -63,9 +75,10 @@ const DataLoader = ({ label = "Reading the tape", variant = "inline" }: Props) =
         >
           <source src={loadingLoop} type="video/mp4" />
         </video>
+        </>
       )}
 
-      <span className="font-mono text-caption font-normal uppercase tracking-label-lg text-ash-text">
+      <span className="font-mono text-caption font-normal uppercase tracking-label-lg text-band-muted">
         {label}
       </span>
     </div>

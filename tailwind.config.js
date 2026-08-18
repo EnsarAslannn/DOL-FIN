@@ -52,6 +52,7 @@ export default {
       maxWidth: {
         page: "1200px",
         wide: "1440px",
+        terminal: "1760px",
       },
       spacing: {
         section: "75px",

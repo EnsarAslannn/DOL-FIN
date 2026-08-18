@@ -43,24 +43,24 @@ const CardPortfolio = ({
   const weightString = `${currentWeightPercent.toFixed(0)}%`
 
   const figures = [
-    { label: "Invested", value: `$${totalCost.toFixed(2)}`, tone: "text-ivory-text" },
+    { label: "Invested", value: `$${totalCost.toFixed(2)}`, tone: "text-band-ink" },
     {
       label: "Current value",
       value: `$${currentTotalValue.toFixed(2)}`,
-      tone: "text-ivory-text",
+      tone: "text-band-ink",
       align: "text-right",
     },
     {
       label: "Avg cost / live",
       value: `$${avgCost.toFixed(2)} / $${currentPrice.toFixed(2)}`,
-      tone: "text-ash-text",
+      tone: "text-band-muted",
     },
   ]
 
   return (
     <motion.div
       variants={reveal}
-      className="group relative flex flex-col rounded-card bg-graphite-card p-5 ring-1 ring-inset ring-mist-border/6 transition-shadow duration-200 hover:ring-mist-border/16"
+      className="group relative flex flex-col rounded-card bg-band-surface p-5 ring-1 ring-inset ring-band-line/6 transition-shadow duration-200 hover:ring-band-line/16"
     >
       <div className="absolute right-3 top-3 z-10 cursor-pointer opacity-0 transition-opacity duration-200 focus-within:opacity-100 group-hover:opacity-100">
         <DeletePortfolio
@@ -74,7 +74,7 @@ const CardPortfolio = ({
           {companyLogos[symbolUpper] ? (
             companyLogos[symbolUpper]()
           ) : (
-            <span className="font-mono text-caption font-bold text-ivory-text">
+            <span className="font-mono text-caption font-bold text-band-ink">
               {symbolUpper.substring(0, 2)}
             </span>
           )}
@@ -82,11 +82,11 @@ const CardPortfolio = ({
         <div className="flex flex-col text-left">
           <Link
             to={`/company/${portfolioValue.symbol}/company-profile`}
-            className="text-subheading font-medium uppercase text-ivory-text underline-offset-4 hover:underline"
+            className="text-subheading font-medium uppercase text-band-ink underline-offset-4 hover:underline"
           >
             {portfolioValue.symbol}
           </Link>
-          <span className="font-mono text-caption font-normal text-ash-text">
+          <span className="font-mono text-caption font-normal text-band-muted">
             {quantity} shares
           </span>
         </div>
@@ -95,7 +95,7 @@ const CardPortfolio = ({
       <dl className="mt-6 grid grid-cols-2 gap-x-4 gap-y-4 text-left">
         {figures.map((f) => (
           <div key={f.label} className={`flex flex-col ${f.align ?? ""}`}>
-            <dt className="font-mono text-caption font-normal uppercase tracking-label-sm text-ash-text/70">
+            <dt className="font-mono text-caption font-normal uppercase tracking-label-sm text-band-subtle">
               {f.label}
             </dt>
             <dd className={`mt-1 font-mono text-body font-normal ${f.tone}`}>
@@ -105,12 +105,12 @@ const CardPortfolio = ({
         ))}
 
         <div className="flex flex-col text-right">
-          <dt className="font-mono text-caption font-normal uppercase tracking-label-sm text-ash-text/70">
+          <dt className="font-mono text-caption font-normal uppercase tracking-label-sm text-band-subtle">
             Profit / loss
           </dt>
           <dd
             className={`mt-1 font-mono text-body font-bold ${
-              isProfit ? "text-gain" : "text-loss"
+              isProfit ? "text-band-gain" : "text-band-loss"
             }`}
           >
             {isProfit ? "▲ +" : "▼ "}
@@ -121,9 +121,9 @@ const CardPortfolio = ({
       </dl>
 
       <div className="mt-6 flex w-full flex-col gap-2">
-        <div className="flex items-center justify-between font-mono text-caption font-normal uppercase tracking-label-sm text-ash-text/70">
+        <div className="flex items-center justify-between font-mono text-caption font-normal uppercase tracking-label-sm text-band-subtle">
           <span>Portfolio weight</span>
-          <span className="text-ivory-text">{weightString}</span>
+          <span className="text-band-ink">{weightString}</span>
         </div>
         {/* The weight bar is Cobalt regardless of P&L: it measures allocation,
             not direction, and colouring it green/red would imply otherwise. */}

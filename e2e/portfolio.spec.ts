@@ -120,15 +120,27 @@ test.describe("portfolio flow", () => {
                 status: 200,
                 contentType: "application/json",
                 body: JSON.stringify(
-                    posted ? [{ id: 1, title: "Bullish", content: "Great stock!", createdBy: "e2e_test_user" }] : [],
+                    // stockId is what the board filters and labels on, so the
+                    // fixture has to carry it the way the real CommentDto does.
+                    posted
+                        ? [{ id: 1, title: "Bullish", content: "Great stock!", createdBy: "e2e_test_user", stockId: 42 }]
+                        : [],
                 ),
             }),
         )
+        await page.route("**/api/stock/trends", (route) => route.fulfill({ status: 404, body: "" }))
+        await page.route("**/api/portfolio", (route) =>
+            route.fulfill({ status: 200, contentType: "application/json", body: "[]" }),
+        )
 
-        await page.goto("/company/TSLA")
+        // The board moved off the company profile: it now spans every ticker
+        // and lives at the bottom of the search page, so the stock is chosen
+        // on the form rather than inherited from the route.
+        await page.goto("/search")
 
-        await page.getByPlaceholder(/title/i).fill("Bullish")
-        await page.getByPlaceholder(/write a comment/i).fill("Great stock!")
+        await page.selectOption("#comment-stock", "42")
+        await page.getByPlaceholder(/sum it up in a line/i).fill("Bullish")
+        await page.getByPlaceholder(/what are you seeing in this name/i).fill("Great stock!")
         await page.getByRole("button", { name: /post comment/i }).click()
 
         await expect(page.getByText("Great stock!")).toBeVisible()

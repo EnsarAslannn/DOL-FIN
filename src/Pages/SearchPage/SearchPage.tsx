@@ -10,18 +10,18 @@ import ListPortfolio from "../../Components/Portfolio/ListPortfolio/ListPortfoli
 import CardList from "../../Components/CardList/CardList"
 import type { PortfolioGet } from "../../Models/Portfolio"
 import type { StockSearchResult } from "../../Models/StockSearchResult"
-import { contentClass } from "../../Helpers/layout"
+import Band from "../../Components/Dashboard/Band"
+import Reveal, { RevealGroup, RevealItem } from "../../Components/Dashboard/Reveal"
 import { PanelHeader } from "../../Components/Dashboard/Panel"
 import {
   portfolioAddAPI,
   portfolioSellAPI,
   portfolioGetAPI,
-  marketTrendsAPI,
 } from "../../Services/PortfolioService"
 import { toast } from "react-toastify"
 import Tile from "../../Components/Tile/Tile"
-import MarketTrends, { type TrendStock } from "../../Components/MarketTrends/MarketTrends"
-import MarketNews from "../../Components/MarketNews/MarketNews"
+import MarketTicker from "../../Components/MarketTicker/MarketTicker"
+import StockComment from "../../Components/StockComment/StockComment"
 import { useAuth } from "../../Context/useAuth"
 import { searchStocksBySymbolAPI, searchStocksByCompanyNameAPI } from "../../Services/StockService"
 import PurchasePortfolio from "../../Components/Portfolio/PurchasePortfolio/PurchasePortfolio"
@@ -33,7 +33,6 @@ const SearchPage = () => {
   const [serverError, setServerError] = useState<string>("")
   const [portfolioValues, setPortfolioValues] = useState<PortfolioGet[] | null>([])
   const [activePanel, setActivePanel] = useState<"worth" | "health" | "sector" | null>(null)
-  const [trendStocks, setTrendStocks] = useState<TrendStock[]>([])
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [modalMode, setModalMode] = useState<"BUY" | "SELL">("BUY")
@@ -56,53 +55,9 @@ const SearchPage = () => {
       })
   }, [])
 
-  const getTrends = useCallback(() => {
-    marketTrendsAPI()
-      .then((res) => {
-
-        const trendStocksMap: { [key: string]: number } = {
-          MSFT: 1.20, AAPL: 0.45, TSLA: -2.15, GOOGL: 0.85, NVDA: 3.40,
-          AMZN: -0.25, META: 1.95, NFLX: 2.10, AMD: -1.05, DIS: 0.65,
-          "BRK.B": 0.15, VISA: 0.35, JPM: -0.45, JNJ: 0.20, WMT: -0.10
-        }
-
-        const targetSymbols = [
-          "MSFT", "AAPL", "TSLA", "GOOGL", "NVDA",
-          "AMZN", "META", "NFLX", "AMD", "DIS",
-          "BRK.B", "VISA", "JPM", "JNJ", "WMT"
-        ]
-
-        const apiStocksMap: { [key: string]: StockSearchResult } = {}
-        if (res?.data && Array.isArray(res.data)) {
-          res.data.forEach((stock: StockSearchResult) => {
-            if (stock && stock.symbol) {
-              apiStocksMap[stock.symbol.toUpperCase().trim()] = stock
-            }
-          })
-        }
-
-        const formattedTrends: TrendStock[] = targetSymbols.map((sym) => {
-          const apiStock = apiStocksMap[sym]
-
-          return {
-            symbol: sym,
-            name: apiStock ? apiStock.companyName ?? `${sym} Corporation` : `${sym} Corporation`,
-            price: apiStock ? apiStock.purchase ?? 0.00 : 0.00,
-            changePercent: trendStocksMap[sym] !== undefined ? trendStocksMap[sym] : 0.00
-          }
-        })
-
-        setTrendStocks(formattedTrends)
-      })
-      .catch((e) => {
-        console.error("Market Trends Error:", e)
-      })
-  }, [])
-
   useEffect(() => {
     if (user) {
       getPortfolio()
-      getTrends()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.userName])
@@ -308,38 +263,73 @@ const SearchPage = () => {
   const areaD = `${pathD} L ${points[points.length - 1].x} 150 L 0 150 Z`
 
   return (
-    <div className="min-h-screen w-full bg-onyx-canvas pb-section font-sans text-ivory-text">
-      <div className={`flex flex-col gap-14 ${contentClass}`}>
-        <div className="w-full pt-32">
+    <div className="min-h-screen w-full bg-onyx-canvas font-sans">
+      {/* The tape sits directly under the fixed navbar and runs the full
+          viewport width, so the page opens on the market rather than on a
+          gap. pt-16 is the bar's own height — the strip butts against it. */}
+      <div className="w-full pt-16">
+        <MarketTicker />
+      </div>
+
+      {/* Onyx — the query itself. Its own band, so the search field sits on
+          the same ground as the tape above it and the boundary underneath
+          reads as the answer starting. */}
+      <Band tone="dark" className="pb-16 pt-12">
+        <Reveal className="flex flex-col gap-9">
+          <div>
+            <span className="block font-mono text-caption font-normal uppercase tracking-label-lg text-band-subtle">
+              Search
+            </span>
+            <h1 className="mt-3 text-heading font-medium text-band-ink md:text-heading-lg">
+              Find a company
+            </h1>
+            <p className="mt-3 max-w-[60ch] text-body-lg font-normal text-band-muted">
+              Look up any listed ticker to read its fundamentals, then add it to
+              your portfolio.
+            </p>
+          </div>
+
           <Search
             onSearchSubmit={onSearchSubmit}
             search={search}
             handleSearchChange={handleSearchChange}
           />
-        </div>
+        </Reveal>
+      </Band>
 
-        <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-4 lg:gap-10">
-          <div className="flex flex-col gap-16 lg:col-span-3">
-            <section className="flex flex-col gap-6">
-              <PanelHeader
-                eyebrow="Results"
-                title="Search"
-                actions={
-                  searchResult.length > 0 ? (
-                    <span className="font-mono text-caption font-normal uppercase tracking-label-sm text-ash-text/70">
-                      {searchResult.length} match
-                      {searchResult.length === 1 ? "" : "es"}
-                    </span>
-                  ) : undefined
-                }
-              />
-              <CardList
-                searchResults={searchResult}
-                onPortfolioCreate={onPortfolioCreateTrigger}
-                hasSearched={Boolean(search.trim())}
-              />
-            </section>
+      {/* Cream — what came back. One column across the full terminal
+          width now the live rail is gone: results are the only thing this
+          band carries, and splitting the grid for a single occupant left the
+          rows in the middle third of the screen. */}
+      <Band tone="cream" className="py-section">
+        <section className="flex flex-col gap-8">
+          <Reveal>
+            <PanelHeader
+              eyebrow="Results"
+              title="Matching companies"
+              actions={
+                searchResult.length > 0 ? (
+                  <span className="font-mono text-caption font-normal uppercase tracking-label-sm text-band-subtle">
+                    {searchResult.length} match
+                    {searchResult.length === 1 ? "" : "es"}
+                  </span>
+                ) : undefined
+              }
+            />
+          </Reveal>
+          <CardList
+            searchResults={searchResult}
+            onPortfolioCreate={onPortfolioCreateTrigger}
+            hasSearched={Boolean(search.trim())}
+          />
+        </section>
+      </Band>
 
+      {/* Onyx — what you own. A position you come back to rather than read
+          once, so it returns to the dark ground the rest of the product
+          uses. */}
+      <Band tone="dark" className="py-section">
+        <div className="flex w-full flex-col gap-16">
             <ListPortfolio
               portfolioValues={portfolioValues!}
               onPortfolioDelete={onPortfolioDelete}
@@ -347,46 +337,54 @@ const SearchPage = () => {
 
             {portfolioValues && (
               <div className="flex w-full flex-col gap-6">
-                <PanelHeader eyebrow="Analytics" title="Portfolio analytics" />
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+                <Reveal>
+                  <PanelHeader eyebrow="Analytics" title="Portfolio analytics" />
+                </Reveal>
+                <RevealGroup className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+                  <RevealItem>
                   <button type="button" onClick={() => togglePanel("worth")} className="cursor-pointer text-left w-full">
                     <Tile title="Total Net Worth" subTitle={`$${estimatedTotalValue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} />
                   </button>
+                  </RevealItem>
+                  <RevealItem>
                   <button type="button" onClick={() => togglePanel("health")} className="cursor-pointer text-left w-full">
                     <Tile title="Portfolio Health" subTitle={portfolioHealth} />
                   </button>
+                  </RevealItem>
+                  <RevealItem>
                   <button type="button" onClick={() => togglePanel("sector")} className="cursor-pointer text-left w-full">
                     <Tile title="Primary Sector" subTitle={sectorData.primarySector} />
                   </button>
-                </div>
+                  </RevealItem>
+                </RevealGroup>
 
                 <div
                   className={`transition-all duration-300 ease-in-out overflow-hidden ${activePanel === "worth" ? "max-h-[350px] opacity-100 mt-2" : "max-h-0 opacity-0 pointer-events-none"}`}
                 >
-                  <div className="w-full rounded-card bg-graphite-card ring-1 ring-inset ring-mist-border/6 p-6 flex flex-col space-y-4 text-left">
-                    <div className="flex items-center justify-between border-b border-mist-border/8 pb-3">
+                  <div className="w-full rounded-card bg-band-surface ring-1 ring-inset ring-band-line/6 p-6 flex flex-col space-y-4 text-left">
+                    <div className="flex items-center justify-between border-b border-band-line/8 pb-3">
                       <div className="flex flex-col">
-                        <span className="text-xs font-bold text-ivory-text tracking-tight">
+                        <span className="text-xs font-bold text-band-ink tracking-tight">
                           Net Worth Growth Timeline
                         </span>
-                        <span className="text-caption text-ash-text font-normal mt-1">
+                        <span className="text-caption text-band-muted font-normal mt-1">
                           Live historical context based on wallet & asset capitalization
                         </span>
                       </div>
-                      <span className="text-caption font-bold text-gain bg-gain/10 px-2 py-1 rounded border border-gain/20">
+                      <span className="text-caption font-bold text-band-gain bg-band-gain/10 px-2 py-1 rounded border border-band-gain/20">
                         All-Time High
                       </span>
                     </div>
 
                     <div className="w-full h-44 relative pt-4 flex items-end">
-                      <div className="absolute inset-0 flex flex-col justify-between pointer-events-none border-l border-b border-mist-border/8 pb-6 pl-2">
-                        <div className="w-full border-t border-mist-border/8 text-caption font-bold font-mono text-ash-text pt-1 text-right">
+                      <div className="absolute inset-0 flex flex-col justify-between pointer-events-none border-l border-b border-band-line/8 pb-6 pl-2">
+                        <div className="w-full border-t border-band-line/8 text-caption font-bold font-mono text-band-muted pt-1 text-right">
                           ${maxVal.toFixed(0)}
                         </div>
-                        <div className="w-full border-t border-mist-border/8 text-caption font-bold font-mono text-ash-text pt-1 text-right">
+                        <div className="w-full border-t border-band-line/8 text-caption font-bold font-mono text-band-muted pt-1 text-right">
                           ${((maxVal + minVal) / 2).toFixed(0)}
                         </div>
-                        <div className="w-full text-caption font-bold font-mono text-ash-text text-right">
+                        <div className="w-full text-caption font-bold font-mono text-band-muted text-right">
                           ${minVal.toFixed(0)}
                         </div>
                       </div>
@@ -400,23 +398,23 @@ const SearchPage = () => {
                         </defs>
                         <path
                           d={pathD}
-                          className="stroke-gain stroke-2 fill-none "
+                          className="stroke-band-gain stroke-2 fill-none "
                         />
                         <path
                           d={areaD}
                           fill="url(#chartGlow)"
                         />
                         {points.map((p, i) => (
-                          <circle key={i} cx={p.x} cy={p.y} r={i === points.length - 1 ? "4" : "2"} className="fill-gain" />
+                          <circle key={i} cx={p.x} cy={p.y} r={i === points.length - 1 ? "4" : "2"} className="fill-band-gain" />
                         ))}
                       </svg>
                     </div>
 
-                    <div className="grid grid-cols-6 text-center text-caption font-bold text-ash-text font-mono pl-8 pr-4">
+                    <div className="grid grid-cols-6 text-center text-caption font-bold text-band-muted font-mono pl-8 pr-4">
                       {timelineData.map((t, idx) => (
                         <div key={idx} className="flex flex-col space-y-1">
                           <span>{t.date}</span>
-                          <span className="text-ash-text text-caption font-normal">
+                          <span className="text-band-muted text-caption font-normal">
                             ${t.val.toFixed(0)}
                           </span>
                         </div>
@@ -428,26 +426,26 @@ const SearchPage = () => {
                 <div
                   className={`transition-all duration-300 ease-in-out overflow-hidden ${activePanel === "health" ? "max-h-[350px] opacity-100 mt-2" : "max-h-0 opacity-0 pointer-events-none"}`}
                 >
-                  <div className="w-full rounded-card bg-graphite-card ring-1 ring-inset ring-mist-border/6 p-6 flex flex-col space-y-4 text-left">
-                    <div className="flex items-center justify-between border-b border-mist-border/8 pb-3">
+                  <div className="w-full rounded-card bg-band-surface ring-1 ring-inset ring-band-line/6 p-6 flex flex-col space-y-4 text-left">
+                    <div className="flex items-center justify-between border-b border-band-line/8 pb-3">
                       <div className="flex flex-col">
-                        <span className="text-xs font-bold text-ivory-text tracking-tight">
+                        <span className="text-xs font-bold text-band-ink tracking-tight">
                           Portfolio Risk & Diversification Audit
                         </span>
-                        <span className="text-caption text-ash-text font-normal mt-1">
+                        <span className="text-caption text-band-muted font-normal mt-1">
                           Quantifying capital exposure and asset correlation metrics
                         </span>
                       </div>
-                      <span className={`text-caption font-bold bg-obsidian-button px-2 py-1 rounded border ${portfolioValues && portfolioValues.length > 3 ? "text-gain border-gain/20" : "text-ash-text border-mist-border/10"
+                      <span className={`text-caption font-bold bg-band-raised px-2 py-1 rounded border ${portfolioValues && portfolioValues.length > 3 ? "text-band-gain border-band-gain/20" : "text-band-muted border-band-line/10"
                         }`}>
                         Active Strategy: {portfolioHealth}
                       </span>
                     </div>
-                    <div className="bg-obsidian-button p-5 rounded-card ring-1 ring-inset ring-mist-border/8 leading-relaxed">
-                      <p className="text-xs font-bold text-ash-text mb-2 uppercase tracking-wider font-mono">
+                    <div className="bg-band-raised p-5 rounded-card ring-1 ring-inset ring-band-line/8 leading-relaxed">
+                      <p className="text-xs font-bold text-band-muted mb-2 uppercase tracking-wider font-mono">
                         Macroeconomic & Structural Risk Analysis:
                       </p>
-                      <p className="text-sm text-ivory-text font-normal tracking-normal leading-6">
+                      <p className="text-sm text-band-ink font-normal tracking-normal leading-6">
                         {healthDetails.description}
                       </p>
                     </div>
@@ -457,10 +455,10 @@ const SearchPage = () => {
                 <div
                   className={`transition-all duration-300 ease-in-out overflow-hidden ${activePanel === "sector" ? "max-h-[350px] opacity-100 mt-2" : "max-h-0 opacity-0 pointer-events-none"}`}
                 >
-                  <div className="w-full rounded-card bg-graphite-card ring-1 ring-inset ring-mist-border/6 p-6 flex flex-col space-y-5 text-left">
-                    <div className="flex items-center justify-between border-b border-mist-border/8 pb-3">
+                  <div className="w-full rounded-card bg-band-surface ring-1 ring-inset ring-band-line/6 p-6 flex flex-col space-y-5 text-left">
+                    <div className="flex items-center justify-between border-b border-band-line/8 pb-3">
                       <div className="flex flex-col">
-                        <span className="text-xs font-bold text-ivory-text tracking-tight">
+                        <span className="text-xs font-bold text-band-ink tracking-tight">
                           Sector Allocation Layout
                         </span>
                       </div>
@@ -468,24 +466,24 @@ const SearchPage = () => {
 
                     <div className="flex flex-col space-y-4 pt-1">
                       <div className="flex flex-col space-y-1">
-                        <div className="flex items-center justify-between text-caption font-bold text-ash-text font-mono">
+                        <div className="flex items-center justify-between text-caption font-bold text-band-muted font-mono">
                           <span>Technology & Semiconductors</span>
                           <span>{sectorData.techPercent}.00%</span>
                         </div>
-                        <div className="w-full h-1.5 bg-obsidian-button rounded-full overflow-hidden">
+                        <div className="w-full h-1.5 bg-band-raised rounded-full overflow-hidden">
                           <div
-                            className="h-full bg-graphite-card rounded-full"
+                            className="h-full bg-band-surface rounded-full"
                             style={{ width: `${sectorData.techPercent}%` }}
                           ></div>
                         </div>
                       </div>
 
                       <div className="flex flex-col space-y-1">
-                        <div className="flex items-center justify-between text-caption font-bold text-ash-text font-mono">
+                        <div className="flex items-center justify-between text-caption font-bold text-band-muted font-mono">
                           <span>Other Sectors ({sectorData.primarySector})</span>
                           <span>{sectorData.otherPercent}.00%</span>
                         </div>
-                        <div className="w-full h-1.5 bg-obsidian-button rounded-full overflow-hidden">
+                        <div className="w-full h-1.5 bg-band-raised rounded-full overflow-hidden">
                           <div
                             className="h-full bg-slate-border rounded-full"
                             style={{ width: `${sectorData.otherPercent}%` }}
@@ -498,20 +496,22 @@ const SearchPage = () => {
               </div>
             )}
 
-            <MarketNews />
-          </div>
-
-          <div className="w-full lg:sticky lg:top-6">
-            <MarketTrends stocks={trendStocks} />
-          </div>
+          {serverError && (
+            <div className="rounded-card border border-band-loss/30 bg-band-loss/10 p-4 text-center font-normal text-band-loss">
+              {serverError}
+            </div>
+          )}
         </div>
+      </Band>
 
-        {serverError && (
-          <div className="text-center text-loss font-normal my-4 bg-loss/10 p-4 rounded-card border border-loss/30">
-            {serverError}
-          </div>
-        )}
-      </div>
+      {/* Cream — the discussion. Prose written by people, which is reading
+          rather than monitoring, so it takes the same light ground the
+          results do. It also closes the page on the alternation the band
+          system exists for: Onyx, Cream, Onyx, Cream. */}
+      <Band tone="cream" className="py-section">
+        <StockComment />
+      </Band>
+
 
       {selectedStock && (
         <PurchasePortfolio
