@@ -148,10 +148,13 @@ const CompanyProfile = () => {
           twice on this tab and only this tab. */}
 
       {/* Description sits straight on the canvas. It is one block of prose and
-          a fill around it would only add a frame to read past. */}
-      <Panel className="max-w-[78ch]">
+          a fill around it would only add a frame to read past. The block runs
+          the full content width so it ends on the same line as the metrics
+          table below — but one 165ch line is unreadable at that width, so past
+          `lg` the prose breaks into two balanced columns of roughly 80ch. */}
+      <Panel>
         <PanelHeader eyebrow="Overview" title="What the company does" />
-        <p className="mt-6 text-body-lg font-normal leading-relaxed text-band-muted">
+        <p className="mt-6 text-body-lg font-normal leading-relaxed text-band-muted xl:columns-2 xl:gap-16">
           {profile.description}
         </p>
       </Panel>
