@@ -9,6 +9,7 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     env:
       # Pins CLI output to English regardless of runner locale -- the
       # "vulnerable packages" grep check below matches on English text.
@@ -50,6 +51,7 @@ jobs:
 
   integration-tests:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     env:
       DOTNET_CLI_UI_LANGUAGE: en
 
@@ -81,6 +83,7 @@ jobs:
 
   docker-build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
