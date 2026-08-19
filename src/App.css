@@ -3,8 +3,6 @@
   100% { transform: scale(2.4); opacity: 0; }
 }
 
-/* Inherits `color`, so the same ring reads coral on light surfaces and
-   white over a dark scrim. */
 .sonar-ring {
   position: absolute;
   inset: 0;
@@ -33,10 +31,6 @@
   to   { transform: translateX(-50%); }
 }
 
-/* The track holds two identical copies of the tape, so -50% lands the second
-   copy exactly where the first started and the loop is seamless. 60s over
-   that distance is slow enough to read a ticker in passing without the strip
-   competing with the page for attention. */
 .animate-marquee {
   animation: marquee 60s linear infinite;
 }
@@ -53,9 +47,6 @@
   }
 }
 
-/* A tape that never stops is exactly the vestibular trigger the reduced-motion
-   query exists for. Held at its start position, where both copies are in
-   frame and the strip still reads as a market feed. */
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee {
     animation: none;

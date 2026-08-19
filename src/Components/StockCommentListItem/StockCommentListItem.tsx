@@ -5,22 +5,9 @@ import { reveal } from "../../Helpers/motion"
 
 type Props = {
   comment: CommentGet
-  /** Resolved from `comment.stockId`; absent for an orphaned comment. */
   stock?: StockOption
 }
 
-/**
- * One comment.
- *
- * Two facts before the body: who wrote it and which company it is about, on
- * one line, then the title as the row's heading. On a board that mixes every
- * stock together the ticker has to be readable without opening the text, so
- * it sits in the byline rather than under the title.
- *
- * Sits on the canvas with a hairline rather than on its own fill: a list of
- * fifteen filled cards on Graphite reads as fifteen boxes, which is the
- * nesting the dashboard rebuild set out to remove.
- */
 const StockCommentListItem = ({ comment, stock }: Props) => {
   const author = comment.createdBy || "anonymous"
 

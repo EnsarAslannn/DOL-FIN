@@ -27,7 +27,7 @@ const tableConfig = [
     render: (company: CompanyKeyMetrics) =>
       formatRatio(company.currentRatioTTM),
     subTitle:
-      "Measures the companies ability to pay short term debt obligations",
+      "Measures the company's ability to pay short term debt obligations",
   },
   {
     label: "Return On Equity",
@@ -47,7 +47,7 @@ const tableConfig = [
     render: (company: CompanyKeyMetrics) =>
       formatRatio(company.freeCashFlowPerShareTTM),
     subTitle:
-      "Return on assets is the measure of how effective a company is using its assets",
+      "Cash generated after capital expenditure, expressed on a per share basis",
   },
   {
     label: "Book Value Per Share TTM",
@@ -57,7 +57,7 @@ const tableConfig = [
       "Book value per share indicates a firm's net asset value (total assets - total liabilities) on per share basis",
   },
   {
-    label: "Divdend Yield TTM",
+    label: "Dividend Yield TTM",
     render: (company: CompanyKeyMetrics) =>
       formatRatio(company.dividendYieldTTM),
     subTitle: "Shows how much a company pays each year relative to stock price",
@@ -67,20 +67,20 @@ const tableConfig = [
     render: (company: CompanyKeyMetrics) =>
       formatRatio(company.capexPerShareTTM),
     subTitle:
-      "Capex is used by a company to aquire, upgrade, and maintain physical assets",
+      "Capex is used by a company to acquire, upgrade, and maintain physical assets",
   },
   {
     label: "Graham Number",
     render: (company: CompanyKeyMetrics) =>
       formatRatio(company.grahamNumberTTM),
     subTitle:
-      "This is the upperbouind of the price range that a defensive investor should pay for a stock",
+      "This is the upper bound of the price range that a defensive investor should pay for a stock",
   },
   {
     label: "PE Ratio",
     render: (company: CompanyKeyMetrics) => formatRatio(company.peRatioTTM),
     subTitle:
-      "This is the upperbouind of the price range that a defensive investor should pay for a stock",
+      "Share price relative to earnings per share — what the market pays for each unit of profit",
   },
 ]
 
@@ -139,19 +139,9 @@ const CompanyProfile = () => {
 
   return (
     <>
-      {/* Cream — the prose and the figures. Both are read rather than
-          watched, which is what the light ground is for. */}
       <Band tone="cream" className="py-section">
         <div className="flex w-full flex-col gap-14 font-sans text-band-ink">
-      {/* No identity block here — CompanyPage renders one above the outlet,
-          shared by every statement tab. Repeating it would show the ticker
-          twice on this tab and only this tab. */}
 
-      {/* Description sits straight on the canvas. It is one block of prose and
-          a fill around it would only add a frame to read past. The block runs
-          the full content width so it ends on the same line as the metrics
-          table below — but one 165ch line is unreadable at that width, so past
-          `lg` the prose breaks into two balanced columns of roughly 80ch. */}
       <Panel>
         <PanelHeader eyebrow="Overview" title="What the company does" />
         <p className="mt-6 text-body-lg font-normal leading-relaxed text-band-muted xl:columns-2 xl:gap-16">
@@ -170,9 +160,6 @@ const CompanyProfile = () => {
         </div>
       </Band>
 
-      {/* Onyx — where else to look. Peers and filings point away from this
-          company, so they close the page on the darker ground rather than
-          competing with its own numbers. */}
       <Band tone="dark" className="py-section">
         <div className="flex w-full flex-col gap-14 font-sans text-band-ink">
       <div className="grid w-full grid-cols-1 gap-10 lg:grid-cols-2">

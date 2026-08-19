@@ -1,14 +1,3 @@
-/**
- * The home page's icon set.
- *
- * Drawn inline rather than pulled from react-icons so every glyph shares one
- * grid, one 1.5px stroke and `currentColor` — which is what lets the same
- * chevron read correctly on a Cobalt fill, on Graphite and over the hero
- * video without a per-surface override.
- *
- * All are decorative: they sit beside a text label at every call site, so
- * they carry `aria-hidden` and contribute nothing to the accessible name.
- */
 
 interface IconProps {
   className?: string
@@ -50,11 +39,6 @@ export const Check = ({ className = "h-3 w-3" }: IconProps) => (
   </svg>
 )
 
-/**
- * The FAQ toggle. One glyph for both states: the vertical bar is rotated to
- * horizontal when the row opens, so plus becomes minus in a single 200ms
- * transform rather than a swap between two icons.
- */
 export const PlusMinus = ({
   open,
   className = "h-4 w-4",

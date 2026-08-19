@@ -7,7 +7,6 @@ import { revealGroup } from "../../Helpers/motion"
 
 type Props = {
   comments: CommentGet[]
-  /** Resolves a comment's `stockId` into the ticker its row displays. */
   symbolById: Map<number, StockOption>
 }
 
@@ -26,8 +25,6 @@ const StockCommentList = ({ comments, symbolById }: Props) => {
 
   return (
     <motion.div
-      /* Re-keyed on the filtered length so switching tickers replays the
-         cascade rather than swapping the rows in place. */
       key={comments.length}
       variants={revealGroup}
       {...(prefersReducedMotion

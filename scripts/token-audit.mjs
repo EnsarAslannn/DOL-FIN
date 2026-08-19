@@ -1,7 +1,6 @@
 import { chromium } from "@playwright/test"
 const BASE = process.env.BASE_URL || "http://localhost:5173"
 
-// The token table, as the single source of truth for this audit.
 const SCALE = {
   11:[1.5,-0.005], 13:[1.5,-0.005], 15:[1.5,-0.005], 17:[1.4,-0.009],
   19:[1.4,-0.009], 22:[1.25,-0.012], 26:[1.25,-0.012], 30:[1.2,-0.013],
@@ -36,14 +35,12 @@ for (const route of ["/","/search","/wallet","/login"]) {
   const seen=new Set()
   for(const r of rows){
     const k=`${r.fs}|${r.lh}|${r.ls}`
-    // font size must be a scale step
     const step=SCALE[Math.round(r.fs)]
     if(!step){ if(!seen.has("fs"+r.fs)){seen.add("fs"+r.fs);bad.push(`${route} FONT-SIZE ${r.fs}px off-scale  <${r.tag}> "${r.txt}"`)} ; continue }
     if(seen.has(k)) continue; seen.add(k)
     const [lh,ls]=step
     if(r.lh!==null && !near(r.lh, r.fs*lh, 1.2))
       bad.push(`${route} LINE-HEIGHT ${r.fs}px got ${r.lh.toFixed(1)} want ${(r.fs*lh).toFixed(1)}  <${r.tag}> "${r.txt}"`)
-    // letter-spacing: allow the scale value OR a documented positive label / cta / wordmark token
     const okLs = near(r.ls, r.fs*ls, 0.25) || r.ls>0 || near(r.ls, r.fs*-0.009,0.25) || near(r.ls, r.fs*-0.02,0.25)
     if(!okLs) bad.push(`${route} TRACKING ${r.fs}px got ${r.ls.toFixed(3)} want ${(r.fs*ls).toFixed(3)}  <${r.tag}> "${r.txt}"`)
     if(!["400","700"].includes(r.fw)) bad.push(`${route} WEIGHT ${r.fw}  <${r.tag}> "${r.txt}"`)
@@ -54,6 +51,3 @@ console.log(bad.length? bad.slice(0,40).join("\n") : "ALL VALUES ON-TOKEN")
 console.log(`\n${bad.length} violation(s)`)
 await b.close()
 
-// Usage: npm run dev, then `node scripts/token-audit.mjs` (expects :5174).
-// Fails loudly if any rendered font-size, line-height, tracking, weight or
-// radius drifts off the token table in src/index.css.

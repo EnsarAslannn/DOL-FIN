@@ -15,25 +15,6 @@ import type { StockSearchResult } from "../../Models/StockSearchResult"
 
 const ALL = "all" as const
 
-/**
- * The discussion board.
- *
- * Previously this hung off the company profile and was scoped to whichever
- * ticker you happened to be reading, which meant a comment could only be
- * written from inside that one page and could only ever be read there. Here
- * it spans every stock and the ticker becomes a property of the comment
- * rather than of the page around it.
- *
- * The whole feed is fetched once and filtered in the browser. The API can
- * filter by symbol server-side, but a round trip per chip would cost a
- * spinner on every click and — more to the point — could not tell you how
- * many comments each ticker has before you clicked it. One fetch gives both
- * the filter and its counts.
- *
- * Filter chips are built from stocks that actually have comments. A chip for
- * a ticker nobody has posted about only offers the user a guaranteed empty
- * result.
- */
 const StockComment = () => {
   const [stocks, setStocks] = useState<StockOption[]>([])
   const [comments, setComments] = useState<CommentGet[]>([])
@@ -74,16 +55,11 @@ const StockComment = () => {
     }
 
     load()
-    /* The board outlives its own fetch when the user navigates away
-       mid-request; without this the response lands on an unmounted tree. */
     return () => {
       active = false
     }
   }, [])
 
-  /* Reading stays open to every ticker in the feed — an existing comment on
-     a name outside the demo set is still worth showing — but posting is
-     limited to the five that have company pages behind them. */
   const postable = useMemo(() => postableStocks(stocks), [stocks])
 
   const symbolById = useMemo(() => {
@@ -92,7 +68,6 @@ const StockComment = () => {
     return map
   }, [stocks])
 
-  /** Ticker → comment count, for the chips and their badges. */
   const counts = useMemo(() => {
     const map = new Map<number, number>()
     for (const c of comments) {
@@ -119,9 +94,6 @@ const StockComment = () => {
   )
 
   const handleComment = async (form: CommentFormInputs) => {
-    /* Looked up in `postable`, not `stocks`: the select only offers the five,
-       and resolving against the same list is what stops a hand-edited option
-       value posting against a ticker the UI never offered. */
     const stock = postable.find((s) => s.id === Number(form.stockId))
     if (!stock) {
       toast.warning("Select the stock you are commenting on.")
@@ -134,8 +106,6 @@ const StockComment = () => {
       if (!res) return
       toast.success(`Posted to ${stock.symbol}.`)
       await getComments()
-      /* Move the board to what was just written, so the new comment is on
-         screen rather than buried under whatever filter was active. */
       setFilter(stock.id)
     } finally {
       setPosting(false)
@@ -214,8 +184,6 @@ const StockComment = () => {
           </p>
           <StockCommentForm
             stocks={postable}
-            /* Pre-selects whatever the board is filtered to, so the two
-               controls agree instead of quietly disagreeing. */
             defaultStockId={filter === ALL ? undefined : filter}
             submitting={posting}
             handleComment={handleComment}

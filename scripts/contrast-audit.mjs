@@ -7,7 +7,6 @@ await p.waitForTimeout(2600)
 
 const run=async()=>p.evaluate(()=>{
   const lum=c=>{const s=c.map(v=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*s[0]+.7152*s[1]+.0722*s[2]}
-  // Composite via canvas so oklab()/color-mix()/alpha all resolve natively.
   const px=document.createElement("canvas");px.width=px.height=1
   const pctx=px.getContext("2d",{willReadFrequently:true})
   const composite=(cssColor,bg)=>{
@@ -71,8 +70,3 @@ for(const n of Object.keys(frames[0])){
 console.log(fail?`\n${fail} FAILING`:"\nall pass WCAG AA")
 await b.close()
 
-// Usage: npm run dev, then `node scripts/contrast-audit.mjs`.
-// Samples the real hero video frames, applies both scrim layers at each
-// element's actual vertical position, and checks WCAG AA. Colors are
-// composited through a canvas because Tailwind v4 emits oklab() for alpha
-// colors — parsing the string as RGB gives badly wrong ratios.

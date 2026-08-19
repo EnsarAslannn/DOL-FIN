@@ -13,14 +13,6 @@ interface Props {
   totalPortfolioInvested: number
 }
 
-/**
- * One holding.
- *
- * A Graphite card — one of the few surfaces that genuinely earns a fill,
- * since a portfolio is a set of peers that has to read as discrete items. The
- * internal rules are gone: the figure pairs are separated by space and by the
- * mono/label contrast, not by borders.
- */
 const CardPortfolio = ({
   portfolioValue,
   onPortfolioDelete,
@@ -125,8 +117,6 @@ const CardPortfolio = ({
           <span>Portfolio weight</span>
           <span className="text-band-ink">{weightString}</span>
         </div>
-        {/* The weight bar is Cobalt regardless of P&L: it measures allocation,
-            not direction, and colouring it green/red would imply otherwise. */}
         <div className="h-1 w-full overflow-hidden rounded-pill bg-onyx-canvas">
           <div
             className="h-full rounded-pill bg-cobalt"

@@ -13,21 +13,12 @@ import {
 } from "../../Helpers/motion"
 import { TONE_ATTR } from "../../Helpers/useSectionTone"
 
-/**
- * Three stages, three images, in narrative order: arrive, read, hold.
- *
- * The imagery is doing the sequencing as much as the numbers are — a lobby,
- * then a desk at night, then the position itself — so the cards stay
- * legible when the copy is skimmed rather than read.
- */
 const stages = [
   {
     step: "01",
     title: "Open your workspace",
     copy: "Register once and get a private portfolio only your account can see or edit.",
     image: atriumLight,
-    /* The only daylight frame in the set, so it carries a heavier scrim
-       than the other two to sit level with them on the dark canvas. */
     scrim: "bg-onyx-canvas/45",
   },
   {
@@ -46,19 +37,6 @@ const stages = [
   },
 ]
 
-/**
- * The page's card section, on the first Onyx band below the hero.
- *
- * Each card is an image with a numbered badge over its top-left corner, with
- * the title and copy set *below* the frame rather than inside it. Keeping the
- * text off the photograph is what lets all three read at the same weight
- * despite one of the three images being daylight — and it means the copy
- * never has to fight a scrim for contrast.
- *
- * The images are square at source, so the frame is pinned to a 4/5 portrait
- * ratio via `aspect-[4/5]`. That reserves the space before the image loads,
- * which is what keeps this section out of the page's CLS budget.
- */
 const HowItWorks = () => {
   const prefersReducedMotion = usePrefersReducedMotion()
 
@@ -109,9 +87,6 @@ const HowItWorks = () => {
                   className={`absolute inset-0 ${stage.scrim}`}
                 />
 
-                {/* The step number, as a small Obsidian chip rather than a
-                    bare numeral — it has to hold against whatever part of the
-                    photograph lands under it. */}
                 <span className="absolute left-4 top-4 flex h-7 w-7 items-center justify-center rounded-icon bg-obsidian-button/85 font-mono text-caption font-normal text-ivory-text backdrop-blur-sm">
                   {stage.step}
                 </span>

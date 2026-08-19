@@ -35,7 +35,6 @@ const LoginPage = () => {
 
   return (
     <section className="flex min-h-screen items-stretch bg-onyx-canvas font-sans">
-      {/* Full-bleed cinematic panel. The nav pill floats over it. */}
       <div className="relative hidden w-1/2 overflow-hidden lg:block xl:w-[55%]">
         <img
           src={authSkyline}
@@ -62,9 +61,6 @@ const LoginPage = () => {
         </div>
       </div>
 
-      {/* No card. The form sits directly on the canvas — the panel beside it
-          already provides the containing edge, so a border here would be a
-          box inside a box. */}
       <div className="flex flex-1 items-center justify-center px-6 pb-20 pt-28 sm:px-12">
         <div className="w-full sm:max-w-[420px]">
           <div className="mb-12">

@@ -25,23 +25,6 @@ type Props = {
   handleComment: (e: CommentFormInputs) => void
 }
 
-/**
- * The comment form.
- *
- * Three fields in reading order: which company, what you are calling it, then
- * what you have to say. The ticker leads because it is the one thing a reader
- * scanning the board needs before anything else, and it is required rather
- * than inferred from the surrounding page — the board spans every stock now,
- * so there is no page to infer it from.
- *
- * A native `<select>`, not a custom listbox: five options is well inside what
- * a native control handles gracefully, and it brings keyboard support,
- * type-ahead and the platform picker on mobile at no cost.
- *
- * Both text limits mirror `CreateCommentDtoValidator` exactly — 5 to 280
- * characters — so a value the API would reject is caught inline instead of
- * coming back as a 400 with no field attached to it.
- */
 const validation = Yup.object().shape({
   stockId: Yup.string().required("Choose the stock you are commenting on"),
   title: Yup.string()
@@ -76,19 +59,10 @@ const StockCommentForm = ({
     },
   })
 
-  /* Keeps the picker in step with the board's filter without clobbering a
-     choice the user has already made on this form. */
   useEffect(() => {
     if (defaultStockId) setValue("stockId", String(defaultStockId))
   }, [defaultStockId, setValue])
 
-  /* Clears the written fields but leaves the ticker selected — posting two
-     notes on the same name in a row is the common case, and a full `reset()`
-     would make the user re-pick it every time.
-
-     `useWatch` rather than the `watch()` returned by `useForm`: watch() hands
-     back a fresh function each render, which makes the whole component opt
-     out of React Compiler memoization. */
   useEffect(() => {
     if (isSubmitSuccessful) {
       resetField("title")

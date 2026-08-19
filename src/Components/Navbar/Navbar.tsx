@@ -8,30 +8,10 @@ import { useSectionTone } from "../../Helpers/useSectionTone"
 import MobileMenu from "./MobileMenu"
 import MenuIcon from "./MenuIcon"
 
-/**
- * Adaptive navigation bar.
- *
- * Full-bleed rather than a contained pill: the bar spans the viewport and
- * only its contents sit on the content grid, so its lower hairline reads as
- * the top edge of whatever band is passing beneath it.
- *
- * It re-tones itself against that band. Sections declare their own ground via
- * `data-nav-tone`, and everything here — link colour, wordmark, hairline,
- * fill, the CTA pill and the mobile sheet — flips together on that one
- * signal. Over a dark band the CTA is a white pill with dark text; over cream
- * it inverts to an Onyx pill with light text, which is what keeps it the most
- * prominent thing in the bar in both directions.
- *
- * Above the fold the bar stays transparent and lets the hero video through —
- * except while the mobile sheet is open, where it needs its own fill so the
- * sheet has something to hang from.
- */
 const SCROLL_THRESHOLD = 24
 
-/** Sampled inside the bar, so the flip lands as the boundary crosses it. */
 const PROBE_Y = 32
 
-/** Routes that only exist for a signed-in account. */
 const authedLinks = [{ to: "/wallet", label: "Wallet" }]
 
 const Navbar = () => {
@@ -51,11 +31,6 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
-  /* A sheet that survives navigation would cover the page it just opened, so
-     every row closes it on activation. Done here rather than in an effect
-     watching the location: a hash link to a section on the current page does
-     not change `pathname`, and closing on the click is the cause rather than
-     a reaction to it. */
   const closeMenu = () => setMenuOpen(false)
 
   const isLight = tone === "light"
@@ -78,15 +53,10 @@ const Navbar = () => {
         : `${mutedClass} hover:underline`
     }`
 
-  /* The CTA inverts rather than staying Cobalt. Against cream, a Cobalt pill
-     is the only saturated thing on screen and shouts; the tonal flip keeps
-     the same prominence in both bands without raising the volume. */
   const ctaToneClass = isLight
     ? "bg-onyx-canvas text-ivory-text hover:bg-footer-navy"
     : "bg-ivory-text text-onyx-canvas hover:bg-pure-white"
 
-  /* Sheet rows are a size up from the bar's own links and full-width, so each
-     one clears the 44px minimum touch target with room around it. */
   const sheetRowClass = `flex items-center justify-between rounded-card px-4 py-3.5 text-body-lg font-normal transition-colors duration-200 ${
     isLight
       ? "text-onyx-canvas hover:bg-onyx-canvas/6"

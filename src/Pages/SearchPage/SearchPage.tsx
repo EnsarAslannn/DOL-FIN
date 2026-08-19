@@ -264,16 +264,10 @@ const SearchPage = () => {
 
   return (
     <div className="min-h-screen w-full bg-onyx-canvas font-sans">
-      {/* The tape sits directly under the fixed navbar and runs the full
-          viewport width, so the page opens on the market rather than on a
-          gap. pt-16 is the bar's own height — the strip butts against it. */}
       <div className="w-full pt-16">
         <MarketTicker />
       </div>
 
-      {/* Onyx — the query itself. Its own band, so the search field sits on
-          the same ground as the tape above it and the boundary underneath
-          reads as the answer starting. */}
       <Band tone="dark" className="pb-16 pt-12">
         <Reveal className="flex flex-col gap-9">
           <div>
@@ -297,10 +291,6 @@ const SearchPage = () => {
         </Reveal>
       </Band>
 
-      {/* Cream — what came back. One column across the full terminal
-          width now the live rail is gone: results are the only thing this
-          band carries, and splitting the grid for a single occupant left the
-          rows in the middle third of the screen. */}
       <Band tone="cream" className="py-section">
         <section className="flex flex-col gap-8">
           <Reveal>
@@ -325,9 +315,6 @@ const SearchPage = () => {
         </section>
       </Band>
 
-      {/* Onyx — what you own. A position you come back to rather than read
-          once, so it returns to the dark ground the rest of the product
-          uses. */}
       <Band tone="dark" className="py-section">
         <div className="flex w-full flex-col gap-16">
             <ListPortfolio
@@ -504,10 +491,6 @@ const SearchPage = () => {
         </div>
       </Band>
 
-      {/* Cream — the discussion. Prose written by people, which is reading
-          rather than monitoring, so it takes the same light ground the
-          results do. It also closes the page on the alternation the band
-          system exists for: Onyx, Cream, Onyx, Cream. */}
       <Band tone="cream" className="py-section">
         <StockComment />
       </Band>

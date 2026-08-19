@@ -1,131 +1,45 @@
 @import "tailwindcss";
 
-/* ============================================================================
-   DOL-FIN — Onyx Canvas.
-
-   Authoritative token set. Every rendered value in the app must trace back to
-   something in this file; components must not invent values.
-
-   The system is dark by default: Onyx Canvas is the page ground everywhere,
-   Cobalt is the only saturated colour, and the whole foreground ladder is a
-   single neutral run from Ivory down to Slate.
-
-   Three deliberate deviations from the supplied token file, each recorded at
-   its definition below:
-     1. Tracking is implemented in `em`, not `px`  (see "Type scale")
-     2. The numeric `--spacing-N` ladder is not defined  (see "Spacing")
-     3. `--radius-full` keeps 9999px  (see "Radii")
-   ========================================================================= */
 
 @theme {
-  /* --- Colors ------------------------------------------------------------ */
-  /* Brand. The one saturated hue in the system. Reserved for filled buttons,
-     selected states and focused conversion moments — never for body copy:
-     Cobalt on Onyx is 3.78:1, which clears AA for UI components and large
-     text but not for a paragraph. */
   --color-cobalt: #5266eb;
 
-  /* Surfaces, darkest to lightest. Each step is one elevation above the last:
-     canvas → card → interactive fill. */
   --color-onyx-canvas: #171721;
   --color-graphite-card: #1e1e2a;
   --color-obsidian-button: #272735;
 
-  /* Structure and foreground, darkest to lightest.
-     Slate  — medium-weight dividers and structural borders (3.64:1 on Onyx,
-              clears the 3:1 required of a non-text boundary).
-     Ash    — muted body copy, helper text, secondary labels (10.16:1).
-     Mist   — light hairlines and ghost-button outlines. Deliberately bright,
-              so it is used through an opacity modifier, never at full weight.
-     Ivory  — primary text, headings and icons; the dominant foreground
-              (15.25:1 on Onyx, 13.78:1 on Graphite).
-     White  — text and icons on a Cobalt fill only, where Ivory would fall to
-              4.04:1 and White holds 4.71:1. */
   --color-slate-border: #70707d;
   --color-ash-text: #c3c3cc;
   --color-mist-border: #e2e3ed;
   --color-ivory-text: #ededf3;
   --color-pure-white: #ffffff;
 
-  /* --- The light band ----------------------------------------------------
-     The page alternates dark and light grounds. Cream Canvas is the light
-     one: a warm off-white that breaks the run of Onyx without introducing a
-     second hue to compete with Cobalt.
-
-     Its foreground ladder inverts rather than duplicating — Onyx Canvas is
-     the ink on Cream (14.20:1), which is what keeps the two bands reading as
-     one system rather than two themes bolted together. Ink Muted is the only
-     genuinely new value the light band needs: Slate on Cream is 3.90:1 and
-     misses AA for body copy, where Ink Muted holds 5.44:1. */
   --color-cream-canvas: #ece5d8;
   --color-ink-muted: #55555f;
 
-  /* The page's floor. A weathered Onyx — deeper and drained of the blue, so
-     the footer separates from the two Onyx section bands above it without
-     colliding with Graphite Card in the other direction. */
   --color-footer-navy: #14141b;
 
-  /* Market direction. A functional exception to the single-hue rule, and the
-     only place another hue is allowed. Retuned upward for a dark ground —
-     the previous values were mixed for white paper and went muddy on Onyx.
-     Both clear AAA against the canvas (8.50:1 and 6.27:1) and stay clear of
-     Cobalt in hue, so a rising line never reads as a selected state. Never
-     the sole carrier of meaning — always paired with a glyph and a sign. */
   --color-gain: #4ec98a;
   --color-loss: #f2707f;
 
-  /* --- Band-relative roles ----------------------------------------------
-     The dashboard alternates Onyx and Cream bands the way the landing page
-     does, so a component can no longer know its own foreground at author
-     time: the same table renders on Onyx under one heading and on Cream
-     under the next.
-
-     These eight resolve through a second variable that each band sets on
-     itself, so `text-band-ink` means Ivory inside a dark band and Onyx
-     inside a cream one, decided at use site rather than by a prop threaded
-     down through every component.
-
-     Defaults are the dark values, set on :root below. That is what makes
-     migrating a component to these tokens a no-op everywhere it already
-     lives -- only entering a cream band changes anything. */
   --color-band-canvas: #171721;
   --color-band-surface: #1e1e2a;
   --color-band-raised: #272735;
   --color-band-ink: #ededf3;
   --color-band-muted: #c3c3cc;
-  /* Quiet labels -- eyebrows, column headers, sub-captions. A separate role
-     rather than `band-muted` at 60-70% opacity, because that modifier is
-     what fails on cream: Ash at 70% over Onyx still clears 7:1, while Ink
-     Muted at 70% over Cream lands at 3.13:1. Contrast this low cannot be
-     produced by thinning one colour in both directions. */
   --color-band-subtle: #9a9aa6;
   --color-band-line: #e2e3ed;
   --color-band-gain: #4ec98a;
   --color-band-loss: #f2707f;
 
-  /* --- Typefaces --------------------------------------------------------- */
-  /* NB International Pro is proprietary and not licensed here, so it leads the
-     stack and Inter Tight carries the actual rendering. If the real face is
-     ever licensed and self-hosted, it activates with no code change. */
   --font-sans: "NB International Pro", "Inter Tight", ui-sans-serif, system-ui,
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: "NB International Mono Pro", "JetBrains Mono", ui-monospace,
     SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  /* Spec-named aliases, so `font-nb-international-pro` resolves. */
   --font-nb-international-pro: var(--font-sans);
   --font-nb-international-mono-pro: var(--font-mono);
 
-  /* --- Type scale -------------------------------------------------------- */
-  /* 13 sizes from DESIGN.md:28. Line-height compresses as size grows; tracking
-     goes more negative. Each step pairs its own line-height and letter-spacing
-     via the `--text-*--*` modifier form, so a single `text-body` class carries
-     all three properties and the scale cannot be half-applied.
-
-     DEVIATION 1 — the supplied file writes tracking in px (`-0.025px`), which
-     is one-fortieth of a pixel and would erase the system's signature. Both
-     other sources say em: the token JSON's own font description ("-0.025em at
-     66px down to -0.005em at small body") and DESIGN.md:30. Implemented in em. */
 
   --text-caption: 11px;
   --text-caption--line-height: 1.5;
@@ -179,10 +93,6 @@
   --text-display--line-height: 1;
   --text-display--letter-spacing: -0.025em;
 
-  /* --- Line height / tracking, standalone -------------------------------- */
-  /* The scale above already applies these. These exist so the spec's named
-     values are reachable as `leading-*` / `tracking-*` when a step's default
-     has to be overridden deliberately. */
   --leading-display: 1;
   --leading-display-sm: 1.06;
   --leading-display-md: 1.1;
@@ -201,67 +111,29 @@
   --tracking-body-lg: -0.009em;
   --tracking-body: -0.005em;
 
-  /* Positive tracking for uppercase mono labels — the system's "instrumented"
-     device. Not in the supplied file, which has no uppercase-label component,
-     but required by DESIGN.md's technical-label pattern. Three steps replace
-     34 hand-written arbitrary values. */
   --tracking-label-sm: 0.12em;
   --tracking-label: 0.14em;
   --tracking-label-lg: 0.16em;
 
-  /* Component-role aliases. Both sit on the tracking ladder above; they exist
-     because two components specify tracking independently of their size step:
-     the pill CTA is -0.009em at both 15px and 17px (DESIGN.md:104), and the
-     wordmark is set tighter than its 17px step. */
   --tracking-cta: -0.009em;
   --tracking-wordmark: -0.02em;
 
-  /* --- Spacing ----------------------------------------------------------- */
-  /* DEVIATION 2 — the supplied `--spacing-4: 4px … --spacing-60: 60px` ladder
-     is intentionally NOT defined. Those are pixel values; Tailwind's numeric
-     spacing scale is an index multiplier (`p-4` = calc(--spacing * 4) = 16px).
-     Defining them would reinterpret 175 existing utilities — `pt-28` would
-     fall from 112px to 28px and the floating nav would overlap content on six
-     routes.
-
-     No expressiveness is lost: the base unit is already 4px, so the spec's
-     whole ladder is exact — 4px=`1`, 8px=`2`, 16px=`4`, 24px=`6`, 28px=`7`,
-     60px=`15`. Only the three off-grid layout values need their own tokens. */
   --spacing-element: 11px;
   --spacing-cta: 15px;
   --spacing-card: 19px;
   --spacing-section: 75px;
 
-  /* --- Layout ------------------------------------------------------------ */
   --container-page: 1200px;
-  /* The cinematic blocks — hero, tablet feature, CTA — run wider than the
-     reading column so their imagery reaches past the text grid. */
   --container-wide: 1440px;
-  /* The authenticated dashboard reads as a terminal, not an article: search
-     results, a holdings grid and a live rail are meant to be scanned side by
-     side. At 1440 the three-column grid collapsed to roughly 900px of usable
-     width on a 1920 display and left a third of the screen empty on each
-     side. This is the widest measure in the system and the only one that is
-     not a reading column. */
   --container-terminal: 1760px;
 
-  /* --- Radii ------------------------------------------------------------- */
-  /* Semantic names are what components use. */
   --radius-smallcard: 5px;
   --radius-icon: 7.5px;
   --radius-card: 15px;
   --radius-nav: 15px;
   --radius-pill: 9999px;
-  /* Full-bleed cinematic blocks sit inset from the viewport edge with a
-     visibly larger corner than a card, so the canvas reads as a mat around
-     them rather than as a gap. */
   --radius-block: 28px;
 
-  /* The spec's raw ladder, available for completeness.
-     DEVIATION 3 — `--radius-full` is deliberately left at Tailwind's 9999px
-     rather than the spec's 74.958px. `rounded-full` means "fully round" at all
-     20 of its call sites; the spec supplies `--radius-full-6: 9999px` for
-     exactly that meaning, so the 74.958px value is an extraction artifact. */
   --radius-md: 5px;
   --radius-lg: 7.4958px;
   --radius-xl: 11.2437px;
@@ -274,24 +146,10 @@
   --radius-full-5: 1440px;
   --radius-full-6: 9999px;
 
-  /* --- Elevation --------------------------------------------------------- */
-  /* The system's only shadow. Most surfaces carry none. */
   --shadow-subtle: rgba(0, 0, 0, 0.05) 0px 2px 2px 0px;
 }
 
-/* ============================================================================
-   Non-utility tokens. These carry no Tailwind namespace, so they live here as
-   named references for component authors rather than generating classes.
-   ========================================================================= */
-/* ============================================================================
-   Band grounds.
-
-   Every alternating section declares `data-band`, and everything inside it
-   resolves its foreground from these. Dark is also the :root default, so any
-   component using band roles outside a band renders exactly as it did before.
-   ========================================================================= */
 :root {
-  /* Dark defaults, for anything rendering outside a band. */
   --band-glass-opacity: 0.55;
   --band-glass-blend: screen;
 }
@@ -307,8 +165,6 @@
   --color-band-gain: var(--color-gain);
   --color-band-loss: var(--color-loss);
 
-  /* The glass plinth behind a company mark is a render on pure black,
-     composited with `screen`. That only works over a dark ground. */
   --band-glass-opacity: 0.55;
   --band-glass-blend: screen;
 }
@@ -316,10 +172,6 @@
 [data-band="cream"] {
   --color-band-canvas: var(--color-cream-canvas);
 
-  /* Surfaces lift with white on cream rather than with a darker fill --
-     the same one-step-brighter logic the Graphite cards use on Onyx,
-     inverted. `--band-raised` is cream pulled toward its own shadow, for
-     the chips and quiet fills that sit on top of a white card. */
   --color-band-surface: var(--color-pure-white);
   --color-band-raised: #ded5c4;
 
@@ -327,19 +179,11 @@
   --color-band-muted: var(--color-ink-muted);
   --color-band-subtle: #5f5f6a;
 
-  /* Hairlines invert too: light-on-dark becomes dark-on-light, so the same
-     `/10` opacity modifier reads as a faint rule in either band. */
   --color-band-line: var(--color-onyx-canvas);
 
-  /* The dark-band gain and loss are tuned for Onyx and collapse on cream --
-     #4ec98a measures 1.67:1 there, which is not a colour, it is a stain.
-     These clear AA against both cream (4.77:1, 4.92:1) and the white cards
-     sitting on it (5.97:1, 6.16:1). */
   --color-band-gain: #137243;
   --color-band-loss: #b52d3e;
 
-  /* Screening a black-ground render onto cream blows it to white, so the
-     plinth is dropped entirely and the tile keeps its surface and hairline. */
   --band-glass-opacity: 0;
   --band-glass-blend: normal;
 }
@@ -347,28 +191,22 @@
 :root {
   color-scheme: dark;
 
-  /* Decorative wash. The one place a Cobalt gradient is permitted — the
-     wallet balance card — per DESIGN.md's one-of-a-kind rule. */
   --gradient-cobalt-glow: linear-gradient(
     88deg,
     rgb(82, 102, 235),
     rgb(39, 39, 53) 90%
   );
 
-  /* Surface levels, so component intent is greppable. */
   --surface-page-canvas: var(--color-onyx-canvas);
   --surface-card-surface: var(--color-graphite-card);
   --surface-muted-surface: var(--color-obsidian-button);
   --surface-floating-nav: var(--color-graphite-card);
 
-  /* Four weights. 500 carries display headings — at 60px+ a 400 grotesque
-     goes weedy on a dark ground, where the same weight held up on paper. */
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
 
-  /* Layout values, mirroring the @theme tokens above under the spec's names. */
   --page-max-width: 1200px;
   --section-gap: 75px;
   --card-padding: 19px;
@@ -384,18 +222,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Anchor the inherited base to the body step. Without this, any element
-   without an explicit `text-*` class falls back to the browser's 16px, which
-   is not on the scale — the wordmark link was inheriting exactly that.
-   Set on body rather than html so Tailwind's rem-based spacing still keys
-   off the user's root font size. */
 body {
   font-size: var(--text-body);
   line-height: var(--text-body--line-height);
   letter-spacing: var(--text-body--letter-spacing);
 }
 
-/* Financial figures must not reflow as digits change. */
 .font-mono {
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum";
@@ -432,12 +264,6 @@ body {
   background-clip: content-box;
 }
 
-/* ----------------------------------------------------------------------------
-   The loading loop is an mp4 rendered on a near-black ground. It sits
-   invisibly on Onyx and reads as a dark rectangle on Cream, and no mask fixes
-   that — so on light bands the static pulse takes over. DataLoader renders
-   both; only one is ever displayed.
-   ------------------------------------------------------------------------- */
 [data-loader="pulse"] {
   display: none;
 }

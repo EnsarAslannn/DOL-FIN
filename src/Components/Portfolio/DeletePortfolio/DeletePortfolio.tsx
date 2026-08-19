@@ -12,7 +12,6 @@ const DeletePortfolio = ({ onPortfolioDelete, portfolioValue }: Props) => {
         onSubmit={onPortfolioDelete}
         className="flex items-center justify-center"
       >
-        {/* Load-bearing: SearchPage reads this via form.elements[0].value. */}
         <input hidden={true} defaultValue={portfolioValue} />
         <button
           type="submit"
