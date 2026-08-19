@@ -36,7 +36,6 @@ namespace api.IntegrationTests
             var createResponse = await admin.PostAsJsonAsync("/api/stock", MakeCreateDto(symbol));
             var created = await createResponse.Content.ReadFromJsonAsync<StockDto>();
 
-            // Populate the by-id cache entry.
             var beforeUpdate = await admin.GetAsync($"/api/stock/{created!.Id}");
             var beforeDto = await beforeUpdate.Content.ReadFromJsonAsync<StockDto>();
             Assert.Equal("Stock Caching Test Corp", beforeDto!.CompanyName);
@@ -68,7 +67,6 @@ namespace api.IntegrationTests
             var createResponse = await admin.PostAsJsonAsync("/api/stock", MakeCreateDto(symbol));
             var created = await createResponse.Content.ReadFromJsonAsync<StockDto>();
 
-            // Populate the by-id cache entry.
             await admin.GetAsync($"/api/stock/{created!.Id}");
 
             var deleteResponse = await admin.DeleteAsync($"/api/stock/{created.Id}");
@@ -85,7 +83,6 @@ namespace api.IntegrationTests
             var symbol = $"T{Guid.NewGuid():N}"[..7].ToUpperInvariant();
             var admin = await AuthHelper.CreateAuthenticatedClientAsync(_factory, asAdmin: true);
 
-            // Populate the stock-list cache entry for this exact filter.
             var firstList = await admin.GetAsync($"/api/stock?symbol={symbol}");
             var firstStocks = await firstList.Content.ReadFromJsonAsync<List<StockDto>>();
             Assert.Empty(firstStocks!);

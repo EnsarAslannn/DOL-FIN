@@ -123,9 +123,6 @@ namespace api.IntegrationTests
             var username = $"nocsrfuser{Guid.NewGuid():N}"[..20];
             var client = TestClientFactory.CreateHttpsClient(_factory, new CookieRelayHandler());
 
-            // Registering authenticates the client (sets access_token) but, unlike
-            // AuthHelper.CreateAuthenticatedClientAsync, this deliberately skips the
-            // GET /api/account/profile call that primes the XSRF-TOKEN cookie.
             var registerResponse = await client.PostAsJsonAsync(
                 "/api/account/register",
                 new RegisterDto

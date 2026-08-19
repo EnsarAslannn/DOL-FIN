@@ -35,7 +35,6 @@ namespace api.Tests.Extensions
             var userManager = MockUserManager.Create();
             userManager.Setup(m => m.FindByNameAsync("trader2")).ReturnsAsync(user);
 
-            // No ClaimTypes.Name -- only the short-form "name" claim, as some JWTs use.
             var principal = MakePrincipal(new Claim("name", "trader2"));
 
             var result = await principal.GetAuthenticatedUserAsync(userManager.Object);
@@ -66,7 +65,6 @@ namespace api.Tests.Extensions
             var userManager = MockUserManager.Create();
             userManager.Setup(m => m.FindByIdAsync("u4")).ReturnsAsync(user);
 
-            // No ClaimTypes.NameIdentifier -- only the short-form "sub" claim, as some JWTs use.
             var principal = MakePrincipal(new Claim("sub", "u4"));
 
             var result = await principal.GetAuthenticatedUserAsync(userManager.Object);
