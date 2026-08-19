@@ -1,12 +1,7 @@
-/** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
-      // Tailwind v4 reads the real tokens from the `@theme` block in
-      // src/index.css — this file is never `@config`-imported and has no
-      // effect on the build. It exists only so editor tooling sees the same
-      // DESIGN.md values. Keep it in sync by hand, or delete it.
       colors: {
         cobalt: "#5266eb",
         "onyx-canvas": "#171721",

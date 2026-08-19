@@ -25,8 +25,6 @@ const ListPortfolio = ({ portfolioValues, onPortfolioDelete }: Props) => {
 
   return (
     <div className="flex flex-col gap-8">
-      {/* The card grid below already arrived on scroll while this heading
-          was there from the start, so the section half-appeared. */}
       <Reveal>
         <PanelHeader
           eyebrow="Holdings"

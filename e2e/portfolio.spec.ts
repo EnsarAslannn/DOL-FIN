@@ -120,8 +120,6 @@ test.describe("portfolio flow", () => {
                 status: 200,
                 contentType: "application/json",
                 body: JSON.stringify(
-                    // stockId is what the board filters and labels on, so the
-                    // fixture has to carry it the way the real CommentDto does.
                     posted
                         ? [{ id: 1, title: "Bullish", content: "Great stock!", createdBy: "e2e_test_user", stockId: 42 }]
                         : [],
@@ -133,9 +131,6 @@ test.describe("portfolio flow", () => {
             route.fulfill({ status: 200, contentType: "application/json", body: "[]" }),
         )
 
-        // The board moved off the company profile: it now spans every ticker
-        // and lives at the bottom of the search page, so the stock is chosen
-        // on the form rather than inherited from the route.
         await page.goto("/search")
 
         await page.selectOption("#comment-stock", "42")

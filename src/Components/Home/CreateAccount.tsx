@@ -14,18 +14,6 @@ const assurances = [
   "Delete your account any time",
 ]
 
-/**
- * The conversion block, and the page's second cinematic moment.
- *
- * It returns to Onyx after the cream band, and deliberately rhymes with the
- * hero — same full-bleed photography under the same scrim recipe, same
- * button pair — so the scroll closes on the shape it opened with. The
- * difference is the copy: the hero sells the product, this one only asks for
- * the account.
- *
- * Centred rather than left-aligned. There is a single action here, and
- * nothing below it to align a left edge to.
- */
 const CreateAccount = () => {
   const prefersReducedMotion = usePrefersReducedMotion()
 

@@ -2,40 +2,14 @@ import { motion } from "framer-motion"
 import { reveal } from "../../Helpers/motion"
 
 interface Props {
-  /** Mono uppercase kicker. Names the section's role, not its content. */
   eyebrow: string
   title: string
-  /** Optional lead paragraph. Kept short — one line at desktop measure. */
   lead?: string
-  /**
-   * Centred headers open the sections that present a set of peers (the three
-   * How-It-Works cards, the FAQ list), where there is no single element for
-   * a left edge to align to. Every other section stays left-aligned on the
-   * page grid.
-   */
   align?: "left" | "center"
-  /**
-   * Which band the header sits on. `dark` is Ivory on Onyx; `light` inverts
-   * to Onyx ink on Cream. The two are the same header, not two components —
-   * only the foreground ladder swaps.
-   */
   tone?: "dark" | "light"
   className?: string
 }
 
-/**
- * The page's one section-opening device.
- *
- * Section headings run 45–56px at weight 500 with a generous bottom margin.
- * The eyebrow above it is what turns a heading into a section: without it
- * every band opened at the same visual weight and the page read as one long
- * undifferentiated column.
- *
- * Eyebrow, heading and lead each carry their own reveal variant, so they
- * enter in sequence off the parent's stagger rather than as one block.
- * The measure is capped at 680px so headings break into two lines at display
- * size rather than running the full column.
- */
 const SectionHeader = ({
   eyebrow,
   title,

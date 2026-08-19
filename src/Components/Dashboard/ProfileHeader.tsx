@@ -8,7 +8,6 @@ import { reveal, revealGroup, revealProps } from "../../Helpers/motion"
 export interface HeaderMetric {
   label: string
   value: string
-  /** Optional direction, for figures that carry one. */
   tone?: "gain" | "loss"
 }
 
@@ -21,17 +20,6 @@ interface Props {
   metrics: HeaderMetric[]
 }
 
-/**
- * The company identity block.
- *
- * The abstract data-viz render sits behind it as a cinematic layer rather
- * than as decoration: it is pinned to the right and faded out to the left
- * under an Onyx gradient, so the type it sits behind never loses contrast
- * while the plate still reads as a header rather than a flat band.
- *
- * The render's own ground is near-Onyx, which is why it can bleed straight
- * into the canvas at the bottom with no border to close it off.
- */
 const ProfileHeader = ({
   symbol,
   companyName,
@@ -59,8 +47,6 @@ const ProfileHeader = ({
         decoding="async"
         className="pointer-events-none absolute inset-0 h-full w-full object-cover object-right"
       />
-      {/* Left-weighted so the identity column sits on near-solid Onyx and the
-          chart survives only on the right, where nothing is written. */}
       <div
         aria-hidden="true"
         className="absolute inset-0 bg-gradient-to-r from-onyx-canvas via-onyx-canvas/85 to-onyx-canvas/40"

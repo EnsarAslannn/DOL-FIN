@@ -36,19 +36,6 @@ const faqs = [
   },
 ]
 
-/**
- * Help Center, on the page's second light ground.
- *
- * A minimal accordion: one open at a time, a single plus-to-minus glyph
- * carrying the state, and no rules other than the hairline that separates
- * each row from the next. On cream the rows lift with a white fill rather
- * than a darker one — the same one-step-brighter logic the Graphite cards
- * use on Onyx, inverted.
- *
- * Height is animated via `grid-template-rows` rather than `max-height`, so
- * the panel opens to its exact content height — a fixed max-height either
- * clips long answers or leaves a gap under short ones.
- */
 const HelpCenter = () => {
   const prefersReducedMotion = usePrefersReducedMotion()
   const [openIndex, setOpenIndex] = useState<number | null>(0)

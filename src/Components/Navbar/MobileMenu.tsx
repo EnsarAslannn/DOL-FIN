@@ -5,32 +5,12 @@ import { usePrefersReducedMotion } from "../../Helpers/usePrefersReducedMotion"
 interface Props {
   open: boolean
   onClose: () => void
-  /** Matches the navbar's own tone, so the sheet belongs to the bar. */
   isLight: boolean
-  /** Element that opened the sheet; focus returns here on close. */
   triggerRef: React.RefObject<HTMLButtonElement | null>
   id: string
   children: ReactNode
 }
 
-/**
- * The mobile navigation sheet.
- *
- * Drops from under the bar rather than sliding from the side: the bar is
- * full-bleed and fixed to the top, so a panel that grows downward from it
- * reads as the same object opening rather than a second surface arriving.
- *
- * It re-tones with the navbar — cream over a light band, Onyx over a dark
- * one — so opening the menu never introduces a colour the section beneath it
- * does not already use.
- *
- * Behaviour the sheet owns, because a nav menu that lacks any of it is
- * broken rather than merely unpolished:
- *   - Escape closes it, and focus returns to the trigger
- *   - a click on the scrim closes it
- *   - the page behind it cannot scroll while it is open
- *   - the first link takes focus on open, so the keyboard lands inside
- */
 const MobileMenu = ({
   open,
   onClose,
@@ -51,8 +31,6 @@ const MobileMenu = ({
       triggerRef.current?.focus()
     }
 
-    // Lock the page, restoring whatever overflow was set rather than
-    // assuming it was the default — the wallet page sets its own.
     const previousOverflow = document.body.style.overflow
     document.body.style.overflow = "hidden"
     document.addEventListener("keydown", onKeyDown)

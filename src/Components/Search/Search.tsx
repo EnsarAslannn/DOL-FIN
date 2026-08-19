@@ -29,12 +29,6 @@ const Search: React.FC<Props> = ({
   }
 
   return (
-    /* Left-aligned on the content grid rather than centred in the page.
-       Floating a 672px field in the middle of a 1760px terminal was the
-       single loudest source of the "everything is crammed into the centre"
-       read: it shared no edge with the results, the holdings or the section
-       headings below it. Anchored left it starts on the same rule as every
-       other block on the page. */
     <section className="relative mb-2 mt-6 w-full max-w-3xl px-2 font-sans">
       <form
         className="relative flex w-full items-center"

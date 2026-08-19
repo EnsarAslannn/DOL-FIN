@@ -13,22 +13,6 @@ type Props<T> = {
   data: T[]
 }
 
-/**
- * The financial ledger.
- *
- * No card, no fill, no vertical rules. The header is separated by a single
- * hairline and rows by nothing at all — row rhythm comes from padding, and
- * the hover fill is what picks out the line you are reading. At the density
- * of a statement, a rule under every row turns the figures into a grid of
- * cells and the eye stops tracking across.
- *
- * The first column is the line-item label, so it is set in the sans face and
- * Ash; the figures that follow are mono and Ivory. That contrast does the work
- * a vertical rule used to.
- *
- * Rows stagger in on scroll, capped by `staggerChildren` on the body so a
- * 40-row statement does not take four seconds to finish arriving.
- */
 const Table = <T extends { symbol?: string }>({ config, data }: Props<T>) => {
   const prefersReducedMotion = usePrefersReducedMotion()
 
@@ -59,8 +43,6 @@ const Table = <T extends { symbol?: string }>({ config, data }: Props<T>) => {
 
   const renderedHeaders = config.map((col, index) => (
     <th
-      /* The rule lives on the cells, not the row: with `border-separate` a
-         `<tr>` border is not painted at all. */
       className={`whitespace-nowrap border-b border-band-line/10 px-4 pb-3 font-mono text-caption font-normal uppercase tracking-label text-band-subtle first:pl-4 last:pr-4 ${
         index === 0 ? "text-left" : "text-right"
       }`}

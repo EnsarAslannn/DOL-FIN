@@ -156,15 +156,10 @@ const WalletPage = () => {
 
     return (
         <div className="w-full min-h-screen bg-onyx-canvas font-sans text-left">
-            {/* Same tape, same position as the search page: the two
-                authenticated pages open identically. */}
             <div className="w-full pt-16">
                 <MarketTicker />
             </div>
 
-            {/* Onyx — what the account is worth and how to add to it. The
-                balance is the page's headline figure and it keeps the dark
-                ground the banner crop was built against. */}
             <Band tone="dark" className="pb-section pt-12">
                 <div className="flex flex-col gap-10">
                 <div>
@@ -173,8 +168,6 @@ const WalletPage = () => {
                     <p className="mt-3 max-w-[60ch] text-body-lg font-normal text-band-muted">Manage your funds and monitor estimated asset distribution.</p>
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    {/* The page's single dark surface — a contained product crop
-                        under a scrim, giving the spec's dark/light contrast. */}
                     <div className="lg:col-span-2 relative flex min-h-[220px] flex-col justify-between overflow-hidden rounded-card bg-band-surface p-7">
                         <img
                             src={marketTerrain}
@@ -240,9 +233,6 @@ const WalletPage = () => {
                 </div>
             </Band>
 
-            {/* Cream — the ledger. A holdings table is the one thing on this
-                page you read line by line rather than glance at, and it gets
-                the light ground for the same reason a statement does. */}
             <Band tone="cream" className="py-section">
                 <div className="bg-band-surface ring-1 ring-inset ring-band-line/6 rounded-card overflow-hidden">
                     <div className="px-6 pb-2 pt-6">
@@ -347,15 +337,6 @@ const WalletPage = () => {
 
                 </div>
 
-                {/* Cash always occupies a row, so the holdings table is never
-                    truly empty — this speaks to the absence of *positions*,
-                    not of assets.
-
-                    Deliberately outside the Graphite panel. Inside it the
-                    render sat on an elevated surface with a table pressing
-                    down on it and the panel's own edges cropping the halo;
-                    on the Onyx canvas it has the full width of the page and
-                    reads as an illustration rather than as a table footer. */}
                 {(!portfolioValues || portfolioValues.length === 0) && (
                     <EmptyState
                         variant="wallet"

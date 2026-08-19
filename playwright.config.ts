@@ -1,9 +1,5 @@
 import { defineConfig, devices } from "@playwright/test"
 
-// These are true end-to-end browser tests, distinct from the Vitest unit
-// suite in src/ -- they drive a real Chromium instance against the built
-// app and assert on rendered UI/navigation, with backend calls intercepted
-// via Playwright's network mocking so CI doesn't need a live API + database.
 export default defineConfig({
     testDir: "./e2e",
     fullyParallel: true,

@@ -14,27 +14,9 @@ interface Props {
   onPortfolioCreate: (e: SyntheticEvent) => void
 }
 
-/** Shared by the row and its header, so the columns cannot drift apart. */
 export const resultGridClass =
   "grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-[minmax(0,2.4fr)_minmax(0,1.1fr)_minmax(0,0.9fr)_minmax(0,0.9fr)_auto] md:items-center"
 
-/**
- * One search result.
- *
- * A ledger row, laid out on the same column grammar as the wallet's holdings
- * table: identity on the left, the figures ranged right in mono, the action
- * last. The two lists are the only places in the product that enumerate
- * positions, and reading one should teach you how to read the other.
- *
- * It was a two-cluster flex row before — everything packed left, price and
- * button packed right. That is fine at 900px and falls apart at 1700, where
- * it leaves a third of the row empty down the middle. Distributing the same
- * facts across real columns is what lets the row use the full width without
- * spreading.
- *
- * Separated by a hairline rather than boxed, with fill only on hover. The
- * mark's glass plinth is the row's one piece of visual weight.
- */
 const Card: React.FC<Props> = ({ id, searchResult, onPortfolioCreate }: Props) => {
   const symbol = searchResult.symbol || searchResult.Symbol || ""
   const name =
@@ -88,8 +70,6 @@ const Card: React.FC<Props> = ({ id, searchResult, onPortfolioCreate }: Props) =
             </span>
           </div>
 
-          {/* Ghost links, brought up on hover at desktop so a long result
-              list stays quiet until a row is being considered. */}
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 md:opacity-70 md:transition-opacity md:duration-200 md:group-hover:opacity-100">
             {statementLinks.map((link) => (
               <Link
@@ -109,9 +89,6 @@ const Card: React.FC<Props> = ({ id, searchResult, onPortfolioCreate }: Props) =
       </div>
 
       <div className="text-left font-mono text-body font-normal text-band-muted md:text-right">
-        {/* The hand-rolled `/1e9` printed Microsoft as $3100.0B. The shared
-            formatter already steps up to T, and using it keeps the figure
-            spelled the same way it is on the company profile. */}
         {formatLargeMonetaryNumber(marketCap) ?? "—"}
       </div>
 

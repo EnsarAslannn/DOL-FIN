@@ -11,11 +11,6 @@ import {
 } from "../../Helpers/motion"
 import { TONE_ATTR } from "../../Helpers/useSectionTone"
 
-/**
- * The four things the dashboard actually puts in front of you, in the order
- * you meet them. Each collapses to a title in the index and expands to a
- * single sentence when selected.
- */
 const capabilities = [
   {
     step: "01",
@@ -39,19 +34,6 @@ const capabilities = [
   },
 ]
 
-/**
- * The feature band — the page's first light ground.
- *
- * Cream is what makes this section the break in the scroll, so the
- * photograph is the one thing that stays full-bleed: it runs to the right
- * edge of the viewport with no frame, and the copy holds the content grid on
- * the left.
- *
- * The whole foreground ladder inverts here. Onyx is the ink, Ink Muted the
- * body copy, and the numbered index switches to an Onyx rule — but the
- * selected state stays Cobalt, because that is the one signal that must mean
- * the same thing in both bands.
- */
 const TabletFeature = () => {
   const prefersReducedMotion = usePrefersReducedMotion()
   const [selected, setSelected] = useState(0)
@@ -68,9 +50,6 @@ const TabletFeature = () => {
           {...revealProps(prefersReducedMotion)}
           className="order-2 py-16 lg:order-1 lg:py-section"
         >
-          {/* Half-width column, but its left edge still resolves to the page
-              grid so the heading lands on the same rule as the bands above
-              and below. */}
           <div className="mx-auto w-full max-w-[720px] px-6 sm:px-10 lg:ml-auto lg:mr-0 lg:pl-16 lg:pr-12 xl:pl-20">
             <motion.span
               variants={reveal}
@@ -92,9 +71,6 @@ const TabletFeature = () => {
               the decision and the evidence never live in two places.
             </motion.p>
 
-            {/* Numbered index. The left rule is the selection indicator:
-                Cobalt and full-height on the active row, an Onyx hairline
-                everywhere else. */}
             <motion.ul variants={reveal} className="mt-10 flex flex-col">
               {capabilities.map((item, index) => {
                 const isSelected = index === selected
@@ -159,9 +135,6 @@ const TabletFeature = () => {
               decoding="async"
               className="h-full w-full object-cover"
             />
-            {/* A left-to-right wash in the band's own cream, so the
-                photograph dissolves into the copy column instead of meeting
-                it on a hard vertical seam. */}
             <div
               aria-hidden="true"
               className="absolute inset-0 bg-gradient-to-r from-cream-canvas via-cream-canvas/20 to-transparent lg:via-cream-canvas/5"

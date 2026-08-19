@@ -3,11 +3,6 @@ type Props = {
   subTitle: string
 }
 
-/**
- * Tiles pick their glyph from the literal `title` string, so these lists are
- * a contract with CompanyPage and SearchPage — renaming a title there drops
- * its icon here.
- */
 const VARIANTS = [
   {
     titles: ["Company Name", "Total Net Worth"],

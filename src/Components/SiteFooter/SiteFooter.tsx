@@ -27,19 +27,6 @@ const columns = [
   },
 ]
 
-/**
- * Site footer — the page's floor, on weathered Onyx.
- *
- * Footer Navy is a shade deeper than the section bands and drained of their
- * blue, which is what separates it from the two Onyx bands above without
- * reading as a fourth surface level. It follows the cream Help Center, so
- * the boundary above it is already a hard tonal break; the deeper navy is
- * what keeps it from being mistaken for another dark *section*.
- *
- * Structured as a brand column plus three link columns, closed by a Slate
- * hairline over the legal row. The wordmark's separator stays Cobalt, the
- * only place the brand colour appears outside a button or a selected state.
- */
 const SiteFooter = () => (
   <footer
     {...{ [TONE_ATTR]: "dark" }}

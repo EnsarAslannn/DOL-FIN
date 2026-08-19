@@ -14,14 +14,6 @@ type Props<T> = {
   data: T
 }
 
-/**
- * A key-figure list.
- *
- * Sits on Graphite because it is a discrete panel beside other panels, but
- * the internal dividers are gone — label left, figure right, separated by
- * space. The label is Ash and the figure Ivory mono, which is enough
- * structure at this density.
- */
 const RatioList = <T,>({ config, data }: Props<T>) => {
   const prefersReducedMotion = usePrefersReducedMotion()
 

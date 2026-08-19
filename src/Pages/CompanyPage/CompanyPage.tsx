@@ -49,7 +49,7 @@ const CompanyPage = () => {
                 Financial Data Unavailable
               </h3>
               <p className="text-body text-band-muted font-mono">
-                SCOPE_LIMITATION_WARNING // LIVE_DEMO_RESTRICITON
+                SCOPE_LIMITATION_WARNING // LIVE_DEMO_RESTRICTION
               </p>
             </div>
             <p className="text-body text-band-muted max-w-md leading-relaxed">
@@ -82,9 +82,6 @@ const CompanyPage = () => {
           <Sidebar />
 
           <CompanyDashboard>
-            {/* The identity block is the layout's header, not the profile
-                tab's — every statement tab renders under the same one, so
-                the ticker you are reading never leaves the screen. */}
             <Band tone="dark" className="pb-section pt-10">
             <ProfileHeader
               symbol={company.symbol}
@@ -108,9 +105,6 @@ const CompanyPage = () => {
 
             </Band>
 
-            {/* No wrapper and no padding: each statement tab and the profile
-                declare their own bands, so the grounds meet the header's on a
-                hard line rather than through a gap of page canvas. */}
             <Outlet context={ticker} />
 
           </CompanyDashboard>
