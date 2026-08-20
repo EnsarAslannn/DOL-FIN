@@ -1,0 +1,14 @@
+bin/
+obj/
+publish/
+Logs/
+*.user
+
+# Environment files (may contain secrets) -- .env.example stays tracked as a template
+.env
+.env.*
+!.env.example
+
+# Claude Code project-local skills (should never be tracked)
+.claude/
+.agents/
