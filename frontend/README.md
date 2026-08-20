@@ -1,6 +1,6 @@
 # 🐬 DOL-FIN
 
-[![CI](https://github.com/EnsarAslannn/DOL-FIN/actions/workflows/ci.yml/badge.svg)](https://github.com/EnsarAslannn/DOL-FIN/actions/workflows/ci.yml)
+[![CI](https://github.com/EnsarAslannn/DOL-FIN/actions/workflows/frontend-ci.yml/badge.svg)](https://github.com/EnsarAslannn/DOL-FIN/actions/workflows/frontend-ci.yml)
 
 DOL-FIN, .NET Web API ve React (TypeScript) mimarisi üzerine kurulu; ilişkisel veri akışlarını, dinamik portföy yönetimini ve kullanıcı etkileşimlerini merkezine alan kurumsal odaklı bir finansal yönetim platformudur.
 
@@ -100,7 +100,7 @@ npm run test:e2e # uçtan uca testler (Playwright) — önce build gerektirir
 
 # 🐬 DOL-FIN (English)
 
-[![CI](https://github.com/EnsarAslannn/DOL-FIN/actions/workflows/ci.yml/badge.svg)](https://github.com/EnsarAslannn/DOL-FIN/actions/workflows/ci.yml)
+[![CI](https://github.com/EnsarAslannn/DOL-FIN/actions/workflows/frontend-ci.yml/badge.svg)](https://github.com/EnsarAslannn/DOL-FIN/actions/workflows/frontend-ci.yml)
 
 DOL-FIN is an enterprise-focused financial management platform centered on relational data flows, dynamic portfolio management, and user interactions, built on a .NET Web API and React (TypeScript) architecture.
 

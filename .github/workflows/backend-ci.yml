@@ -1,10 +1,16 @@
-name: CI
+name: Backend CI
 
 on:
   push:
     branches: [main]
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-ci.yml"
   pull_request:
     branches: [main]
+    paths:
+      - "backend/**"
+      - ".github/workflows/backend-ci.yml"
 
 jobs:
   build-and-test:
@@ -31,20 +37,25 @@ jobs:
       # actually exercises the suite; without this the CI "Test" step was a
       # no-op that always reported success.
       - name: Restore
+        working-directory: backend
         run: dotnet restore api.Tests/api.Tests.csproj
 
       - name: Check formatting
+        working-directory: backend
         run: |
           dotnet format api.csproj --verify-no-changes --severity warn
           dotnet format api.Tests/api.Tests.csproj --verify-no-changes --severity warn
 
       - name: Build
+        working-directory: backend
         run: dotnet build api.Tests/api.Tests.csproj --no-restore --configuration Release
 
       - name: Test
+        working-directory: backend
         run: dotnet test api.Tests/api.Tests.csproj --no-build --configuration Release --verbosity normal
 
       - name: Check for vulnerable packages
+        working-directory: backend
         run: |
           dotnet list api.Tests/api.Tests.csproj package --vulnerable --include-transitive | tee vuln.txt
           ! grep -q "has the following vulnerable packages" vuln.txt
@@ -70,15 +81,19 @@ jobs:
       # the preinstalled Docker daemon -- no docker-compose service block
       # needed.
       - name: Restore
+        working-directory: backend
         run: dotnet restore api.IntegrationTests/api.IntegrationTests.csproj
 
       - name: Check formatting
+        working-directory: backend
         run: dotnet format api.IntegrationTests/api.IntegrationTests.csproj --verify-no-changes --severity warn
 
       - name: Build
+        working-directory: backend
         run: dotnet build api.IntegrationTests/api.IntegrationTests.csproj --no-restore --configuration Release
 
       - name: Test
+        working-directory: backend
         run: dotnet test api.IntegrationTests/api.IntegrationTests.csproj --no-build --configuration Release --verbosity normal
 
   docker-build:
@@ -93,7 +108,7 @@ jobs:
       # reference the multi-stage build doesn't know about) would otherwise
       # only surface as a failed production deploy.
       - name: Build image
-        run: docker build -t dolfin-api:ci .
+        run: docker build -t dolfin-api:ci -f backend/Dockerfile backend
 
       # Boots the actual built image against real Postgres + Redis containers
       # and waits for /health to return 200 -- the same check Railway's

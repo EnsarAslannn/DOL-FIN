@@ -1,0 +1,12 @@
+# Root-level ignores for the monorepo as a whole.
+# Each package also keeps its own .gitignore (frontend/.gitignore, backend/.gitignore)
+# for stack-specific patterns (node_modules, bin/, obj/, etc.) -- those still apply.
+
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Claude Code project-local skills (should never be tracked)
+.claude/
+.agents/
