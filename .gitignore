@@ -10,3 +10,9 @@
 # Claude Code project-local skills (should never be tracked)
 .claude/
 .agents/
+
+# Visual Studio local state (per-developer, never shared)
+.vs/
+
+# Leftover standalone clone of the backend repo -- the tracked copy is backend/
+/api/
