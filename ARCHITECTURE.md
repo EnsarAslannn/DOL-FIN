@@ -140,5 +140,5 @@ URL/interceptor setup), `Routes/` (route definitions), `Models/`
 (TypeScript types mirroring the API's DTOs), `Helpers/`. End-to-end tests
 live in `frontend/e2e/` (Playwright, selects elements by accessible name —
 see the deploy-topology warning in [README.md](./README.md) about why UI
-changes can break these). See [frontend/README.md](./frontend/README.md)
-for the full feature list and setup.
+changes can break these). See [README.md](./README.md) for the full
+feature list and setup.
