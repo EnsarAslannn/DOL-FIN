@@ -96,6 +96,12 @@ jobs:
         working-directory: backend
         run: dotnet test api.IntegrationTests/api.IntegrationTests.csproj --no-build --configuration Release --verbosity normal
 
+      - name: Check for vulnerable packages
+        working-directory: backend
+        run: |
+          dotnet list api.IntegrationTests/api.IntegrationTests.csproj package --vulnerable --include-transitive | tee vuln.txt
+          ! grep -q "has the following vulnerable packages" vuln.txt
+
   docker-build:
     runs-on: ubuntu-latest
     timeout-minutes: 15
