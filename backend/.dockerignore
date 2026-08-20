@@ -1,0 +1,18 @@
+# bin/ and obj/ alone only match the top-level directory -- api.Tests/bin
+# and api.IntegrationTests/bin were slipping through and bloating the build
+# context by well over 100MB before this was `**/`-prefixed.
+**/bin/
+**/obj/
+publish/
+Logs/
+*.user
+
+.git/
+.vs/
+.vscode/
+
+# Never needed to build/publish api.csproj (the Dockerfile only restores and
+# publishes that one project) -- excluding them outright saves transferring
+# their source too, not just their bin/obj.
+api.Tests/
+api.IntegrationTests/

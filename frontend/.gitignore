@@ -1,0 +1,59 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Claude Code project-local skills (should never be tracked)
+.claude/
+.agents/
+
+# Environment files (may contain secrets) -- .env.example stays tracked as a template
+.env
+.env.*
+!.env.example
+
+# Unoptimized source art for the redesign. Kept locally as masters; only the
+# WebP derivatives that the app actually imports are tracked.
+src/assets/extra/1.jpg
+src/assets/extra/2.png
+src/assets/extra/3.png
+src/assets/extra/4.png
+src/assets/extra/5.png
+src/assets/extra/6.jpg
+src/assets/extra/glass-panel.png
+src/assets/extra/empty-search-3d.png
+src/assets/extra/abstract-header-bg.png
+
+# Design reference recordings are kept out of the repo, but deliberately NOT
+# by a blanket `*.mp4` rule. An extension-wide ignore with an allowlist has to
+# be updated for every new video the app imports, and when someone forgets,
+# the asset is missing from the build with nothing in `git status` to show it
+# — the same silent-omission failure that nearly shipped a broken tablet
+# image. Unknown files default to tracked, so a stray recording turns up as
+# untracked noise instead: loud, and fixed in one line.
