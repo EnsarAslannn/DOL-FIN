@@ -1,6 +1,6 @@
 # 🐬 DOL-FIN API
 
-[![CI](https://github.com/EnsarAslannn/DOL-FIN/actions/workflows/backend-ci.yml/badge.svg)](https://github.com/EnsarAslannn/DOL-FIN/actions/workflows/backend-ci.yml)
+[![CI](https://github.com/EnsarAslannn/DOLFIN/actions/workflows/backend-ci.yml/badge.svg)](https://github.com/EnsarAslannn/DOLFIN/actions/workflows/backend-ci.yml)
 
 The backend for [DOL-FIN](https://github.com/EnsarAslannn/DOL-FIN), an enterprise-focused financial management platform: an ASP.NET Core Web API handling authentication, portfolio management, and stock/comment data over a relational PostgreSQL schema.
 
