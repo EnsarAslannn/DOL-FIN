@@ -21,6 +21,16 @@ namespace api.Controllers
             _stockRepo = stockRepo;
         }
 
+        /// <summary>
+        /// Lists the stock catalog with optional filtering, sorting and paging.
+        /// </summary>
+        /// <remarks>
+        /// Results are served from the Redis-backed cache when available and
+        /// fall back to a direct database read if the cache is unreachable.
+        /// </remarks>
+        /// <param name="query">Filter (symbol, company name), sort and paging options.</param>
+        /// <response code="200">The matching page of stocks.</response>
+        /// <response code="400">The query parameters failed validation.</response>
         [HttpGet]
         [ProducesResponseType(typeof(List<StockDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Microsoft.AspNetCore.Mvc.ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -32,6 +42,12 @@ namespace api.Controllers
             return Ok(stockDto);
         }
 
+        /// <summary>
+        /// Gets a single stock by its numeric id.
+        /// </summary>
+        /// <param name="id">The stock's database id.</param>
+        /// <response code="200">The requested stock.</response>
+        /// <response code="404">No stock exists with that id.</response>
         [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(StockDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -47,6 +63,18 @@ namespace api.Controllers
             return Ok(stock.ToStockDto());
         }
 
+        /// <summary>
+        /// Creates a new stock in the catalog. Admin only.
+        /// </summary>
+        /// <remarks>
+        /// Symbols are unique and compared case-insensitively, so creating
+        /// "aapl" when "AAPL" already exists is rejected as a conflict.
+        /// </remarks>
+        /// <param name="stockDto">The stock to create.</param>
+        /// <response code="201">The stock was created; the response body is the new stock.</response>
+        /// <response code="400">The request body failed validation.</response>
+        /// <response code="403">The caller is authenticated but not an Admin.</response>
+        /// <response code="409">A stock with that symbol already exists.</response>
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(StockDto), StatusCodes.Status201Created)]
@@ -70,6 +98,16 @@ namespace api.Controllers
             );
         }
 
+        /// <summary>
+        /// Updates an existing stock. Admin only.
+        /// </summary>
+        /// <param name="id">The id of the stock to update.</param>
+        /// <param name="updateDto">The new values for the stock.</param>
+        /// <response code="200">The updated stock.</response>
+        /// <response code="400">The request body failed validation.</response>
+        /// <response code="403">The caller is authenticated but not an Admin.</response>
+        /// <response code="404">No stock exists with that id.</response>
+        /// <response code="409">Another stock already uses the requested symbol.</response>
         [HttpPut("{id:int}")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(StockDto), StatusCodes.Status200OK)]
@@ -98,6 +136,13 @@ namespace api.Controllers
             return Ok(stockModel.ToStockDto());
         }
 
+        /// <summary>
+        /// Deletes a stock from the catalog. Admin only.
+        /// </summary>
+        /// <param name="id">The id of the stock to delete.</param>
+        /// <response code="204">The stock was deleted.</response>
+        /// <response code="403">The caller is authenticated but not an Admin.</response>
+        /// <response code="404">No stock exists with that id.</response>
         [HttpDelete("{id:int}")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -115,6 +160,11 @@ namespace api.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Gets the stocks shown in the market trends ticker.
+        /// </summary>
+        /// <response code="200">The trending stocks.</response>
+        /// <response code="404">The stock catalog has not been seeded yet.</response>
         [HttpGet("trends")]
         [ProducesResponseType(typeof(List<api.Models.Stock>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

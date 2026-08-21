@@ -28,6 +28,14 @@ namespace api.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Reports per-key cache hit/miss counters. Admin only.
+        /// </summary>
+        /// <remarks>
+        /// Counters are held in memory by a singleton, so they cover the
+        /// current process only and reset when the API restarts.
+        /// </remarks>
+        /// <response code="200">A snapshot of the counters, keyed by cache key.</response>
         [HttpGet("cache-metrics")]
         [ProducesResponseType(typeof(IReadOnlyDictionary<string, CacheKeyStats>), StatusCodes.Status200OK)]
         public IActionResult GetCacheMetrics()
@@ -35,6 +43,15 @@ namespace api.Controllers
             return Ok(_cacheMetrics.GetSnapshot());
         }
 
+        /// <summary>
+        /// Reports live Redis server statistics. Admin only.
+        /// </summary>
+        /// <remarks>
+        /// Returns <c>configured: false</c> rather than an error when the API
+        /// is running without Redis, since the cache is a soft dependency.
+        /// </remarks>
+        /// <response code="200">Memory use, connected clients, ops/sec and the dolfin key count.</response>
+        /// <response code="503">Redis is configured but could not be reached.</response>
         [HttpGet("redis-info")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
