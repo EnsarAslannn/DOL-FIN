@@ -93,6 +93,14 @@ api.IntegrationTests/   xUnit integration tests (Testcontainers) — see below.
   reports Redis as `Degraded`, not `Unhealthy`, for the same reason).
 - **Errors:** `ExceptionMiddleware` is the single place unhandled exceptions
   are caught and turned into a consistent JSON `ExceptionResponse`.
+- **API docs:** every controller action carries an XML doc comment
+  (`<summary>`, `<param>`, `<response>`); .NET 10's OpenAPI source generator
+  turns those into the descriptions shown on `/scalar`. Because
+  `GenerateDocumentationFile` is on but `CS1591` is suppressed, an
+  undocumented action still compiles clean and just shows up bare in the UI —
+  so an integration test asserts every operation in `/openapi.json` has a
+  summary rather than relying on the compiler to catch it. Only controller
+  actions are documented; DTOs and services deliberately are not.
 - **Unit of work:** multi-step writes (e.g. a trade that touches both a
   `Portfolio` position and a `Transaction` row) go through `IUnitOfWork` so
   they commit or roll back together.
@@ -140,5 +148,13 @@ URL/interceptor setup), `Routes/` (route definitions), `Models/`
 (TypeScript types mirroring the API's DTOs), `Helpers/`. End-to-end tests
 live in `frontend/e2e/` (Playwright, selects elements by accessible name —
 see the deploy-topology warning in [README.md](./README.md) about why UI
-changes can break these). See [README.md](./README.md) for the full
-feature list and setup.
+changes can break these).
+
+Unit tests sit next to what they cover as `*.test.ts(x)` and run under
+Vitest + React Testing Library (`npm test`; Playwright is deliberately
+excluded from that run and lives behind `npm run test:e2e`). They
+concentrate on the layers where a regression is silent rather than on
+markup: the auth context and route guard, the Axios instance's
+cookie/CSRF behaviour, the service layer's request shapes, the demo data
+readers' return contract, and the number formatters. See
+[README.md](./README.md) for the full feature list and setup.
