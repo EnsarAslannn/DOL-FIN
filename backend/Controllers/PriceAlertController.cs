@@ -25,6 +25,17 @@ namespace api.Controllers
             _userManager = userManager;
         }
 
+        /// <summary>
+        /// Creates a price alert on a stock for the signed-in user.
+        /// </summary>
+        /// <remarks>
+        /// A background service re-checks active alerts on an interval and
+        /// raises a notification once the condition is met, so alerts do not
+        /// fire in real time.
+        /// </remarks>
+        /// <param name="dto">The stock, target price and trigger condition (above or below).</param>
+        /// <response code="201">The alert was created.</response>
+        /// <response code="400">Unknown stock, invalid target price, or a duplicate alert.</response>
         [HttpPost]
         [ProducesResponseType(typeof(PriceAlertDto), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(Microsoft.AspNetCore.Mvc.ValidationProblemDetails), StatusCodes.Status400BadRequest)]
@@ -54,6 +65,10 @@ namespace api.Controllers
             }
         }
 
+        /// <summary>
+        /// Lists the signed-in user's alerts that have not fired yet.
+        /// </summary>
+        /// <response code="200">The user's active alerts.</response>
         [HttpGet]
         [ProducesResponseType(typeof(List<PriceAlertDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAlerts()
@@ -66,6 +81,10 @@ namespace api.Controllers
             return Ok(alerts.Select(a => a.ToPriceAlertDto()));
         }
 
+        /// <summary>
+        /// Lists the notifications raised by the user's triggered alerts.
+        /// </summary>
+        /// <response code="200">The user's notifications, read and unread.</response>
         [HttpGet("notifications")]
         [ProducesResponseType(typeof(List<AlertNotificationDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetNotifications()
@@ -78,6 +97,13 @@ namespace api.Controllers
             return Ok(notifications.Select(n => n.ToAlertNotificationDto()));
         }
 
+        /// <summary>
+        /// Marks one of the user's alert notifications as read.
+        /// </summary>
+        /// <param name="id">The notification's id.</param>
+        /// <response code="200">The updated notification.</response>
+        /// <response code="403">The notification belongs to a different user.</response>
+        /// <response code="404">No notification exists with that id.</response>
         [HttpPost("notifications/{id:int}/read")]
         [ProducesResponseType(typeof(AlertNotificationDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]

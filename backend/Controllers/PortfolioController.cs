@@ -34,6 +34,10 @@ namespace api.Controllers
             _rebalancingService = rebalancingService;
         }
 
+        /// <summary>
+        /// Gets the signed-in user's current stock positions.
+        /// </summary>
+        /// <response code="200">The user's positions, one entry per held stock.</response>
         [HttpGet]
         [ProducesResponseType(typeof(List<PortfolioDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetUserPortfolio()
@@ -46,6 +50,14 @@ namespace api.Controllers
             return Ok(userPortfolio);
         }
 
+        /// <summary>
+        /// Gets aggregate performance metrics for the user's portfolio.
+        /// </summary>
+        /// <remarks>
+        /// Covers total invested cost, current market value, absolute and
+        /// percentage profit/loss, and the per-position allocation breakdown.
+        /// </remarks>
+        /// <response code="200">The calculated portfolio metrics.</response>
         [HttpGet("metrics")]
         [ProducesResponseType(typeof(PortfolioMetricsDto), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetMetrics()
@@ -58,6 +70,14 @@ namespace api.Controllers
             return Ok(metrics);
         }
 
+        /// <summary>
+        /// Lists concentration warnings for the user's current allocation.
+        /// </summary>
+        /// <remarks>
+        /// Each warning is a human-readable message flagging a position that
+        /// takes up an outsized share of the portfolio.
+        /// </remarks>
+        /// <response code="200">The warnings, or an empty list if the allocation looks healthy.</response>
         [HttpGet("warnings")]
         [ProducesResponseType(typeof(List<string>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllocationWarnings()
@@ -70,6 +90,14 @@ namespace api.Controllers
             return Ok(warnings);
         }
 
+        /// <summary>
+        /// Suggests the buys and sells that would rebalance the portfolio.
+        /// </summary>
+        /// <remarks>
+        /// This only returns a recommendation — nothing is bought or sold. Use
+        /// the trade endpoints to act on it.
+        /// </remarks>
+        /// <response code="200">The suggested per-symbol adjustments.</response>
         [HttpGet("rebalance")]
         [ProducesResponseType(typeof(RebalancingRecommendationDto), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetRebalancingRecommendation()
@@ -82,6 +110,16 @@ namespace api.Controllers
             return Ok(recommendation);
         }
 
+        /// <summary>
+        /// Buys a quantity of a stock using the user's wallet balance.
+        /// </summary>
+        /// <remarks>
+        /// The wallet debit and the position update are committed in a single
+        /// unit of work, so a failure part-way through leaves neither applied.
+        /// </remarks>
+        /// <param name="request">The stock symbol and quantity to buy.</param>
+        /// <response code="200">The trade succeeded; the response carries the updated position.</response>
+        /// <response code="400">Unknown symbol, non-positive quantity, or insufficient funds.</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -106,6 +144,12 @@ namespace api.Controllers
             }
         }
 
+        /// <summary>
+        /// Sells a quantity of a stock the user holds and credits the proceeds.
+        /// </summary>
+        /// <param name="request">The stock symbol and quantity to sell.</param>
+        /// <response code="200">The trade succeeded; the response carries the updated position.</response>
+        /// <response code="400">Unknown symbol, non-positive quantity, or more shares requested than held.</response>
         [HttpPost("sell")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -130,6 +174,12 @@ namespace api.Controllers
             }
         }
 
+        /// <summary>
+        /// Adds simulated funds to the user's virtual wallet.
+        /// </summary>
+        /// <param name="request">The amount to deposit.</param>
+        /// <response code="200">The deposit was applied; the response carries the new balance.</response>
+        /// <response code="400">The amount is not a positive value.</response>
         [HttpPost("deposit")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -150,6 +200,12 @@ namespace api.Controllers
             }
         }
 
+        /// <summary>
+        /// Withdraws simulated funds from the user's virtual wallet.
+        /// </summary>
+        /// <param name="request">The amount to withdraw.</param>
+        /// <response code="200">The withdrawal was applied; the response carries the new balance.</response>
+        /// <response code="400">The amount is not positive, or exceeds the available balance.</response>
         [HttpPost("withdraw")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -33,6 +33,20 @@ namespace api.Controllers
             _antiforgery = antiforgery;
         }
 
+        /// <summary>
+        /// Signs a user in and issues the authentication cookie.
+        /// </summary>
+        /// <remarks>
+        /// The JWT is returned in an httpOnly <c>access_token</c> cookie rather
+        /// than in the response body, so it is never readable from JavaScript.
+        /// Repeated failures lock the account for 15 minutes, and this endpoint
+        /// is rate limited per client IP.
+        /// </remarks>
+        /// <param name="loginDto">The username and password to authenticate.</param>
+        /// <response code="200">Authenticated; the auth cookie has been set.</response>
+        /// <response code="400">The request body failed validation.</response>
+        /// <response code="401">The credentials are invalid or the account is locked out.</response>
+        /// <response code="429">Too many login attempts from this IP.</response>
         [HttpPost("login")]
         [EnableRateLimiting("auth")]
         [ProducesResponseType(typeof(NewUserDto), StatusCodes.Status200OK)]
@@ -70,6 +84,18 @@ namespace api.Controllers
             );
         }
 
+        /// <summary>
+        /// Registers a new user, assigns the User role and signs them in.
+        /// </summary>
+        /// <remarks>
+        /// Passwords must be at least 12 characters and mix upper case, lower
+        /// case, digits and symbols. New accounts start with a zero wallet
+        /// balance. On success the auth cookie is set just as it is for login.
+        /// </remarks>
+        /// <param name="registerDto">The username, email and password to register.</param>
+        /// <response code="200">The account was created and signed in.</response>
+        /// <response code="400">Validation failed, or the username/email is already taken.</response>
+        /// <response code="429">Too many registration attempts from this IP.</response>
         [HttpPost("register")]
         [EnableRateLimiting("auth")]
         [ProducesResponseType(typeof(NewUserDto), StatusCodes.Status200OK)]
@@ -106,6 +132,16 @@ namespace api.Controllers
             );
         }
 
+        /// <summary>
+        /// Signs the current user out and revokes their existing tokens.
+        /// </summary>
+        /// <remarks>
+        /// Rotating the user's security stamp invalidates every token already
+        /// issued to them, so logging out on one device also revokes the others
+        /// rather than only clearing the local cookie.
+        /// </remarks>
+        /// <response code="200">Signed out; auth and CSRF cookies have been cleared.</response>
+        /// <response code="401">No valid authentication cookie was supplied.</response>
         [HttpPost("logout")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -155,6 +191,17 @@ namespace api.Controllers
             );
         }
 
+        /// <summary>
+        /// Gets the signed-in user's profile and issues a fresh CSRF token.
+        /// </summary>
+        /// <remarks>
+        /// This is also the endpoint that hands out the readable
+        /// <c>XSRF-TOKEN</c> cookie, so a client must call it before making any
+        /// state-changing request — those are rejected with 403 unless the
+        /// token is echoed back in the <c>X-CSRF-TOKEN</c> header.
+        /// </remarks>
+        /// <response code="200">The current user's username, email and wallet balance.</response>
+        /// <response code="401">No valid authentication cookie was supplied.</response>
         [HttpGet("profile")]
         [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]

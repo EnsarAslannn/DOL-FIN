@@ -34,18 +34,30 @@ namespace api.Controllers
             _userManager = userManager;
         }
 
+        /// <summary>
+        /// Lists comments, optionally filtered by stock symbol and sorted.
+        /// </summary>
+        /// <param name="queryObject">Symbol filter and sort options.</param>
+        /// <response code="200">The matching comments.</response>
+        /// <response code="400">The query parameters failed validation.</response>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<CommentDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Microsoft.AspNetCore.Mvc.ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> GettAll([FromQuery] CommentQueryObject queryObject)
+        public async Task<IActionResult> GetAll([FromQuery] CommentQueryObject queryObject)
         {
-            var comments = await _commentRepo.GettAllAsync(queryObject);
+            var comments = await _commentRepo.GetAllAsync(queryObject);
             var commentDto = comments.Select(s => s.ToCommentDto());
 
             return Ok(commentDto);
         }
 
+        /// <summary>
+        /// Gets a single comment by id. Open to anonymous callers.
+        /// </summary>
+        /// <param name="id">The comment's id.</param>
+        /// <response code="200">The requested comment.</response>
+        /// <response code="404">No comment exists with that id.</response>
         [HttpGet("{id:int}")]
         [AllowAnonymous]
         [ProducesResponseType(typeof(CommentDto), StatusCodes.Status200OK)]
@@ -62,6 +74,17 @@ namespace api.Controllers
             return Ok(comment.ToCommentDto());
         }
 
+        /// <summary>
+        /// Posts a comment on a stock, authored by the signed-in user.
+        /// </summary>
+        /// <remarks>
+        /// Creating a comment invalidates that stock's cache entry so the new
+        /// comment shows up immediately rather than after the TTL expires.
+        /// </remarks>
+        /// <param name="stockId">The id of the stock being commented on.</param>
+        /// <param name="commentDto">The comment title and body.</param>
+        /// <response code="201">The comment was created.</response>
+        /// <response code="400">No stock exists with that id, or the body failed validation.</response>
         [HttpPost("{stockId:int}")]
         [ProducesResponseType(typeof(CommentDto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -91,6 +114,15 @@ namespace api.Controllers
             );
         }
 
+        /// <summary>
+        /// Edits a comment. Only its author may do so.
+        /// </summary>
+        /// <param name="id">The id of the comment to edit.</param>
+        /// <param name="updateDto">The new title and body.</param>
+        /// <response code="200">The updated comment.</response>
+        /// <response code="400">The request body failed validation.</response>
+        /// <response code="403">The comment belongs to a different user.</response>
+        /// <response code="404">No comment exists with that id.</response>
         [HttpPut("{id:int}")]
         [ProducesResponseType(typeof(CommentDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -134,6 +166,13 @@ namespace api.Controllers
             return Ok(comment.ToCommentDto());
         }
 
+        /// <summary>
+        /// Deletes a comment. Only its author may do so.
+        /// </summary>
+        /// <param name="id">The id of the comment to delete.</param>
+        /// <response code="200">The deleted comment.</response>
+        /// <response code="403">The comment belongs to a different user.</response>
+        /// <response code="404">No comment exists with that id.</response>
         [HttpDelete("{id:int}")]
         [ProducesResponseType(typeof(api.Models.Comment), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
