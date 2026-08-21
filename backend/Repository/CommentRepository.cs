@@ -43,7 +43,7 @@ namespace api.Repository
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<List<Comment>> GettAllAsync(CommentQueryObject queryObject)
+        public async Task<List<Comment>> GetAllAsync(CommentQueryObject queryObject)
         {
             var comments = _context.Comments.Include(a => a.AppUser).AsQueryable();
 

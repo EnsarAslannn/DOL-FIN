@@ -26,14 +26,14 @@ namespace api.Repository
             _logger = logger;
         }
 
-        public async Task<List<Comment>> GettAllAsync(CommentQueryObject queryObject)
+        public async Task<List<Comment>> GetAllAsync(CommentQueryObject queryObject)
         {
             try
             {
                 var cached = await _cache.GetOrCreateWithMetricsAsync(
                     _metrics,
                     CacheKeys.CommentList(queryObject),
-                    async ct => ToCacheModels(await _inner.GettAllAsync(queryObject)),
+                    async ct => ToCacheModels(await _inner.GetAllAsync(queryObject)),
                     CacheConfiguration.CommentList,
                     tags: [CacheKeys.CommentListTag]
                 );
@@ -43,7 +43,7 @@ namespace api.Repository
             catch (Exception ex)
             {
                 _logger.LogWarning(ex, "Redis unavailable, falling back to direct DB read for comment list");
-                return await _inner.GettAllAsync(queryObject);
+                return await _inner.GetAllAsync(queryObject);
             }
         }
 
