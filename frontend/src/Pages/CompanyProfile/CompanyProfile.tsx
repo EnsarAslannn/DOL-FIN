@@ -92,13 +92,10 @@ const CompanyProfile = () => {
   useEffect(() => {
     const getProfileData = async () => {
       const pResult = await getCompanyProfile(ticker)
-      if (pResult && pResult.data) {
-        setProfile(pResult.data[0])
-      }
+      setProfile(pResult.data[0] ?? null)
+
       const mResult = await getKeyMetrics(ticker)
-      if (mResult && typeof mResult !== "string" && "data" in mResult) {
-        setCompanyData(mResult?.data[0])
-      }
+      setCompanyData(mResult.data[0])
     }
     getProfileData()
   }, [ticker])

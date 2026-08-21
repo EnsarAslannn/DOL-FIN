@@ -18,9 +18,7 @@ const ComparableFinder = ({ ticker }: Props) => {
 
       const result = await getCompanyPeers(ticker)
 
-      if (result && typeof result !== "string" && "data" in result) {
-        setCompanyPeers(result?.data)
-      }
+      setCompanyPeers(result.data)
 
       setIsLoading(false)
     }

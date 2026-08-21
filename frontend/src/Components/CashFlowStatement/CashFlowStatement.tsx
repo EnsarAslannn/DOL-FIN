@@ -61,12 +61,10 @@ const CashFlowStatement = () => {
   useEffect(() => {
     const fetchCashFlow = async () => {
       const result = await getCashFlowStatement(ticker!)
-      if (result && typeof result !== "string" && "data" in result) {
-        const sortedData = [...result.data].sort((a, b) =>
-          new Date(a.date).getTime() - new Date(b.date).getTime()
-        );
-        setCashflowData(sortedData)
-      }
+      const sortedData = [...result.data].sort((a, b) =>
+        new Date(a.date).getTime() - new Date(b.date).getTime()
+      );
+      setCashflowData(sortedData)
     }
     fetchCashFlow()
   }, [ticker])

@@ -16,9 +16,7 @@ const TenKFinder = ({ ticker }: Props) => {
     const getTenKData = async () => {
       setIsLoading(true)
       const value = await getTenK(ticker)
-      if (value && typeof value !== "string" && "data" in value) {
-        setCompanyData(value?.data)
-      }
+      setCompanyData(value.data)
       setIsLoading(false)
     }
     getTenKData()

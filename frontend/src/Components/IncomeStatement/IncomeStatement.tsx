@@ -114,13 +114,11 @@ const IncomeStatement = () => {
     const incomeStatementFetch = async () => {
       const result = await getIncomeStatement(ticker)
 
-      if (result && typeof result !== "string" && "data" in result) {
-        const sortedData = [...result.data].sort(
-          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
-        )
+      const sortedData = [...result.data].sort(
+        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+      )
 
-        setIncomeStatement(sortedData)
-      }
+      setIncomeStatement(sortedData)
     }
 
     incomeStatementFetch()

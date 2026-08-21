@@ -84,12 +84,10 @@ const BalanceSheet = () => {
   useEffect(() => {
     const getData = async () => {
       const value = await getBalanceSheet(ticker!)
-      if (value && typeof value !== "string" && "data" in value) {
-        const sortedData = [...value.data].sort(
-          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
-        )
-        setBalanceSheet(sortedData)
-      }
+      const sortedData = [...value.data].sort(
+        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+      )
+      setBalanceSheet(sortedData)
     }
     getData()
   }, [ticker])
